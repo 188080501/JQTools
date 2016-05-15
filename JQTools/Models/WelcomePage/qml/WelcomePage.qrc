@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/WelcomePage">
-        <file>WelcomePage.qml</file>
-    </qresource>
-</RCC>
