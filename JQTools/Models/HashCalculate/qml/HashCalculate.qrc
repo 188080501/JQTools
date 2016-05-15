@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/HashCalculate">
+        <file>HashCalculate.qml</file>
+    </qresource>
+</RCC>

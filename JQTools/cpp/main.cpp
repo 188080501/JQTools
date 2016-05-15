@@ -18,6 +18,7 @@
 #include "Welcome.h"
 #include "PngWarningRemover.h"
 #include "Utf16Transform.h"
+#include "HashCalculate.h"
 
 void checkVersion();
 
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
     WELCOMEINITIALIZA
     PNGWARNINGREMOVERINITIALIZA
     UTF16TRANSFORMINITIALIZA
+    HASHCALCULATEINITIALIZA
 
     QQmlApplicationEngine engine;
 

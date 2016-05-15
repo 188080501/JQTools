@@ -1,9 +1,7 @@
 ﻿#include "Utf16Transform.h"
 
 // Qt lib import
-#include <QImage>
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QStandardPaths>
 #include <QApplication>
 #include <QClipboard>
