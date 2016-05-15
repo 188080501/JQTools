@@ -10,9 +10,9 @@ JQTools，为 Jason Qt Tools 的简称
 
 若不像下载源码编译，也可以点击这里直接下载可执行文件：
  
-[OS X版本dmg包](http://flw-collection.oss-cn-hangzhou.aliyuncs.com/FLWCollection.exe)
+[OS X版本dmg包](http://flw-collection.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.16.dmg)
 
-[Windows版本zip包](http://flw-collection.oss-cn-hangzhou.aliyuncs.com/FLWCollection.exe)
+[Windows版本zip包](http://flw-collection.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.16.zip)
 
 若需要其他版本，请下载源码自行编译。 
 
