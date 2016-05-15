@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/Utf16Transform">
+        <file>Utf16Transform.qml</file>
+    </qresource>
+</RCC>

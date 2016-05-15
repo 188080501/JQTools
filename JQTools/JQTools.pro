@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets
+QT += qml quick widgets concurrent
 
 CONFIG += c++11
 CONFIG += c++14

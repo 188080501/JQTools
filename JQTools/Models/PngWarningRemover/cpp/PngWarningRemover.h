@@ -23,7 +23,7 @@ public:
     ~Manage();
 
 public slots:
-    void conversationPng();
+    QString conversationPng();
 };
 
 }
