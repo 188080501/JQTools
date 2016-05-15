@@ -8,7 +8,11 @@ JQTools，为 Jason Qt Tools 的简称
 
 本工具使用 QML(界面) 和 C++(逻辑) 开发，源码均已开源在了GitHub上。
 
-在bin目录下，有可以直接运行的可执行文件。我会上传最新的 OS X 和 Windows（MinGW，已静态编译） 版本。
+若不像下载源码编译，也可以点击这里直接下载可执行文件：
+ 
+[OS X版本dmg包](http://flw-collection.oss-cn-hangzhou.aliyuncs.com/FLWCollection.exe)
+
+[Windows版本zip包](http://flw-collection.oss-cn-hangzhou.aliyuncs.com/FLWCollection.exe)
 
 若需要其他版本，请下载源码自行编译。 
 
@@ -18,15 +22,17 @@ JQTools，为 Jason Qt Tools 的简称
 
 ## 开发计划
 
-阶段|日期
+功能模块|计划完成日期
 ---|---
 PNG警告消除|已完成
 UTF16转换|已完成
 HASH计算器|已完成
+图标生成器|已完成
 RGB转16进制|2016-05
-图标生成器|2016-05
+URL转码|2016-05
+屏幕二维码解析器|2016-06
 图标字体转PNG|2016-06
-URL转码|2016-06
+Q_PROPERTY代码生成器|2016-06
 拾色器|2016-07
 
 ## 功能介绍
@@ -51,6 +57,10 @@ URL转码|2016-06
 
 	根据已有的PNG图片，生成可以用于发布App的特定分辨率图片
 
+* 屏幕二维码解析器
+
+	可以解析屏幕上的二维码
+
 * 图标字体转PNG
 
 	将ttf字体或者svg字体，转换为PNG
@@ -58,6 +68,10 @@ URL转码|2016-06
 * URL转码
 
 	URL转码功能
+	
+* Q_PROPERTY代码生成器
+
+	可以根据Q_PROPERTY的内容，生成代码
 	
 * 拾色器
 
