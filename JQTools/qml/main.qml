@@ -8,13 +8,29 @@ import "qrc:/Utf16Transform/"
 import "qrc:/HashCalculate/"
 
 ApplicationWindow {
+    id: applicationWindow
     title: qsTr("JQTools")
     width: 640
     height: 480
     visible: true
+    opacity: 0
+    color: "#00000000"
 
     minimumWidth: 640
     minimumHeight: 480
+
+    NumberAnimation {
+        id: animationForOpacity
+        target: applicationWindow
+        property: "opacity"
+        easing.type: Easing.OutCubic
+        duration: 300
+        to: 1
+    }
+
+    Component.onCompleted: {
+        animationForOpacity.start();
+    }
 
     MaterialTabs {
         id: tabs
@@ -79,6 +95,12 @@ ApplicationWindow {
             HashCalculate {
                 id: hashCalculate
             }
+        }
+
+        Rectangle {
+            z: -1
+            anchors.fill: parent
+            color: "#ededed"
         }
     }
 
