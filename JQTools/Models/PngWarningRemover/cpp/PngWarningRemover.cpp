@@ -3,7 +3,6 @@
 // Qt lib import
 #include <QImage>
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QStandardPaths>
 #include <QtConcurrent>
 

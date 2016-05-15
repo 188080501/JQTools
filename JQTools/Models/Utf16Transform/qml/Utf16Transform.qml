@@ -34,10 +34,13 @@ Item {
 
     MaterialButton {
         x: 420
-        y: 18
         width: 120
         height: 40
         text: "处理剪切板内容"
+        anchors.horizontalCenterOffset: 160
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 18
 
         onClicked: {
             textFieldForSource.text = utf16TransformManage.clipboardText();
@@ -47,8 +50,6 @@ Item {
     }
 
     MaterialLabel {
-        x: 408
-        y: 58
         text: "文本字符串"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForSource.top
@@ -62,7 +63,7 @@ Item {
         anchors.fill: itemForSource
         glowRadius: 6
         spread: 0.22
-        color: "#30000000"
+        color: "#20000000"
     }
 
     Item {
@@ -86,7 +87,7 @@ Item {
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WordWrap
+            wrapMode: TextInput.WrapAnywhere
 
             onTextChanged: {
                 if ( utf16Transform.changingFlag ) { return; }
@@ -101,8 +102,6 @@ Item {
     }
 
     MaterialLabel {
-        x: 408
-        y: 58
         text: "UTF-16字符串"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForTarget.top
@@ -116,7 +115,7 @@ Item {
         anchors.fill: itemForTarget
         glowRadius: 6
         spread: 0.22
-        color: "#30000000"
+        color: "#20000000"
     }
 
     Item {
