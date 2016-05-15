@@ -62,6 +62,11 @@ Item {
                         iconText = tabs.iconDatas[styleData.index]["text"];
                         iconSize = textSize * 1.3;
                     }
+
+                    if ( "implicitWidth" in tabs.tabSource[ styleData.index ] )
+                    {
+                        implicitWidth = tabs.tabSource[ styleData.index ][ "implicitWidth" ];
+                    }
                 }
 
                 function refreshPosition() {

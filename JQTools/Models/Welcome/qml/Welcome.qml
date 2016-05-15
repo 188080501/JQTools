@@ -6,7 +6,7 @@ import Welcome 1.0
 Item {
     id: welcome
     width: 640
-    height: 480
+    height: 430
 
     WelcomeManage {
         id: welcomeManage
@@ -15,9 +15,10 @@ Item {
     MaterialLabel {
         x: 162
         y: 170
-        text: "欢迎使用JQTools，这是一个基于Qt开发的开源小工具包。
-               包含了在开发程序（尤其是Qt程序）时，需要的各种小功能。
-               本工具使用 QML(界面) 和 C++(逻辑) 开发，源码均已开源在了GitHub上。"
+        text:
+"欢迎使用JQTools，这是一个基于Qt开发的开源小工具包。
+包含了在开发程序（尤其是Qt程序）时，需要的各种小功能。
+本工具使用 QML(界面) 和 C++(逻辑) 开发，源码均已开源在了GitHub上。"
         anchors.verticalCenterOffset: -68
         anchors.horizontalCenterOffset: 1
         anchors.horizontalCenter: parent.horizontalCenter

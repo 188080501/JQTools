@@ -4,6 +4,7 @@ import "qrc:/MaterialUI/"
 import "qrc:/MaterialUI/Interface/"
 import "qrc:/Welcome/"
 import "qrc:/PngWarningRemover/"
+import "qrc:/Utf16Transform/"
 
 ApplicationWindow {
     title: qsTr("JQTools")
@@ -21,8 +22,14 @@ ApplicationWindow {
                 source: componentForWelcome
             },
             {
-                title: "PNG警告移除",
-                source: componentForPngWarningRemover
+                title: "PNG警告",
+                source: componentForPngWarningRemover,
+                implicitWidth: 80
+            },
+            {
+                title: "UTF-16转换",
+                source: componentForUtf16Transform,
+                implicitWidth: 110
             }
         ]
 
@@ -46,6 +53,14 @@ ApplicationWindow {
 
             PngWarningRemover {
                 id: pngWarningRemover
+            }
+        }
+
+        Component {
+            id: componentForUtf16Transform
+
+            Utf16Transform {
+                id: utf16Transform
             }
         }
     }
