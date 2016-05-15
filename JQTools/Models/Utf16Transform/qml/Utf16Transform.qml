@@ -23,7 +23,7 @@ Item {
         x: 162
         text:
 "UTF16-转换工具，可以将文本和UTF-16之间互转
-例如将 “中文” 转换为 “\\u4E2D\\u6587”"
+例如将 “中文” 与 “\\u4E2D\\u6587” 互转"
         anchors.horizontalCenterOffset: -91
         anchors.top: parent.top
         anchors.topMargin: 18
