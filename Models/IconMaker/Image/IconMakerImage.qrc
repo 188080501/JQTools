@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/IconMaker">
+        <file>Background.jpg</file>
+        <file>DefaultIcon.png</file>
+    </qresource>
+</RCC>
