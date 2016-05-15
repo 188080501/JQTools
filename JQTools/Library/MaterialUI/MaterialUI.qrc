@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/MaterialUI">
+        <file>Element/BaseListItem.qml</file>
+        <file>Element/BottomSheet.qml</file>
+        <file>Element/CircleMask.qml</file>
+        <file>Element/Divider.qml</file>
+        <file>Element/Dropdown.qml</file>
+        <file>Element/Ink.qml</file>
+        <file>Element/PopupBase.qml</file>
+        <file>Element/Scrollbar.qml</file>
+        <file>Element/Standard.qml</file>
+        <file>Element/Subheader.qml</file>
+        <file>Element/ThemePalette.qml</file>
+        <file>Element/ThinDivider.qml</file>
+        <file>Element/View.qml</file>
+        <file>Interface/MaterialActionButton.qml</file>
+        <file>Interface/MaterialBottomActionSheet.qml</file>
+        <file>Interface/MaterialButton.qml</file>
+        <file>Interface/MaterialCheckBox.qml</file>
+        <file>Interface/MaterialDialog.qml</file>
+        <file>Interface/MaterialDialogAlert.qml</file>
+        <file>Interface/MaterialDialogConfirm.qml</file>
+        <file>Interface/MaterialDialogPrompt.qml</file>
+        <file>Interface/MaterialDialogScrolling.qml</file>
+        <file>Interface/MaterialLabel.qml</file>
+        <file>Interface/MaterialMenuField.qml</file>
+        <file>Interface/MaterialProgressBar.qml</file>
+        <file>Interface/MaterialProgressCircle.qml</file>
+        <file>Interface/MaterialRadioButton.qml</file>
+        <file>Interface/MaterialSlider.qml</file>
+        <file>Interface/MaterialSnackbar.qml</file>
+        <file>Interface/MaterialSwipeToRefresh.qml</file>
+        <file>Interface/MaterialSwitch.qml</file>
+        <file>Interface/MaterialTabs.qml</file>
+        <file>Interface/MaterialTextField.qml</file>
+        <file>Interface/MaterialTabbed.qml</file>
+        <file>MaterialUI.qml</file>
+        <file>Material-Design-Iconic-Font.ttf</file>
+        <file>Interface/MaterialPage.qml</file>
+        <file>Interface/MaterialTreeView.qml</file>
+        <file>Interface/MaterialTableView.qml</file>
+        <file>Interface/MaterialDatePicker.qml</file>
+        <file>Interface/MaterialTimePicker.qml</file>
+        <file>Interface/MaterialDialogDatePicker.qml</file>
+        <file>Interface/MaterialDialogTimePicker.qml</file>
+    </qresource>
+</RCC>
