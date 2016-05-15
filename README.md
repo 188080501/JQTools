@@ -1,4 +1,4 @@
-## 库介绍
+## 介绍
 
 JQTools，为 Jason Qt Tools 的简称
 
