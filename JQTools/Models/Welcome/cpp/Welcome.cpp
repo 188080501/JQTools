@@ -1,12 +1,13 @@
-﻿#include "WelcomePage.h"
+﻿#include "Welcome.h"
 
 // Qt lib import
 #include <QDesktopServices>
+#include <QUrl>
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.hpp"
 
-using namespace WelcomePage;
+using namespace Welcome;
 
 Manage::Manage()
 { }
@@ -26,5 +27,5 @@ void Manage::openGitHubLink()
 
 void Manage::openLatestVersionDownloadLink()
 {
-    QDesktopServices::openUrl( QUrl( "" ) );
+    QDesktopServices::openUrl( QUrl( "https://github.com/188080501/JQTools/tree/master/bin" ) );
 }

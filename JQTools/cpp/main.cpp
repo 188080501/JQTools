@@ -7,11 +7,16 @@
 // JQLibrary import
 #include "JQFoundation.h"
 
+#ifdef JQQMLLIB_LIB
+#   include "JQQmlLib.h"
+#endif
+
 // JQToolsLibrary import
 #include "JQToolsLibrary.hpp"
 
 // Model import
-#include "WelcomePage.h"
+#include "Welcome.h"
+#include "PngWarningRemover.h"
 
 void checkVersion();
 
@@ -25,9 +30,15 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    WELCOMEPAGEINITIALIZA
+    WELCOMEINITIALIZA
+    PNGWARNINGREMOVERINITIALIZA
 
     QQmlApplicationEngine engine;
+
+#ifdef JQQMLLIB_LIB
+    JQQmlLibAddToEngine(engine)
+#endif
+
     engine.load(QUrl("qrc:/main.qml"));
 
     return app.exec();

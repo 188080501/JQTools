@@ -2,7 +2,8 @@
 import QtQuick.Controls 1.4
 import "qrc:/MaterialUI/"
 import "qrc:/MaterialUI/Interface/"
-import "qrc:/WelcomePage/"
+import "qrc:/Welcome/"
+import "qrc:/PngWarningRemover/"
 
 ApplicationWindow {
     title: qsTr("JQTools")
@@ -17,7 +18,11 @@ ApplicationWindow {
         tabSource: [
             {
                 title: "欢迎页",
-                source: componentForWelcomePage
+                source: componentForWelcome
+            },
+            {
+                title: "PNG警告移除",
+                source: componentForPngWarningRemover
             }
         ]
 
@@ -29,10 +34,18 @@ ApplicationWindow {
         ]
 
         Component {
-            id: componentForWelcomePage
+            id: componentForWelcome
 
-            WelcomePage {
-                id: welcomePage
+            Welcome {
+                id: welcome
+            }
+        }
+
+        Component {
+            id: componentForPngWarningRemover
+
+            PngWarningRemover {
+                id: pngWarningRemover
             }
         }
     }
