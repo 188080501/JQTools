@@ -91,10 +91,6 @@ QString Manage::makeOSX()
         try
         {
             this->realMakeOSX();
-            this->realMakeIOS();
-//            this->realMakeWindows();
-            this->realMakeWP();
-            this->realMakeAndroid();
         }
         catch(const bool &)
         {
