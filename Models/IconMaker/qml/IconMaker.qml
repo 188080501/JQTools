@@ -184,6 +184,7 @@ Item {
             width: 120
             height: 40
             text: "Windows(ico)"
+            enabled: false
 
             onClicked: {
                 materialUI.showLoading();
