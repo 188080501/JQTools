@@ -61,6 +61,7 @@ void checkVersion()
          versionNumber.microVersion() != dateTime.date().day() )
     {
         QMessageBox::warning( nullptr, QStringLiteral( "\u7248\u672C\u9519\u8BEF" ), QStringLiteral( "\u8BF7\u9009\u62E9release\u7248\u672C\u6216\u8005\u66F4\u6539\u7248\u672C\u6807\u8BB0" ) );
+        ::exit( -1 );
     }
 #endif
 }
