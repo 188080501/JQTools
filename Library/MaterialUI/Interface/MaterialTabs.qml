@@ -60,7 +60,7 @@ Item {
                         iconVisible = true;
                         iconFontFamily = tabs.iconDatas[styleData.index]["fontFamily"];
                         iconText = tabs.iconDatas[styleData.index]["text"];
-                        iconSize = textSize * 1.3;
+                        iconSize = textSize * 1.5;
                     }
 
                     if ( "implicitWidth" in tabs.tabSource[ styleData.index ] )
