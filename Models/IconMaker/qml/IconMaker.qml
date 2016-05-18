@@ -5,8 +5,8 @@ import IconMaker 1.0
 
 Item {
     id: iconMaker
-    width: 640
-    height: 430
+    width: 520
+    height: 540
 
     function makeReplyProcessor( reply )
     {

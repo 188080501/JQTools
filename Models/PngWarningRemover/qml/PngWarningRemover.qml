@@ -5,8 +5,8 @@ import PngWarningRemover 1.0
 
 Item {
     id: pngWarningRemover
-    width: 640
-    height: 430
+    width: 520
+    height: 540
 
     PngWarningRemoverManage {
         id: pngWarningRemoverManage
