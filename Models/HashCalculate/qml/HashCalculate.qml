@@ -6,8 +6,8 @@ import HashCalculate 1.0
 
 Item {
     id: hashCalculate
-    width: 640
-    height: 430
+    width: 520
+    height: 540
 
     property bool changingFlag: false
 

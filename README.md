@@ -8,6 +8,8 @@ JQTools，为 Jason Qt Tools 的简称
 
 本工具使用 QML(界面) 和 C++(逻辑) 开发，源码均已开源在了GitHub上。
 
+GitHub地址：https://github.com/188080501/JQTools
+
 若不想下载源码编译，也可以点击这里直接下载可执行文件：
  
 [OS X版本dmg包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.16.dmg)

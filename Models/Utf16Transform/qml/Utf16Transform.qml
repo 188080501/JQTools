@@ -6,8 +6,8 @@ import Utf16Transform 1.0
 
 Item {
     id: utf16Transform
-    width: 640
-    height: 430
+    width: 520
+    height: 540
 
     property bool changingFlag: false
 
