@@ -14,10 +14,14 @@
 // JQToolsLibrary import
 #include "JQToolsLibrary.hpp"
 
-// Model import
+// Project lib import
+#include "JQToolsManage.hpp"
+
+// Models import
 #include "Welcome.h"
 #include "PngWarningRemover.h"
 #include "Utf16Transform.h"
+#include "RgbStringTransform.h"
 #include "HashCalculate.h"
 #include "IconMaker.h"
 
@@ -36,14 +40,18 @@ int main(int argc, char *argv[])
     WELCOMEINITIALIZA
     PNGWARNINGREMOVERINITIALIZA
     UTF16TRANSFORMINITIALIZA
+    RGBSTRINGTRANSFORMINITIALIZA
     HASHCALCULATEINITIALIZA
     ICONMAKERINITIALIZA
 
     QQmlApplicationEngine engine;
+    JQToolsManage jqToolsManage;
 
 #ifdef JQQMLLIB_LIB
     JQQmlLibAddToEngine(engine)
 #endif
+
+    engine.rootContext()->setContextProperty("JQToolsManage", &jqToolsManage);
 
     engine.load(QUrl("qrc:/main.qml"));
 
