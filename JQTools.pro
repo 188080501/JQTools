@@ -8,7 +8,10 @@ CONFIG += c++14
 include($$PWD/Library/JQLibrary/JQLibrary.pri)
 include($$PWD/Library/MaterialUI/MaterialUI.pri)
 include($$PWD/Library/JQToolsLibrary/JQToolsLibrary.pri)
-include($$PWD/Models/Models.pri)
+include($$PWD/Groups/Groups.pri)
+
+HEADERS += \
+    $$PWD/cpp/JQToolsManage.hpp
 
 SOURCES += \
     $$PWD/cpp/main.cpp
