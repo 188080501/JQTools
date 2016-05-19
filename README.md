@@ -12,9 +12,9 @@ GitHub地址：https://github.com/188080501/JQTools
 
 若不想下载源码编译，也可以点击这里直接下载可执行文件：
  
-[OS X版本dmg包（V16.5.16，落后于源码）](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.16.dmg)
+[OS X版本dmg包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.19.dmg)
 
-[Windows版本zip包（V16.5.16，落后于源码）](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.16.zip)
+[Windows版本zip包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.19.zip)
 
 若需要其他版本，请下载源码自行编译。 
 
