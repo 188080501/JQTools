@@ -67,7 +67,7 @@ Item {
         MaterialTextField {
             id: textFiedForGreen
             x: 346
-            y: 231
+            y: 293
             placeholderText: "绿(G)"
             width: 80
             text: "255"
@@ -86,7 +86,7 @@ Item {
         MaterialTextField {
             id: textFiedForBlue
             x: 346
-            y: 293
+            y: 231
             placeholderText: "蓝(B)"
             width: 80
             text: "255"
