@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    checkVersion();
+
     if ( !JQFoundation::singleApplication("JQTools") )
     {
         QMessageBox::warning( nullptr, QStringLiteral( "\u542F\u52A8\u5931\u8D25" ), QStringLiteral( "\u7A0B\u5E8F\u5DF2\u7ECF\u542F\u52A8" ) );
