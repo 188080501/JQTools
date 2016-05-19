@@ -33,7 +33,7 @@ ApplicationWindow {
                             bookmarkName: "文本类", titleName: "文本类", children:
                             [
                                 { bookmarkName: "UTF-16转换", titleName: "UTF-16转换", qrcLocation: "qrc:/Utf16Transform/Utf16Transform.qml" },
-                                { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "notSupport" },
+                                { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
                                 { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "notSupport" },
                                 { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "notSupport" }
                             ]
@@ -119,6 +119,43 @@ ApplicationWindow {
         width: parent.width - 180
         height: 64
         color: "#2196F3"
+
+        MaterialLabel {
+            id: labelForCurrentItemTitleName
+            x: 60
+            z: 1
+            height: 64
+            font.pixelSize: 20
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.Left
+            color: "#ffffff"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+
+            onEntered: {
+                labelForVersionString.opacity = 1;
+            }
+
+            onExited: {
+                labelForVersionString.opacity = 0;
+            }
+        }
+
+        MaterialLabel {
+            id: labelForVersionString
+            anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 5
+            text: "V" + JQToolsManage.jqToolsVersionString()
+            color: "#88ffffff"
+            opacity: 0
+
+            Behavior on opacity { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
+        }
     }
 
     Rectangle {
@@ -139,17 +176,6 @@ ApplicationWindow {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         color: "#757575"
-    }
-
-    MaterialLabel {
-        id: labelForCurrentItemTitleName
-        x: 240
-        z: 1
-        height: 64
-        font.pixelSize: 20
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.Left
-        color: "#ffffff"
     }
 
     Rectangle {
@@ -175,7 +201,7 @@ ApplicationWindow {
             height: 42
             clip: true
 
-            Behavior on height { NumberAnimation { easing.type: Easing.InOutQuad; duration: 300 } }
+            Behavior on height { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
 
             Component.onCompleted: {
                 for (var index = 0; index < bookmarkChildrenItem.count; index++)
@@ -209,7 +235,7 @@ ApplicationWindow {
                     visible: y !== (-1 * listViewForSecondBookmark.height)
                     boundsBehavior: Flickable.StopAtBounds
 
-                    Behavior on y { NumberAnimation { easing.type: Easing.InOutQuad; duration: 300 } }
+                    Behavior on y { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
 
                     model: ListModel {
                         id: listModelForSecondBookmark
@@ -224,6 +250,7 @@ ApplicationWindow {
                             anchors.fill: parent
                             elevation: 0
                             text: ""
+                            visible: listViewForSecondBookmark.y === 0
 
                             MaterialLabel {
                                 x: 36
@@ -231,10 +258,27 @@ ApplicationWindow {
                                 text: bookmarkName
                                 font.pixelSize: 16
                                 verticalAlignment: Text.AlignVCenter
+                                color: ( labelForCurrentItemTitleName.text === titleName ) ? ( "#1e88e5" ) : ( "#0000000" )
+
+                                Behavior on color { ColorAnimation { duration: 200 } }
                             }
 
                             onClicked: {
                                 itemForMainPage.showPage( titleName, itemQrcLocation );
+                            }
+                        }
+
+                        Rectangle {
+                            anchors.fill: parent
+                            color: "#ffffff"
+                            visible: listViewForSecondBookmark.y !== 0
+
+                            MaterialLabel {
+                                x: 36
+                                height: parent.height
+                                text: bookmarkName
+                                font.pixelSize: 16
+                                verticalAlignment: Text.AlignVCenter
                             }
                         }
                     }
@@ -272,6 +316,9 @@ ApplicationWindow {
                     font.bold: true
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: 16
+                    color: ( labelForCurrentItemTitleName.text === titleName ) ? ( "#1e88e5" ) : ( "#0000000" )
+
+                    Behavior on color { ColorAnimation { duration: 200 } }
                 }
             }
         }

@@ -1,0 +1,6 @@
+include($$PWD/Welcome/Welcome.pri)
+include($$PWD/Text/Text.pri)
+include($$PWD/Calculate/Calculate.pri)
+include($$PWD/Make/Make.pri)
+include($$PWD/Tools/Tools.pri)
+include($$PWD/Qt/Qt.pri)
