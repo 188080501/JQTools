@@ -22,7 +22,10 @@
 #include "PngWarningRemover.h"
 #include "Utf16Transform.h"
 #include "RgbStringTransform.h"
+#include "UrlEncode.h"
+#include "CaseTransform.h"
 #include "HashCalculate.h"
+#include "TimestampTransform.h"
 #include "IconMaker.h"
 
 void checkVersion();
@@ -43,7 +46,10 @@ int main(int argc, char *argv[])
     PNGWARNINGREMOVERINITIALIZA
     UTF16TRANSFORMINITIALIZA
     RGBSTRINGTRANSFORMINITIALIZA
+    URLENCODEINITIALIZA
+    CASETRANSFORMINITIALIZA
     HASHCALCULATEINITIALIZA
+    TTIMESTAMPTRANSFORMINITIALIZA
     ICONMAKERINITIALIZA
 
     QQmlApplicationEngine engine;

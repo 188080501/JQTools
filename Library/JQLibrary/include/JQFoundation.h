@@ -201,6 +201,8 @@ const QWidget *topParentWidget(const QWidget *widget);
 
 bool singleApplication(const QString &flag);
 
+bool singleApplicationExist(const QString &flag);
+
 QString byteArrayToHexString(const QByteArray &data);
 
 QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format);

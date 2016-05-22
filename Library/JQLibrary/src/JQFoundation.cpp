@@ -237,18 +237,17 @@ bool JQFoundation::singleApplication(const QString &flag)
         return true;
     }
 
-    shareMem = new QSharedMemory("JQFoundationSingleApplication_" + flag);
+    shareMem = new QSharedMemory( "JQFoundationSingleApplication_" + flag );
 
-    volatile short count = 2;
-    while (count--)
+    for ( auto count = 0; count < 2; ++count )
     {
-        if (shareMem->attach(QSharedMemory::ReadOnly))
+        if (shareMem->attach( QSharedMemory::ReadOnly ))
         {
             shareMem->detach();
         }
     }
 
-    if (shareMem->create(1))
+    if ( shareMem->create( 1 ) )
     {
         return true;
     }
@@ -262,12 +261,39 @@ bool JQFoundation::singleApplication(const QString &)
 }
 #endif
 
+#if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
+bool JQFoundation::singleApplicationExist(const QString &flag)
+{
+    QSharedMemory shareMem( "JQFoundationSingleApplication_" + flag );
+
+    for ( auto count = 0; count < 2; ++count )
+    {
+        if (shareMem.attach( QSharedMemory::ReadOnly ))
+        {
+            shareMem.detach();
+        }
+    }
+
+    if ( shareMem.create( 1 ) )
+    {
+        return false;
+    }
+
+    return true;
+}
+#else
+bool JQFoundation::singleApplicationExist(const QString &)
+{
+    return false;
+}
+#endif
+
 QString JQFoundation::byteArrayToHexString(const QByteArray &data)
 {
     QString buf(data.toHex());
-    for (int Now = 1; Now < data.size(); Now++)
+    for (int c = 1; c < data.size(); c++)
     {
-        buf.insert(Now * 2 + Now - 1, ' ');
+        buf.insert(c * 2 + c - 1, ' ');
     }
     return buf;
 }

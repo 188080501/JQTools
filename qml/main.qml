@@ -34,8 +34,8 @@ ApplicationWindow {
                             [
                                 { bookmarkName: "UTF-16转换", titleName: "UTF-16转换", qrcLocation: "qrc:/Utf16Transform/Utf16Transform.qml" },
                                 { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
-                                { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "notSupport" },
-                                { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "notSupport" }
+                                { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "qrc:/CaseTransform/CaseTransform.qml" },
+                                { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" }
                             ]
                         },
                         {
@@ -45,7 +45,7 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "HASH计算器", titleName: "HASH计算器", qrcLocation: "qrc:/HashCalculate/HashCalculate.qml" },
-                                { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "notSupport" },
+                                { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" },
                                 { bookmarkName: "屏幕二维码解析器", titleName: "屏幕二维码解析器", qrcLocation: "notSupport" }
                             ]
                         },
