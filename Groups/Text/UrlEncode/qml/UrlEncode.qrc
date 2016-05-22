@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/UrlEncode">
+        <file>UrlEncode.qml</file>
+    </qresource>
+</RCC>

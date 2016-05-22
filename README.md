@@ -12,9 +12,9 @@ GitHub地址：https://github.com/188080501/JQTools
 
 若不想下载源码编译，也可以点击这里直接下载可执行文件：
  
-[OS X版本dmg包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.19.dmg)
+[OS X版本dmg包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.22.dmg)
 
-[Windows版本zip包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.19.zip)
+[Windows版本zip包](http://flw-other.oss-cn-hangzhou.aliyuncs.com/JQTools_V16.5.22.zip)
 
 若需要其他版本，请下载源码自行编译。 
 
@@ -28,11 +28,11 @@ GitHub地址：https://github.com/188080501/JQTools
 ---|---|---
 文本类|UTF16转换|已完成
 文本类|RGB转16进制|已完成
-文本类|大小写转换|2016-05
-文本类|URL转码|2016-05
+文本类|大小写转换|已完成
+文本类|URL转码|已经完成
 ||
 计算类|HASH计算器|已完成
-计算类|Unix时间戳转换|2016-05
+计算类|Unix时间戳转换|已经完成
 计算类|屏幕二维码解析器|2016-06
 ||
 制作类|图标生成器|已完成

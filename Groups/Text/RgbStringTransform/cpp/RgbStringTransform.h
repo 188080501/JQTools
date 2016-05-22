@@ -23,6 +23,8 @@ public:
     ~Manage() = default;
 
 public slots:
+    QString getHexStringFromColorName(const QString &colorName);
+
     QString getHexString(const QString &red, const QString &green, const QString &blue);
 
     QString getRed(const QString &hexString);
@@ -30,6 +32,10 @@ public slots:
     QString getGreen(const QString &hexString);
 
     QString getBlue(const QString &hexString);
+
+    QString clipboardText();
+
+    void setClipboardText(const QString &string);
 };
 
 }
