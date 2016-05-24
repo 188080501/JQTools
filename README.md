@@ -22,6 +22,9 @@ GitHub地址：https://github.com/188080501/JQTools
 
 若你已经有了更好的建议，或者想要一些新功能，可以直接邮件我，我的邮箱是：Jason@JasonServer.com
 
+或者直接在GitHub上提交问题：
+https://github.com/188080501/JQTools/issues
+
 ## 开发计划
 
 类别|功能|计划完成日期
