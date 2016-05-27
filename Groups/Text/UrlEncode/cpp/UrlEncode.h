@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define URLENCODEINITIALIZA                                                     \
+#define URLENCODE_INITIALIZA                                                     \
 {                                                                               \
     qmlRegisterType<UrlEncode::Manage>("UrlEncode", 1, 0, "UrlEncodeManage");   \
 }

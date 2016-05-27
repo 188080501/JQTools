@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define UTF16TRANSFORMINITIALIZA                                                                \
+#define UTF16TRANSFORM_INITIALIZA                                                                \
 {                                                                                               \
     qmlRegisterType<Utf16Transform::Manage>("Utf16Transform", 1, 0, "Utf16TransformManage");    \
 }

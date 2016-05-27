@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define WELCOMEINITIALIZA                                               \
+#define WELCOME_INITIALIZA                                               \
 {                                                                       \
     qmlRegisterType<Welcome::Manage>("Welcome", 1, 0, "WelcomeManage"); \
 }

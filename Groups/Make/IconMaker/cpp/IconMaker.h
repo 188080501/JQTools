@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QImage>
 
-#define ICONMAKERINITIALIZA                                                     \
+#define ICONMAKER_INITIALIZA                                                     \
 {                                                                               \
     qmlRegisterType<IconMaker::Manage>("IconMaker", 1, 0, "IconMakerManage");   \
 }

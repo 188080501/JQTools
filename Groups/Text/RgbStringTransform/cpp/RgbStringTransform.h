@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define RGBSTRINGTRANSFORMINITIALIZA                                                                    \
+#define RGBSTRINGTRANSFORM_INITIALIZA                                                                    \
 {                                                                                                       \
     qmlRegisterType<RgbStringTransform::Manage>("RgbStringTransform", 1, 0, "RgbStringTransformManage");\
 }

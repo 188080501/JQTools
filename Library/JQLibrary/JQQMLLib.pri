@@ -21,12 +21,15 @@ INCLUDEPATH *= \
 HEADERS *= \
     $$PWD/include/JQQMLLib/JQQMLLib.h
 
-equals(QT_VERSION, 5.6.0) {
+contains( CONFIG, static ) {
 
-    win32-g++ {
+    equals(QT_VERSION, 5.6.0) {
 
-        DEFINES *= JQQMLLIB_LIB
+        win32-g++ {
 
-        LIBS *= $$PWD/bin/JQQMLLib/Qt5.6.0/MinGW/libJQQmlLib.a
+            DEFINES *= JQQMLLIB_LIB
+
+            LIBS *= $$PWD/bin/JQQMLLib/Qt5.6.0/MinGW/libJQQmlLib.a
+        }
     }
 }

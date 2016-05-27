@@ -716,7 +716,7 @@ void InvokeFromThread::invoke(QThread *thread, const std::function<void ()> &cal
 {
     if (!(thread->isRunning()))
     {
-        qDebug() << "JQ_InvokeFromThread::invoke: Target thread" << thread << "is not running!";
+        qDebug() << "InvokeFromThread::invoke: Target thread" << thread << "is not running!";
         return;
     }
 
@@ -757,7 +757,7 @@ void InvokeFromThread::waitForInvoke(QThread *thread, const std::function<void (
 {
     if (!(thread->isRunning()))
     {
-        qDebug() << "JQ_InvokeFromThread::waitForInvoke: Target thread" << thread << "is not running!";
+        qDebug() << "InvokeFromThread::waitForInvoke: Target thread" << thread << "is not running!";
         return;
     }
 
