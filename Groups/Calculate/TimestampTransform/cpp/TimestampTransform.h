@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define TTIMESTAMPTRANSFORMINITIALIZA                                                                       \
+#define TTIMESTAMPTRANSFORM_INITIALIZA                                                                       \
 {                                                                                                           \
     qmlRegisterType<TimestampTransform::Manage>("TimestampTransform", 1, 0, "TimestampTransformManage");    \
 }

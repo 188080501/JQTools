@@ -65,7 +65,7 @@ ApplicationWindow {
                             qrcLocation: "",
                             children:
                             [
-                                { bookmarkName: "代码行数统计", titleName: "代码行数统计", qrcLocation: "notSupport" },
+                                { bookmarkName: "代码行数统计", titleName: "代码行数统计", qrcLocation: "qrc:/LinesStatistics/LinesStatistics.qml" },
                                 { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "notSupport" },
                                 { bookmarkName: "局域网文件传输", titleName: "局域网文件传输", qrcLocation: "notSupport" },
                                 { bookmarkName: "局域网远程构建", titleName: "局域网远程构建", qrcLocation: "notSupport" }
@@ -336,6 +336,36 @@ ApplicationWindow {
                                             } );
             }
         }
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.MidButton
+
+            onWheel: {
+                listViewForBookmark.contentY -= wheel.angleDelta.y;
+
+                if ( listViewForBookmark.contentY < 0 )
+                {
+                    listViewForBookmark.contentY = 0;
+                }
+                else
+                {
+                    var buf = listViewForBookmark.contentHeight - listViewForBookmark.height;
+
+                    if ( buf > 0 )
+                    {
+                        if ( listViewForBookmark.contentY > buf )
+                        {
+                            listViewForBookmark.contentY = buf;
+                        }
+                    }
+                    else
+                    {
+                        listViewForBookmark.contentY = 0;
+                    }
+                }
+            }
+        }
     }
 
     Rectangle {
@@ -387,6 +417,7 @@ ApplicationWindow {
 
     MaterialUI {
         id: materialUI
+        z: 2
         anchors.fill: parent
     }
 }

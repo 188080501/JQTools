@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define HASHCALCULATEINITIALIZA                                                             \
+#define HASHCALCULATE_INITIALIZA                                                             \
 {                                                                                           \
     qmlRegisterType<HashCalculate::Manage>("HashCalculate", 1, 0, "HashCalculateManage");   \
 }

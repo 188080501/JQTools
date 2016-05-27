@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define CASETRANSFORMINITIALIZA                                                             \
+#define CASETRANSFORM_INITIALIZA                                                             \
 {                                                                                           \
     qmlRegisterType<CaseTransform::Manage>("CaseTransform", 1, 0, "CaseTransformManage");   \
 }

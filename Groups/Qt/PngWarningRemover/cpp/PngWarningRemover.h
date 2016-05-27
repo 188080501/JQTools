@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define PNGWARNINGREMOVERINITIALIZA                                                                     \
+#define PNGWARNINGREMOVER_INITIALIZA                                                                     \
 {                                                                                                       \
     qmlRegisterType<PngWarningRemover::Manage>("PngWarningRemover", 1, 0, "PngWarningRemoverManage");   \
 }
