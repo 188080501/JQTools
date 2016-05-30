@@ -35,6 +35,7 @@ ApplicationWindow {
                                 { bookmarkName: "UTF-16转换", titleName: "UTF-16转换", qrcLocation: "qrc:/Utf16Transform/Utf16Transform.qml" },
                                 { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
                                 { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "qrc:/CaseTransform/CaseTransform.qml" },
+                                { bookmarkName: "密码随机器", titleName: "密码随机器", qrcLocation: "qrc:/RandomPassword/RandomPassword.qml" },
                                 { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" }
                             ]
                         },
