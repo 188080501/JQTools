@@ -23,6 +23,7 @@
 #include "Utf16Transform.h"
 #include "RgbStringTransform.h"
 #include "UrlEncode.h"
+#include "RandomPassword.h"
 #include "CaseTransform.h"
 #include "HashCalculate.h"
 #include "TimestampTransform.h"
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
     UTF16TRANSFORM_INITIALIZA
     RGBSTRINGTRANSFORM_INITIALIZA
     URLENCODE_INITIALIZA
+    RANDOMPASSWORD_INITIALIZA
     CASETRANSFORM_INITIALIZA
     HASHCALCULATE_INITIALIZA
     TTIMESTAMPTRANSFORM_INITIALIZA
