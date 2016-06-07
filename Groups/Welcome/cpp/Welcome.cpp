@@ -21,5 +21,5 @@ void Manage::openGitHubLink()
 
 void Manage::openLatestVersionDownloadLink()
 {
-    QDesktopServices::openUrl( QUrl( "https://github.com/188080501/JQTools/tree/master/bin" ) );
+    QDesktopServices::openUrl( QUrl( "https://github.com/188080501/JQTools/releases/latest" ) );
 }
