@@ -18,64 +18,59 @@
 #ifndef __JQSettings_h__
 #define __JQSettings_h__
 
-// C lib import
-#include <assert.h>
-
 // Qt lib import
 #include <QSettings>
-#include <QStandardPaths>
-#include <QDir>
-#include <QTimer>
-#include <QDebug>
 #include <QSharedPointer>
-#include <QJsonValue>
-#include <QJsonObject>
-#include <QJsonDocument>
+#include <QVariant>
 
-#define JQSettings_DefaultProjectGroupName "JasonQt"
+#define JQSETTINGS_DEFAULTPROJECTGROUPNAME "JasonQt"
+
+class QTimer;
 
 namespace JQSettings
 {
 
-QString documentsPath(const QString &projectName, const QString &projectGroupName = JQSettings_DefaultProjectGroupName);
+QString documentsPath(const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
 
-QSharedPointer<QSettings> settingsFile(const QString &fileName, const QString &projectName, const QString &projectGroupName = JQSettings_DefaultProjectGroupName);
+QSharedPointer< QSettings > settingsFile(const QString &fileName, const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
 
 class Set: public QObject
 {
     Q_OBJECT
 
 public:
-    Set(const QString &fileName, const QString &groupName, const QString &projectName, const QString &projectGroupName = JQSettings_DefaultProjectGroupName);
+    Set(const QString &fileName, const QString &groupName, const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
 
     ~Set(void);
 
-    QJsonValue operator[](const QString &key);
+    const QVariant operator[](const QString &key);
 
     QString filePath(void) const;
 
 public slots:
     bool contains(const QString &key);
 
-    QJsonValue value(const QString &key, const QJsonValue &defaultValue);
+    QVariant value(const QString &key, const QVariant &defaultValue);
 
-    QJsonValue value(const QString &key);
+    QVariant value(const QString &key);
 
-    void setValue(const QString &key, const QJsonValue &data);
+    void setValue(const QString &key, const QVariant &data);
 
     void save(void);
 
-    void readySave(const int &wait = 1000);
+    void readySave(const int &delayTime = 1000);
 
     void read(void);
 
 private:
-    QString filePath_;
+    QString fileName_;
     QString groupName_;
+    QString projectName_;
+    QString filePath_;
 
-    QMap< QString, QJsonValue > datas_;
+    QMap< QString, QVariant > datas_;
 
-    QTimer *timer_;
+    QSharedPointer< QTimer > timer_;
 };
 
 }

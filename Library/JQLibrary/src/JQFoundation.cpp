@@ -20,6 +20,9 @@
 
 // Qt lib import
 #include <QSharedMemory>
+#include <QHash>
+#include <QBuffer>
+#include <QMetaMethod>
 
 #include <QWidget>
 #include <QLineEdit>
@@ -33,13 +36,15 @@
 #include <QTabBar>
 #include <QTableWidget>
 #include <QTreeWidget>
+#include <QImage>
+#include <QMessageBox>
 
 using namespace JQFoundation;
 
 void JQFoundation::eventLoopSleep(const int &delay)
 {
     QEventLoop eventLoop;
-    QTimer::singleShot(delay, &eventLoop, SLOT(quit()));
+    QTimer::singleShot( delay, &eventLoop, &QEventLoop::quit );
     eventLoop.exec();
 }
 

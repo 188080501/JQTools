@@ -113,13 +113,13 @@ Item {
             id: dropdown
             anchor: Item.TopLeft
             width: itemWidth
-            height: Math.min(maxVisibleItems * (48) + (24), listView.height)
+            height: Math.min(maxVisibleItems * (48), listView.height)
 
             ListView {
                 id: listView
 
                 width: dropdown.width
-                height: Math.min(count > 0 ? contentHeight : 0, 4.5 * (48));
+                height: Math.min(count > 0 ? contentHeight : 0, maxVisibleItems * (48));
 
                 interactive: true
 

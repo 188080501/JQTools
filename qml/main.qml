@@ -3,11 +3,6 @@ import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 import "qrc:/MaterialUI/"
 import "qrc:/MaterialUI/Interface/"
-import "qrc:/Welcome/"
-import "qrc:/PngWarningRemover/"
-import "qrc:/Utf16Transform/"
-import "qrc:/HashCalculate/"
-import "qrc:/IconMaker/"
 
 ApplicationWindow {
     id: applicationWindow
@@ -36,7 +31,8 @@ ApplicationWindow {
                                 { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
                                 { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "qrc:/CaseTransform/CaseTransform.qml" },
                                 { bookmarkName: "密码随机器", titleName: "密码随机器", qrcLocation: "qrc:/RandomPassword/RandomPassword.qml" },
-                                { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" }
+                                { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" },
+                                { bookmarkName: "JSON格式化", titleName: "JSON格式化", qrcLocation: "qrc:/JsonFormat/JsonFormat.qml" }
                             ]
                         },
                         {
