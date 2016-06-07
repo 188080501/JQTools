@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQLibrary
 
     Copyright: Jason
@@ -17,75 +17,105 @@
 
 #include "JQSettings.h"
 
+// Qt lib import
+#include <QDir>
+#include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QStandardPaths>
+#include <QTimer>
+
 using namespace JQSettings;
 
 QString JQSettings::documentsPath(const QString &projectName, const QString &projectGroupName)
 {
-    assert(!projectName.isEmpty());
-    assert(!projectGroupName.isEmpty());
+    if ( projectName.isEmpty() )
+    {
+        qDebug() << "JQSettings::settingsFile: warning: projectName is empty";
+    }
+
+    if ( projectGroupName.isEmpty() )
+    {
+        qDebug() << "JQSettings::settingsFile: warning: projectGroupName is empty";
+    }
 
 #if (defined Q_OS_IOS)
 
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
     dir.cdUp();
-    dir.cd("Documents");
+    dir.cd("Library");
+    dir.cd("Preferences");
     return dir.path() + "/";
 
 #elif (defined Q_OS_ANDROID)
 
-    return "/sdcard/" + projectGroupName + "." + projectName + "/";
+    return "/sdcard/" + projectGroupName + "_" + projectName + "/";
 
 #elif (defined Q_OS_MAC)
 
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
     dir.cdUp();
     dir.cd("C");
-    return dir.path() + "/" + projectGroupName + "." + projectName + "/";
+    return dir.path() + "/" + projectGroupName + "_" + projectName + "/";
 
 #elif (defined Q_OS_WIN)
 
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     dir.cdUp();
-    return dir.path() + "/" + projectGroupName + "." + projectName + "/";
+    return dir.path() + "/" + projectGroupName + "_" + projectName + "/";
 
 #else
 
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
-    return dir.path() + "/" + projectGroupName + "." + projectName + "/";
+    return dir.path() + "/" + projectGroupName + "_" + projectName + "/";
 
 #endif
 }
 
-QSharedPointer<QSettings> JQSettings::settingsFile(const QString &fileName, const QString &projectName, const QString &projectGroupName)
+QSharedPointer< QSettings > JQSettings::settingsFile(const QString &fileName, const QString &projectName, const QString &projectGroupName)
 {
-    assert(!fileName.isEmpty());
+    if ( fileName.isEmpty() )
+    {
+        qDebug() << "JQSettings::settingsFile: warning: fileName is empty";
+    }
 
-    return QSharedPointer<QSettings>(new QSettings(JQSettings::documentsPath(projectName, projectGroupName) + fileName, QSettings::IniFormat));
+    if ( projectName.isEmpty() )
+    {
+        qDebug() << "JQSettings::settingsFile: warning: projectName is empty";
+    }
+
+    if ( projectGroupName.isEmpty() )
+    {
+        qDebug() << "JQSettings::settingsFile: warning: projectGroupName is empty";
+    }
+
+    return QSharedPointer< QSettings >( new QSettings( JQSettings::documentsPath( projectName, projectGroupName ) + fileName, QSettings::IniFormat ) );
 }
 
 Set::Set(const QString &fileName, const QString &groupName, const QString &projectName, const QString &projectGroupName):
-    filePath_(documentsPath(projectName, projectGroupName) + fileName),
-    groupName_(groupName),
-    timer_(nullptr)
+    fileName_( fileName ),
+    groupName_( groupName ),
+    projectName_( projectName ),
+    filePath_( documentsPath( projectName, projectGroupName ) + fileName )
 {
     this->read();
 }
 
 Set::~Set(void)
 {
-    if (timer_)
+    if ( timer_ )
     {
-        if (timer_->isActive())
+        if ( timer_->isActive() )
         {
             this->save();
         }
-        delete timer_;
+        timer_.clear();
     }
 }
 
-QJsonValue Set::operator[](const QString &key)
+const QVariant Set::operator[](const QString &key)
 {
-    if (!datas_.contains(key))
+    if ( !datas_.contains( key ) )
     {
         this->readySave();
     }
@@ -99,97 +129,84 @@ QString Set::filePath(void) const
 
 bool Set::contains(const QString &key)
 {
-    return datas_.contains(key);
+    return datas_.contains( key );
 }
 
-QJsonValue Set::value(const QString &key, const QJsonValue &defaultValue)
+QVariant Set::value(const QString &key, const QVariant &defaultValue)
 {
-    if (!datas_.contains(key))
+    if ( !datas_.contains( key ) )
     {
         this->setValue(key, defaultValue);
     }
-    return datas_[key];
+    return datas_[ key ];
 }
 
-QJsonValue Set::value(const QString &key)
+QVariant Set::value(const QString &key)
 {
-    if (!datas_.contains(key))
+    if ( !datas_.contains( key ) )
     {
-        return QJsonValue();
+        return { };
     }
-    return datas_[key];
+    return datas_[ key ];
 }
 
-void Set::setValue(const QString &key, const QJsonValue &data)
+void Set::setValue(const QString &key, const QVariant &data)
 {
-    datas_[key] = data;
+    datas_[ key ] = data;
     this->readySave();
 }
 
 void Set::save(void)
 {
-    QSettings settings(filePath_);
-    
-    settings.beginGroup(groupName_);
-    
+#ifdef Q_OS_IOS
+    QSettings settings( projectName_, fileName_ );
+#else
+    QSettings settings( filePath_ );
+#endif
+
+    settings.beginGroup( groupName_ );
+
     for (auto it = datas_.begin(); it != datas_.end(); it++)
     {
-        QJsonObject buf;
-        buf["type"] = (int)it.value().type();
-        buf["data"] = it.value();
-        settings.setValue(it.key(), QJsonDocument(buf).toJson());
+        settings.setValue( it.key(), it.value() );
     }
     
     settings.endGroup();
 }
 
-void Set::readySave(const int &wait)
+void Set::readySave(const int &delayTime)
 {
-    if (!timer_)
+    if ( !timer_ )
     {
-        timer_ = new QTimer;
-        timer_->setSingleShot(true);
+        timer_.reset( new QTimer );
+        timer_->setSingleShot( true );
 
-        connect(timer_, SIGNAL(timeout()), this, SLOT(save()));
+        connect( timer_.data(), &QTimer::timeout, this, &Set::save );
     }
 
-    if (timer_->isActive())
+    if ( timer_->isActive() )
     {
         timer_->stop();
     }
 
-    timer_->start(wait);
+    timer_->start( delayTime );
 }
 
 void Set::read(void)
 {
-    QSettings settings(filePath_);
-    
-    settings.beginGroup(groupName_);
+#ifdef Q_OS_IOS
+    QSettings settings( projectName_, fileName_ );
+#else
+    QSettings settings( filePath_ );
+#endif
+
+    settings.beginGroup( groupName_ );
     
     datas_.clear();
-    foreach (const auto &now, settings.allKeys())
+
+    for ( const auto &key: settings.allKeys() )
     {
-        const auto &&data = QJsonDocument::fromJson(settings.value(now).toByteArray()).object();
-        switch (data["type"].toInt())
-        {
-            case QJsonValue::Bool:
-            {
-                datas_[now] = data["data"].toBool();
-                break;
-            }
-            case QJsonValue::Double:
-            {
-                datas_[now] = data["data"].toDouble();
-                break;
-            }
-            case QJsonValue::String:
-            {
-                datas_[now] = data["data"].toString();
-                break;
-            }
-            default: { break; }
-        }
+        datas_[ key ] = settings.value( key );
     }
     
     settings.endGroup();

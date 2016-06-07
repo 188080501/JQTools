@@ -128,7 +128,10 @@ MaterialDialog {
                 exclusiveGroup: checkGroup
                 checked: defaultChecked
 
-                onClicked: {
+                onCheckedChanged: {
+                    if ( !checked ) { return; }
+
+                    radioButton.checked = true;
                     currentItemIndex = itemIndex;
                     currentItemText = itemText;
                     currentItemFlag = itemFlag;

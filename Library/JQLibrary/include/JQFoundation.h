@@ -37,28 +37,21 @@
 
 // Qt lib import
 #include <QCoreApplication>
-#include <QMetaMethod>
-#include <QCryptographicHash>
 #include <QMutex>
+#include <QCryptographicHash>
 #include <QSettings>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDebug>
 #include <QEventLoop>
 #include <QTimer>
-#include <QBuffer>
 #include <QThread>
 #include <QDateTime>
 #include <QTime>
-#include <QHash>
 #include <QVariant>
 #include <QPointer>
 #include <QFile>
-
-#include <QImage>
-#include <QPainter>
-#include <QMessageBox>
+#include <QDebug>
 
 class QTableWidget;
 class QTreeWidget;
@@ -98,7 +91,7 @@ class QLineEdit;
     private:
 
 #define PrimaryKeyPropertyDeclare(ClassName, Type, name, ...)                       \
-    Type Name __VA_ARGS__;                                                          \
+    Type name __VA_ARGS__;                                                          \
     ClassName() = default;                                                          \
     ClassName(const Type &name ## _): name(name ## _) { }                           \
     operator QVariant() const { return name; }                                      \

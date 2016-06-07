@@ -3,6 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QtQml>
 #include <QVersionNumber>
+#include <QMessageBox>
 
 // JQLibrary import
 #include "JQFoundation.h"
@@ -17,18 +18,29 @@
 // Project lib import
 #include "JQToolsManage.hpp"
 
-// Models import
+// Welcome import
 #include "Welcome.h"
-#include "PngWarningRemover.h"
+
+// Text group import
 #include "Utf16Transform.h"
 #include "RgbStringTransform.h"
-#include "UrlEncode.h"
-#include "RandomPassword.h"
 #include "CaseTransform.h"
+#include "RandomPassword.h"
+#include "UrlEncode.h"
+#include "JsonFormat.h"
+
+// Calculate group import
 #include "HashCalculate.h"
 #include "TimestampTransform.h"
-#include "LinesStatistics.h"
+
+// Make group import
 #include "IconMaker.h"
+
+// Tool group import
+#include "LinesStatistics.h"
+
+// Qt group import
+#include "PngWarningRemover.h"
 
 void checkVersion();
 
@@ -38,22 +50,32 @@ int main(int argc, char *argv[])
 
     checkVersion();
 
-    if ( !JQFoundation::singleApplication("JQTools") )
+    if ( !JQFoundation::singleApplication( "JQTools" ) )
     {
         QMessageBox::warning( nullptr, QStringLiteral( "\u542F\u52A8\u5931\u8D25" ), QStringLiteral( "\u7A0B\u5E8F\u5DF2\u7ECF\u542F\u52A8" ) );
         return -1;
     }
 
+    // Welcome initializa
     WELCOME_INITIALIZA
+
+    // Text group  initializa
     PNGWARNINGREMOVER_INITIALIZA
     UTF16TRANSFORM_INITIALIZA
     RGBSTRINGTRANSFORM_INITIALIZA
-    URLENCODE_INITIALIZA
-    RANDOMPASSWORD_INITIALIZA
     CASETRANSFORM_INITIALIZA
+    RANDOMPASSWORD_INITIALIZA
+    URLENCODE_INITIALIZA
+    JSONFORMAT_INITIALIZA
+
+    // Calculate group initializa
     HASHCALCULATE_INITIALIZA
     TTIMESTAMPTRANSFORM_INITIALIZA
+
+    // Tool group initializa
     LINESSTATISTICS_INITIALIZA
+
+    // Qt group initializa
     ICONMAKER_INITIALIZA
 
     QQmlApplicationEngine engine;

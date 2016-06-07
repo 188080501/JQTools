@@ -56,6 +56,11 @@ exists($$PWD/src/JQEncrypt.cpp) {
     HEADERS *= $$PWD/include/JQEncrypt.h
 }
 
+exists($$PWD/src/JQExcel.cpp) {
+    SOURCES *= $$PWD/src/JQExcel.cpp
+    HEADERS *= $$PWD/include/JQExcel.h
+}
+
 exists($$PWD/src/JQFile.cpp) {
     SOURCES *= $$PWD/src/JQFile.cpp
     HEADERS *= $$PWD/include/JQFile.h

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/JsonFormat">
+        <file>JsonFormat.qml</file>
+    </qresource>
+</RCC>
