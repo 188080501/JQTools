@@ -84,6 +84,7 @@ Item {
             width: parent.width - 10
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
+            selectByMouse: true
 
             onTextChanged: {
                 if ( utf16Transform.changingFlag ) { return; }
@@ -136,6 +137,7 @@ Item {
             width: parent.width - 10
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
+            selectByMouse: true
 
             onTextChanged: {
                 if ( utf16Transform.changingFlag ) { return; }
