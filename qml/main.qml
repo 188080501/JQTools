@@ -75,7 +75,7 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "PNG警告消除", titleName: "PNG警告消除", qrcLocation: "qrc:/PngWarningRemover/PngWarningRemover.qml" },
-                                { bookmarkName: "PROPERTY生成", titleName: "PROPERTY生成", qrcLocation: "notSupport" },
+                                { bookmarkName: "PROPERTY生成", titleName: "PROPERTY生成", qrcLocation: "qrc:/PropertyMaker/PropertyMaker.qml" },
                                 { bookmarkName: "TS文件翻译器", titleName: "TS文件翻译器", qrcLocation: "notSupport" }
                             ]
                         }
