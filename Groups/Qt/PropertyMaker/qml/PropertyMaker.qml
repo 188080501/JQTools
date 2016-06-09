@@ -113,6 +113,7 @@ Item {
             width: parent.width - 10
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
+            selectByMouse: true
             text:
 "Q_PROPERTY(QString name_ READ name WRITE setName RESET resetName NOTIFY nameChanged)
 Q_PROPERTY(int age_ READ age WRITE setAge)"
@@ -158,6 +159,7 @@ Q_PROPERTY(int age_ READ age WRITE setAge)"
             width: parent.width - 10
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
+            selectByMouse: true
         }
     }
 }

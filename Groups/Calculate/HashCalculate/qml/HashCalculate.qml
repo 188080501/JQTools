@@ -74,6 +74,7 @@ Item {
             width: parent.width - 10
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
+            selectByMouse: true
 
             onTextChanged: {
                 if ( hashCalculate.changingFlag ) { return; }
@@ -126,6 +127,7 @@ Item {
             width: parent.width - 10
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
+            selectByMouse: true
             readOnly: true
         }
     }
