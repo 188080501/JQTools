@@ -47,7 +47,7 @@ https://github.com/188080501/JQTools/issues
 工具类|局域网远程构建|2016-09
 ||
 Qt相关|PNG警告消除|已完成
-Qt相关|Q_PROPERTY代码生成器|2016-06
+Qt相关|Q_PROPERTY代码生成器|已完成
 Qt相关|TS文件自动翻译器|2016-09
 
 ## 功能介绍
