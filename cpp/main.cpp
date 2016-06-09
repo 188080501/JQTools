@@ -41,6 +41,7 @@
 
 // Qt group import
 #include "PngWarningRemover.h"
+#include "PropertyMaker.h"
 
 void checkVersion();
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
 
     // Qt group initializa
     ICONMAKER_INITIALIZA
+    PROPERTYMAKER_INITIALIZA
 
     QQmlApplicationEngine engine;
     JQToolsManage jqToolsManage;

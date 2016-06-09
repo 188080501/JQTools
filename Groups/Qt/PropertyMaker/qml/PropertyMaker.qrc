@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/PropertyMaker">
+        <file>PropertyMaker.qml</file>
+    </qresource>
+</RCC>
