@@ -118,7 +118,7 @@ Item {
             text: "文件数：" + fileCount + "\n行数：" + lineCount
             anchors.horizontalCenterOffset: 134
             verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
+            horizontalAlignment: Text.AlignLeft
             anchors.verticalCenterOffset: -53
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
