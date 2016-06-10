@@ -72,6 +72,7 @@ MaterialDialog {
         width: 270
         height: 150
         clip: true
+        boundsBehavior: Flickable.StopAtBounds
 
         onContentYChanged: {
             slider.value = -1 * contentY;
