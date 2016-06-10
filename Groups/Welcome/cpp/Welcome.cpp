@@ -4,15 +4,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
-
 using namespace Welcome;
-
-QString Manage::jqToolsVersion()
-{
-    return JQTOOLS_VERSIONSTRING;
-}
 
 void Manage::openGitHubLink()
 {

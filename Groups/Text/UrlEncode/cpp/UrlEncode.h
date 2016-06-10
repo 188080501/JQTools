@@ -1,8 +1,8 @@
 ﻿#ifndef __UrlEncode_h__
 #define __UrlEncode_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define URLENCODE_INITIALIZA                                                     \
 {                                                                               \
@@ -26,10 +26,6 @@ public slots:
     QString encode(const QString &string);
 
     QString decode(const QString &string);
-
-    QString clipboardText();
-
-    void setClipboardText(const QString &string);
 };
 
 }

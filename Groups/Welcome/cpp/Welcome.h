@@ -1,8 +1,8 @@
 ﻿#ifndef __Welcome_h__
 #define __Welcome_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define WELCOME_INITIALIZA                                               \
 {                                                                       \
@@ -12,7 +12,7 @@
 namespace Welcome
 {
 
-class Manage: public QObject
+class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)
@@ -23,8 +23,6 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString jqToolsVersion();
-
     void openGitHubLink();
 
     void openLatestVersionDownloadLink();

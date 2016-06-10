@@ -1,10 +1,10 @@
 ﻿#ifndef __Utf16Transform_h__
 #define __Utf16Transform_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
-#define UTF16TRANSFORM_INITIALIZA                                                                \
+#define UTF16TRANSFORM_INITIALIZA                                                               \
 {                                                                                               \
     qmlRegisterType<Utf16Transform::Manage>("Utf16Transform", 1, 0, "Utf16TransformManage");    \
 }
@@ -26,10 +26,6 @@ public slots:
     QString toUtf16(const QString &string);
 
     QString fromUtf16(const QString &string);
-
-    QString clipboardText();
-
-    void setClipboardText(const QString &string);
 };
 
 }

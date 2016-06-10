@@ -1,10 +1,10 @@
 ﻿#ifndef __HashCalculate_h__
 #define __HashCalculate_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
-#define HASHCALCULATE_INITIALIZA                                                             \
+#define HASHCALCULATE_INITIALIZA                                                            \
 {                                                                                           \
     qmlRegisterType<HashCalculate::Manage>("HashCalculate", 1, 0, "HashCalculateManage");   \
 }
@@ -12,7 +12,7 @@
 namespace HashCalculate
 {
 
-class Manage: public QObject
+class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)

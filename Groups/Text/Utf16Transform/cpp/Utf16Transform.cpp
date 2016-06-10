@@ -3,11 +3,6 @@
 // Qt lib import
 #include <QFileDialog>
 #include <QStandardPaths>
-#include <QApplication>
-#include <QClipboard>
-
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
 
 using namespace Utf16Transform;
 
@@ -52,14 +47,4 @@ QString Manage::fromUtf16(const QString &string)
     }
 
     return target;
-}
-
-QString Manage::clipboardText()
-{
-    return qApp->clipboard()->text();
-}
-
-void Manage::setClipboardText(const QString &string)
-{
-    qApp->clipboard()->setText( string );
 }

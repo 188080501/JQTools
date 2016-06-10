@@ -2,11 +2,6 @@
 
 // Qt lib import
 #include <QColor>
-#include <QClipboard>
-#include <QApplication>
-
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
 
 using namespace RgbStringTransform;
 
@@ -37,14 +32,4 @@ QString Manage::getBlue(const QString &hexString)
 {
     QColor color( hexString );
     return QString::number( color.blue() );
-}
-
-QString Manage::clipboardText()
-{
-    return qApp->clipboard()->text();
-}
-
-void Manage::setClipboardText(const QString &string)
-{
-    qApp->clipboard()->setText( string );
 }

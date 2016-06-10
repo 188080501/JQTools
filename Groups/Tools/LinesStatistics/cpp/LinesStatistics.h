@@ -2,8 +2,10 @@
 #define __LinesStatistics_h__
 
 // Qt lib import
-#include <QObject>
 #include <QJsonObject>
+
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define LINESSTATISTICS_INITIALIZA                                                              \
 {                                                                                               \

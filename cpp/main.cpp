@@ -13,7 +13,7 @@
 #endif
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
+#include "JQToolsLibrary.h"
 
 // Project lib import
 #include "JQToolsManage.hpp"
@@ -35,6 +35,7 @@
 
 // Make group import
 #include "IconMaker.h"
+#include "FontToPng.h"
 
 // Tool group import
 #include "LinesStatistics.h"
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
     WELCOME_INITIALIZA
 
     // Text group  initializa
-    PNGWARNINGREMOVER_INITIALIZA
+
     UTF16TRANSFORM_INITIALIZA
     RGBSTRINGTRANSFORM_INITIALIZA
     CASETRANSFORM_INITIALIZA
@@ -73,11 +74,15 @@ int main(int argc, char *argv[])
     HASHCALCULATE_INITIALIZA
     TTIMESTAMPTRANSFORM_INITIALIZA
 
+    // Make group initializa
+    ICONMAKER_INITIALIZA
+    FONTTOPNG_INITIALIZA
+
     // Tool group initializa
     LINESSTATISTICS_INITIALIZA
 
     // Qt group initializa
-    ICONMAKER_INITIALIZA
+    PNGWARNINGREMOVER_INITIALIZA
     PROPERTYMAKER_INITIALIZA
 
     QQmlApplicationEngine engine;

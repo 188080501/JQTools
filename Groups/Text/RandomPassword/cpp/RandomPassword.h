@@ -1,8 +1,8 @@
 ﻿#ifndef __RandomPassword_h__
 #define __RandomPassword_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define RANDOMPASSWORD_INITIALIZA                                                     \
 {                                                                               \
@@ -24,8 +24,6 @@ public:
 
 public slots:
     QString randomPassword(const int &length, const bool &number, const bool &englishCharacters, const bool &caseSensitive, const bool &dividingLine);
-
-    void setClipboardText(const QString &string);
 };
 
 }

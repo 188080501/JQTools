@@ -1,8 +1,8 @@
 ﻿#ifndef __RgbStringTransform_h__
 #define __RgbStringTransform_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define RGBSTRINGTRANSFORM_INITIALIZA                                                                    \
 {                                                                                                       \
@@ -32,10 +32,6 @@ public slots:
     QString getGreen(const QString &hexString);
 
     QString getBlue(const QString &hexString);
-
-    QString clipboardText();
-
-    void setClipboardText(const QString &string);
 };
 
 }

@@ -1,8 +1,8 @@
 ﻿#ifndef __TimestampTransform_h__
 #define __TimestampTransform_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define TTIMESTAMPTRANSFORM_INITIALIZA                                                                       \
 {                                                                                                           \
@@ -12,7 +12,7 @@
 namespace TimestampTransform
 {
 
-class Manage: public QObject
+class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)
@@ -26,10 +26,6 @@ public slots:
     QString currentDateTimeTimestampString();
 
     QString dateTimeStringFromTimestampString(const QString &timestampString);
-
-    QString clipboardText();
-
-    void setClipboardText(const QString &string);
 };
 
 }

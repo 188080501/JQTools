@@ -6,9 +6,6 @@
 #include <QStandardPaths>
 #include <QtConcurrent>
 
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
-
 using namespace PngWarningRemover;
 
 QString Manage::conversationPng()

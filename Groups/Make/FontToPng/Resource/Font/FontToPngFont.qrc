@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+    <file>FontToPngFont.qrc</file>
+        <file>Elusive/Elusive.ttf</file>
+        <file>Elusive/Elusive.txt</file>
+        <file>FontAwesome/FontAwesome.ttf</file>
+        <file>FontAwesome/FontAwesome.txt</file>
+        <file>Foundation/Foundation.ttf</file>
+        <file>Foundation/Foundation.txt</file>
+        <file>GlyphiconsHalflings/GlyphiconsHalflings.ttf</file>
+        <file>GlyphiconsHalflings/GlyphiconsHalflings.txt</file>
+        <file>IcoMoon/IcoMoon.ttf</file>
+        <file>IcoMoon/IcoMoon.txt</file>
+        <file>IconFont/IconFont.ttf</file>
+        <file>IconFont/IconFont.txt</file>
+        <file>Icons8/Icons8.ttf</file>
+        <file>Icons8/Icons8.txt</file>
+        <file>IconWorks/IconWorks.ttf</file>
+        <file>IconWorks/IconWorks.txt</file>
+        <file>JustVector/JustVector.ttf</file>
+        <file>JustVector/JustVector.txt</file>
+        <file>MaterialDesign/MaterialDesign.ttf</file>
+        <file>MaterialDesign/MaterialDesign.txt</file>
+        <file>Metrize/Metrize.ttf</file>
+        <file>Metrize/Metrize.txt</file>
+        <file>Mfglabs/Mfglabs.ttf</file>
+        <file>Mfglabs/Mfglabs.txt</file>
+        <file>OpenIconic/OpenIconic.ttf</file>
+        <file>OpenIconic/OpenIconic.txt</file>
+        <file>Socicon/Socicon.ttf</file>
+        <file>Socicon/Socicon.txt</file>
+        <file>Typicons/Typicons.ttf</file>
+        <file>Typicons/Typicons.txt</file>
+    </qresource>
+</RCC>

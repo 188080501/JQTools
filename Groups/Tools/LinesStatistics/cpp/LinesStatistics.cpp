@@ -10,9 +10,6 @@
 // JQLibrary import
 #include "JQFile.h"
 
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
-
 using namespace LinesStatistics;
 
 QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)

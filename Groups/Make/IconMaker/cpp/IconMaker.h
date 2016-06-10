@@ -2,8 +2,10 @@
 #define __IconMaker_h__
 
 // Qt lib import
-#include <QObject>
 #include <QImage>
+
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define ICONMAKER_INITIALIZA                                                     \
 {                                                                               \

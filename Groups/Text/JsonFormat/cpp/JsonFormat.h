@@ -1,8 +1,8 @@
 ﻿#ifndef __JsonFormat_h__
 #define __JsonFormat_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define JSONFORMAT_INITIALIZA                                                       \
 {                                                                                   \
@@ -26,10 +26,6 @@ public slots:
     bool check(const QString &string);
 
     QString format(const QString &string, const bool &compact);
-
-    QString clipboardText();
-
-    void setClipboardText(const QString &string);
 };
 
 }
