@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/FontToPng">
+        <file>FontToPng.qml</file>
+    </qresource>
+</RCC>

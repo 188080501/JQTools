@@ -2,15 +2,9 @@
 
 // Qt lib import
 #include <QDateTime>
-#include <QApplication>
-#include <QClipboard>
 #include <QCryptographicHash>
 
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
-
 using namespace TimestampTransform;
-
 
 QString Manage::currentDateTimeTimestampString()
 {
@@ -29,14 +23,4 @@ QString Manage::dateTimeStringFromTimestampString(const QString &timestampString
     }
 
     return { };
-}
-
-QString Manage::clipboardText()
-{
-    return qApp->clipboard()->text();
-}
-
-void Manage::setClipboardText(const QString &string)
-{
-    qApp->clipboard()->setText( string );
 }

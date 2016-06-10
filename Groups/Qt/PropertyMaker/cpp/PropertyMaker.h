@@ -5,8 +5,10 @@
 #include <functional>
 
 // Qt lib import
-#include <QObject>
 #include <QMap>
+
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define PROPERTYMAKER_INITIALIZA                                                            \
 {                                                                                           \
@@ -28,10 +30,6 @@ public:
 
 public slots:
     QString make(const QString &source, const bool &withSlot, const bool &withInline);
-
-    QString clipboardText();
-
-    void setClipboardText(const QString &string);
 
 private:
     QMap< QString, std::function< QString( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline ) > > propertyMaker_;

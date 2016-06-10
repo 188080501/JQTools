@@ -2,4 +2,7 @@ INCLUDEPATH += \
     $$PWD/include/
 
 HEADERS += \
-    $$PWD/include/JQToolsLibrary.hpp
+    $$PWD/include/JQToolsLibrary.h
+
+SOURCES += \
+    $$PWD/src/JQToolsLibrary.cpp

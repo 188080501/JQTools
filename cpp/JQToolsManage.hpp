@@ -5,9 +5,9 @@
 #include <QObject>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
+#include "JQToolsLibrary.h"
 
-class JQToolsManage: public QObject
+class JQToolsManage: public AbstractTool
 {
     Q_OBJECT
 
@@ -15,9 +15,6 @@ public:
     JQToolsManage() = default;
 
     ~JQToolsManage() = default;
-
-public slots:
-    QString jqToolsVersionString() const { return JQTOOLS_VERSIONSTRING; }
 };
 
 #endif//__JQToolsManage_hpp__

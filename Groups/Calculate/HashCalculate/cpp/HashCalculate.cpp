@@ -3,12 +3,7 @@
 // Qt lib import
 #include <QFileDialog>
 #include <QStandardPaths>
-#include <QApplication>
-#include <QClipboard>
 #include <QCryptographicHash>
-
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
 
 using namespace HashCalculate;
 
@@ -32,7 +27,7 @@ void Manage::resetTarget()
 
 void Manage::pause()
 {
-    source_ = qApp->clipboard()->text();
+    source_ = this->clipboardText();
     emit sourceChanged();
 }
 
@@ -46,7 +41,7 @@ void Manage::clear()
 
 void Manage::copy()
 {
-    qApp->clipboard()->setText( target_ );
+    this->setClipboardText( target_ );
 }
 
 void Manage::cut()

@@ -3,12 +3,6 @@
 // Qt lib import
 #include <QFileDialog>
 #include <QStandardPaths>
-#include <QApplication>
-#include <QClipboard>
-#include <QDebug>
-
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
 
 using namespace PropertyMaker;
 
@@ -129,14 +123,4 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
     reply += "private:\n// Property code end";
 
     return reply;
-}
-
-QString Manage::clipboardText()
-{
-    return qApp->clipboard()->text();
-}
-
-void Manage::setClipboardText(const QString &string)
-{
-    qApp->clipboard()->setText( string );
 }

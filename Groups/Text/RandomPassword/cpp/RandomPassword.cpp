@@ -1,12 +1,7 @@
 ﻿#include "RandomPassword.h"
 
 // Qt lib import
-#include <QClipboard>
-#include <QApplication>
 #include <QDateTime>
-
-// JQToolsLibrary import
-#include "JQToolsLibrary.hpp"
 
 using namespace RandomPassword;
 
@@ -56,9 +51,4 @@ QString Manage::randomPassword(const int &length, const bool &number, const bool
     }
 
     return password;
-}
-
-void Manage::setClipboardText(const QString &string)
-{
-    qApp->clipboard()->setText( string );
 }

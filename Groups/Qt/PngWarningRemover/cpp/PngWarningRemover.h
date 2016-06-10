@@ -1,8 +1,8 @@
 ﻿#ifndef __PngWarningRemover_h__
 #define __PngWarningRemover_h__
 
-// Qt lib import
-#include <QObject>
+// JQToolsLibrary import
+#include "JQToolsLibrary.h"
 
 #define PNGWARNINGREMOVER_INITIALIZA                                                                     \
 {                                                                                                       \
@@ -12,7 +12,7 @@
 namespace PngWarningRemover
 {
 
-class Manage: public QObject
+class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)
