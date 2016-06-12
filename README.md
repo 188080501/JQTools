@@ -23,6 +23,10 @@ https://github.com/188080501/JQTools/releases/latest
 或者直接在GitHub上提交问题：
 https://github.com/188080501/JQTools/issues
 
+## 界面预览
+
+![](./JQToolsPreview.png)
+
 ## 开发计划
 
 类别|功能|计划完成日期
