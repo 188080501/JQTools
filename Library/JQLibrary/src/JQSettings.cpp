@@ -101,7 +101,7 @@ Set::Set(const QString &fileName, const QString &groupName, const QString &proje
     this->read();
 }
 
-Set::~Set(void)
+Set::~Set()
 {
     if ( timer_ )
     {
@@ -122,7 +122,7 @@ const QVariant Set::operator[](const QString &key)
     return datas_[key];
 }
 
-QString Set::filePath(void) const
+QString Set::filePath() const
 {
     return filePath_;
 }
@@ -156,7 +156,7 @@ void Set::setValue(const QString &key, const QVariant &data)
     this->readySave();
 }
 
-void Set::save(void)
+void Set::save()
 {
 #ifdef Q_OS_IOS
     QSettings settings( projectName_, fileName_ );
@@ -192,7 +192,7 @@ void Set::readySave(const int &delayTime)
     timer_->start( delayTime );
 }
 
-void Set::read(void)
+void Set::read()
 {
 #ifdef Q_OS_IOS
     QSettings settings( projectName_, fileName_ );

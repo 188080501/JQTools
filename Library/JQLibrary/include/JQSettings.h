@@ -41,11 +41,11 @@ class Set: public QObject
 public:
     Set(const QString &fileName, const QString &groupName, const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
 
-    ~Set(void);
+    ~Set();
 
     const QVariant operator[](const QString &key);
 
-    QString filePath(void) const;
+    QString filePath() const;
 
 public slots:
     bool contains(const QString &key);
@@ -56,11 +56,11 @@ public slots:
 
     void setValue(const QString &key, const QVariant &data);
 
-    void save(void);
+    void save();
 
     void readySave(const int &delayTime = 1000);
 
-    void read(void);
+    void read();
 
 private:
     QString fileName_;

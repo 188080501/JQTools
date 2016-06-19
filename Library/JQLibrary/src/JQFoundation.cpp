@@ -381,20 +381,33 @@ void JQFoundation::waitForSignal(const QObject *sender, const char *signal)
     eventLoop.exec();
 }
 
-QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringList &leftKey)
+QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix)
 {
     QJsonObject data;
 
-    for (const auto &key: leftKey)
+    for ( const auto &key: leftKey )
     {
-        auto buf = source.find(key);
-        if (buf != source.end())
+        auto buf = source.find( key );
+        if ( buf != source.end() )
         {
-            data[buf.key()] = buf.value();
+            data[ buf.key() ] = buf.value();
+        }
+    }
+
+    if ( !mix.isEmpty() )
+    {
+        for ( auto it = mix.begin(); it != mix.end(); ++it )
+        {
+            data.insert( it.key(), it.value() );
         }
     }
 
     return data;
+}
+
+QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix)
+{
+    return JQFoundation::jsonFilter( source, QStringList( { leftKey } ), mix );
 }
 
 void JQFoundation::setTimerCallback(const int &interval, const std::function<void (const QPointer< QTimer > &)> &callback, const bool &callbackOnStart)
