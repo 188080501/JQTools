@@ -216,7 +216,9 @@ QString randString(const int &stringLength = 40, const bool &autoSetSeed = true)
 
 void waitForSignal(const QObject *sender, const char *signal);
 
-QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey);
+QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix = QJsonObject());
+
+QJsonObject jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix = QJsonObject());
 
 void setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
 
