@@ -75,6 +75,7 @@ Item {
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
             selectByMouse: true
+            selectionColor: "#2799f3"
 
             onTextChanged: {
                 if ( hashCalculate.changingFlag ) { return; }
@@ -129,6 +130,7 @@ Item {
             wrapMode: TextInput.WrapAnywhere
             selectByMouse: true
             readOnly: true
+            selectionColor: "#2799f3"
         }
     }
 

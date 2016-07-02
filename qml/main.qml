@@ -367,9 +367,10 @@ ApplicationWindow {
 
     Rectangle {
         x: 180
-        y: 64
+        y: 0
+        z: 1
         width: 1
-        height: parent.height - 64
+        height: parent.height
         color: "#dcdcdc"
     }
 
@@ -377,37 +378,54 @@ ApplicationWindow {
         id: itemForMainPage
         x: 180
         y: 64
+        z: -2
         width: parent.width - 180
         height: parent.height - 64
 
         property var pages: new Object
 
         function showPage( titleName, itemQrcLocation ) {
-            switch( itemQrcLocation )
-            {
-                case "": break;
-                case "notSupport": materialUI.showSnackbarMessage( "此功能暂未开放" ); break;
-                default:
-                    if ( !( itemQrcLocation in pages ) )
-                    {
-                        var component = Qt.createComponent( itemQrcLocation );
+            timerForShowPage.titleName = titleName;
+            timerForShowPage.itemQrcLocation = itemQrcLocation;
+            timerForShowPage.start();
+        }
 
-                        if (component.status === Component.Ready) {
-                            var page = component.createObject( itemForMainPage );
-                            page.anchors.fill = itemForMainPage;
-                            pages[ itemQrcLocation ] = page;
+        Timer {
+            id: timerForShowPage
+            interval: 0
+            repeat: false
+            running: false
+
+            property string titleName
+            property string itemQrcLocation
+
+            onTriggered: {
+                switch( itemQrcLocation )
+                {
+                    case "": break;
+                    case "notSupport": materialUI.showSnackbarMessage( "此功能暂未开放" ); break;
+                    default:
+                        if ( !( itemQrcLocation in itemForMainPage.pages ) )
+                        {
+                            var component = Qt.createComponent( itemQrcLocation );
+
+                            if (component.status === Component.Ready) {
+                                var page = component.createObject( itemForMainPage );
+                                page.anchors.fill = itemForMainPage;
+                                itemForMainPage.pages[ itemQrcLocation ] = page;
+                            }
                         }
-                    }
 
-                    for ( var key in pages )
-                    {
-                        pages[ key ].visible = false;
-                    }
+                        for ( var key in itemForMainPage.pages )
+                        {
+                            itemForMainPage.pages[ key ].visible = false;
+                        }
 
-                    labelForCurrentItemTitleName.text = titleName;
-                    pages[ itemQrcLocation ].visible = true;
+                        labelForCurrentItemTitleName.text = titleName;
+                        itemForMainPage.pages[ itemQrcLocation ].visible = true;
 
-                    break;
+                        break;
+                }
             }
         }
     }
@@ -416,5 +434,131 @@ ApplicationWindow {
         id: materialUI
         z: 2
         anchors.fill: parent
+    }
+
+    Rectangle {
+        id: backgroundForDialog
+        anchors.fill: parent
+        color: "#55000000"
+        visible: opacity !== 0
+        opacity: 0
+
+        Behavior on opacity {
+            NumberAnimation { duration: 500; easing.type: Easing.OutCubic }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.AllButtons
+        }
+    }
+
+    MaterialDialog {
+        id: dialogForSaveIcon
+        z: 10
+        width: 350
+        height: 500
+        title: "保存图标"
+        negativeButtonText: materialUI.dialogCancelText
+        positiveButtonText: materialUI.dialogOKText
+
+        Component.onCompleted: {
+            dialogForSaveIcon.open();
+        }
+
+        property string familieName
+        property string charCode
+        property string charName
+
+        onRejected: {
+            backgroundForDialog.opacity = 0;
+        }
+
+        onAccepted: {
+            backgroundForDialog.opacity = 0;
+        }
+
+        Item {
+            width: 300
+            height: 380
+
+            MaterialLabel {
+                x: 28
+                y: 50
+                text: "字体集："
+                font.pixelSize: 16
+            }
+
+            MaterialLabel {
+                id: labelForFamilieName
+                x: 145
+                y: 13
+                width: 120
+                height: 56
+            }
+
+            MaterialLabel {
+                x: 28
+                y: 112
+                text: "字符代码："
+                font.pixelSize: 16
+            }
+
+            MaterialLabel {
+                id: labelForCharCode
+                x: 145
+                y: 75
+                width: 120
+                height: 56
+            }
+
+            MaterialLabel {
+                x: 28
+                y: 174
+                text: "字符名称："
+                font.pixelSize: 16
+            }
+
+            MaterialLabel {
+                id: labelForCharName
+                x: 145
+                y: 137
+                width: 120
+                height: 56
+            }
+
+            MaterialLabel {
+                x: 28
+                y: 236
+                text: "大小（像素）："
+                font.pixelSize: 16
+            }
+
+            MaterialTextField {
+                id: labelForSize
+                x: 145
+                y: 199
+                width: 120
+                height: 56
+                validator: RegExpValidator { regExp: /^(-?\d+)$/ }
+            }
+
+            MaterialLabel {
+                x: 28
+                y: 298
+                text: "颜色："
+                font.pixelSize: 16
+            }
+
+            MaterialTextField {
+                id: textFieldForColor
+                x: 82
+                y: 260
+                width: 150
+                placeholderText: "十六进制值或者描述字符串"
+                text: "#000000"
+            }
+        }
+
     }
 }

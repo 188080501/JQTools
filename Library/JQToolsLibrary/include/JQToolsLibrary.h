@@ -4,7 +4,7 @@
 // Qt lib import
 #include <QObject>
 
-#define JQTOOLS_VERSIONSTRING "16.6.10"
+#define JQTOOLS_VERSIONSTRING "16.7.1"
 
 class AbstractTool: public QObject
 {

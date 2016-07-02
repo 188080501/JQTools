@@ -54,15 +54,21 @@ int main(int argc, char *argv[])
 
     if ( !JQFoundation::singleApplication( "JQTools" ) )
     {
-        QMessageBox::warning( nullptr, QStringLiteral( "\u542F\u52A8\u5931\u8D25" ), QStringLiteral( "\u7A0B\u5E8F\u5DF2\u7ECF\u542F\u52A8" ) );
+        QMessageBox::warning(
+                    nullptr,
+                    QStringLiteral( "\u542F\u52A8\u5931\u8D25" ),
+                    QStringLiteral( "\u7A0B\u5E8F\u5DF2\u7ECF\u542F\u52A8" )
+                );
         return -1;
     }
+
+    QQmlApplicationEngine engine;
+    JQToolsManage jqToolsManage;
 
     // Welcome initializa
     WELCOME_INITIALIZA
 
     // Text group  initializa
-
     UTF16TRANSFORM_INITIALIZA
     RGBSTRINGTRANSFORM_INITIALIZA
     CASETRANSFORM_INITIALIZA
@@ -85,9 +91,6 @@ int main(int argc, char *argv[])
     PNGWARNINGREMOVER_INITIALIZA
     PROPERTYMAKER_INITIALIZA
 
-    QQmlApplicationEngine engine;
-    JQToolsManage jqToolsManage;
-
 #ifdef JQQMLLIB_LIB
     JQQmlLibAddToEngine(engine)
 #endif
@@ -109,7 +112,11 @@ void checkVersion()
          versionNumber.minorVersion() != dateTime.date().month() ||
          versionNumber.microVersion() != dateTime.date().day() )
     {
-        QMessageBox::warning( nullptr, QStringLiteral( "\u7248\u672C\u9519\u8BEF" ), QStringLiteral( "\u8BF7\u9009\u62E9release\u7248\u672C\u6216\u8005\u66F4\u6539\u7248\u672C\u6807\u8BB0" ) );
+        QMessageBox::warning(
+                    nullptr,
+                    QStringLiteral( "\u7248\u672C\u9519\u8BEF" ),
+                    QStringLiteral( "\u8BF7\u9009\u62E9release\u7248\u672C\u6216\u8005\u66F4\u6539\u7248\u672C\u6807\u8BB0" )
+                );
         ::exit( -1 );
     }
 #endif

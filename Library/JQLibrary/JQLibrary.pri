@@ -76,6 +76,15 @@ exists($$PWD/src/JQFoundation.cpp) {
     HEADERS *= $$PWD/include/JQFoundation.h
 }
 
+contains(QT, network) {
+    contains(QT, concurrent) {
+        exists($$PWD/src/JQHttpServer.cpp) {
+            SOURCES *= $$PWD/src/JQHttpServer.cpp
+            HEADERS *= $$PWD/include/JQHttpServer.h
+        }
+    }
+}
+
 exists($$PWD/src/JQIODevice.cpp) {
     SOURCES *= $$PWD/src/JQIODevice.cpp
     HEADERS *= $$PWD/include/JQIODevice.h

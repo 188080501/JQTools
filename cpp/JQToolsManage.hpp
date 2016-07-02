@@ -3,6 +3,7 @@
 
 // Qt ib import
 #include <QObject>
+#include <QEventLoop>
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -15,6 +16,13 @@ public:
     JQToolsManage() = default;
 
     ~JQToolsManage() = default;
+
+public slots:
+    void eventLoopWhile()
+    {
+        QEventLoop eventLoop;
+        while( eventLoop.processEvents() );
+    }
 };
 
 #endif//__JQToolsManage_hpp__

@@ -6,15 +6,19 @@
 
 // Qt lib import
 #include <QVector>
-#include <QSharedPointer>
+#include <QMap>
 #include <QImage>
+#include <QQuickImageProvider>
+#include <QJsonArray>
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
 
-#define FONTTOPNG_INITIALIZA                                                    \
-{                                                                               \
-    qmlRegisterType<FontToPng::Manage>("FontToPng", 1, 0, "FontToPngManage");   \
+#define FONTTOPNG_INITIALIZA                                                        \
+{                                                                                   \
+    auto fontToPngManage = new FontToPng::Manage;                                   \
+    engine.addImageProvider("FontToPngManage", fontToPngManage);                    \
+    engine.rootContext()->setContextProperty("FontToPngManage", fontToPngManage);   \
 }
 
 namespace FontToPng
@@ -45,10 +49,10 @@ struct FontPackage
     int fontId;
     QString familieName;
 
-    QVector< QSharedPointer< CharPackage > > charPackages;
+    QMap< ushort, CharPackage > charPackages;
 };
 
-class Manage: public AbstractTool
+class Manage: public AbstractTool, public QQuickImageProvider
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)
@@ -58,14 +62,23 @@ public:
 
     ~Manage() = default;
 
+public slots:
+    void begin();
+
+    QJsonArray getCharList(const QString &familieName, const QString &searchKey);
+
 private:
     void loadFont(const QString fontName);
 
-    QImage paintChar(const QString &familieName, const QSharedPointer< CharPackage > &charPackage, const QSize &size, const QColor &color);
+    QImage paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize);
 
-    void makeAdaptation(const QString &familieName, const ushort &code, const QSharedPointer< CharPackage > &charPackage);
+    void makeAdaptation(const QString &familieName, CharPackage &charPackage);
+
+    QImage requestImage(const QString &id, QSize *, const QSize &);
+
 private:
-    QVector< QSharedPointer< FontPackage > > fontPackages_;
+    QVector< FontPackage > fontPackages_;
+    QMutex mutex_;
 };
 
 }
