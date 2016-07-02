@@ -117,6 +117,7 @@ Item {
             text:
 "Q_PROPERTY(QString name_ READ name WRITE setName RESET resetName NOTIFY nameChanged)
 Q_PROPERTY(int age_ READ age WRITE setAge)"
+            selectionColor: "#2799f3"
         }
     }
 
@@ -160,6 +161,7 @@ Q_PROPERTY(int age_ READ age WRITE setAge)"
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
             selectByMouse: true
+            selectionColor: "#2799f3"
         }
     }
 }

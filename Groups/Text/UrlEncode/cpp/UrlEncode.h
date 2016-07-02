@@ -12,7 +12,7 @@
 namespace UrlEncode
 {
 
-class Manage: public QObject
+class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)

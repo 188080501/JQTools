@@ -20,7 +20,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
     auto currentPath = QFileDialog::getExistingDirectory( nullptr,
                                                           "Please choose code dir",
                                                           QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) );
-    if( currentPath.isEmpty() )
+    if ( currentPath.isEmpty() )
     {
         return
             { {
@@ -41,10 +41,10 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
     {
         JQFile::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
         {
-            if( !availableSuffixs.contains( info.suffix().toLower() ) ) { return; }
+            if ( !availableSuffixs.contains( info.suffix().toLower() ) ) { return; }
 
             QFile file( info.filePath() );
-            if( !file.open(QIODevice::ReadOnly) ) { return; }
+            if ( !file.open(QIODevice::ReadOnly) ) { return; }
 
             fileCount++;
 

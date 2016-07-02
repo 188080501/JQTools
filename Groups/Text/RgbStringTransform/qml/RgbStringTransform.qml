@@ -145,7 +145,7 @@ Item {
 
             onClicked: {
                 rgbStringTransformManage.setClipboardText( textFieldForHexString.text );
-                materialUI.showSnackbarMessage( "颜色字符串已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "颜色十六进制字符串已经复制到了剪切板" );
             }
         }
 

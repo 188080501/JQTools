@@ -207,7 +207,7 @@ QString Manage::makeAndroid()
 
 void Manage::realMakeOSX()
 {
-    if( !QDir().mkpath( targetSavePath_ + "/OSX/icon.iconset" ) )
+    if ( !QDir().mkpath( targetSavePath_ + "/OSX/icon.iconset" ) )
     {
         throw false;
     }
@@ -230,7 +230,7 @@ void Manage::realMakeOSX()
 
 void Manage::realMakeIOS()
 {
-    if( !QDir().mkpath( targetSavePath_ + "/iOS" ) )
+    if ( !QDir().mkpath( targetSavePath_ + "/iOS" ) )
     {
         throw false;
     }
@@ -264,7 +264,7 @@ void Manage::realMakeIOS()
 
 void Manage::realMakeWindows() // TODO
 {
-//    if( !QDir().mkpath( targetSavePath_ + "/Windows" ) )
+//    if ( !QDir().mkpath( targetSavePath_ + "/Windows" ) )
 //    {
 //        throw false;
 //    }
@@ -274,7 +274,7 @@ void Manage::realMakeWindows() // TODO
 
 void Manage::realMakeWP()
 {
-    if( !QDir().mkpath( targetSavePath_ + "/WP" ) )
+    if ( !QDir().mkpath( targetSavePath_ + "/WP" ) )
     {
         throw false;
     }
@@ -288,7 +288,7 @@ void Manage::realMakeWP()
 
 void Manage::realMakeAndroid()
 {
-    if( !QDir().mkpath( targetSavePath_ + "/Android" ) )
+    if ( !QDir().mkpath( targetSavePath_ + "/Android" ) )
     {
         throw false;
     }

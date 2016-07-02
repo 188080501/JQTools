@@ -85,6 +85,7 @@ Item {
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
             selectByMouse: true
+            selectionColor: "#2799f3"
 
             onTextChanged: {
                 if ( utf16Transform.changingFlag ) { return; }
@@ -138,6 +139,7 @@ Item {
             height: parent.height - 10
             wrapMode: TextInput.WrapAnywhere
             selectByMouse: true
+            selectionColor: "#2799f3"
 
             onTextChanged: {
                 if ( utf16Transform.changingFlag ) { return; }
