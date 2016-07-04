@@ -53,7 +53,7 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "图标生成器", titleName: "图标生成器", qrcLocation: "qrc:/IconMaker/IconMaker.qml" },
-                                { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG（开发中）", qrcLocation: "qrc:/FontToPng/FontToPng.qml" }
+                                { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG", qrcLocation: "qrc:/FontToPng/FontToPng.qml" }
                             ]
                         },
                         {

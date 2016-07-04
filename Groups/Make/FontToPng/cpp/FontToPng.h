@@ -67,6 +67,8 @@ public slots:
 
     QJsonArray getCharList(const QString &familieName, const QString &searchKey);
 
+    QString saveIcon(const QString &familieName, const QString &charCodeHexString, const int &pixelSize, const QString &color);
+
 private:
     void loadFont(const QString fontName);
 
