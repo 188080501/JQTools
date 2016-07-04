@@ -201,7 +201,11 @@ Item {
                 onClicked: {
                     if ( mouse.button & Qt.LeftButton )
                     {
-                        materialUI.showSnackbarMessage( "保存功能还在开发中" ); // TODO
+                        backgroundForDialog.opacity = 1.0;
+                        dialogForSaveIcon.familieName = familieName;
+                        dialogForSaveIcon.charCode = charCode;
+                        dialogForSaveIcon.charName = charName;
+                        dialogForSaveIcon.open();
                     }
                     else if ( mouse.button & Qt.RightButton )
                     {
@@ -220,6 +224,7 @@ Item {
 
     Rectangle {
         id: backgroundForDialog
+        z: 10
         anchors.fill: parent
         color: "#55000000"
         visible: opacity !== 0
@@ -239,7 +244,7 @@ Item {
         id: dialogForSaveIcon
         z: 10
         width: 350
-        height: 500
+        height: 440
         title: "保存图标"
         negativeButtonText: materialUI.dialogCancelText
         positiveButtonText: materialUI.dialogOKText
@@ -254,60 +259,82 @@ Item {
 
         onAccepted: {
             backgroundForDialog.opacity = 0;
+
+            materialUI.showLoading();
+
+            var reply = FontToPngManage.saveIcon(
+                        dialogForSaveIcon.familieName,
+                        dialogForSaveIcon.charCode,
+                        parseInt( labelForSize.text ),
+                        textFieldForColor.text
+                    );
+
+            materialUI.hideLoading();
+
+            switch ( reply )
+            {
+                case "cancel": materialUI.showSnackbarMessage( "取消保存" ); break;
+                case "error": materialUI.showSnackbarMessage( "保存失败" ); break;
+                case "OK": materialUI.showSnackbarMessage( "保存成功" ); break;
+                default: break;
+            }
         }
 
         Item {
             width: 300
-            height: 380
+            height: 320
 
             MaterialLabel {
                 x: 28
-                y: 50
+                y: 10
                 text: "字体集："
                 font.pixelSize: 16
             }
 
             MaterialLabel {
                 id: labelForFamilieName
-                x: 145
+                x: 100
                 y: 13
                 width: 120
                 height: 56
+                text: dialogForSaveIcon.familieName
             }
 
             MaterialLabel {
                 x: 28
-                y: 112
+                y: 72
                 text: "字符代码："
                 font.pixelSize: 16
             }
 
             MaterialLabel {
                 id: labelForCharCode
-                x: 145
+                x: 115
                 y: 75
                 width: 120
                 height: 56
+                text: "\\u" + dialogForSaveIcon.charCode
             }
 
             MaterialLabel {
                 x: 28
-                y: 174
+                y: 133
                 text: "字符名称："
                 font.pixelSize: 16
             }
 
             MaterialLabel {
                 id: labelForCharName
-                x: 145
+                x: 115
                 y: 137
                 width: 120
                 height: 56
+                text: dialogForSaveIcon.charName
             }
 
             MaterialLabel {
                 x: 28
-                y: 236
+                y: 196
                 text: "大小（像素）："
                 font.pixelSize: 16
             }
@@ -315,15 +342,16 @@ Item {
             MaterialTextField {
                 id: labelForSize
                 x: 145
-                y: 199
+                y: 157
                 width: 120
                 height: 56
+                text: "1000"
                 validator: RegExpValidator { regExp: /^(-?\d+)$/ }
             }
 
             MaterialLabel {
                 x: 28
-                y: 298
+                y: 258
                 text: "颜色："
                 font.pixelSize: 16
             }
@@ -331,7 +359,7 @@ Item {
             MaterialTextField {
                 id: textFieldForColor
                 x: 82
-                y: 260
+                y: 220
                 width: 150
                 placeholderText: "十六进制值或者描述字符串"
                 text: "#000000"

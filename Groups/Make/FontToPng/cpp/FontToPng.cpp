@@ -3,6 +3,7 @@
 // Qt lib import
 #include <QFontDatabase>
 #include <QPainter>
+#include <QFileDialog>
 #include <QJsonObject>
 #include <QEventLoop>
 #include <QtConcurrent>
@@ -68,6 +69,43 @@ QJsonArray Manage::getCharList(const QString &familieName, const QString &search
     }
 
     return result;
+}
+
+QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexString, const int &pixelSize, const QString &color)
+{
+    auto filePath = QFileDialog::getSaveFileName(
+                nullptr,
+                QStringLiteral( "请选择保存图标的路径" ),
+                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
+                "*.png"
+            );
+
+    if ( filePath.isEmpty() ) { return "cancel"; }
+
+    if ( !filePath.toLower().endsWith( ".png" ) )
+    {
+        filePath += ".png";
+    }
+
+    CharPackage charPackage;
+
+    for ( const auto &fontPackage: fontPackages_ )
+    {
+        if ( familieName != fontPackage.familieName ) { continue; }
+
+        const auto &&charCode = charCodeHexString.toInt( nullptr, 16 );
+
+        if ( !fontPackage.charPackages.contains( charCode ) ) { return "error"; }
+
+        charPackage = fontPackage.charPackages[ charCode ];
+    }
+
+    if ( !charPackage.code ) { return "error"; }
+
+    const auto &&image = this->paintChar( familieName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ) );
+    const auto &&saveSucceed = image.save( filePath, "PNG" );
+
+    return ( saveSucceed ) ? ( "OK" ) : ( "error" );
 }
 
 void Manage::loadFont(const QString fontName)
@@ -247,10 +285,6 @@ QImage Manage::requestImage(const QString &id, QSize *, const QSize &)
 
             return fontPackage.charPackages[ charCode ].preview;
         }
-    }
-    else if ( mode == "Painter" )
-    {
-        // TODO
     }
 
     return { };
