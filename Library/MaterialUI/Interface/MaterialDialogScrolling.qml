@@ -114,7 +114,7 @@ MaterialDialog {
                 color: "#50afafbc"
             }
 
-            Label {
+            MaterialLabel {
                 x: 50
                 y: 15
                 text: itemText
