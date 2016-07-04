@@ -10,6 +10,7 @@
 #include <QImage>
 #include <QQuickImageProvider>
 #include <QJsonArray>
+#include <QMutex>
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
