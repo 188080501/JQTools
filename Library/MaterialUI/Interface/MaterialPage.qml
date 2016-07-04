@@ -1,4 +1,4 @@
-import QtQuick 2.5
+﻿import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 
@@ -84,7 +84,7 @@ Rectangle {
             }
         }
 
-        Label {
+        MaterialLabel {
             id: labelForTitle
             anchors.centerIn: parent
             color: "#ffffff"
