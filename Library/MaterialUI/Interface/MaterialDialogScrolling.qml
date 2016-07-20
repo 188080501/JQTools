@@ -5,8 +5,8 @@ import QtQuick.Controls.Styles 1.4
 MaterialDialog {
     id: dialog
 
-    negativeButtonText: qsTr("Cancel")
-    positiveButtonText: qsTr("OK")
+    negativeButtonText: ("Cancel")
+    positiveButtonText: ("OK")
 
     positiveButtonEnabled: currentItemIndex !== -1
 
@@ -24,6 +24,7 @@ MaterialDialog {
         dialog.callbackOnOK = callbackOnOK;
         dialog.open();
 
+        listView.contentY = 0;
         currentItemIndex = -1;
         currentItemText = "";
         currentItemFlag = null;
@@ -61,7 +62,7 @@ MaterialDialog {
         }
     }
 
-    ExclusiveGroup{
+    ExclusiveGroup {
         id: checkGroup
     }
 

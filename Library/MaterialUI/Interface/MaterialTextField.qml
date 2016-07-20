@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QML Material - An application framework implementing Material Design.
  * Copyright (C) 2014 Bogdan Cuza <bogdan.cuza@hotmail.com>
  *
