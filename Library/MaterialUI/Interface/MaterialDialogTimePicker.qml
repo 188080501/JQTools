@@ -5,8 +5,8 @@ import QtQuick.Controls.Styles 1.4 as ControlStyles
 MaterialDialog {
     id: dialog
 
-    negativeButtonText: qsTr("Cancel")
-    positiveButtonText: qsTr("OK")
+    negativeButtonText: ("Cancel")
+    positiveButtonText: ("OK")
 
     property var callbackOnCancel: null
     property var callbackOnOK: null

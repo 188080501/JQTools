@@ -101,8 +101,8 @@ Item {
 
     property string materialFontName: "Material-Design-Iconic-Font"
 
-    property string dialogOKText: qsTr("OK")
-    property string dialogCancelText: qsTr("Cancel")
+    property string dialogOKText: ("OK")
+    property string dialogCancelText: ("Cancel")
 
     function isSmartPhone() {
         return (Qt.platform.os === "ios") || (Qt.platform.os === "android");
@@ -150,6 +150,17 @@ Item {
         }
 
         loaderForDialogPrompt.item.show(title, message, placeholderText, currentText, callbackOnCancel, callbackOnOK);
+    }
+
+    function showDialogTextArea(title, message, currentText, callbackOnCancel, callbackOnOK) {
+        if (!loaderForDialogTextArea.active)
+        {
+            loaderForDialogTextArea.active = true;
+            loaderForDialogTextArea.item.positiveButtonText = materialUI.dialogOKText;
+            loaderForDialogTextArea.item.negativeButtonText = materialUI.dialogCancelText;
+        }
+
+        loaderForDialogTextArea.item.show(title, message, currentText, callbackOnCancel, callbackOnOK);
     }
 
     function showDialogScrolling(title, message, listData, callbackOnCancel, callbackOnOK) {
@@ -377,6 +388,13 @@ Item {
         id: loaderForDialogPrompt
         anchors.centerIn: parent
         source: "qrc:/MaterialUI/Interface/MaterialDialogPrompt.qml"
+        active: false
+    }
+
+    Loader {
+        id: loaderForDialogTextArea
+        anchors.centerIn: parent
+        source: "qrc:/MaterialUI/Interface/MaterialDialogTextArea.qml"
         active: false
     }
 

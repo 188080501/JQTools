@@ -27,6 +27,11 @@ exists($$PWD/src/JQBarcode.cpp) {
     HEADERS *= $$PWD/include/JQBarcode.h
 }
 
+exists($$PWD/src/JQChecksum.cpp) {
+    SOURCES *= $$PWD/src/JQChecksum.cpp
+    HEADERS *= $$PWD/include/JQChecksum.h
+}
+
 exists($$PWD/src/JQContainer.cpp) {
     SOURCES *= $$PWD/src/JQContainer.cpp
     HEADERS *= $$PWD/include/JQContainer.h

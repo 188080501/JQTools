@@ -101,31 +101,31 @@ class QLineEdit;
     ClassName(const ClassName &) = delete;                                          \
     ClassName &operator=(const ClassName &) = delete;
 
-#define JsonObjectMapToJsonArrayAndReturn(Map, ...)                                 \
+#define ContainerToJsonArrayAndReturn(container, ...)                               \
     {                                                                               \
         QJsonArray buf;                                                             \
-        for (const auto &data: Map)                                                 \
+        for (const auto &data: container)                                           \
         {                                                                           \
             buf.append( { data __VA_ARGS__ } );                                     \
         }                                                                           \
         return buf;                                                                 \
     }
 
-#define JsonObjectMapToJsonArray(Map, ...)                                          \
-    [&]()                                                                           \
+#define ContainerToJsonArray(container, ...)                                        \
+    [ & ]()                                                                         \
     {                                                                               \
         QJsonArray buf;                                                             \
-        for (const auto &data: Map)                                                 \
+        for (const auto &data: container)                                           \
         {                                                                           \
             buf.append( { data __VA_ARGS__ } );                                     \
         }                                                                           \
         return buf;\
     }()
 
-#define JsonArrayToJsonObjectMap(Array, Target, ...)                                \
+#define ContainerToJsonObjectMap(container, target, ...)                            \
     for (const auto &data: Array)                                                   \
     {                                                                               \
-        Target.insert(__VA_ARGS__(data.toObject()));                                \
+        target.insert(__VA_ARGS__(data.toObject()));                                \
     }
 
 #define rforeach (variable, container)                                              \
@@ -371,8 +371,7 @@ private:
     int flag_ = 0;
 };
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TemplateFunctionDefine~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
+// Template define
 template <typename Func1>
 bool waitBoolSignal(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal)
 {

@@ -207,7 +207,7 @@ FocusScope {
                     style: "subheading"
                     font.weight: Font.DemiBold
                     color: amPmPicker.isAm ? "white" : "#99ffffff"
-                    text: "AM"
+                    text: "上午"
 
                     MouseArea {
                         x: -10
@@ -223,7 +223,7 @@ FocusScope {
                     style: "subheading"
                     font.weight: Font.DemiBold
                     color: !amPmPicker.isAm ? "white" : "#99ffffff"
-                    text: "PM"
+                    text: "下午"
 
                     MouseArea {
                         anchors.fill: parent

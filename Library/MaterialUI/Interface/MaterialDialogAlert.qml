@@ -6,7 +6,7 @@ MaterialDialog {
     id: dialog
 
     negativeButtonText: ""
-    positiveButtonText: qsTr("OK")
+    positiveButtonText: ("OK")
 
     property var callbackOnOK: null
 
