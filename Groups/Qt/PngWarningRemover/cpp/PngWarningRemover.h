@@ -1,5 +1,5 @@
-﻿#ifndef __PngWarningRemover_h__
-#define __PngWarningRemover_h__
+﻿#ifndef __GROUP_QT_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H__
+#define __GROUP_QT_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -28,4 +28,4 @@ public slots:
 
 }
 
-#endif//__PngWarningRemover_h__
+#endif//__GROUP_QT_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H__

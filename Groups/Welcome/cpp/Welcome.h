@@ -1,5 +1,5 @@
-﻿#ifndef __Welcome_h__
-#define __Welcome_h__
+﻿#ifndef __GROUP_WELCOME_CPP_WELCOME_H__
+#define __GROUP_WELCOME_CPP_WELCOME_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -30,4 +30,4 @@ public slots:
 
 }
 
-#endif//__Welcome_h__
+#endif//__GROUP_WELCOME_CPP_WELCOME_H__

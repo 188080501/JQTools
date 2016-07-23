@@ -1,5 +1,5 @@
-﻿#ifndef __JsonFormat_h__
-#define __JsonFormat_h__
+﻿#ifndef __GROUP_TEXT_JSONFORMAT_CPP_JSONFORMAT_H__
+#define __GROUP_TEXT_JSONFORMAT_CPP_JSONFORMAT_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -30,4 +30,4 @@ public slots:
 
 }
 
-#endif//__JsonFormat_h__
+#endif//__GROUP_TEXT_JSONFORMAT_CPP_JSONFORMAT_H__

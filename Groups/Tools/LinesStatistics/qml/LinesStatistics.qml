@@ -25,33 +25,41 @@ Item {
         height: 540
 
         MaterialLabel {
-            x: 61
-            y: 157
+            x: 64
+            y: 136
             text: "搜索的文件后缀"
         }
 
         MaterialCheckBox {
             id: checkBoxForCpp
-            x: 61
-            y: 183
+            x: 64
+            y: 162
             text: "h/c/cc/cp/cpp/hpp/inc/i/ii/m"
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForQml
-            x: 61
-            y: 303
+            x: 64
+            y: 282
             text: "qml"
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForQmake
-            x: 61
-            y: 243
+            x: 64
+            y: 222
             text: "pro/pri/prf/prl"
             checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForImage
+            x: 64
+            y: 342
+            text: "png/jpg/jpeg/bmp/gif/svg/psd/ai"
+            checked: false
         }
 
         MaterialButton {
@@ -97,6 +105,18 @@ Item {
                     suffixs.push( "prl" );
                 }
 
+                if ( checkBoxForImage.checked )
+                {
+                    suffixs.push( "png" );
+                    suffixs.push( "jpg" );
+                    suffixs.push( "jpeg" );
+                    suffixs.push( "bmp" );
+                    suffixs.push( "gif" );
+                    suffixs.push( "svg" );
+                    suffixs.push( "psd" );
+                    suffixs.push( "ai" );
+                }
+
                 var reply = linesStatisticsManage.statisticsLines( suffixs );
 
                 if ( "cancel" in reply )
@@ -115,7 +135,7 @@ Item {
 
         MaterialLabel {
             id: labelForLinesCount
-            text: "文件数：" + fileCount + "\n行数：" + lineCount
+            text: "文件数：" + fileCount + "\n代码行数：" + lineCount
             anchors.horizontalCenterOffset: 134
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft

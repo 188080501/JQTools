@@ -1,5 +1,5 @@
-﻿#ifndef __TimestampTransform_h__
-#define __TimestampTransform_h__
+﻿#ifndef __GROUP_CALCULATE_TIMESTAMPTRANSFORM_CPP_TIMESTAMPTRANSFORM_H__
+#define __GROUP_CALCULATE_TIMESTAMPTRANSFORM_CPP_TIMESTAMPTRANSFORM_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -30,4 +30,4 @@ public slots:
 
 }
 
-#endif//__TimestampTransform_h__
+#endif//__GROUP_CALCULATE_TIMESTAMPTRANSFORM_CPP_TIMESTAMPTRANSFORM_H__

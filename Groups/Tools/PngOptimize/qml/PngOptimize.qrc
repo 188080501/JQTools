@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/PngOptimize">
+        <file>PngOptimize.qml</file>
+    </qresource>
+</RCC>

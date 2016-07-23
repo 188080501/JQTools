@@ -1,5 +1,5 @@
-﻿#ifndef __IconMaker_h__
-#define __IconMaker_h__
+﻿#ifndef __GROUP_MAKE_ICONMAKER_CPP_ICONMAKER_H__
+#define __GROUP_MAKE_ICONMAKER_CPP_ICONMAKER_H__
 
 // Qt lib import
 #include <QImage>
@@ -83,4 +83,4 @@ private:
 
 }
 
-#endif//__IconMaker_h__
+#endif//__GROUP_MAKE_ICONMAKER_CPP_ICONMAKER_H__

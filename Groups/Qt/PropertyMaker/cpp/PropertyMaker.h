@@ -1,5 +1,5 @@
-﻿#ifndef __PropertyMaker_h__
-#define __PropertyMaker_h__
+﻿#ifndef __GROUP_QT_PROPERTYMAKER_CPP_PROPERTYMAKER_H__
+#define __GROUP_QT_PROPERTYMAKER_CPP_PROPERTYMAKER_H__
 
 // C++ lib import
 #include <functional>
@@ -37,4 +37,4 @@ private:
 
 }
 
-#endif//__PropertyMaker_h__
+#endif//__GROUP_QT_PROPERTYMAKER_CPP_PROPERTYMAKER_H__

@@ -1,5 +1,5 @@
-﻿#ifndef __RgbStringTransform_h__
-#define __RgbStringTransform_h__
+﻿#ifndef __GROUP_TEXT_RGBSTRINGTRANSFORM_CPP_RGBSTRINGTRANSFORM_H__
+#define __GROUP_TEXT_RGBSTRINGTRANSFORM_CPP_RGBSTRINGTRANSFORM_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -36,4 +36,4 @@ public slots:
 
 }
 
-#endif//__RgbStringTransform_h__
+#endif//__GROUP_TEXT_RGBSTRINGTRANSFORM_CPP_RGBSTRINGTRANSFORM_H__

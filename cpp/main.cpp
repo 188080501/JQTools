@@ -39,6 +39,7 @@
 
 // Tool group import
 #include "LinesStatistics.h"
+#include "PngOptimize.h"
 
 // Qt group import
 #include "PngWarningRemover.h"
@@ -62,34 +63,40 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    if ( QThreadPool::globalInstance()->maxThreadCount() > 1 )
+    {
+        QThreadPool::globalInstance()->setMaxThreadCount( QThreadPool::globalInstance()->maxThreadCount() - 1 );
+    }
+
     QQmlApplicationEngine engine;
     JQToolsManage jqToolsManage;
 
     // Welcome initializa
-    WELCOME_INITIALIZA
+    WELCOME_INITIALIZA;
 
     // Text group  initializa
-    UTF16TRANSFORM_INITIALIZA
-    RGBSTRINGTRANSFORM_INITIALIZA
-    CASETRANSFORM_INITIALIZA
-    RANDOMPASSWORD_INITIALIZA
-    URLENCODE_INITIALIZA
-    JSONFORMAT_INITIALIZA
+    UTF16TRANSFORM_INITIALIZA;
+    RGBSTRINGTRANSFORM_INITIALIZA;
+    CASETRANSFORM_INITIALIZA;
+    RANDOMPASSWORD_INITIALIZA;
+    URLENCODE_INITIALIZA;
+    JSONFORMAT_INITIALIZA;
 
     // Calculate group initializa
-    HASHCALCULATE_INITIALIZA
-    TTIMESTAMPTRANSFORM_INITIALIZA
+    HASHCALCULATE_INITIALIZA;
+    TTIMESTAMPTRANSFORM_INITIALIZA;
 
     // Make group initializa
-    ICONMAKER_INITIALIZA
-    FONTTOPNG_INITIALIZA
+    ICONMAKER_INITIALIZA;
+    FONTTOPNG_INITIALIZA;
 
     // Tool group initializa
-    LINESSTATISTICS_INITIALIZA
+    LINESSTATISTICS_INITIALIZA;
+    PNGOPTIMIZE_INITIALIZA;
 
     // Qt group initializa
-    PNGWARNINGREMOVER_INITIALIZA
-    PROPERTYMAKER_INITIALIZA
+    PNGWARNINGREMOVER_INITIALIZA;
+    PROPERTYMAKER_INITIALIZA;
 
 #ifdef JQQMLLIB_LIB
     JQQmlLibAddToEngine(engine)

@@ -226,3 +226,7 @@ exists($$PWD/src/JQXmlToJson.cpp) {
     SOURCES *= $$PWD/src/JQXmlToJson.cpp
     HEADERS *= $$PWD/include/JQXmlToJson.h
 }
+
+exists($$PWD/JQZopfli.pri) {
+    include($$PWD/JQZopfli.pri)
+}
