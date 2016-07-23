@@ -1,5 +1,8 @@
 ﻿#include "PngOptimize.h"
 
+// C++ lib import
+#include <functional>
+
 // Qt lib import
 #include <QFileDialog>
 #include <QStandardPaths>
