@@ -107,6 +107,7 @@ Item {
         width: 500
         height: parent.height - 180
         clip: true
+        cacheBuffer: 9999
 
         model: ListModel {
             id: listModelForNodes
