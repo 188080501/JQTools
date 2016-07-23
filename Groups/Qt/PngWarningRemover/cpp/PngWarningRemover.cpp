@@ -13,27 +13,27 @@ QString Manage::conversationPng()
     QEventLoop eventLoop;
     QString reply;
 
-    const auto &&paths = QFileDialog::getOpenFileNames(
+    const auto &&filePaths = QFileDialog::getOpenFileNames(
                     nullptr,
                     QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
                     QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
                     "*.png"
                 );
 
-    QtConcurrent::run( [ &eventLoop, &reply, &paths ]()
+    QtConcurrent::run( [ &eventLoop, &reply, &filePaths ]()
     {
-        if ( paths.isEmpty() )
+        if ( filePaths.isEmpty() )
         {
             reply = "cancel";
             QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
-        for ( const auto &path: paths )
+        for ( const auto &filePath: filePaths )
         {
-            QImage image( path, "PNG" );
+            QImage image( filePath, "PNG" );
 
-            if ( image.isNull() || !image.save( path ) )
+            if ( image.isNull() || !image.save( filePath ) )
             {
                 reply = "openSourceError";
                 QMetaObject::invokeMethod( &eventLoop, "quit" );
@@ -42,7 +42,7 @@ QString Manage::conversationPng()
 
             QImage image2( image.bits(), image.width(), image.height(), QImage::Format_ARGB32 );
 
-            if ( image2.isNull() || !image2.save( path ) )
+            if ( image2.isNull() || !image2.save( filePath ) )
             {
                 reply = "saveTargetError";
                 QMetaObject::invokeMethod( &eventLoop, "quit" );

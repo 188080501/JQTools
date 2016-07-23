@@ -1,5 +1,5 @@
-﻿#ifndef __FontToPng_h__
-#define __FontToPng_h__
+﻿#ifndef __GROUP_MAKE_FONTTOPNG_CPP_FONTTOPNG_H__
+#define __GROUP_MAKE_FONTTOPNG_CPP_FONTTOPNG_H__
 
 // C++ lib import
 #include <functional>
@@ -86,4 +86,4 @@ private:
 
 }
 
-#endif//__FontToPng_h__
+#endif//__GROUP_MAKE_FONTTOPNG_CPP_FONTTOPNG_H__

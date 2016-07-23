@@ -1,5 +1,5 @@
-﻿#ifndef __CaseTransform_h__
-#define __CaseTransform_h__
+﻿#ifndef __GROUP_TEXT_CASETRANSFORM_CPP_CASETRANSFORM_H__
+#define __GROUP_TEXT_CASETRANSFORM_CPP_CASETRANSFORM_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -30,4 +30,4 @@ public slots:
 
 }
 
-#endif//__CaseTransform_h__
+#endif//__GROUP_TEXT_CASETRANSFORM_CPP_CASETRANSFORM_H__

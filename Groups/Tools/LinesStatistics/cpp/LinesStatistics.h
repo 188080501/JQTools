@@ -1,5 +1,5 @@
-﻿#ifndef __LinesStatistics_h__
-#define __LinesStatistics_h__
+﻿#ifndef __GROUP_TOOLS_LINESSTATISTICS_CPP_LINESSTATISTICS_H__
+#define __GROUP_TOOLS_LINESSTATISTICS_CPP_LINESSTATISTICS_H__
 
 // Qt lib import
 #include <QJsonObject>
@@ -31,4 +31,4 @@ public slots:
 
 }
 
-#endif//__LinesStatistics_h__
+#endif//__GROUP_TOOLS_LINESSTATISTICS_CPP_LINESSTATISTICS_H__

@@ -1,6 +1,7 @@
 ﻿#include "LinesStatistics.h"
 
 // Qt lib import
+#include <QSet>
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QJsonArray>
@@ -39,6 +40,19 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
 
     QtConcurrent::run( [ & ]()
     {
+        static QSet< QString > imageSuffixs;
+        if ( imageSuffixs.isEmpty() )
+        {
+            imageSuffixs.insert( "png" );
+            imageSuffixs.insert( "jpg" );
+            imageSuffixs.insert( "jpeg" );
+            imageSuffixs.insert( "bmp" );
+            imageSuffixs.insert( "gif" );
+            imageSuffixs.insert( "svg" );
+            imageSuffixs.insert( "psd" );
+            imageSuffixs.insert( "ai" );
+        }
+
         JQFile::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
         {
             if ( !availableSuffixs.contains( info.suffix().toLower() ) ) { return; }
@@ -51,6 +65,9 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
             const auto &&fileAllData = file.readAll();
 
             if ( fileAllData.isEmpty() ) { return; }
+
+            if ( imageSuffixs.contains( info.suffix().toLower() ) ) { return; }
+
             lineCount += fileAllData.count('\n') + 1;
         }, true);
 

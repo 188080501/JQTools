@@ -1,5 +1,5 @@
-﻿#ifndef __RandomPassword_h__
-#define __RandomPassword_h__
+﻿#ifndef __GROUP_TEXT_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H__
+#define __GROUP_TEXT_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -28,4 +28,4 @@ public slots:
 
 }
 
-#endif//__RandomPassword_h__
+#endif//__GROUP_TEXT_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H__

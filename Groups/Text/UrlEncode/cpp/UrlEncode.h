@@ -1,5 +1,5 @@
-﻿#ifndef __UrlEncode_h__
-#define __UrlEncode_h__
+﻿#ifndef __GROUP_TEXT_URLENCODE_CPP_URLENCODE_H__
+#define __GROUP_TEXT_URLENCODE_CPP_URLENCODE_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -30,4 +30,4 @@ public slots:
 
 }
 
-#endif//__UrlEncode_h__
+#endif//__GROUP_TEXT_URLENCODE_CPP_URLENCODE_H__

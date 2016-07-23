@@ -63,6 +63,7 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "代码行数统计", titleName: "代码行数统计", qrcLocation: "qrc:/LinesStatistics/LinesStatistics.qml" },
+                                { bookmarkName: "PNG图片压缩", titleName: "PNG图片压缩", qrcLocation: "qrc:/PngOptimize/PngOptimize.qml" },
                                 { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "notSupport" },
                                 { bookmarkName: "局域网文件传输", titleName: "局域网文件传输", qrcLocation: "notSupport" },
                                 { bookmarkName: "局域网远程构建", titleName: "局域网远程构建", qrcLocation: "notSupport" }

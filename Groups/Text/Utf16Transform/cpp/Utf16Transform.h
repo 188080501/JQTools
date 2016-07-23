@@ -1,5 +1,5 @@
-﻿#ifndef __Utf16Transform_h__
-#define __Utf16Transform_h__
+﻿#ifndef __GROUP_TEXT_UTF16TRANSFORM_CPP_UTF16TRANSFORM_H__
+#define __GROUP_TEXT_UTF16TRANSFORM_CPP_UTF16TRANSFORM_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -30,4 +30,4 @@ public slots:
 
 }
 
-#endif//__Utf16Transform_h__
+#endif//__GROUP_TEXT_UTF16TRANSFORM_CPP_UTF16TRANSFORM_H__

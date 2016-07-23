@@ -1,5 +1,5 @@
-﻿#ifndef __HashCalculate_h__
-#define __HashCalculate_h__
+﻿#ifndef __GROUP_CALCULATE_HASHCALCULATE_CPP_HASHCALCULATE_H__
+#define __GROUP_CALCULATE_HASHCALCULATE_CPP_HASHCALCULATE_H__
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -80,4 +80,4 @@ private:
 
 }
 
-#endif//__HashCalculate_h__
+#endif//__GROUP_CALCULATE_HASHCALCULATE_CPP_HASHCALCULATE_H__
