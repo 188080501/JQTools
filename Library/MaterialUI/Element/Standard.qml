@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QML Air - A lightweight and mostly flat UI widget collection for QML
  * Copyright (C) 2014 Michael Spencer
  *
@@ -33,6 +33,8 @@ BaseListItem {
     property alias content: contentItem.children
 
     property alias itemLabel: label
+
+    property var labelHorizontalAlignment: Text.AlignLeft
 
     dividerInset: actionItem.visible ? listItem.height : 0
 
@@ -81,6 +83,8 @@ BaseListItem {
                 color: listItem.selected ? "#fafafa" : "#d8000000"
 
                 visible: !contentItem.visible
+
+                horizontalAlignment: listItem.labelHorizontalAlignment
             }
         }
 
@@ -94,6 +98,8 @@ BaseListItem {
             style: "body1"
 
             visible: text != ""
+
+            horizontalAlignment: listItem.labelHorizontalAlignment
         }
 
         Item {

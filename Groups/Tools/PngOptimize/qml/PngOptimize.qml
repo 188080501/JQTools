@@ -53,7 +53,7 @@ Item {
         width: 120
         height: 40
         text: "选择图片"
-        anchors.horizontalCenterOffset: 101
+        anchors.horizontalCenterOffset: 124
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 97
@@ -80,8 +80,8 @@ Item {
     MaterialRadioButton {
         id: radioButtonForCoverOldFile
         x: 115
-        text: "优化后覆盖旧图片"
-        anchors.horizontalCenterOffset: -115
+        text: "压缩后的图片覆盖源文件"
+        anchors.horizontalCenterOffset: -92
         anchors.top: parent.top
         anchors.topMargin: 74
         anchors.horizontalCenter: parent.horizontalCenter
@@ -91,8 +91,8 @@ Item {
     MaterialRadioButton {
         id: radioButtonForNewFile
         x: 115
-        text: "另存为优化后图片到桌面"
-        anchors.horizontalCenterOffset: -94
+        text: "压缩后的图片另存为到桌面"
+        anchors.horizontalCenterOffset: -85
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 118
@@ -118,8 +118,18 @@ Item {
             width: 500
             height: 54
 
+            Component.onCompleted: {
+                pngOptimizeManage.startOptimize( fileName );
+            }
+
             Connections {
                 target: pngOptimizeManage
+
+                onOptimizePngStart: {
+                    if ( currentFileName !== fileName ) { return; }
+
+                    progressCircleForOptimizing.indeterminate = true;
+                }
 
                 onOptimizePngFinish: {
                     if ( currentFileName !== fileName ) { return; }
@@ -138,6 +148,7 @@ Item {
 
                     labelForResultSize.opacity = 1;
                     labelForResultSize.text = optimizeResult[ "resultSize" ];
+                    labelForResultSize.color = optimizeResult[ "compressionRatioColor" ];
                 }
             }
 
@@ -164,7 +175,7 @@ Item {
                 id: labelForFileName
                 x: 16
                 anchors.verticalCenter: parent.verticalCenter
-                width: 300
+                width: 280
                 text: fileName
                 elide: Text.ElideRight
             }
@@ -172,18 +183,18 @@ Item {
             MaterialLabel {
                 id: labelForOriginalSize
                 anchors.right: progressCircleForOptimizing.left
-                anchors.rightMargin: 15
+                anchors.rightMargin: 25
                 anchors.verticalCenter: parent.verticalCenter
                 text: originalSize
             }
 
             MaterialProgressCircle {
                 id: progressCircleForOptimizing
-                x: 390
+                x: 360
                 anchors.verticalCenter: parent.verticalCenter
                 width: 32
                 height: 32
-                indeterminate: visible
+                indeterminate: false
                 autoChangeColor: true
                 visible: opacity !== 0
 
@@ -207,11 +218,11 @@ Item {
             MaterialLabel {
                 id: labelForResultSize
                 anchors.left: progressCircleForOptimizing.right
-                anchors.leftMargin: 15
+                anchors.leftMargin: 25
                 anchors.verticalCenter: parent.verticalCenter
                 visible: opacity !== 0
                 opacity: 0
-                color: "#64dd17"
+                color: "#000000"
 
                 Behavior on opacity { NumberAnimation { duration: 300 } }
             }

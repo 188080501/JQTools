@@ -40,7 +40,25 @@ void Manage::begin()
 
     QThreadPool threadPool;
     threadPool.setMaxThreadCount( 1 );
-    QtConcurrent::run( &threadPool, [ &eventLoop ](){ QThreadPool::globalInstance()->waitForDone(); QMetaObject::invokeMethod( &eventLoop, "quit" ); } );
+    QtConcurrent::run( &threadPool, [ &eventLoop, this ]()
+    {
+        QThreadPool::globalInstance()->waitForDone();
+
+        this->mutex_.lock();
+
+        std::sort(
+                    this->fontPackages_.begin(),
+                    this->fontPackages_.end(),
+                    []( const FontPackage &a, const FontPackage &b )
+                    {
+                        return a.fontName < b.fontName;
+                    }
+                );
+
+        this->mutex_.unlock();
+
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
+    } );
 
     eventLoop.exec();
 }

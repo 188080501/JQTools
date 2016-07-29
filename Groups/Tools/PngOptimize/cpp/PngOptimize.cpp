@@ -40,7 +40,6 @@ QString Manage::optimizePng(const bool &coverOldFile)
         }
     }
 
-    QVector< std::function< void() > > packages;
     QJsonArray fileList;
 
     auto makeSizeString = [](const int &size)
@@ -71,15 +70,18 @@ QString Manage::optimizePng(const bool &coverOldFile)
                                                { "originalSize", makeSizeString( fileInfo.size() ) }
                                            } } ) );
 
-        packages.push_back(
-                    [
-                        this,
-                        makeSizeString,
-                        fileName = fileInfo.fileName(),
-                        originalFilePath = filePath,
-                        resultFilePath = targetDir + "/" + fileInfo.fileName()
-                    ]()
+        ++packageCount;
+
+        waitOptimizeQueue_[ fileInfo.fileName() ] = [
+                this,
+                makeSizeString,
+                fileName = fileInfo.fileName(),
+                originalFilePath = filePath,
+                resultFilePath = targetDir + "/" + fileInfo.fileName()
+                ]()
         {
+            emit this->optimizePngStart( fileName );
+
             auto optimizeResult = JQZopfli::optimize( originalFilePath, resultFilePath );
 
             emit this->optimizePngFinish(
@@ -87,7 +89,11 @@ QString Manage::optimizePng(const bool &coverOldFile)
                         { {
                               { "optimizeSucceed", optimizeResult.optimizeSucceed },
                               { "resultSize", makeSizeString( optimizeResult.resultSize ) },
-                              { "compressionRatio", QString( "-%1%" ).arg( 100 - (int)(optimizeResult.compressionRatio * 100) ) },
+                              { "compressionRatio", QString( "%1%2%" ).
+                                arg( ( optimizeResult.compressionRatio < 1 ) ? ( "-" ) : ( "" )  ).
+                                arg( 100 - (int)(optimizeResult.compressionRatio * 100) ) },
+                              { "compressionRatioColor", QString( "%1" ).
+                                arg( ( optimizeResult.compressionRatio < 1 ) ? ( "#64dd17" ) : ( "#f44336" )  ) }
                           } }
                     );
 
@@ -101,17 +107,19 @@ QString Manage::optimizePng(const bool &coverOldFile)
             }
 
             mutex.unlock();
-        } );
+        };
     }
 
     emit this->optimizeStart( fileList );
 
-    packageCount = packages.size();
-
-    for ( const auto &package: packages )
-    {
-        QtConcurrent::run( package );
-    }
-
     return "OK";
+}
+
+void Manage::startOptimize(const QString &currentFileName)
+{
+    if ( !waitOptimizeQueue_.contains( currentFileName ) ) { return; }
+
+    QtConcurrent::run( waitOptimizeQueue_[ currentFileName ] );
+
+    waitOptimizeQueue_.remove( currentFileName );
 }
