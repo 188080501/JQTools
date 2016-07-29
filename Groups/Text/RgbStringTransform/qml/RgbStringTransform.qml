@@ -38,6 +38,9 @@ Item {
                 rgbStringTransform.changingFlag = true;
 
                 textFieldForHexString.text = rgbStringTransformManage.getHexStringFromColorName( textFieldForColorName.text );
+                textFiedForRed.text = rgbStringTransformManage.getRed( textFieldForHexString.text );
+                textFiedForGreen.text = rgbStringTransformManage.getGreen( textFieldForHexString.text );
+                textFiedForBlue.text = rgbStringTransformManage.getBlue( textFieldForHexString.text );
 
                 rgbStringTransform.changingFlag = false;
             }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QML Material - An application framework implementing Material Design.
  * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
@@ -53,6 +53,8 @@ View {
             right: parent.right
             margins: margins
         }
+
+        horizontalAlignment: Text.AlignHCenter
 
         color: "#89000000"
     }

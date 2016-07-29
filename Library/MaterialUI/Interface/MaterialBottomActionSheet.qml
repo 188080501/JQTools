@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QML Material - An application framework implementing Material Design.
  * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
@@ -120,6 +120,7 @@ BottomSheet {
                                 text: itemText
                                 visible: subColumn.visible
                                 enabled: subColumn.enabled
+                                labelHorizontalAlignment: Text.AlignHCenter
 
                                 onClicked: {
                                     actionSheet.close();

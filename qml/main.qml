@@ -6,15 +6,15 @@ import "qrc:/MaterialUI/Interface/"
 
 ApplicationWindow {
     id: applicationWindow
-    title: qsTr("JQTools")
+    title: "JQTools"
     width: 800
     height: 600
     visible: true
     opacity: 0
     color: "#fafafa"
 
-    minimumWidth: 640
-    minimumHeight: 480
+    minimumWidth: 800
+    minimumHeight: 600
 
     Component.onCompleted: {
         itemForMainPage.showPage( "首页", "qrc:/Welcome/Welcome.qml" );

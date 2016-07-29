@@ -27,12 +27,22 @@ Item {
     }
 
     Component.onCompleted: {
-        materialUI.showLoading();
+        timerForBegin.start();
+    }
 
-        FontToPngManage.begin();
-        fontToPng.refresh();
+    Timer {
+        id: timerForBegin
+        interval: 50
+        repeat: false
 
-        materialUI.hideLoading();
+        onTriggered: {
+            materialUI.showLoading();
+
+            FontToPngManage.begin();
+            fontToPng.refresh();
+
+            materialUI.hideLoading();
+        }
     }
 
     RectangularGlow {
@@ -124,11 +134,11 @@ Item {
     }
 
     GridView {
-        x: (parent.width % 86) / 2
+        x: ( parent.width % 86 ) / 2
         y: 80
         width: parent.width
         height: parent.height - y
-        cellWidth: 85
+        cellWidth: 86
         cellHeight: 106
         clip: true
 
