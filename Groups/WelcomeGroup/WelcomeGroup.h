@@ -1,0 +1,10 @@
+﻿#ifndef __WELCOMEGROUP_WELCOMEGROUP_H__
+#define __WELCOMEGROUP_WELCOMEGROUP_H__
+
+// WelcomeGroup lib import
+#include "Welcome.h"
+
+#define WELCOMEGROUP_INITIALIZA \
+    WELCOME_INITIALIZA;
+
+#endif//__WELCOMEGROUP_WELCOMEGROUP_H__
