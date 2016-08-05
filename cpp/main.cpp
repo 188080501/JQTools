@@ -18,32 +18,13 @@
 // Project lib import
 #include "JQToolsManage.hpp"
 
-// Welcome import
-#include "Welcome.h"
-
-// Text group import
-#include "Utf16Transform.h"
-#include "RgbStringTransform.h"
-#include "CaseTransform.h"
-#include "RandomPassword.h"
-#include "UrlEncode.h"
-#include "JsonFormat.h"
-
-// Calculate group import
-#include "HashCalculate.h"
-#include "TimestampTransform.h"
-
-// Make group import
-#include "IconMaker.h"
-#include "FontToPng.h"
-
-// Tool group import
-#include "LinesStatistics.h"
-#include "PngOptimize.h"
-
-// Qt group import
-#include "PngWarningRemover.h"
-#include "PropertyMaker.h"
+// Group import
+#include "WelcomeGroup.h"
+#include "TextGroup.h"
+#include "CalculateGroup.h"
+#include "MakeGroup.h"
+#include "ToolsGroup.h"
+#include "QtGroup.h"
 
 void checkVersion();
 
@@ -71,40 +52,21 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     JQToolsManage jqToolsManage;
 
-    // Welcome initializa
-    WELCOME_INITIALIZA;
-
-    // Text group  initializa
-    UTF16TRANSFORM_INITIALIZA;
-    RGBSTRINGTRANSFORM_INITIALIZA;
-    CASETRANSFORM_INITIALIZA;
-    RANDOMPASSWORD_INITIALIZA;
-    URLENCODE_INITIALIZA;
-    JSONFORMAT_INITIALIZA;
-
-    // Calculate group initializa
-    HASHCALCULATE_INITIALIZA;
-    TTIMESTAMPTRANSFORM_INITIALIZA;
-
-    // Make group initializa
-    ICONMAKER_INITIALIZA;
-    FONTTOPNG_INITIALIZA;
-
-    // Tool group initializa
-    LINESSTATISTICS_INITIALIZA;
-    PNGOPTIMIZE_INITIALIZA;
-
-    // Qt group initializa
-    PNGWARNINGREMOVER_INITIALIZA;
-    PROPERTYMAKER_INITIALIZA;
+    // Group initializa
+    WELCOMEGROUP_INITIALIZA;
+    TEXTGROUP_INITIALIZA;
+    CALCULATEGROUP__INITIALIZA;
+    MAKEGROUP_INITIALIZA
+    TOOLSGROUP_INITIALIZA;
+    QTGROUP_INITIALIZA;
 
 #ifdef JQQMLLIB_LIB
     JQQmlLibAddToEngine(engine)
 #endif
 
-    engine.rootContext()->setContextProperty("JQToolsManage", &jqToolsManage);
+    engine.rootContext()->setContextProperty( "JQToolsManage", &jqToolsManage );
 
-    engine.load(QUrl("qrc:/main.qml"));
+    engine.load( QUrl( "qrc:/main.qml" ) );
 
     return app.exec();
 }

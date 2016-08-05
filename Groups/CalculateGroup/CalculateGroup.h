@@ -1,0 +1,12 @@
+﻿#ifndef __CALCULATEGROUP_CALCULATEGROUP_H__
+#define __CALCULATEGROUP_CALCULATEGROUP_H__
+
+// CalculateGroup lib import
+#include "HashCalculate.h"
+#include "TimestampTransform.h"
+
+#define CALCULATEGROUP__INITIALIZA \
+    HASHCALCULATE_INITIALIZA; \
+    TTIMESTAMPTRANSFORM_INITIALIZA;
+
+#endif//__CALCULATEGROUP_CALCULATEGROUP_H__
