@@ -45,6 +45,19 @@ Item {
             }
         }
 
+        MaterialButton {
+            x: 166
+            y: 55
+            width: 140
+            text: "处理剪切板内容"
+
+            onClicked: {
+                textFieldForSource.text = caseTransformManage.clipboardText();
+                caseTransformManage.setClipboardText( textFieldForLower.text );
+                materialUI.showSnackbarMessage( "小写字符串已经复制到了剪切板" );
+            }
+        }
+
         MaterialTextField {
             id: textFieldForSource
             x: 40
@@ -93,6 +106,19 @@ Item {
             text: "复制到剪切板"
 
             onClicked: {
+                caseTransformManage.setClipboardText( textFieldForUpper.text );
+                materialUI.showSnackbarMessage( "大写字符串已经复制到了剪切板" );
+            }
+        }
+
+        MaterialButton {
+            x: 166
+            y: 361
+            width: 140
+            text: "处理剪切板内容"
+
+            onClicked: {
+                textFieldForSource.text = caseTransformManage.clipboardText();
                 caseTransformManage.setClipboardText( textFieldForUpper.text );
                 materialUI.showSnackbarMessage( "大写字符串已经复制到了剪切板" );
             }
