@@ -42,7 +42,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 40
-        text: "基于Zopfli开发，仅支持PNG图片，大图片压缩非常慢，请耐心等待"
+        text: "基于Zopfli开发，仅支持PNG图片，大图片压缩非常慢，请耐心等待\n支持文件拖拽"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
     }
@@ -61,7 +61,7 @@ Item {
         onClicked: {
             materialUI.showLoading();
 
-            var reply = pngOptimizeManage.optimizePng( radioButtonForCoverOldFile.checked );
+            var reply = pngOptimizeManage.optimizePng( radioButtonForCoverOldFile.checked, [ ] );
 
             switch( reply )
             {
@@ -226,6 +226,40 @@ Item {
 
                 Behavior on opacity { NumberAnimation { duration: 300 } }
             }
+        }
+    }
+
+    DropArea {
+        anchors.fill: parent
+
+        onDropped: {
+            if( !drop.hasUrls ) { return; }
+
+            var filePaths = [ ];
+
+            for( var index = 0; index < drop.urls.length; ++index )
+            {
+                var url = drop.urls[ index ].toString();
+
+                if ( url.indexOf( "file://" ) !== 0 ) { return; }
+                if ( url.toLowerCase().lastIndexOf( ".png" ) !== ( url.length - 4 ) )  { return; }
+
+                filePaths.push( url.substr( 7 ) );
+            }
+
+            if ( filePaths.length === 0 ) { return; }
+
+            materialUI.showLoading();
+
+            var reply = pngOptimizeManage.optimizePng( radioButtonForCoverOldFile.checked, filePaths );
+
+            switch( reply )
+            {
+                case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
+                case "mkdir error": materialUI.showSnackbarMessage( "创建目标文件夹失败" ); break;
+            }
+
+            materialUI.hideLoading();
         }
     }
 }
