@@ -120,7 +120,7 @@ QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexS
 
     if ( !charPackage.code ) { return "error"; }
 
-    const auto &&image = this->paintChar( familieName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ) );
+    const auto &&image = this->paintChar( familieName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ), true );
     const auto &&saveSucceed = image.save( filePath, "PNG" );
 
     return ( saveSucceed ) ? ( "OK" ) : ( "error" );
@@ -156,7 +156,7 @@ void Manage::loadFont(const QString fontName)
         if ( !charPackage.code ) { continue; }
 
         this->makeAdaptation( fontPackage.familieName, charPackage );
-        charPackage.preview = this->paintChar( fontPackage.familieName, charPackage, "#000000", { 60, 60 }, { 60, 60 } );
+        charPackage.preview = this->paintChar( fontPackage.familieName, charPackage, "#000000", { 60, 60 }, { 60, 60 }, false );
 
         fontPackage.charPackages[ charPackage.code ] = charPackage;
     }
@@ -166,7 +166,7 @@ void Manage::loadFont(const QString fontName)
     mutex_.unlock();
 }
 
-QImage Manage::paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize)
+QImage Manage::paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool &moreProcess)
 {
     QPainter patiner;
     QImage image( backgroundSize.toSize(), QImage::Format_ARGB32 );
@@ -177,6 +177,16 @@ QImage Manage::paintChar(const QString &familieName, const CharPackage &charPack
 
     QFont font( familieName );
     font.setPixelSize( qMin( charSize.width(), charSize.height() ) * charPackage.charAdaptation.scale );
+
+    QColor backgroundColor = color;
+    backgroundColor.setAlpha( 1 );
+
+    if ( moreProcess )
+    {
+        patiner.setBrush( QBrush( backgroundColor ) );
+        patiner.setPen( QPen( QColor( "#00000000" ) ) );
+        patiner.drawRect( 0, 0, image.width(), image.height() );
+    }
 
     patiner.setFont( font );
     patiner.setPen( QPen( color ) );
@@ -190,6 +200,20 @@ QImage Manage::paintChar(const QString &familieName, const CharPackage &charPack
                 QString( QChar( charPackage.code ) )
             );
 
+    if ( moreProcess )
+    {
+        for ( auto y = 0; y < image.height(); ++y )
+        {
+            for ( auto x = 0; x < image.width(); ++x )
+            {
+                if ( image.pixelColor( x, y ) == backgroundColor )
+                {
+                    image.setPixelColor( x, y, QColor( "#00000000" ) );
+                }
+            }
+        }
+    }
+
     return image;
 }
 
@@ -198,7 +222,7 @@ void Manage::makeAdaptation(const QString &familieName, CharPackage &charPackage
     QSizeF charSize( 400, 400 );
     QSizeF backgroundSize( 500, 500 );
 
-    auto referenceImage = this->paintChar( familieName, charPackage, { "#000000" }, charSize, backgroundSize);
+    auto referenceImage = this->paintChar( familieName, charPackage, { "#000000" }, charSize, backgroundSize, false );
 
     qreal xStart = -1;
     qreal xEnd = backgroundSize.width();
