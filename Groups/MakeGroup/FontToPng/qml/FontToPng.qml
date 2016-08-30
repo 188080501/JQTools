@@ -36,7 +36,7 @@ Item {
         repeat: false
 
         onTriggered: {
-            materialUI.showLoading();
+            materialUI.showLoading( "初始化中，请稍等" );
 
             FontToPngManage.begin();
             fontToPng.refresh();

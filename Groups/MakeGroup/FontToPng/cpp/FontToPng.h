@@ -73,7 +73,7 @@ public slots:
 private:
     void loadFont(const QString fontName);
 
-    QImage paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize);
+    QImage paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool &moreProcess);
 
     void makeAdaptation(const QString &familieName, CharPackage &charPackage);
 
