@@ -101,8 +101,10 @@ Item {
 
     property string materialFontName: "Material-Design-Iconic-Font"
 
-    property string dialogOKText: ("OK")
-    property string dialogCancelText: ("Cancel")
+    property alias progressCircleLabelColor: labelForProgressCircle.color
+
+    property string dialogOKText: "OK"
+    property string dialogCancelText: "Cancel"
 
     function isSmartPhone() {
         return (Qt.platform.os === "ios") || (Qt.platform.os === "android");
@@ -249,10 +251,10 @@ Item {
         {
             case 1:
             case 2:
-                labelProgressCircle.text = text;
+                labelForProgressCircle.text = text;
                 break;
             default:
-                labelProgressCircle.text = "";
+                labelForProgressCircle.text = "";
                 break;
         }
 
@@ -348,7 +350,7 @@ Item {
         visible: false
 
         MaterialLabel {
-            id: labelProgressCircle
+            id: labelForProgressCircle
             anchors.top: parent.bottom
             anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
