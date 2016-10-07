@@ -37,7 +37,7 @@ public slots:
 
     QString optimizePngByOpenDirectory(const bool &coverOldFile);
 
-    void startOptimize(const QString &currentFileName);
+    void startOptimize(const QString &currentFilePath);
 
 private:
     QString optimizePng(const bool &coverOldFile, const QStringList &filePaths);
@@ -45,9 +45,9 @@ private:
 signals:
     void optimizeStart(const QJsonArray fileList);
 
-    void optimizePngStart(const QString currentFileName);
+    void optimizePngStart(const QString currentFilePath);
 
-    void optimizePngFinish(const QString currentFileName, const QJsonObject optimizeResult);
+    void optimizePngFinish(const QString currentFilePath, const QJsonObject optimizeResult);
 
     void optimizeEnd();
 

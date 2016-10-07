@@ -28,6 +28,7 @@ Item {
             {
                 listModelForNodes.append( {
                                              fileName: fileList[ index ][ "fileName" ],
+                                             filePath: fileList[ index ][ "filePath" ],
                                              originalSize: fileList[ index ][ "originalSize" ]
                                          } );
             }
@@ -148,20 +149,20 @@ Item {
             height: 54
 
             Component.onCompleted: {
-                pngOptimizeManage.startOptimize( fileName );
+                pngOptimizeManage.startOptimize( filePath );
             }
 
             Connections {
                 target: pngOptimizeManage
 
                 onOptimizePngStart: {
-                    if ( currentFileName !== fileName ) { return; }
+                    if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.indeterminate = true;
                 }
 
                 onOptimizePngFinish: {
-                    if ( currentFileName !== fileName ) { return; }
+                    if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.opacity = 0;
                     labelForCompressionRatio.opacity = 1;
@@ -204,7 +205,7 @@ Item {
                 id: labelForFileName
                 x: 16
                 anchors.verticalCenter: parent.verticalCenter
-                width: 280
+                width: 260
                 text: fileName
                 elide: Text.ElideRight
             }
