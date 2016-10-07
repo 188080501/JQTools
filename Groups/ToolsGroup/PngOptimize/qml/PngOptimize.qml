@@ -20,6 +20,7 @@ Item {
 
         onOptimizeStart: {
             buttonForChooseImage.enabled = false;
+            buttonForChooseDirectory.enabled = false;
             materialUI.showSnackbarMessage( "开始压缩图片" );
 
             listModelForNodes.clear();
@@ -34,6 +35,7 @@ Item {
 
         onOptimizeEnd: {
             buttonForChooseImage.enabled = true;
+            buttonForChooseDirectory.enabled = true;
             materialUI.showSnackbarMessage( "压缩图片完成" );
         }
     }
@@ -41,7 +43,7 @@ Item {
     MaterialLabel {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 21
+        anchors.topMargin: 22
         text: "基于Zopfli开发，仅支持PNG图片\n大图片压缩非常慢，请耐心等待\n（可以将文件拖拽拖拽到此处）"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
@@ -53,19 +55,46 @@ Item {
         width: 120
         height: 40
         text: "选择图片"
-        anchors.horizontalCenterOffset: 124
+        anchors.horizontalCenterOffset: 34
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 97
+        anchors.topMargin: 105
 
         onClicked: {
             materialUI.showLoading();
 
-            var reply = pngOptimizeManage.optimizePng( radioButtonForCoverOldFile.checked, [ ] );
+            var reply = pngOptimizeManage.optimizePngByOpenFiles( radioButtonForCoverOldFile.checked );
 
             switch( reply )
             {
                 case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
+                case "mkdir error": materialUI.showSnackbarMessage( "创建目标文件夹失败" ); break;
+            }
+
+            materialUI.hideLoading();
+        }
+    }
+
+    MaterialButton {
+        id: buttonForChooseDirectory
+        x: 254
+        width: 120
+        height: 40
+        text: "选择文件夹"
+        anchors.horizontalCenterOffset: 190
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 105
+
+        onClicked: {
+            materialUI.showLoading();
+
+            var reply = pngOptimizeManage.optimizePngByOpenDirectory( radioButtonForCoverOldFile.checked );
+
+            switch( reply )
+            {
+                case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
+                case "empty": materialUI.showSnackbarMessage( "所选文件夹不包含png图片" ); break;
                 case "mkdir error": materialUI.showSnackbarMessage( "创建目标文件夹失败" ); break;
             }
 
@@ -81,9 +110,9 @@ Item {
         id: radioButtonForCoverOldFile
         x: 115
         text: "压缩后的图片覆盖源文件"
-        anchors.horizontalCenterOffset: -92
+        anchors.horizontalCenterOffset: -168
         anchors.top: parent.top
-        anchors.topMargin: 74
+        anchors.topMargin: 83
         anchors.horizontalCenter: parent.horizontalCenter
         exclusiveGroup: exclusiveGroupForMode
     }
@@ -92,10 +121,10 @@ Item {
         id: radioButtonForNewFile
         x: 115
         text: "压缩后的图片另存为到桌面"
-        anchors.horizontalCenterOffset: -85
+        anchors.horizontalCenterOffset: -161
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 118
+        anchors.topMargin: 126
         exclusiveGroup: exclusiveGroupForMode
         checked: true
     }
@@ -251,7 +280,7 @@ Item {
 
             materialUI.showLoading();
 
-            var reply = pngOptimizeManage.optimizePng( radioButtonForCoverOldFile.checked, filePaths );
+            var reply = pngOptimizeManage.optimizePngByFilePaths( radioButtonForCoverOldFile.checked, filePaths );
 
             switch( reply )
             {

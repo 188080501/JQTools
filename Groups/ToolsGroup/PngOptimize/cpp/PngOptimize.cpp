@@ -10,32 +10,78 @@
 
 // JQLibrary import
 #include "JQZopfli.h"
+#include "JQFile.h"
 
 using namespace PngOptimize;
 
-QString Manage::optimizePng(const bool &coverOldFile, const QJsonArray &filePaths_)
+QString Manage::optimizePngByFilePaths(const bool &coverOldFile, const QJsonArray &filePaths_)
 {
     QStringList filePaths;
 
-    if ( filePaths_.isEmpty() )
+    for ( const auto &filePath: filePaths_ )
     {
-        filePaths = QFileDialog::getOpenFileNames(
-                            nullptr,
-                            QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
-                            QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
-                            "*.png"
-                        );
-
-        if ( filePaths.isEmpty() ) { return "cancel"; }
-    }
-    else
-    {
-        for ( const auto &filePath: filePaths_ )
-        {
-            filePaths.push_back( filePath.toString() );
-        }
+        filePaths.push_back( filePath.toString() );
     }
 
+    return this->optimizePng( coverOldFile, filePaths );
+}
+
+QString Manage::optimizePngByOpenFiles(const bool &coverOldFile)
+{
+    QStringList filePaths;
+
+    filePaths = QFileDialog::getOpenFileNames(
+                        nullptr,
+                        QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                        QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
+                        "*.png"
+                    );
+
+    if ( filePaths.isEmpty() ) { return "cancel"; }
+
+    return this->optimizePng( coverOldFile, filePaths );
+}
+
+QString Manage::optimizePngByOpenDirectory(const bool &coverOldFile)
+{
+    QStringList filePaths;
+
+    const auto &&directoryPath = QFileDialog::getExistingDirectory(
+                nullptr,
+                QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
+            );
+
+    if ( directoryPath.isEmpty() ) { return "cancel"; }
+
+    JQFile::foreachFileFromDirectory(
+                directoryPath,
+                [ &filePaths ]
+                (const QFileInfo &fileInfo)
+                {
+                    if ( fileInfo.suffix().toLower() != "png" ) { return; }
+
+                    filePaths.push_back( fileInfo.filePath() );
+                },
+                true
+            );
+
+    if ( directoryPath.isEmpty() ) { return "empty"; }
+
+    return this->optimizePng( coverOldFile, filePaths );
+}
+
+void Manage::startOptimize(const QString &currentFileName)
+{
+    if ( !waitOptimizeQueue_.contains( currentFileName ) ) { return; }
+
+    QtConcurrent::run( waitOptimizeQueue_[ currentFileName ] );
+
+    waitOptimizeQueue_.remove( currentFileName );
+}
+
+QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePaths)
+{
     QString targetDir;
 
     if ( coverOldFile )
@@ -125,13 +171,4 @@ QString Manage::optimizePng(const bool &coverOldFile, const QJsonArray &filePath
     emit this->optimizeStart( fileList );
 
     return "OK";
-}
-
-void Manage::startOptimize(const QString &currentFileName)
-{
-    if ( !waitOptimizeQueue_.contains( currentFileName ) ) { return; }
-
-    QtConcurrent::run( waitOptimizeQueue_[ currentFileName ] );
-
-    waitOptimizeQueue_.remove( currentFileName );
 }

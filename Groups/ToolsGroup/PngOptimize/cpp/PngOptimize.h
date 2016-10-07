@@ -31,9 +31,16 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString optimizePng(const bool &coverOldFile, const QJsonArray &filePaths);
+    QString optimizePngByFilePaths(const bool &coverOldFile, const QJsonArray &filePaths);
+
+    QString optimizePngByOpenFiles(const bool &coverOldFile);
+
+    QString optimizePngByOpenDirectory(const bool &coverOldFile);
 
     void startOptimize(const QString &currentFileName);
+
+private:
+    QString optimizePng(const bool &coverOldFile, const QStringList &filePaths);
 
 signals:
     void optimizeStart(const QJsonArray fileList);
