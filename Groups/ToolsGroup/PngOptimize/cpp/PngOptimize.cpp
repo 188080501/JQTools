@@ -71,13 +71,13 @@ QString Manage::optimizePngByOpenDirectory(const bool &coverOldFile)
     return this->optimizePng( coverOldFile, filePaths );
 }
 
-void Manage::startOptimize(const QString &currentFileName)
+void Manage::startOptimize(const QString &currentFilePath)
 {
-    if ( !waitOptimizeQueue_.contains( currentFileName ) ) { return; }
+    if ( !waitOptimizeQueue_.contains( currentFilePath ) ) { return; }
 
-    QtConcurrent::run( waitOptimizeQueue_[ currentFileName ] );
+    QtConcurrent::run( waitOptimizeQueue_[ currentFilePath ] );
 
-    waitOptimizeQueue_.remove( currentFileName );
+    waitOptimizeQueue_.remove( currentFilePath );
 }
 
 QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePaths)
@@ -125,25 +125,27 @@ QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePat
 
         fileList.push_back( QJsonObject( { {
                                                { "fileName", fileInfo.fileName() },
+                                               { "filePath", filePath },
                                                { "originalSize", makeSizeString( fileInfo.size() ) }
                                            } } ) );
 
         ++packageCount;
 
-        waitOptimizeQueue_[ fileInfo.fileName() ] = [
+        waitOptimizeQueue_[ filePath ] = [
                 this,
+                filePath,
                 makeSizeString,
                 fileName = fileInfo.fileName(),
                 originalFilePath = filePath,
                 resultFilePath = targetDir + "/" + fileInfo.fileName()
                 ]()
         {
-            emit this->optimizePngStart( fileName );
+            emit this->optimizePngStart( filePath );
 
             auto optimizeResult = JQZopfli::optimize( originalFilePath, resultFilePath );
 
             emit this->optimizePngFinish(
-                        fileName,
+                        filePath,
                         { {
                               { "optimizeSucceed", optimizeResult.optimizeSucceed },
                               { "resultSize", makeSizeString( optimizeResult.resultSize ) },
