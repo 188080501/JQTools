@@ -84,11 +84,7 @@ QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePat
 {
     QString targetDir;
 
-    if ( coverOldFile )
-    {
-        targetDir = QFileInfo( filePaths.first() ).path();
-    }
-    else
+    if ( !coverOldFile )
     {
         targetDir = QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) + "/JQTools_OptimizePngResult/";
 
@@ -137,7 +133,7 @@ QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePat
                 makeSizeString,
                 fileName = fileInfo.fileName(),
                 originalFilePath = filePath,
-                resultFilePath = targetDir + "/" + fileInfo.fileName()
+                resultFilePath = ( targetDir.isEmpty() ) ? ( filePath ) : ( targetDir + "/" + fileInfo.fileName() )
                 ]()
         {
             emit this->optimizePngStart( filePath );
