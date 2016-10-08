@@ -25,7 +25,7 @@ https://github.com/188080501/JQTools/issues
 
 ## 界面预览
 
-![](./JQToolsPreview.png)
+![](./preview/JQToolsPreview.png)
 
 ## 开发计划
 

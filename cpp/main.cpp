@@ -1,4 +1,16 @@
-﻿// Qt lib import
+﻿/*
+    This file is part of JQTools
+
+    Project introduce: https://github.com/188080501/JQTools
+
+    Copyright: Jason
+
+    Contact email: Jason@JasonServer.com
+
+    GitHub: https://github.com/188080501/
+*/
+
+// Qt lib import
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -16,15 +28,15 @@
 #include "JQToolsLibrary.h"
 
 // Project lib import
-#include "JQToolsManage.hpp"
+#include <JQToolsManage>
 
 // Group import
-#include "WelcomeGroup.h"
-#include "TextGroup.h"
-#include "CalculateGroup.h"
-#include "MakeGroup.h"
-#include "ToolsGroup.h"
-#include "QtGroup.h"
+#include <WelcomeGroup>
+#include <TextGroup>
+#include <CalculateGroup>
+#include <MakeGroup>
+#include <ToolsGroup>
+#include <QtGroup>
 
 void checkVersion();
 

@@ -5,27 +5,27 @@ QT += qml quick widgets concurrent
 CONFIG += c++11
 CONFIG += c++14
 
-include($$PWD/Library/JQLibrary/JQLibrary.pri)
-include($$PWD/Library/MaterialUI/MaterialUI.pri)
-include($$PWD/Library/JQToolsLibrary/JQToolsLibrary.pri)
-include($$PWD/Groups/Groups.pri)
+include($$PWD/lib/JQLibrary/JQLibrary.pri)
+include($$PWD/lib/MaterialUI/MaterialUI.pri)
+include($$PWD/lib/JQToolsLibrary/JQToolsLibrary.pri)
+include($$PWD/components/components.pri)
+
+INCLUDEPATH += \
+    $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/JQToolsManage.hpp
+    $$PWD/cpp/*.hpp
 
 SOURCES += \
-    $$PWD/cpp/main.cpp
+    $$PWD/cpp/*.cpp
 
 RESOURCES += \
     $$PWD/qml/qml.qrc
 
-# Default rules for deployment.
-include(deployment.pri)
-
 macx{
-    ICON = $$PWD/Resources/Icon/Icon.icns
+    ICON = $$PWD/resources/Icon/Icon.icns
 }
 
 win32{
-    RC_FILE = $$PWD/Resources/Icon/Icon.rc
+    RC_FILE = $$PWD/resources/Icon/Icon.rc
 }
