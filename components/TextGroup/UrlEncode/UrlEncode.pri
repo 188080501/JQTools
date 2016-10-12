@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/urlencode.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/urlencode.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/UrlEncode.qrc

@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/casetransform.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/casetransform.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/CaseTransform.qrc

@@ -18,4 +18,4 @@ INCLUDEPATH += \
     $$PWD/
 
 HEADERS += \
-    $$PWD/*.h
+    $$PWD/toolsgroup.h

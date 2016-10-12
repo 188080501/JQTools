@@ -14,11 +14,11 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/iconmaker.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/iconmaker.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc \
-    $$PWD/Image/*.qrc
+    $$PWD/qml/IconMaker.qrc \
+    $$PWD/Image/IconMakerImage.qrc

@@ -14,11 +14,11 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/fonttopng.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/fonttopng.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc \
-    $$PWD/Resource/Font/*.qrc
+    $$PWD/qml/FontToPng.qrc \
+    $$PWD/Resource/Font/FontToPngFont.qrc

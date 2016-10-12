@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/linesstatistics.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/linesstatistics.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/LinesStatistics.qrc

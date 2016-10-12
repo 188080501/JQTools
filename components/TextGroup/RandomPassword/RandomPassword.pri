@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/randompassword.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/randompassword.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/RandomPassword.qrc

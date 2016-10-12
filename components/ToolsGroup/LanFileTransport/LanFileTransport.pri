@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/lanfiletransport.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/lanfiletransport_.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/LanFileTransport.qrc

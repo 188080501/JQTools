@@ -15,11 +15,11 @@ INCLUDEPATH += \
     $$PWD/
 
 HEADERS += \
-    $$PWD/cpp/*.h \
-    $$PWD/*.h
+    $$PWD/cpp/welcome.h \
+    $$PWD/welcomegroup.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/welcome.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/Welcome.qrc

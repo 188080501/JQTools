@@ -1,3 +1,15 @@
+#
+#   This file is part of JQTools
+#
+#   Project introduce: https://github.com/188080501/JQTools
+#
+#   Copyright: Jason
+#
+#   Contact email: Jason@JasonServer.com
+#
+#   GitHub: https://github.com/188080501/
+#
+
 TEMPLATE = app
 
 QT += qml quick widgets concurrent
@@ -15,18 +27,18 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.hpp
+    $$PWD/cpp/jqtools_manage.hpp
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/main.cpp
 
 RESOURCES += \
     $$PWD/qml/qml.qrc
 
-macx{
+macx {
     ICON = $$PWD/resources/Icon/Icon.icns
 }
 
-win32{
+win32 {
     RC_FILE = $$PWD/resources/Icon/Icon.rc
 }
