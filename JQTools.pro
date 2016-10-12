@@ -8,6 +8,7 @@ CONFIG += c++14
 include($$PWD/lib/JQLibrary/JQLibrary.pri)
 include($$PWD/lib/MaterialUI/MaterialUI.pri)
 include($$PWD/lib/JQToolsLibrary/JQToolsLibrary.pri)
+include($$PWD/lib/JQNetwork/JQNetworkSrc.pri)
 include($$PWD/components/components.pri)
 
 INCLUDEPATH += \

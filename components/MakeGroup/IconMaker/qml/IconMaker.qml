@@ -10,7 +10,7 @@
     GitHub: https://github.com/188080501/
 */
 
-import QtQuick 2.5
+import QtQuick 2.6
 import QtQuick.Controls 1.4
 import "qrc:/MaterialUI/Interface/"
 import IconMaker 1.0
