@@ -17,4 +17,4 @@ INCLUDEPATH += \
     $$PWD/
 
 HEADERS += \
-    $$PWD/*.h
+    $$PWD/makegroup.h

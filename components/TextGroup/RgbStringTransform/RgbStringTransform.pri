@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/rgbstringtransform.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/rgbstringtransform.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/RgbStringTransform.qrc

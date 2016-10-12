@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/utf16transform.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/utf16transform.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/Utf16Transform.qrc

@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/pngoptimize.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/pngoptimize.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/PngOptimize.qrc

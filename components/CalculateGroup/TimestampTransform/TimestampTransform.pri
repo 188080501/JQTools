@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/timestamptransform.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/timestamptransform.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/TimestampTransform.qrc

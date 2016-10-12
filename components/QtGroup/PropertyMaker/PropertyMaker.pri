@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/propertymaker.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/propertymaker.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/PropertyMaker.qrc

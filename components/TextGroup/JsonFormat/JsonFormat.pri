@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/jsonformat.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/jsonformat.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/JsonFormat.qrc

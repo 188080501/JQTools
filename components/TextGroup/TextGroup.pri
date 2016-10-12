@@ -21,4 +21,4 @@ INCLUDEPATH += \
     $$PWD/
 
 HEADERS += \
-    $$PWD/*.h
+    $$PWD/textgroup.h

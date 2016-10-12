@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/hashcalculate.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/hashcalculate.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/HashCalculate.qrc

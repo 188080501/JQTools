@@ -14,10 +14,10 @@ INCLUDEPATH += \
     $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/cpp/*.h
+    $$PWD/cpp/pngwarningremover.h
 
 SOURCES += \
-    $$PWD/cpp/*.cpp
+    $$PWD/cpp/pngwarningremover.cpp
 
 RESOURCES += \
-    $$PWD/qml/*.qrc
+    $$PWD/qml/PngWarningRemover.qrc
