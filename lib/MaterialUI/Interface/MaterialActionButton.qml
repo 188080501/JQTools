@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QML Material - An application framework implementing Material Design.
  * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
@@ -31,7 +31,6 @@ Controls.Button {
                                         "#89000000",
                                         "#ffffff")
 
-    property string textFontFamily
     property int textSize: 15
 
     property int elevation: backgroundColor == "white" ? 0 : 1
@@ -96,8 +95,15 @@ Controls.Button {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             text: control.text
-            font.family: textFontFamily
             color: textColor
+            elide: Text.ElideLeft
+            font.family: {
+                switch (Qt.platform.os)
+                {
+                    case "windows": return "微软雅黑";
+                    default: return "Roboto";
+                }
+            }
         }
     }
 }

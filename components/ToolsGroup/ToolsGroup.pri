@@ -11,8 +11,8 @@
 #
 
 include($$PWD/LinesStatistics/LinesStatistics.pri)
-include($$PWD/PngOptimize/PngOptimize.pri)
 include($$PWD/LanFileTransport/LanFileTransport.pri)
+include($$PWD/PngOptimize/PngOptimize.pri)
 
 INCLUDEPATH += \
     $$PWD/
