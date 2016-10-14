@@ -33,6 +33,14 @@ Controls.Button {
 
     property int textSize: 15
 
+    property string textFontFamily: {
+        switch (Qt.platform.os)
+        {
+            case "windows": return "微软雅黑";
+            default: return "Roboto";
+        }
+    }
+
     property int elevation: backgroundColor == "white" ? 0 : 1
 
     function lightDark(background, lightColor, darkColor) {
@@ -97,13 +105,7 @@ Controls.Button {
             text: control.text
             color: textColor
             elide: Text.ElideLeft
-            font.family: {
-                switch (Qt.platform.os)
-                {
-                    case "windows": return "微软雅黑";
-                    default: return "Roboto";
-                }
-            }
+            font.family: button.textFontFamily
         }
     }
 }
