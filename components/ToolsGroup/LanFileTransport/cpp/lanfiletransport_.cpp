@@ -159,6 +159,8 @@ QString Manage::savePath()
 
 void Manage::refreshLanNodes()
 {
+    qDebug() << "refreshLanNodes";
+
     mutex_.lock();
 
     lanNodes_.clear();
