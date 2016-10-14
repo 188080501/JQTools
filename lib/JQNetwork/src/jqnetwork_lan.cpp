@@ -281,6 +281,7 @@ void JQNetworkLan::checkLoop()
 
     if ( lanListModified )
     {
+//        qDebug("111111");
         this->onLanNodeListChanged();
     }
 
@@ -373,6 +374,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
 
                 this->onLanNodeStateOnline( lanNode );
                 this->onLanNodeListChanged();
+//                qDebug("222222");
 
                 firstOnline = true;
             }

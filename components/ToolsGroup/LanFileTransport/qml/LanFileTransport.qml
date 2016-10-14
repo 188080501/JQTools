@@ -118,11 +118,17 @@ Item {
                     for( var index = 0; index < drop.urls.length; ++index )
                     {
                         var url = drop.urls[ index ].toString();
-                        print( url );
 
                         if ( url.indexOf( "file://" ) !== 0 ) { return; }
 
-                        filePaths.push( url.substr( 7 ) );
+                        if ( Qt.platform.os === "windows" )
+                        {
+                            filePaths.push( url.substr( 8 ) );
+                        }
+                        else
+                        {
+                            filePaths.push( url.substr( 7 ) );
+                        }
                     }
 
                     var transportResult = lanFileTransportManage.transport( hostAddress, filePaths );
