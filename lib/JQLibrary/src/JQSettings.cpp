@@ -72,7 +72,11 @@ QString JQSettings::documentsPath(const QString &projectName, const QString &pro
 #endif
 }
 
-QSharedPointer< QSettings > JQSettings::settingsFile(const QString &fileName, const QString &projectName, const QString &projectGroupName)
+QSharedPointer< QSettings > JQSettings::settingsFile(
+        const QString &fileName,
+        const QString &projectName,
+        const QString &projectGroupName
+    )
 {
     if ( fileName.isEmpty() )
     {
@@ -92,7 +96,12 @@ QSharedPointer< QSettings > JQSettings::settingsFile(const QString &fileName, co
     return QSharedPointer< QSettings >( new QSettings( JQSettings::documentsPath( projectName, projectGroupName ) + fileName, QSettings::IniFormat ) );
 }
 
-Set::Set(const QString &fileName, const QString &groupName, const QString &projectName, const QString &projectGroupName):
+Set::Set(
+        const QString &fileName,
+        const QString &groupName,
+        const QString &projectName,
+        const QString &projectGroupName
+    ):
     fileName_( fileName ),
     groupName_( groupName ),
     projectName_( projectName ),
@@ -113,13 +122,22 @@ Set::~Set()
     }
 }
 
-const QVariant Set::operator[](const QString &key)
+QVariant Set::operator[](const QString &key) const
 {
     if ( !datas_.contains( key ) )
     {
-        this->readySave();
+        return { };
     }
-    return datas_[key];
+    return datas_[ key ];
+}
+
+QVariant Set::operator[](const QString &key)
+{
+    if ( !datas_.contains( key ) )
+    {
+        return { };
+    }
+    return datas_[ key ];
 }
 
 QString Set::filePath() const
@@ -141,7 +159,7 @@ QVariant Set::value(const QString &key, const QVariant &defaultValue)
     return datas_[ key ];
 }
 
-QVariant Set::value(const QString &key)
+QVariant Set::value(const QString &key) const
 {
     if ( !datas_.contains( key ) )
     {
