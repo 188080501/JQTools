@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQSettings_h__
-#define __JQSettings_h__
+#ifndef __JQSETTINGS_H__
+#define __JQSETTINGS_H__
 
 // Qt lib import
 #include <QSettings>
@@ -32,18 +32,29 @@ namespace JQSettings
 
 QString documentsPath(const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
 
-QSharedPointer< QSettings > settingsFile(const QString &fileName, const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
+QSharedPointer< QSettings > settingsFile(
+        const QString &fileName,
+        const QString &projectName,
+        const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME
+    );
 
 class Set: public QObject
 {
     Q_OBJECT
 
 public:
-    Set(const QString &fileName, const QString &groupName, const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
+    Set(
+            const QString &fileName,
+            const QString &groupName,
+            const QString &projectName,
+            const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME
+        );
 
     ~Set();
 
-    const QVariant operator[](const QString &key);
+    QVariant operator[](const QString &key) const;
+
+    QVariant operator[](const QString &key);
 
     QString filePath() const;
 
@@ -52,7 +63,7 @@ public slots:
 
     QVariant value(const QString &key, const QVariant &defaultValue);
 
-    QVariant value(const QString &key);
+    QVariant value(const QString &key) const;
 
     void setValue(const QString &key, const QVariant &data);
 
@@ -75,4 +86,4 @@ private:
 
 }
 
-#endif//__JQSettings_h__
+#endif//__JQSETTINGS_H__
