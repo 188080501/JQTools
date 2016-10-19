@@ -16,10 +16,10 @@
 #
 
 INCLUDEPATH *= \
-    $$PWD/include/JQQMLLib/
+    $$PWD/include/JQQmlLib/
 
 HEADERS *= \
-    $$PWD/include/JQQMLLib/JQQMLLib.h
+    $$PWD/include/JQQmlLib/JQQmlLib.h
 
 contains( CONFIG, static ) {
 
@@ -29,7 +29,7 @@ contains( CONFIG, static ) {
 
             DEFINES *= JQQMLLIB_LIB
 
-            LIBS *= $$PWD/bin/JQQMLLib/Qt5.6.0/MinGW/libJQQmlLib.a
+            LIBS *= $$PWD/bin/JQQmlLib/Qt5.6.0/MinGW/libJQQmlLib.a
         }
     }
 }
