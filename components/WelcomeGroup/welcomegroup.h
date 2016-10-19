@@ -14,7 +14,7 @@
 #define __WELCOMEGROUP_WELCOMEGROUP_H__
 
 // WelcomeGroup lib import
-#include "Welcome.h"
+#include "welcome.h"
 
 #define WELCOMEGROUP_INITIALIZA \
     WELCOME_INITIALIZA;
