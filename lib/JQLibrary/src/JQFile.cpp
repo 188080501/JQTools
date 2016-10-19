@@ -160,7 +160,7 @@ bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &
     return false;
 }
 
-#if (defined Q_OS_MAC) || (defined __MINGW32__)
+#if (defined Q_OS_MAC) || (defined __MINGW32__) || (defined Q_OS_LINUX)
 bool JQFile::setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified)
 {
     utimbuf buf( { (time_t)lastRead, (time_t)lastModified } );

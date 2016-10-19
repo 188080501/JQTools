@@ -27,7 +27,7 @@
 #include <QDir>
 #include <QDebug>
 
-#if (defined Q_OS_MAC) || (defined __MINGW32__)
+#if (defined Q_OS_MAC) || (defined __MINGW32__) || (defined Q_OS_LINUX)
 #   include "utime.h"
 #endif
 
@@ -48,7 +48,7 @@ bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, con
 
 bool copy(const QFileInfo &source, const QFileInfo &target, const bool &cover = true);
 
-#if (defined Q_OS_MAC) || (defined __MINGW32__)
+#if (defined Q_OS_MAC) || (defined __MINGW32__) || (defined Q_OS_LINUX)
 bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified);
 #endif
 
