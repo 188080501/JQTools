@@ -33,6 +33,10 @@ contains( QT, bluetooth ) {
         SOURCES *= $$PWD/src/JQBluetooth.cpp
         HEADERS *= $$PWD/include/JQBluetooth.h
     }
+
+    mac | ios {
+        DEFINES += JQBLUETOOTH_UUIDMODE
+    }
 }
 
 exists($$PWD/src/JQChecksum.cpp) {
