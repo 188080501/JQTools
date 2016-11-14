@@ -33,6 +33,7 @@ Manage::Manage():
 void Manage::begin()
 {
     QEventLoop eventLoop;
+//    eventLoop.exec();
 
     QtConcurrent::run( [ this ](){ this->loadFont( "Elusive" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "FontAwesome" ); } );
