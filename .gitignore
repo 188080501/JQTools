@@ -1,0 +1,58 @@
+### C++ ###
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Fortran module files
+*.mod
+*.smod
+
+
+### Qt ###
+
+# Qt-es
+
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*build-*
+
+# QtCreator
+
+*.autosave
+
+# QtCtreator Qml
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCtreator CMake
+CMakeLists.txt.user*
+
+### macOS ###
+*.DS_Store
+
+### JQNetworkLib ###
+lib/JQNetwork/lib/5.7.0_macos_x64_clang/libJQNetworkd.a
+lib/JQNetwork/lib/5.7.0_macos_x64_clang/libJQNetwork.a
+lib/JQNetwork/lib/5.6.0_windows_x86_gcc/libJQNetworkd.a
+lib/JQNetwork/lib/5.6.0_windows_x86_gcc/libJQNetwork.a
+lib/JQNetwork/lib/5.6.0_windows_x86_gcc_static/libJQNetworkd.a
+lib/JQNetwork/lib/5.6.0_windows_x86_gcc_static/libJQNetwork.a
+

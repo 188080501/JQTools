@@ -14,6 +14,8 @@
 
 // Qt lib import
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 #define BOOL_CHECK( actual, message )           \
     if ( !( actual ) )                          \
@@ -82,7 +84,7 @@ qint32 JQNetworkPackage::checkDataIsReadyReceive(const QByteArray &rawData)
     return 0;
 }
 
-JQNetworkPackageSharedPointer JQNetworkPackage::createPackage(QByteArray &rawData)
+JQNetworkPackageSharedPointer JQNetworkPackage::readPackage(QByteArray &rawData)
 {
     auto package = JQNetworkPackageSharedPointer( new JQNetworkPackage );
     auto data = rawData.data() + JQNetworkPackage::headSize();
@@ -111,10 +113,32 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createTransportPackages
         const QByteArray &payloadData,
         const qint32 &randomFlag,
         const qint64 cutPackageSize,
-        const bool &compressionPayloadData
+        const bool &compressionData
+    )
+{
+    return JQNetworkPackage::createTransportPackages(
+                "",
+                "",
+                { },
+                payloadData,
+                randomFlag,
+                cutPackageSize,
+                compressionData
+            );
+}
+
+QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createTransportPackages(
+        const QString &targetNodeFlag,
+        const QString &targerActionFlag,
+        const QJsonObject &appendData,
+        const QByteArray &payloadData,
+        const qint32 &randomFlag,
+        const qint64 cutPackageSize,
+        const bool &compressionData
     )
 {
     QList< JQNetworkPackageSharedPointer > result;
+    QJsonObject metaData;
 
     if ( payloadData.isEmpty() )
     {
@@ -147,12 +171,12 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createTransportPackages
 
             package->head_.metaDataFlag_ = JQNETWORKPACKAGE_UNCOMPRESSEDFLAG;
 
-            package->head_.payloadDataFlag_ = ( compressionPayloadData ) ? ( JQNETWORKPACKAGE_COMPRESSEDFLAG ) : ( JQNETWORKPACKAGE_UNCOMPRESSEDFLAG );
+            package->head_.payloadDataFlag_ = ( compressionData ) ? ( JQNETWORKPACKAGE_COMPRESSEDFLAG ) : ( JQNETWORKPACKAGE_UNCOMPRESSEDFLAG );
             package->head_.payloadDataTotalSize_ = payloadData.size();
 
             if ( cutPackageSize == -1 )
             {
-                package->payloadData_ = ( compressionPayloadData ) ? ( qCompress( payloadData, 4 ) ) : ( payloadData );
+                package->payloadData_ = ( compressionData ) ? ( qCompress( payloadData, 4 ) ) : ( payloadData );
                 package->head_.payloadDataCurrentSize_ = package->payloadData_.size();
                 package->isCompletePackage_ = true;
 
@@ -165,7 +189,7 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createTransportPackages
             {
                 if ( ( index + cutPackageSize ) > payloadData.size() )
                 {
-                    package->payloadData_ = ( compressionPayloadData ) ? ( qCompress( payloadData.mid( index ), 4 ) ) : ( payloadData.mid( index ) );
+                    package->payloadData_ = ( compressionData ) ? ( qCompress( payloadData.mid( index ), 4 ) ) : ( payloadData.mid( index ) );
                     package->head_.payloadDataCurrentSize_ = package->payloadData_.size();
                     package->isCompletePackage_ = result.isEmpty();
 
@@ -176,7 +200,7 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createTransportPackages
                 }
                 else
                 {
-                    package->payloadData_ = ( compressionPayloadData ) ? ( qCompress( payloadData.mid( index, cutPackageSize ), 4 ) ) : ( payloadData.mid( index, cutPackageSize ) );
+                    package->payloadData_ = ( compressionData ) ? ( qCompress( payloadData.mid( index, cutPackageSize ), 4 ) ) : ( payloadData.mid( index, cutPackageSize ) );
                     package->head_.payloadDataCurrentSize_ = package->payloadData_.size();
                     package->isCompletePackage_ = !index && ( ( index + cutPackageSize ) == payloadData.size() );
 
@@ -194,7 +218,7 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createTransportPackages
     return result;
 }
 
-JQNetworkPackageSharedPointer JQNetworkPackage::createRequestPackage(const qint32 &randomFlag)
+JQNetworkPackageSharedPointer JQNetworkPackage::createDataRequestPackage(const qint32 &randomFlag)
 {
     auto package = JQNetworkPackageSharedPointer( new JQNetworkPackage );
 

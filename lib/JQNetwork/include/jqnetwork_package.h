@@ -33,16 +33,26 @@ public:
 
     static qint32 checkDataIsReadyReceive(const QByteArray &rawData);
 
-    static JQNetworkPackageSharedPointer createPackage(QByteArray &rawData);
+    static JQNetworkPackageSharedPointer readPackage(QByteArray &rawData);
 
     static QList< JQNetworkPackageSharedPointer > createTransportPackages(
             const QByteArray &payloadData,
             const qint32 &randomFlag,
             const qint64 cutPackageSize = -1,
-            const bool &compressionPayloadData = false
+            const bool &compressionData = false
         );
 
-    static JQNetworkPackageSharedPointer createRequestPackage(const qint32 &randomFlag);
+    static QList< JQNetworkPackageSharedPointer > createTransportPackages(
+            const QString &targetNodeFlag,
+            const QString &targerActionFlag,
+            const QJsonObject &appendData,
+            const QByteArray &payloadData,
+            const qint32 &randomFlag,
+            const qint64 cutPackageSize = -1,
+            const bool &compressionData = false
+        );
+
+    static JQNetworkPackageSharedPointer createDataRequestPackage(const qint32 &randomFlag);
 
     inline bool isCompletePackage() const;
 
@@ -70,6 +80,8 @@ public:
     inline QByteArray metaData() const;
 
     inline int metaDataSize() const;
+
+    inline QString metaDataActionFlag() const;
 
     inline QByteArray payloadData() const;
 

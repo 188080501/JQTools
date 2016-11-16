@@ -16,10 +16,12 @@
 #include <QDebug>
 #include <QTcpServer>
 #include <QThread>
+#include <QMetaObject>
 
 // JQNetwork lib import
 #include <JQNetworkConnectPool>
 #include <JQNetworkConnect>
+#include <JQNetworkProcessor>
 
 // JQNetworkServerHelper
 class JQNetworkServerHelper: public QTcpServer
@@ -185,6 +187,32 @@ bool JQNetworkServer::begin()
     );
 
     return true;
+}
+
+void JQNetworkServer::registerProcessor(const JQNetworkProcessorPointer &processor)
+{
+    const auto &&availableSlots = processor->availableSlots();
+
+    for ( const auto &currentSlot: availableSlots )
+    {
+        if ( processor_.contains( currentSlot ) )
+        {
+            qDebug() << "JQNetworkServer::registerProcessor: double register:" << currentSlot;
+            continue;
+        }
+
+        const auto &&callback = [ processor ](const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)
+        {
+            if ( !processor )
+            {
+                qDebug() << "JQNetworkServer::registerProcessor: processor is null";
+                return;
+            }
+
+            processor->handlePackage( connect, package );
+        };
+        processor_[ currentSlot ] = callback;
+    }
 }
 
 void JQNetworkServer::incomingConnection(const qintptr &socketDescriptor)
