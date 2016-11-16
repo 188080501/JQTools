@@ -22,9 +22,11 @@
 #include <QSharedPointer>
 #include <QWeakPointer>
 #include <QPointer>
-#include <QHostAddress>
 #include <QMutex>
 #include <QVariant>
+#include <QHostAddress>
+
+#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 4, 2 )
 
 #define JQNETWORKPACKAGE_BOOTFLAG qint8( 0x7d )
 #define JQNETWORKPACKAGE_DATATRANSPORTPACKGEFLAG qint8( 0x1 )
@@ -53,7 +55,7 @@ class QTcpServer;
 class QUdpSocket;
 
 template < typename T > class QVector;
-template < class Key, class T > class QMap;
+template < typename T > class QSet;
 
 class JQNetworkPackage;
 class JQNetworkConnect;
@@ -182,6 +184,13 @@ private:
     QString dutyMark_;
     QString nodeMarkSummary_;
 };
+
+namespace JQNetwork
+{
+
+void printVersionInformation(const char *jqNetworkCompileModeString = JQNETWORK_COMPILE_MODE_STRING);
+
+}
 
 #include "jqnetwork_foundation.inc"
 

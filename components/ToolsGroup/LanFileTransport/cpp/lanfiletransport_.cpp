@@ -68,9 +68,9 @@ Manage::Manage():
         this->refreshLanNodes();
     };
 
-    jqNetworkServer_->begin();
-    jqNetworkClient_->begin();
-    jqNetworkLan_->begin();
+    qDebug() << "JQNetworkServer begin:" << jqNetworkServer_->begin();
+    qDebug() << "JQNetworkClient begin:" << jqNetworkClient_->begin();
+    qDebug() << "JQNetworkLan begin:" << jqNetworkLan_->begin();
 }
 
 void Manage::setShowSelf(const bool &showSelf)
@@ -161,12 +161,12 @@ void Manage::refreshLanNodes()
 {
     qDebug() << "refreshLanNodes";
 
-    mutex_.lock();
-
-    lanNodes_.clear();
+    QVariantList buf;
 
     for ( const auto &lanNode: this->jqNetworkLan_->availableLanNodes() )
     {
+        qDebug() << lanNode.matchAddress;
+
         const auto &hostAddress = lanNode.matchAddress.toString();
 
         if ( !showSelf_ && lanNode.isSelf ) { continue; }
@@ -185,12 +185,16 @@ void Manage::refreshLanNodes()
             }
         }
 
-        lanNodes_.push_back( QVariantMap( {
-                                              { "nodeMarkSummary", lanNode.nodeMarkSummary },
-                                              { "hostName", lanNode.appendData },
-                                              { "hostAddress", hostAddress }
-                                          } ) );
+        buf.push_back( QVariantMap( {
+                                        { "nodeMarkSummary", lanNode.nodeMarkSummary },
+                                        { "hostName", lanNode.appendData },
+                                        { "hostAddress", hostAddress }
+                                    } ) );
     }
+
+    mutex_.lock();
+
+    lanNodes_ = buf;
 
     mutex_.unlock();
 

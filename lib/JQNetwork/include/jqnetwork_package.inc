@@ -86,6 +86,11 @@ inline int JQNetworkPackage::metaDataSize() const
     return metaData_.size();
 }
 
+inline QString JQNetworkPackage::metaDataActionFlag() const
+{
+    return "actionFlag";
+}
+
 inline QByteArray JQNetworkPackage::payloadData() const 
 { 
     return payloadData_; 

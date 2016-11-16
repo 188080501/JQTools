@@ -69,6 +69,8 @@ public:
 
     bool begin();
 
+    void registerProcessor(const JQNetworkProcessorPointer &processor);
+
 private:
     void incomingConnection(const qintptr &socketDescriptor);
 
@@ -126,6 +128,9 @@ private:
 
     // Other
     QString nodeMarkSummary_;
+
+    // Processor
+    QMap< QString, std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer & ) > > processor_;
 };
 
 #include "jqnetwork_server.inc"

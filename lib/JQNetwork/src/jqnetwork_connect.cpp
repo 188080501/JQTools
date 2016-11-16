@@ -214,7 +214,7 @@ void JQNetworkConnect::onTcpSocketReadyRead()
         }
         else
         {
-            auto package = JQNetworkPackage::createPackage( tcpSocketBuffer_ );
+            auto package = JQNetworkPackage::readPackage( tcpSocketBuffer_ );
 
             if ( package->isCompletePackage() )
             {
@@ -562,5 +562,5 @@ void JQNetworkConnect::realSendDataRequest(const qint32 &randomFlag)
     if ( isAbandonTcpSocket_ ) { return; }
     JQNETWORK_NULLPTR_CHECK( tcpSocket_ );
 
-    this->realSendPackage( JQNetworkPackage::createRequestPackage( randomFlag ) );
+    this->realSendPackage( JQNetworkPackage::createDataRequestPackage( randomFlag ) );
 }

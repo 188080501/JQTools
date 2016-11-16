@@ -13,6 +13,9 @@
 #ifndef JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
 #define JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
 
+// Qt lib import
+#include <QSet>
+
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
@@ -28,6 +31,23 @@ public:
     JQNetworkProcessor(const JQNetworkProcessor &) = delete;
 
     JQNetworkProcessor &operator =(const JQNetworkProcessor &) = delete;
+
+    QSet< QString > availableSlots();
+
+    bool handlePackage(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package);
+
+    void setReceivedPossibleThreads(const QSet< QThread * > &threads);
+
+protected:
+    JQNetworkConnectPointer currentThreadConnect();
+
+private:
+    static QSet< QString > exceptionSlots_;
+
+    QSet< QString > availableSlots_;
+    QMap< QThread *, JQNetworkConnectPointer > connectMapByThread_;
+
+    QMap< QString, std::function<void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)> > onPackageReceivedCallbacks_;
 };
 
 #include "jqnetwork_processor.inc"
