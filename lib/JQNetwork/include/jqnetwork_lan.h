@@ -131,6 +131,7 @@ private:
     int checkLoopCounting_ = -1;
 };
 
+// inc import
 #include "jqnetwork_lan.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_LAN_H

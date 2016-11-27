@@ -121,6 +121,66 @@ inline qint32 JQNetworkPackage::payloadDataOriginalCurrentSize() const
     return payloadDataOriginalCurrentSize_;
 }
 
+inline QVariantMap JQNetworkPackage::metaDataInVariantMap() const
+{
+    return metaDataInVariantMap_;
+}
+
+inline QString JQNetworkPackage::targetNodeFlag() const
+{
+    return ( metaDataInVariantMap_.contains( "targetNodeFlag" ) ) ? ( metaDataInVariantMap_[ "targetNodeFlag" ].toString() ) : ( QString() );
+}
+
+inline QString JQNetworkPackage::targerActionFlag() const
+{
+    return ( metaDataInVariantMap_.contains( "targerActionFlag" ) ) ? ( metaDataInVariantMap_[ "targerActionFlag" ].toString() ) : ( QString() );
+}
+
+inline QVariantMap JQNetworkPackage::appendData() const
+{
+    return ( metaDataInVariantMap_.contains( "appendData" ) ) ? ( metaDataInVariantMap_[ "appendData" ].toMap() ) : ( QVariantMap() );
+}
+
+inline QString JQNetworkPackage::fileName() const
+{
+    return ( metaDataInVariantMap_.contains( "fileName" ) ) ? ( metaDataInVariantMap_[ "fileName" ].toString() ) : ( QString() );
+}
+
+inline qint64 JQNetworkPackage::fileSize() const
+{
+    return ( metaDataInVariantMap_.contains( "fileSize" ) ) ? ( metaDataInVariantMap_[ "fileSize" ].toLongLong() ) : ( -1 );
+}
+
+inline qint32 JQNetworkPackage::filePermissions() const
+{
+    return ( metaDataInVariantMap_.contains( "filePermissions" ) ) ? ( metaDataInVariantMap_[ "filePermissions" ].toInt() ) : ( 0 );
+}
+
+inline bool JQNetworkPackage::containsFile() const
+{
+    return !localFilePath_.isEmpty();
+}
+
+inline QString JQNetworkPackage::localFilePath() const
+{
+    return localFilePath_;
+}
+
+inline void JQNetworkPackage::setLocalFilePath(const QString &localFilePath)
+{
+    localFilePath_ = localFilePath;
+}
+
+inline void JQNetworkPackage::clearMetaData()
+{
+    metaData_.clear();
+}
+
+inline void JQNetworkPackage::clearPayloadData()
+{
+    payloadData_.clear();
+}
+
 inline QByteArray JQNetworkPackage::toByteArray() const
 {
     QByteArray buffer;

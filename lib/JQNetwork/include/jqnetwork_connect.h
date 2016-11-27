@@ -31,6 +31,7 @@ struct JQNetworkConnectSettings
     qint64 maximumReceiveForTotalByteCount = -1;
     qint64 maximumReceivePackageByteCount = -1;
     int maximumReceiveSpeed = -1; // Byte/s
+    bool fileTransferEnabled = false;
 
     qint32 randomFlagRangeStart = -1;
     qint32 randomFlagRangeEnd = -1;
@@ -39,6 +40,7 @@ struct JQNetworkConnectSettings
     int maximumSendPackageWaitTime = 30 * 1000;
     int maximumReceivePackageWaitTime = 30 * 1000;
     int maximumNoCommunicationTime = 30 * 1000;
+    int maximumFileWriteWaitTime = 30 * 1000;
     int maximumConnectionTime = -1;
 
     std::function< void( const JQNetworkConnectPointer & ) > connectToHostErrorCallback = nullptr;
@@ -49,9 +51,11 @@ struct JQNetworkConnectSettings
     std::function< void( const JQNetworkConnectPointer &, const qint32 &, const qint64 &, const qint64 &, const qint64 & ) > packageSendingCallback = nullptr;
     std::function< void( const JQNetworkConnectPointer &, const qint32 &, const qint64 &, const qint64 &, const qint64 & ) > packageReceivingCallback = nullptr;
     std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer & ) > packageReceivedCallback = nullptr;
-    std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer &,
-                         const std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > & ) > waitReplyPackageSucceedCallback = nullptr;
-    std::function< void( const JQNetworkConnectPointer &, const std::function< void(const JQNetworkConnectPointer &connect) > & ) > waitReplyPackageFailCallback = nullptr;
+    std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer &, const JQNetworkConnectPointerAndPackageSharedPointerFunction & ) > waitReplyPackageSucceedCallback = nullptr;
+    std::function< void( const JQNetworkConnectPointer &, const std::function< void(const JQNetworkConnectPointer &connect ) > & ) > waitReplyPackageFailCallback = nullptr;
+    std::function< QString( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer &, const QString & ) > filePathProvider = nullptr;
+
+    void setFilePathProviderToDefaultDir();
 };
 
 class JQNetworkConnect: public QObject
@@ -62,12 +66,12 @@ private:
     struct ReceivedCallbackPackage
     {
         qint64 sendTime;
-        std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > succeedCallback;
-        std::function< void(const JQNetworkConnectPointer &connect) > failCallback;
+        JQNetworkConnectPointerAndPackageSharedPointerFunction succeedCallback;
+        JQNetworkConnectPointerFunction failCallback;
     };
 
 private:
-    JQNetworkConnect();
+    JQNetworkConnect(const JQNetworkConnectSettingsSharedPointer &connectSettings);
 
     JQNetworkConnect(const JQNetworkConnect &) = delete;
 
@@ -109,13 +113,24 @@ public:
 
     qint32 sendPayloadData(
             const QByteArray &payloadData,
-            const std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > &succeedCallback = nullptr,
-            const std::function< void(const JQNetworkConnectPointer &connect) > &failCallback = nullptr
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    qint32 sendFileData(
+            const QString &filePath,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
         );
 
     qint32 replyPayloadData(
-            const qint32 &randomFlag,
+            const qint32 &receivedPackageRandomFlag,
             const QByteArray &payloadData
+        );
+
+    qint32 replyFile(
+            const qint32 &receivedPackageRandomFlag,
+            const QString &filePath
         );
 
 private Q_SLOTS:
@@ -134,27 +149,40 @@ private:
 
     void startTimerForSendPackageCheck();
 
-    void onTransportPackageReceived(const JQNetworkPackageSharedPointer &package);
+    void onDataTransportPackageReceived(const JQNetworkPackageSharedPointer &package);
+
+    void onFileDataTransportPackageReceived(const JQNetworkPackageSharedPointer &package);
 
     void onReadyToDelete();
 
-    void realSendPackage(const JQNetworkPackageSharedPointer &package);
+    qint32 nextRandomFlag();
 
-    void realSendPayloadData(
+    inline bool needCompressionPayloadData(const int &dataSize);
+
+    bool readySendPayloadData(
             const qint32 &randomFlag,
             const QByteArray &payloadData,
-            const std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > &succeedCallback,
-            const std::function< void(const JQNetworkConnectPointer &connect) > &failCallback
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+            const JQNetworkConnectPointerFunction &failCallback
         );
 
-    void realSendPayloadData(
+    bool readySendFileData(
             const qint32 &randomFlag,
-            const QList< JQNetworkPackageSharedPointer > &packages,
-            const std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > &succeedCallback,
-            const std::function< void(const JQNetworkConnectPointer &connect) > &failCallback
+            const QString &filePath,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+            const JQNetworkConnectPointerFunction &failCallback
         );
 
-    void realSendDataRequest(const qint32 &randomFlag);
+    void readySendPackages(
+            const qint32 &randomFlag,
+            QList< JQNetworkPackageSharedPointer > &packages,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+            const JQNetworkConnectPointerFunction &failCallback
+        );
+
+    void sendDataRequestToRemote(const JQNetworkPackageSharedPointer &package);
+
+    void sendPackageToRemote(const JQNetworkPackageSharedPointer &package);
 
 private:
     // Settings
@@ -174,9 +202,15 @@ private:
     // Package
     QMutex mutexForSend_;
     qint32 sendRandomFlagRotaryIndex_ = 0;
-    QMap< qint32, QList< JQNetworkPackageSharedPointer > > sendPackagePool_; // randomFlag -> package
-    QMap< qint32, JQNetworkPackageSharedPointer > receivePackagePool_; // randomFlag -> package
     QMap< qint32, ReceivedCallbackPackage > onReceivedCallbacks_; // randomFlag -> package
+
+    // Payload
+    QMap< qint32, QList< JQNetworkPackageSharedPointer > > sendPayloadPackagePool_; // randomFlag -> package
+    QMap< qint32, JQNetworkPackageSharedPointer > receivePayloadPackagePool_; // randomFlag -> package
+
+    // File
+    QMap< qint32, QSharedPointer< QFile > > waitForSendFiles_; // randomFlag -> file
+    QMap< qint32, QPair< JQNetworkPackageSharedPointer, QSharedPointer< QFile > > > receivedFilePackagePool_; // randomFlag -> { package, file }
 
     // Statistics
     qint64 connectCreateTime_ = 0;
@@ -185,6 +219,7 @@ private:
     qint64 alreadyWrittenBytes_ = 0;
 };
 
+// inc import
 #include "jqnetwork_connect.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H

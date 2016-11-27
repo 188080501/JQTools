@@ -14,3 +14,35 @@
 
 // Qt lib import
 #include <QDebug>
+
+bool JQNetworkEncrypt::encrypt(
+        const QByteArray &source,
+        QByteArray &target
+    )
+{
+    if ( source.isEmpty() )
+    {
+        target.clear();
+        return true;
+    }
+
+    //...
+
+    return true;
+}
+
+bool JQNetworkEncrypt::decrypt(
+        const QByteArray &source,
+        QByteArray &target
+    )
+{
+    if ( source.isEmpty() )
+    {
+        target.clear();
+        return true;
+    }
+
+    //...
+
+    return true;
+}

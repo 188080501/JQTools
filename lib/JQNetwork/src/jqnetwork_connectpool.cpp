@@ -19,6 +19,9 @@
 // JQNetwork lib import
 #include <JQNetworkConnect>
 
+using namespace std;
+using namespace std::placeholders;
+
 JQNetworkConnectPool::JQNetworkConnectPool(
         JQNetworkConnectPoolSettingsSharedPointer connectPoolSettings,
         JQNetworkConnectSettingsSharedPointer connectSettings
@@ -26,26 +29,16 @@ JQNetworkConnectPool::JQNetworkConnectPool(
     connectPoolSettings_( connectPoolSettings ),
     connectSettings_( connectSettings )
 {
-    connectSettings_->connectToHostErrorCallback        = [ this ](const auto &connect)
-        { this->onConnectToHostError( connect ); };
-    connectSettings_->connectToHostTimeoutCallback      = [ this ](const auto &connect)
-        { this->onConnectToHostTimeout( connect ); };
-    connectSettings_->connectToHostSucceedCallback      = [ this ](const auto &connect)
-        { this->onConnectToHostSucceed( connect ); };
-    connectSettings_->remoteHostClosedCallback          = [ this ](const auto &connect)
-        { this->onRemoteHostClosed( connect ); };
-    connectSettings_->readyToDeleteCallback             = [ this ](const auto &connect)
-        { this->onReadyToDelete( connect ); };
-    connectSettings_->packageSendingCallback            = [ this ](const auto &connect, const auto &randomFlag, const auto &payloadCurrentIndex, const auto &payloadCurrentSize, const auto &payloadTotalSize)
-        { this->onPackageSending( connect, randomFlag, payloadCurrentIndex, payloadCurrentSize, payloadTotalSize ); };
-    connectSettings_->packageReceivingCallback          = [ this ](const auto &connect, const auto &randomFlag, const auto &payloadCurrentIndex, const auto &payloadCurrentSize, const auto &payloadTotalSize)
-        { this->onPackageReceiving( connect, randomFlag, payloadCurrentIndex, payloadCurrentSize, payloadTotalSize ); };
-    connectSettings_->packageReceivedCallback           = [ this ](const auto &connect, const auto &package)
-        { this->onPackageReceived( connect, package ); };
-    connectSettings_->waitReplyPackageSucceedCallback   = [ this ](const auto &connect, const auto &package, const auto &callback)
-        { this->onWaitReplySucceedPackage( connect, package, callback ); };
-    connectSettings_->waitReplyPackageFailCallback      = [ this ](const auto &connect, const auto &callback)
-        { this->onWaitReplyPackageFail( connect, callback ); };
+    connectSettings_->connectToHostErrorCallback        = bind( &JQNetworkConnectPool::onConnectToHostError, this, _1 );
+    connectSettings_->connectToHostTimeoutCallback      = bind( &JQNetworkConnectPool::onConnectToHostTimeout, this, _1 );
+    connectSettings_->connectToHostSucceedCallback      = bind( &JQNetworkConnectPool::onConnectToHostSucceed, this, _1 );
+    connectSettings_->remoteHostClosedCallback          = bind( &JQNetworkConnectPool::onRemoteHostClosed, this, _1 );
+    connectSettings_->readyToDeleteCallback             = bind( &JQNetworkConnectPool::onReadyToDelete, this, _1 );
+    connectSettings_->packageSendingCallback            = bind( &JQNetworkConnectPool::onPackageSending, this, _1, _2, _3, _4, _5 );
+    connectSettings_->packageReceivingCallback          = bind( &JQNetworkConnectPool::onPackageReceiving, this, _1, _2, _3, _4, _5 );
+    connectSettings_->packageReceivedCallback           = bind( &JQNetworkConnectPool::onPackageReceived, this, _1, _2 );
+    connectSettings_->waitReplyPackageSucceedCallback   = bind( &JQNetworkConnectPool::onWaitReplyPackageSucceed, this, _1, _2, _3 );
+    connectSettings_->waitReplyPackageFailCallback      = bind( &JQNetworkConnectPool::onWaitReplyPackageFail, this, _1, _2 );
 }
 
 JQNetworkConnectPool::~JQNetworkConnectPool()

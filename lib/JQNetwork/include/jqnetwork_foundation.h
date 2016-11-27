@@ -26,11 +26,13 @@
 #include <QVariant>
 #include <QHostAddress>
 
-#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 4, 2 )
+#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 4, 3 )
 
 #define JQNETWORKPACKAGE_BOOTFLAG qint8( 0x7d )
-#define JQNETWORKPACKAGE_DATATRANSPORTPACKGEFLAG qint8( 0x1 )
-#define JQNETWORKPACKAGE_DATAREQUESTPACKGEFLAG qint8( 0x2 )
+#define JQNETWORKPACKAGE_PAYLOADDATATRANSPORTPACKGEFLAG qint8( 0x1 )
+#define JQNETWORKPACKAGE_PAYLOADDATAREQUESTPACKGEFLAG qint8( 0x2 )
+#define JQNETWORKPACKAGE_FILEDATATRANSPORTPACKGEFLAG qint8( 0x3 )
+#define JQNETWORKPACKAGE_FILEDATAREQUESTPACKGEFLAG qint8( 0x4 )
 #define JQNETWORKPACKAGE_UNCOMPRESSEDFLAG qint8( 0x1 )
 #define JQNETWORKPACKAGE_COMPRESSEDFLAG qint8( 0x2 )
 
@@ -50,6 +52,11 @@ class QMutex;
 class QTimer;
 class QThreadPool;
 class QEventLoop;
+class QJsonObject;
+class QJsonArray;
+class QJsonValue;
+class QJsonDocument;
+class QFile;
 class QTcpSocket;
 class QTcpServer;
 class QUdpSocket;
@@ -64,6 +71,7 @@ class JQNetworkServer;
 class JQNetworkProcessor;
 class JQNetworkClient;
 class JQNetworkLan;
+class JQNetworkForwarf;
 
 struct JQNetworkConnectSettings;
 struct JQNetworkConnectPoolSettings;
@@ -71,6 +79,7 @@ struct JQNetworkServerSettings;
 struct JQNetworkClientSettings;
 struct JQNetworkLanSettings;
 struct JQNetworkLanNode;
+struct JQNetworkForwarfSettings;
 
 typedef QPointer< JQNetworkPackage > JQNetworkPackagePointer;
 typedef QPointer< JQNetworkConnect > JQNetworkConnectPointer;
@@ -79,6 +88,7 @@ typedef QPointer< JQNetworkServer > JQNetworkServerPointer;
 typedef QPointer< JQNetworkProcessor > JQNetworkProcessorPointer;
 typedef QPointer< JQNetworkClient > JQNetworkClientPointer;
 typedef QPointer< JQNetworkLan > JQNetworkLanPointer;
+typedef QPointer< JQNetworkForwarf > JQNetworkForwarfPointer;
 
 typedef QSharedPointer< JQNetworkPackage > JQNetworkPackageSharedPointer;
 typedef QSharedPointer< JQNetworkConnect > JQNetworkConnectSharedPointer;
@@ -87,12 +97,17 @@ typedef QSharedPointer< JQNetworkServer > JQNetworkServerSharedPointer;
 typedef QSharedPointer< JQNetworkProcessor > JQNetworkProcessorSharedPointer;
 typedef QSharedPointer< JQNetworkClient > JQNetworkClientSharedPointer;
 typedef QSharedPointer< JQNetworkLan > JQNetworkLanSharedPointer;
+typedef QSharedPointer< JQNetworkForwarf > JQNetworkForwarfSharedPointer;
 
 typedef QSharedPointer< JQNetworkConnectSettings > JQNetworkConnectSettingsSharedPointer;
 typedef QSharedPointer< JQNetworkConnectPoolSettings > JQNetworkConnectPoolSettingsSharedPointer;
 typedef QSharedPointer< JQNetworkServerSettings > JQNetworkServerSettingsSharedPointer;
 typedef QSharedPointer< JQNetworkClientSettings > JQNetworkClientSettingsSharedPointer;
 typedef QSharedPointer< JQNetworkLanSettings > JQNetworkLanSettingsSharedPointer;
+typedef QSharedPointer< JQNetworkForwarfSettings > JQNetworkForwarfSettingsSharedPointer;
+
+typedef std::function< void(const JQNetworkConnectPointer &connect ) > JQNetworkConnectPointerFunction;
+typedef std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package ) > JQNetworkConnectPointerAndPackageSharedPointerFunction;
 
 struct JQNetworkOnReceivedCallbackPackage
 {
@@ -192,6 +207,7 @@ void printVersionInformation(const char *jqNetworkCompileModeString = JQNETWORK_
 
 }
 
+// inc import
 #include "jqnetwork_foundation.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H

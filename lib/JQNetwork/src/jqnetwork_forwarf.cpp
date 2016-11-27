@@ -14,3 +14,16 @@
 
 // Qt lib import
 #include <QDebug>
+
+JQNetworkForwarf::JQNetworkForwarf(
+        const JQNetworkForwarfSettingsSharedPointer &forwarfSettings
+    ):
+    forwarfSettings_( forwarfSettings )
+{ }
+
+JQNetworkForwarfSharedPointer JQNetworkForwarf::createForwarf()
+{
+    JQNetworkForwarfSettingsSharedPointer forwarfSettings( new JQNetworkForwarfSettings );
+
+    return JQNetworkForwarfSharedPointer( new JQNetworkForwarf( forwarfSettings ) );
+}
