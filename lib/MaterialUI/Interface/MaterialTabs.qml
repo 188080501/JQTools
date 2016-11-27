@@ -15,6 +15,7 @@ Item {
     property int currentItemWidth
 
     property int tabHeight: 48
+    property int tabsAlignment: Qt.AlignHCenter
 
     property alias currentIndex: tabView.currentIndex
     property alias tabPosition: tabView.tabPosition
@@ -23,6 +24,10 @@ Item {
     property bool hideTopBackground: false
 
     property alias tabView: tabView
+
+    property alias needleColor: needle.color
+
+    property alias backgroundColor: tabBackground.color
 
     Component.onCompleted: {
         for (var index = 0; index < tabSource.length; index++)
@@ -45,7 +50,7 @@ Item {
         style: ControlStyles.TabViewStyle {
             frameOverlap: 0
             tabOverlap: 0
-            tabsAlignment: Qt.AlignHCenter
+            tabsAlignment: tabs.tabsAlignment
 
             tab: MaterialButton {
                 height: tabs.tabHeight

@@ -44,5 +44,6 @@
         <file>Interface/MaterialDialogDatePicker.qml</file>
         <file>Interface/MaterialDialogTimePicker.qml</file>
         <file>Interface/MaterialDialogTextArea.qml</file>
+        <file>Interface/MaterialAnimation.qml</file>
     </qresource>
 </RCC>

@@ -56,7 +56,8 @@ public:
 
     static JQNetworkServerSharedPointer createServer(
             const quint16 &listenPort,
-            const QHostAddress &listenAddress = QHostAddress::Any
+            const QHostAddress &listenAddress = QHostAddress::Any,
+            const bool &fileTransferEnabled = false
         );
 
     inline JQNetworkServerSettingsSharedPointer serverSettings();
@@ -133,6 +134,7 @@ private:
     QMap< QString, std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer & ) > > processor_;
 };
 
+// inc import
 #include "jqnetwork_server.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_SERVER_H

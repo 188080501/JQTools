@@ -50,7 +50,9 @@ public:
 
     JQNetworkClient &operator =(const JQNetworkClient &) = delete;
 
-    static JQNetworkClientSharedPointer createClient();
+    static JQNetworkClientSharedPointer createClient(
+            const bool &fileTransferEnabled = false
+        );
 
     inline JQNetworkClientSettingsSharedPointer clientSettings();
 
@@ -66,12 +68,20 @@ public:
 
     bool waitForCreateConnect(const QString &hostName, const quint16 &port, const int &timeout = 30 * 1000);
 
-    int sendPayloadData(
+    qint32 sendPayloadData(
             const QString &hostName,
             const quint16 &port,
             const QByteArray &payloadData,
-            const std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > &succeedCallback = nullptr,
-            const std::function< void(const JQNetworkConnectPointer &connect) > &failCallback = nullptr
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    qint32 sendFileData(
+            const QString &hostName,
+            const quint16 &port,
+            const QString &filePath,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
         );
 
     JQNetworkConnectPointer getConnect(const QString &hostName, const quint16 &port);
@@ -115,13 +125,13 @@ private:
             const JQNetworkConnectPointer &connect,
             const JQNetworkConnectPoolPointer &connectPool,
             const JQNetworkPackageSharedPointer &package,
-            const std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &) > &callback
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback
         );
 
     void onWaitReplyPackageFail(
             const JQNetworkConnectPointer &connect,
             const JQNetworkConnectPoolPointer &connectPool,
-            const std::function< void(const JQNetworkConnectPointer &connect) > &callback
+            const JQNetworkConnectPointerFunction &failCallback
         );
 
 private:
@@ -145,6 +155,7 @@ private:
     QMap< QString, QSharedPointer< QSemaphore > > waitConnectSucceedSemaphore_; // "127.0.0.1:34543" -> Connect
 };
 
+// inc import
 #include "jqnetwork_client.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_CLIENG_H

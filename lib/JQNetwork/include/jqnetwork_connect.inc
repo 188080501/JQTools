@@ -53,4 +53,25 @@ inline qint64 JQNetworkConnect::connectSucceedElapsed() const
     return connectSucceedTime_ - connectCreateTime_;
 }
 
+inline bool JQNetworkConnect::needCompressionPayloadData(const int &dataSize)
+{
+    bool compressionPayloadData = false;
+
+    if ( connectSettings_->packageCompressionThresholdForConnectSucceedElapsed != -1)
+    {
+        if ( this->connectSucceedElapsed() >= connectSettings_->packageCompressionThresholdForConnectSucceedElapsed )
+        {
+            compressionPayloadData = true;
+        }
+
+        if ( ( connectSettings_->packageCompressionMinimumBytes != -1 ) &&
+             ( dataSize < connectSettings_->packageCompressionMinimumBytes ) )
+        {
+            compressionPayloadData = false;
+        }
+    }
+
+    return compressionPayloadData;
+}
+
 #endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC

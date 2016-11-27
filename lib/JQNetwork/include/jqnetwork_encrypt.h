@@ -16,6 +16,22 @@
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
+namespace JQNetworkEncrypt
+{
+
+bool encrypt(
+        const QByteArray &source,
+        QByteArray &target
+    );
+
+bool decrypt(
+        const QByteArray &source,
+        QByteArray &target
+    );
+
+}
+
+// inc import
 #include "jqnetwork_encrypt.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_ENCRYPT_H

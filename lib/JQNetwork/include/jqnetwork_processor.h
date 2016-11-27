@@ -13,9 +13,6 @@
 #ifndef JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
 #define JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
 
-// Qt lib import
-#include <QSet>
-
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
@@ -47,9 +44,10 @@ private:
     QSet< QString > availableSlots_;
     QMap< QThread *, JQNetworkConnectPointer > connectMapByThread_;
 
-    QMap< QString, std::function<void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)> > onPackageReceivedCallbacks_;
+    QMap< QString, std::function<void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)> > onpackageReceivedCallbacks_;
 };
 
+// inc import
 #include "jqnetwork_processor.inc"
 
 #endif//JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
