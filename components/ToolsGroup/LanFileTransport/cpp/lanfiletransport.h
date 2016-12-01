@@ -13,21 +13,16 @@
 #ifndef __GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H__
 #define __GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H__
 
-// Qt lib import
-#include <QtCore>
-
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
+
+// JQNetwork lib import
+#include <JQNetworkFoundation>
 
 #define LANFILETRANSPORT_INITIALIZA                                                                 \
 {                                                                                                   \
     qmlRegisterType<LanFileTransport::Manage>("LanFileTransport", 1, 0, "LanFileTransportManage");  \
 }
-
-class JQNetworkLan;
-class JQNetworkConnect;
-class JQNetworkServer;
-class JQNetworkClient;
 
 namespace LanFileTransport
 {
@@ -36,6 +31,15 @@ class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)
+
+    struct SendCounter
+    {
+        qint64 alreadySendSizeTotal;
+        int alreadySendFileCount;
+
+        qint64 sizeTotal;
+        int fileCount;
+    };
 
 public:
     Manage();
@@ -62,10 +66,12 @@ public slots:
 private:
     void refreshLanNodes();
 
+    void emitSendingSignal(const QString &hostName, const SendCounter &counter);
+
 signals:
     void lanNodeChanged();
 
-    void sending(const QString currentHostAddress, const QVariant payloadCurrentIndex, const QVariant payloadTotalSize);
+    void sending(const QString currentHostAddress, const qreal sendPercentage);
 
     void sendFinish(const QString currentHostAddress);
 
@@ -75,9 +81,12 @@ private:
     QSharedPointer< JQNetworkLan > jqNetworkLan_;
 
     QMutex mutex_;
+    QString savePath_;
     bool showSelf_ = false;
     QVariantList lanNodes_;
+
     QMap< JQNetworkConnect *, QString > mapForConnectToHostAddress_;
+    QMap< QString, SendCounter > mapForConnectSendCounter_; // hostAddress -> SendCounter
 };
 
 }

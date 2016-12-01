@@ -185,6 +185,7 @@ qint32 JQNetworkClient::sendPayloadData(
         const QString &hostName,
         const quint16 &port,
         const QByteArray &payloadData,
+        const QVariantMap &appendData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
     )
@@ -195,6 +196,7 @@ qint32 JQNetworkClient::sendPayloadData(
 
     return connect->sendPayloadData(
                 payloadData,
+                appendData,
                 succeedCallback,
                 failCallback
             );
@@ -203,7 +205,8 @@ qint32 JQNetworkClient::sendPayloadData(
 qint32 JQNetworkClient::sendFileData(
         const QString &hostName,
         const quint16 &port,
-        const QString &filePath,
+        const QFileInfo &fileInfo,
+        const QVariantMap &appendData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
     )
@@ -213,7 +216,8 @@ qint32 JQNetworkClient::sendFileData(
     if ( !connect ) { return 0; }
 
     return connect->sendFileData(
-                filePath,
+                fileInfo,
+                appendData,
                 succeedCallback,
                 failCallback
             );

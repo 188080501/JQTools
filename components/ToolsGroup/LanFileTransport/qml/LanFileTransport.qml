@@ -63,7 +63,7 @@ Item {
                     onSending: {
                         if ( currentHostAddress !== hostAddress ) { return; }
 
-                        progressCircleForSend.value = payloadCurrentIndex / payloadTotalSize;
+                        progressCircleForSend.value = sendPercentage;
                     }
 
                     onSendFinish: {
@@ -251,7 +251,7 @@ Item {
         anchors.rightMargin: 10
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
-        text: "拖动文件到节点圆圈处即可传输文件\n注：目前不支持100MB以上的文件传输，之后更新会加上这个功能"
+        text: "拖动文件到节点圆圈处即可传输文件"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
         color: "#a1a1a1"

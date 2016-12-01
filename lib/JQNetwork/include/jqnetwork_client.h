@@ -72,6 +72,15 @@ public:
             const QString &hostName,
             const quint16 &port,
             const QByteArray &payloadData,
+            const QVariantMap &appendData,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    inline qint32 sendPayloadData(
+            const QString &hostName,
+            const quint16 &port,
+            const QByteArray &payloadData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
             const JQNetworkConnectPointerFunction &failCallback = nullptr
         );
@@ -79,7 +88,16 @@ public:
     qint32 sendFileData(
             const QString &hostName,
             const quint16 &port,
-            const QString &filePath,
+            const QFileInfo &fileInfo,
+            const QVariantMap &appendData,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    inline qint32 sendFileData(
+            const QString &hostName,
+            const quint16 &port,
+            const QFileInfo &fileInfo,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
             const JQNetworkConnectPointerFunction &failCallback = nullptr
         );

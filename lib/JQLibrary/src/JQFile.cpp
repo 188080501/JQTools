@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQLibrary
 
     Copyright: Jason
@@ -16,6 +16,11 @@
 */
 
 #include "JQFile.h"
+
+// C lib import
+#ifdef _POSIX_VERSION
+#   include <utime.h>
+#endif
 
 using namespace JQFile;
 
@@ -160,7 +165,7 @@ bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &
     return false;
 }
 
-#if (defined Q_OS_MAC) || (defined __MINGW32__) || (defined Q_OS_LINUX)
+#ifdef _POSIX_VERSION
 bool JQFile::setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified)
 {
     utimbuf buf( { (time_t)lastRead, (time_t)lastModified } );

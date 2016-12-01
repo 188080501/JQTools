@@ -113,24 +113,50 @@ public:
 
     qint32 sendPayloadData(
             const QByteArray &payloadData,
+            const QVariantMap &appendData,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    inline qint32 sendPayloadData(
+            const QByteArray &payloadData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
             const JQNetworkConnectPointerFunction &failCallback = nullptr
         );
 
     qint32 sendFileData(
-            const QString &filePath,
+            const QFileInfo &fileInfo,
+            const QVariantMap &appendData,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    inline qint32 sendFileData(
+            const QFileInfo &fileInfo,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
             const JQNetworkConnectPointerFunction &failCallback = nullptr
         );
 
     qint32 replyPayloadData(
             const qint32 &receivedPackageRandomFlag,
+            const QByteArray &payloadData,
+            const QVariantMap &appendData
+        );
+
+    inline qint32 replyPayloadData(
+            const qint32 &receivedPackageRandomFlag,
             const QByteArray &payloadData
         );
 
     qint32 replyFile(
             const qint32 &receivedPackageRandomFlag,
-            const QString &filePath
+            const QFileInfo &fileInfo,
+            const QVariantMap &appendData
+        );
+
+    inline qint32 replyFile(
+            const qint32 &receivedPackageRandomFlag,
+            const QFileInfo &fileInfo
         );
 
 private Q_SLOTS:
@@ -162,13 +188,15 @@ private:
     bool readySendPayloadData(
             const qint32 &randomFlag,
             const QByteArray &payloadData,
+            const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
             const JQNetworkConnectPointerFunction &failCallback
         );
 
     bool readySendFileData(
             const qint32 &randomFlag,
-            const QString &filePath,
+            const QFileInfo &fileInfo,
+            const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
             const JQNetworkConnectPointerFunction &failCallback
         );

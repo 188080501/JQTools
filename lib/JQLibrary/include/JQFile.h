@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQLibrary
 
     Copyright: Jason
@@ -26,10 +26,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
-
-#if (defined Q_OS_MAC) || (defined __MINGW32__) || (defined Q_OS_LINUX)
-#   include "utime.h"
-#endif
 
 namespace JQFile
 {
