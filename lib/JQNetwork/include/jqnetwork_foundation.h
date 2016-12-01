@@ -26,7 +26,7 @@
 #include <QVariant>
 #include <QHostAddress>
 
-#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 4, 3 )
+#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 5, 1 )
 
 #define JQNETWORKPACKAGE_BOOTFLAG qint8( 0x7d )
 #define JQNETWORKPACKAGE_PAYLOADDATATRANSPORTPACKGEFLAG qint8( 0x1 )
@@ -57,6 +57,7 @@ class QJsonArray;
 class QJsonValue;
 class QJsonDocument;
 class QFile;
+class QFileInfo;
 class QTcpSocket;
 class QTcpServer;
 class QUdpSocket;

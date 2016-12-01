@@ -36,4 +36,40 @@ inline QString JQNetworkClient::nodeMarkSummary() const
     return nodeMarkSummary_;
 }
 
+inline qint32 JQNetworkClient::sendPayloadData(
+        const QString &hostName,
+        const quint16 &port,
+        const QByteArray &payloadData,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendPayloadData(
+                hostName,
+                port,
+                payloadData,
+                { },
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::sendFileData(
+        const QString &hostName,
+        const quint16 &port,
+        const QFileInfo &fileInfo,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendFileData(
+                hostName,
+                port,
+                fileInfo,
+                { },
+                succeedCallback,
+                failCallback
+            );
+}
+
 #endif//JQNETWORK_INCLUDE_JQNETWORK_CLIENG_INC

@@ -108,6 +108,7 @@ void JQNetworkConnect::close()
 
 qint32 JQNetworkConnect::sendPayloadData(
         const QByteArray &payloadData,
+        const QVariantMap &appendData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
     )
@@ -117,14 +118,15 @@ qint32 JQNetworkConnect::sendPayloadData(
 
     const auto currentRandomFlag = this->nextRandomFlag();
 
-    const auto &&readySendPayloadDataSucceed = this->readySendPayloadData( currentRandomFlag, payloadData, succeedCallback, failCallback );
+    const auto &&readySendPayloadDataSucceed = this->readySendPayloadData( currentRandomFlag, payloadData, appendData, succeedCallback, failCallback );
     if ( !readySendPayloadDataSucceed ) { return 0; }
 
     return currentRandomFlag;
 }
 
 qint32 JQNetworkConnect::sendFileData(
-        const QString &filePath,
+        const QFileInfo &fileInfo,
+        const QVariantMap &appendData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
     )
@@ -134,7 +136,7 @@ qint32 JQNetworkConnect::sendFileData(
 
     const auto currentRandomFlag = this->nextRandomFlag();
 
-    const auto &&readySendFileDataSucceed = this->readySendFileData( currentRandomFlag, filePath, succeedCallback, failCallback );
+    const auto &&readySendFileDataSucceed = this->readySendFileData( currentRandomFlag, fileInfo, appendData, succeedCallback, failCallback );
     if ( !readySendFileDataSucceed ) { return 0; }
 
     return currentRandomFlag;
@@ -142,13 +144,14 @@ qint32 JQNetworkConnect::sendFileData(
 
 qint32 JQNetworkConnect::replyPayloadData(
         const qint32 &receivedPackageRandomFlag,
-        const QByteArray &payloadData
+        const QByteArray &payloadData,
+        const QVariantMap &appendData
     )
 {
     if ( isAbandonTcpSocket_ ) { return 0; }
     JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
 
-    const auto &&readySendPayloadDataSucceed = this->readySendPayloadData( receivedPackageRandomFlag, payloadData, nullptr, nullptr );
+    const auto &&readySendPayloadDataSucceed = this->readySendPayloadData( receivedPackageRandomFlag, payloadData, appendData, nullptr, nullptr );
     if ( !readySendPayloadDataSucceed ) { return 0; }
 
     return receivedPackageRandomFlag;
@@ -156,13 +159,14 @@ qint32 JQNetworkConnect::replyPayloadData(
 
 qint32 JQNetworkConnect::replyFile(
         const qint32 &receivedPackageRandomFlag,
-        const QString &filePath
+        const QFileInfo &fileInfo,
+        const QVariantMap &appendData
     )
 {
     if ( isAbandonTcpSocket_ ) { return 0; }
     JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
 
-    const auto &&readySendFileData = this->readySendFileData( receivedPackageRandomFlag, filePath, nullptr, nullptr );
+    const auto &&readySendFileData = this->readySendFileData( receivedPackageRandomFlag, fileInfo, appendData, nullptr, nullptr );
     if ( !readySendFileData ) { return 0; }
 
     return receivedPackageRandomFlag;
@@ -308,7 +312,8 @@ void JQNetworkConnect::onTcpSocketReadyRead()
 
                         JQNETWORK_NULLPTR_CHECK( connectSettings_->packageSendingCallback );
                         connectSettings_->packageSendingCallback(
-                                    this, package->randomFlag(),
+                                    this,
+                                    package->randomFlag(),
                                     nextPackage->payloadDataOriginalIndex(),
                                     nextPackage->payloadDataOriginalCurrentSize(),
                                     nextPackage->payloadDataTotalSize()
@@ -334,12 +339,6 @@ void JQNetworkConnect::onTcpSocketReadyRead()
 
                         const auto &&currentFileData = itForFile.value()->read( connectSettings_->cutPackageSize );
 
-                        if ( itForFile.value()->atEnd() )
-                        {
-                            itForFile.value()->close();
-                            waitForSendFiles_.erase( itForFile );
-                        }
-
                         this->sendPackageToRemote(
                                     JQNetworkPackage::createFileTransportPackage(
                                         { },
@@ -348,6 +347,21 @@ void JQNetworkConnect::onTcpSocketReadyRead()
                                         this->needCompressionPayloadData( currentFileData.size() )
                                     )
                                 );
+
+                        JQNETWORK_NULLPTR_CHECK( connectSettings_->packageSendingCallback );
+                        connectSettings_->packageSendingCallback(
+                                    this,
+                                    package->randomFlag(),
+                                    itForFile.value()->pos() - currentFileData.size(),
+                                    currentFileData.size(),
+                                    itForFile.value()->size()
+                                );
+
+                        if ( itForFile.value()->atEnd() )
+                        {
+                            itForFile.value()->close();
+                            waitForSendFiles_.erase( itForFile );
+                        }
 
                         break;
                     }
@@ -568,9 +582,6 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
         file.clear();
 
 #ifdef _POSIX_VERSION
-//        utimbuf timeBuf( { firstPackage->fileCreatedTime().toTime_t(), firstPackage->fileCreatedTime().toTime_t() } );
-//        utime( firstPackage->localFilePath().toLatin1().data(), &timeBuf );
-
         utimbuf timeBuf = { firstPackage->fileLastReadTime().toTime_t(), firstPackage->fileLastModifiedTime().toTime_t() };
         utime( firstPackage->localFilePath().toLatin1().data(), &timeBuf );
 #endif
@@ -591,6 +602,7 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
         const auto &&fileName = package->fileName();
         const auto &&fileSize = package->fileSize();
 
+        JQNETWORK_NULLPTR_CHECK( connectSettings_->filePathProvider );
         const auto &&localFilePath = connectSettings_->filePathProvider( this, package, fileName );
 
         if ( localFilePath.isEmpty() )
@@ -671,11 +683,13 @@ qint32 JQNetworkConnect::nextRandomFlag()
 bool JQNetworkConnect::readySendPayloadData(
         const qint32 &randomFlag,
         const QByteArray &payloadData,
+        const QVariantMap &appendData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
     auto packages = JQNetworkPackage::createPayloadTransportPackages(
+                appendData,
                 payloadData,
                 randomFlag,
                 connectSettings_->cutPackageSize,
@@ -694,30 +708,29 @@ bool JQNetworkConnect::readySendPayloadData(
 
 bool JQNetworkConnect::readySendFileData(
         const qint32 &randomFlag,
-        const QString &filePath,
+        const QFileInfo &fileInfo,
+        const QVariantMap &appendData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
     if ( waitForSendFiles_.contains( randomFlag ) )
     {
-        qDebug() << "JQNetworkConnect::readySendFileData: file is sending, filePath:" << filePath;
+        qDebug() << "JQNetworkConnect::readySendFileData: file is sending, filePath:" << fileInfo.filePath();
         return false;
     }
-
-    QFileInfo fileInfo( filePath );
 
     if ( !fileInfo.exists() )
     {
-        qDebug() << "JQNetworkConnect::readySendFileData: file not exists, filePath:" << filePath;
+        qDebug() << "JQNetworkConnect::readySendFileData: file not exists, filePath:" << fileInfo.filePath();
         return false;
     }
 
-    QSharedPointer< QFile > file( new QFile( filePath ) );
+    QSharedPointer< QFile > file( new QFile( fileInfo.filePath() ) );
 
     if ( !file->open( QIODevice::ReadOnly ) )
     {
-        qDebug() << "JQNetworkConnect::readySendFileData: file open error, filePath:" << filePath;
+        qDebug() << "JQNetworkConnect::readySendFileData: file open error, filePath:" << fileInfo.filePath();
         return false;
     }
 
@@ -731,6 +744,7 @@ bool JQNetworkConnect::readySendFileData(
     auto packages = QList< JQNetworkPackageSharedPointer >(
                 {
                     JQNetworkPackage::createFileTransportPackage(
+                        appendData,
                         fileInfo,
                         currentFileData,
                         randomFlag,

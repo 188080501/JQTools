@@ -114,24 +114,6 @@ JQNetworkPackageSharedPointer JQNetworkPackage::readPackage(QByteArray &rawData)
 }
 
 QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportPackages(
-        const QByteArray &payloadData,
-        const qint32 &randomFlag,
-        const qint64 cutPackageSize,
-        const bool &compressionData
-    )
-{
-    return JQNetworkPackage::createPayloadTransportPackages(
-                "",
-                "",
-                { },
-                payloadData,
-                randomFlag,
-                cutPackageSize,
-                compressionData
-            );
-}
-
-QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportPackages(
         const QString &targetNodeFlag,
         const QString &targerActionFlag,
         const QVariantMap &appendData,
@@ -261,24 +243,6 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
 }
 
 JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
-        const QFileInfo &fileInfo,
-        const QByteArray &fileData,
-        const qint32 &randomFlag,
-        const bool &compressionData
-    )
-{
-    return JQNetworkPackage::createFileTransportPackage(
-                "",
-                "",
-                { },
-                fileInfo,
-                fileData,
-                randomFlag,
-                compressionData
-            );
-}
-
-JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
         const QString &targetNodeFlag,
         const QString &targerActionFlag,
         const QVariantMap &appendData,
@@ -329,7 +293,7 @@ JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
     package->metaDataOriginalIndex_ = 0;
     package->metaDataOriginalCurrentSize_ = 0;
     package->payloadDataOriginalIndex_ = 0;
-    package->payloadDataOriginalCurrentSize_ = 0;
+    package->payloadDataOriginalCurrentSize_ = fileData.size();
 
     return package;
 }

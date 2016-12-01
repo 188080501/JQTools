@@ -53,6 +53,58 @@ inline qint64 JQNetworkConnect::connectSucceedElapsed() const
     return connectSucceedTime_ - connectCreateTime_;
 }
 
+inline qint32 JQNetworkConnect::sendPayloadData(
+        const QByteArray &payloadData,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendPayloadData(
+                payloadData,
+                { },
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkConnect::sendFileData(
+        const QFileInfo &fileInfo,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendFileData(
+                fileInfo,
+                { },
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkConnect::replyPayloadData(
+        const qint32 &receivedPackageRandomFlag,
+        const QByteArray &payloadData
+    )
+{
+    return this->replyPayloadData(
+                receivedPackageRandomFlag,
+                payloadData,
+                { }
+            );
+}
+
+inline qint32 JQNetworkConnect::replyFile(
+        const qint32 &receivedPackageRandomFlag,
+        const QFileInfo &fileInfo
+    )
+{
+    return this->replyFile(
+                receivedPackageRandomFlag,
+                fileInfo,
+                { }
+            );
+}
+
 inline bool JQNetworkConnect::needCompressionPayloadData(const int &dataSize)
 {
     bool compressionPayloadData = false;

@@ -42,13 +42,6 @@ public:
     static JQNetworkPackageSharedPointer readPackage(QByteArray &rawData);
 
     static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
-            const QByteArray &payloadData,
-            const qint32 &randomFlag,
-            const qint64 cutPackageSize = -1,
-            const bool &compressionData = false
-        );
-
-    static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
             const QString &targetNodeFlag,
             const QString &targerActionFlag,
             const QVariantMap &appendData,
@@ -58,17 +51,40 @@ public:
             const bool &compressionData = false
         );
 
+    inline static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
+            const QVariantMap &appendData,
+            const QByteArray &payloadData,
+            const qint32 &randomFlag,
+            const qint64 cutPackageSize = -1,
+            const bool &compressionData = false
+        );
+
+    inline static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
+            const QByteArray &payloadData,
+            const qint32 &randomFlag,
+            const qint64 cutPackageSize = -1,
+            const bool &compressionData = false
+        );
+
     static JQNetworkPackageSharedPointer createFileTransportPackage(
+            const QString &targetNodeFlag,
+            const QString &targerActionFlag,
+            const QVariantMap &appendData,
             const QFileInfo &fileInfo,
             const QByteArray &fileData,
             const qint32 &randomFlag,
             const bool &compressionData = false
         );
 
-    static JQNetworkPackageSharedPointer createFileTransportPackage(
-            const QString &targetNodeFlag,
-            const QString &targerActionFlag,
+    inline static JQNetworkPackageSharedPointer createFileTransportPackage(
             const QVariantMap &appendData,
+            const QFileInfo &fileInfo,
+            const QByteArray &fileData,
+            const qint32 &randomFlag,
+            const bool &compressionData = false
+        );
+
+    inline static JQNetworkPackageSharedPointer createFileTransportPackage(
             const QFileInfo &fileInfo,
             const QByteArray &fileData,
             const qint32 &randomFlag,
