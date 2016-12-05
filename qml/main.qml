@@ -78,7 +78,9 @@ ApplicationWindow {
                                 { bookmarkName: "PNG图片压缩", titleName: "PNG图片压缩", qrcLocation: "qrc:/PngOptimize/PngOptimize.qml" },
                                 { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "notSupport" },
                                 { bookmarkName: "局域网文件传输", titleName: "局域网文件传输", qrcLocation: "qrc:/LanFileTransport/LanFileTransport.qml" },
-                                { bookmarkName: "局域网远程构建", titleName: "局域网远程构建", qrcLocation: "notSupport" }
+                                { bookmarkName: "局域网远程构建", titleName: "局域网远程构建", qrcLocation: "notSupport" },
+                                { bookmarkName: "TCP服务端模拟", titleName: "TCP服务端模拟", qrcLocation: "notSupport" },
+                                { bookmarkName: "TCP客户端模拟", titleName: "TCP客户端模拟", qrcLocation: "notSupport" }
                             ]
                         },
                         {
