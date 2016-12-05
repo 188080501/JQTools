@@ -613,9 +613,9 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
 
         const auto &&localFileInfo = QFileInfo( localFilePath );
 
-        if ( !localFileInfo.dir().exists() && !localFileInfo.dir().mkdir( localFileInfo.dir().absolutePath() ) )
+        if ( !localFileInfo.dir().exists() && !localFileInfo.dir().mkpath( localFileInfo.dir().absolutePath() ) )
         {
-            qDebug() << "JQNetworkConnect::onFileDataTransportPackageReceived: Mkdir error, filePath:" << localFilePath;
+            qDebug() << "JQNetworkConnect::onFileDataTransportPackageReceived: mkpath error, filePath:" << localFilePath;
             return;
         }
 
