@@ -307,7 +307,7 @@ void Manage::emitSendingSignal(const QString &hostName, const SendCounter &count
 {
 //    qDebug() << "emitSendingSignal:" << hostName << counter.alreadySendSizeTotal << counter.alreadySendFileCount << counter.sizeTotal << counter.fileCount;
 
-    qreal sendPercentage = ( ( (double)counter.alreadySendSizeTotal / (double)counter.sizeTotal ) + ( (double)counter.alreadySendFileCount / (double)counter.fileCount ) ) / 2.0;
+    qreal sendPercentage = ( ( (double)counter.alreadySendSizeTotal / (double)counter.sizeTotal * 0.7 ) + ( (double)counter.alreadySendFileCount / (double)counter.fileCount * 0.3 ) );
 
     emit this->sending( hostName, sendPercentage );
 }
