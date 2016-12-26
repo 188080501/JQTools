@@ -58,6 +58,7 @@ Manage::Manage():
         connect->replyPayloadData( package->randomFlag(), { } );
     };
 
+    jqNetworkClient_->connectSettings()->maximumConnectToHostWaitTime = 5000;
     jqNetworkClient_->clientSettings()->packageSendingCallback = [ this ](
             const JQNetworkConnectPointer &,
             const QString &hostName,
@@ -280,10 +281,24 @@ void Manage::refreshLanNodes()
         }
         else
         {
-            if ( !this->jqNetworkClient_->waitForCreateConnect( hostAddress, SERVERPORT ) )
+            auto connectCount = 0;
+            for ( ; connectCount < 2; ++connectCount )
             {
-                qDebug() << "connect fail:" << hostAddress;
-                continue;
+                qDebug() << "refreshLanNodes: connect to:" << hostAddress;
+
+                if ( this->jqNetworkClient_->waitForCreateConnect( hostAddress, SERVERPORT ) )
+                {
+                    break;
+                }
+            }
+
+            if ( connectCount == 2 )
+            {
+                qDebug() << "refreshLanNodes: connect fail:" << hostAddress;
+            }
+            else
+            {
+                qDebug() << "refreshLanNodes: connect succeed:" << hostAddress;
             }
         }
 

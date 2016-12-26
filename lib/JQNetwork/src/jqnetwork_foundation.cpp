@@ -199,7 +199,7 @@ void JQNetwork::printVersionInformation(const char *jqNetworkCompileModeString)
     qDebug() << "JQNetwork library version:" << ( JQNETWORK_VERSIONNUMBER.toString() )
 #ifdef __STDC__
              << ", build in:" << QDateTime(
-                    QLocale( "es" ).toDate( QString( __DATE__ ).insert( 3, "." ).toLower(), "MMM dd yyyy"),
+                    QLocale( QLocale::English ).toDate( QString( __DATE__ ), "MMM dd yyyy"),
                     QTime::fromString( __TIME__, "hh:mm:ss" )
                 ).toString( "yyyy-MM-dd hh:mm:ss" )
 #endif

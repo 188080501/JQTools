@@ -66,7 +66,7 @@ public:
 
     void createConnect(const QString &hostName, const quint16 &port);
 
-    bool waitForCreateConnect(const QString &hostName, const quint16 &port, const int &timeout = 30 * 1000);
+    bool waitForCreateConnect(const QString &hostName, const quint16 &port);
 
     qint32 sendPayloadData(
             const QString &hostName,
