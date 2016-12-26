@@ -158,7 +158,7 @@ void JQNetworkClient::createConnect(const QString &hostName, const quint16 &port
     );
 }
 
-bool JQNetworkClient::waitForCreateConnect(const QString &hostName, const quint16 &port, const int &timeout)
+bool JQNetworkClient::waitForCreateConnect(const QString &hostName, const quint16 &port)
 {
     QSharedPointer< QSemaphore > semaphore( new QSemaphore );
     const auto &&hostKey = QString( "%1:%2" ).arg( hostName, QString::number( port ) );
@@ -170,7 +170,7 @@ bool JQNetworkClient::waitForCreateConnect(const QString &hostName, const quint1
 
     mutex_.unlock();
 
-    const auto &&acquireSucceed = semaphore->tryAcquire( 1, timeout );
+    const auto &&acquireSucceed = semaphore->tryAcquire( 1, connectSettings_->maximumConnectToHostWaitTime );
 
     mutex_.lock();
 

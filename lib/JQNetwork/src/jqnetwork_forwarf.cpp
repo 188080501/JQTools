@@ -21,7 +21,9 @@ JQNetworkForwarf::JQNetworkForwarf(
     forwarfSettings_( forwarfSettings )
 { }
 
-JQNetworkForwarfSharedPointer JQNetworkForwarf::createForwarf()
+JQNetworkForwarfSharedPointer JQNetworkForwarf::createForwarf(
+        const bool & /*fileTransferEnabled*/
+    )
 {
     JQNetworkForwarfSettingsSharedPointer forwarfSettings( new JQNetworkForwarfSettings );
 

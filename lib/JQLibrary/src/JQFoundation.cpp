@@ -445,7 +445,7 @@ void JQFoundation::setDebugOutput(const QString &targetFilePath, const bool &arg
         {
             QString message;
 
-            switch (type)
+            switch ( type )
             {
                 case QtDebugMsg:
                 {
@@ -485,14 +485,14 @@ void JQFoundation::setDebugOutput(const QString &targetFilePath, const bool &arg
             }
 
             QFile outFile( targetFilePath__ );
-            outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+            outFile.open( QIODevice::WriteOnly | QIODevice::Append );
 
-            QTextStream textStream(&outFile);
-            textStream << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ": " << message << endl;
+            QTextStream textStream( &outFile );
+            textStream << QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss" ) << ": " << message << endl;
         }
     };
 
-    qInstallMessageHandler(HelperClass::messageHandler);
+    qInstallMessageHandler( HelperClass::messageHandler );
 }
 
 // BeforMain

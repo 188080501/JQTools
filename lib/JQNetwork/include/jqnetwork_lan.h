@@ -121,7 +121,7 @@ private:
 
     // Data
     QList< JQNetworkLanAddressEntries > lanAddressEntries_;
-    QMap< QString, JQNetworkLanNode > lanNodes_;
+    QMap< QString, JQNetworkLanNode > availableLanNodes_;
 
     // Other
     QString nodeMarkSummary_;

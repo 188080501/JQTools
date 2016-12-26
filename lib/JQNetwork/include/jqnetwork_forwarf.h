@@ -36,7 +36,9 @@ public:
 
     JQNetworkForwarf &operator =(const JQNetworkForwarf &) = delete;
 
-    static JQNetworkForwarfSharedPointer createForwarf();
+    static JQNetworkForwarfSharedPointer createForwarf(
+            const bool &fileTransferEnabled = false
+        );
 
 private:
     JQNetworkForwarfSettingsSharedPointer forwarfSettings_;

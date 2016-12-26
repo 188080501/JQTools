@@ -44,7 +44,7 @@ JQNetworkLan::~JQNetworkLan()
 
                     udpSocket_.clear();
 
-                    for ( const auto &lanNode: lanNodes_ )
+                    for ( const auto &lanNode: availableLanNodes_ )
                     {
                         if ( lanSettings_->lanNodeOfflineCallback )
                         {
@@ -52,7 +52,7 @@ JQNetworkLan::~JQNetworkLan()
                         }
                     }
 
-                    lanNodes_.clear();
+                    availableLanNodes_.clear();
 
                     mutex_.unlock();
                 }
@@ -179,7 +179,7 @@ QList< JQNetworkLanNode > JQNetworkLan::availableLanNodes()
 
     mutex_.lock();
 
-    for ( const auto &lanAddressEntries: lanNodes_ )
+    for ( const auto &lanAddressEntries: availableLanNodes_ )
     {
         result.push_back( lanAddressEntries );
     }
@@ -255,12 +255,12 @@ void JQNetworkLan::checkLoop()
     bool lanListModified = false;
     const auto &&currentTime = QDateTime::currentMSecsSinceEpoch();
 
-    for ( auto it = lanNodes_.begin(); it != lanNodes_.end(); )
+    for ( auto it = availableLanNodes_.begin(); it != availableLanNodes_.end(); )
     {
         if ( ( currentTime - it->lastActiveTime ) >= lanSettings_->lanNodeTimeoutInterval )
         {
             const auto lanNode = *it;
-            lanNodes_.erase( it );
+            availableLanNodes_.erase( it );
             lanListModified = true;
 
             mutex_.unlock();
@@ -269,7 +269,7 @@ void JQNetworkLan::checkLoop()
 
             mutex_.lock();
 
-            it = lanNodes_.begin();
+            it = availableLanNodes_.begin();
         }
         else
         {
@@ -281,7 +281,6 @@ void JQNetworkLan::checkLoop()
 
     if ( lanListModified )
     {
-//        qDebug("111111");
         this->onLanNodeListChanged();
     }
 
@@ -318,7 +317,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
         datagram.resize( udpSocket_->pendingDatagramSize() );
         udpSocket_->readDatagram( datagram.data(), datagram.size() );
 
-//        qDebug() << "JQNetworkLan::onUdpSocketReadyRead:" << datagram;
+        qDebug() << "JQNetworkLan::onUdpSocketReadyRead:" << datagram;
 
         const auto &&data = QJsonDocument::fromJson( datagram ).object().toVariantMap();
 
@@ -359,7 +358,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
             JQNetworkLanNode lanNode;
             bool firstOnline = false;
 
-            if ( !lanNodes_.contains( nodeMarkSummary ) )
+            if ( !availableLanNodes_.contains( nodeMarkSummary ) )
             {
                 lanNode.nodeMarkSummary = nodeMarkSummary;
                 lanNode.lastActiveTime = lastActiveTime;
@@ -368,19 +367,18 @@ void JQNetworkLan::onUdpSocketReadyRead()
                 lanNode.matchAddress = this->matchLanAddressEntries( ipList );
                 lanNode.isSelf = nodeMarkSummary == nodeMarkSummary_;
 
-                lanNodes_[ nodeMarkSummary ] = lanNode;
+                availableLanNodes_[ nodeMarkSummary ] = lanNode;
 
                 mutex_.unlock();
 
                 this->onLanNodeStateOnline( lanNode );
                 this->onLanNodeListChanged();
-//                qDebug("222222");
 
                 firstOnline = true;
             }
             else
             {
-                lanNode = lanNodes_[ nodeMarkSummary ];
+                lanNode = availableLanNodes_[ nodeMarkSummary ];
 
                 if ( lanNode.lastActiveTime < lastActiveTime )
                 {
@@ -389,7 +387,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
                     lanNode.appendData = appendData;
                     lanNode.matchAddress = this->matchLanAddressEntries( ipList );
 
-                    lanNodes_[ nodeMarkSummary ] = lanNode;
+                    availableLanNodes_[ nodeMarkSummary ] = lanNode;
 
                     mutex_.unlock();
 
@@ -413,11 +411,11 @@ void JQNetworkLan::onUdpSocketReadyRead()
         {
             mutex_.lock();
 
-            if ( lanNodes_.contains( nodeMarkSummary ) )
+            if ( availableLanNodes_.contains( nodeMarkSummary ) )
             {
-                const auto lanNode = lanNodes_[ nodeMarkSummary ];
+                const auto lanNode = availableLanNodes_[ nodeMarkSummary ];
 
-                lanNodes_.remove( nodeMarkSummary );
+                availableLanNodes_.remove( nodeMarkSummary );
 
                 mutex_.unlock();
 
