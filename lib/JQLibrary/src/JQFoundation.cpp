@@ -23,123 +23,27 @@
 #include <QHash>
 #include <QBuffer>
 #include <QMetaMethod>
-
-#include <QWidget>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QPalette>
-#include <QLabel>
-#include <QDesktopWidget>
-#include <QAbstractButton>
-#include <QTextCursor>
-#include <QTabWidget>
-#include <QTabBar>
-#include <QTableWidget>
-#include <QTreeWidget>
 #include <QImage>
-#include <QMessageBox>
+#include <QTextCursor>
+#include <QPalette>
+#include <QFileInfo>
+#include <QDir>
+
+#ifdef QT_WIDGETS_LIB
+#   include <QWidget>
+#   include <QLineEdit>
+#   include <QTextEdit>
+#   include <QLabel>
+#   include <QDesktopWidget>
+#   include <QAbstractButton>
+#   include <QTabWidget>
+#   include <QTabBar>
+#   include <QTableWidget>
+#   include <QTreeWidget>
+#   include <QMessageBox>
+#endif
 
 using namespace JQFoundation;
-
-void JQFoundation::eventLoopSleep(const int &delay)
-{
-    QEventLoop eventLoop;
-    QTimer::singleShot( delay, &eventLoop, &QEventLoop::quit );
-    eventLoop.exec();
-}
-
-void JQFoundation::foreachWidget(QWidget *parent, const std::function<void (QWidget *)> &each, const bool &recursive)
-{
-    QObjectList children = parent->children();
-    for (auto &now: children)
-    {
-        if (now->inherits("QWidget"))
-        {
-            each(qobject_cast<QWidget *>(now));
-            if (recursive)
-            {
-                JQFoundation::foreachWidget(parent, each, recursive);
-            }
-        }
-    }
-}
-
-void JQFoundation::tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList)
-{
-    tableWidget->setColumnCount(stringList.size());
-    tableWidget->setHorizontalHeaderLabels(stringList);
-}
-
-void JQFoundation::tableWidgetSetColumnWidth(QTableWidget *tableWidget, const QVector<int> &columnWidth)
-{
-    int column = -1;
-    foreach (auto &&now, columnWidth)
-    {
-        tableWidget->setColumnWidth(++column, now);
-    }
-}
-
-void JQFoundation::tableWidgetAddString(QTableWidget *tableWidget, const QStringList &stringList)
-{
-    int x = 0, y = tableWidget->rowCount();
-    tableWidget->setRowCount(y + 1);
-    QTableWidgetItem *item;
-
-    foreach (QString Now, stringList)
-    {
-        item = new QTableWidgetItem(Now);
-        item->setSelected(false);
-        item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-        tableWidget->setItem(y, x++, item);
-    }
-}
-
-void JQFoundation::treeWidgetSetHorizontalHeaderLabels(QTreeWidget *treeWidget, const QStringList &stringList)
-{
-    treeWidget->setColumnCount(stringList.size());
-    treeWidget->setHeaderLabels(stringList);
-}
-
-void JQFoundation::treeWidgetSetColumnWidth(QTreeWidget *treeWidget, const QVector<int> &columnWidth)
-{
-    int column = -1;
-    foreach (auto &&now, columnWidth)
-    {
-        ++column;
-        if (now > 0)
-        {
-            treeWidget->setColumnWidth(column, now);
-        }
-        else if (!now)
-        {
-            continue;
-        }
-        else
-        {
-            treeWidget->setColumnWidth(column, treeWidget->headerItem()->text(column).size() * abs(now));
-        }
-    }
-}
-
-void JQFoundation::setWidgetColor(QWidget *label, const QColor &color)
-{
-    QPalette palette;
-    palette.setColor(QPalette::WindowText, color);
-    label->setPalette(palette);
-}
-
-void JQFoundation::texetEditMoveCursorToEnd(QTextEdit *textEdit)
-{
-    QTextCursor cursor = textEdit->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    textEdit->setTextCursor(cursor);
-}
-
-void JQFoundation::textEditAppendTextToEnd(QTextEdit *textEdit, const QString &string)
-{
-    textEdit->append(string);
-    JQFoundation::texetEditMoveCursorToEnd(textEdit);
-}
 
 QString JQFoundation::hashString(const QString &key, const QCryptographicHash::Algorithm &algorithm)
 {
@@ -170,186 +74,6 @@ QString JQFoundation::hashStringWithSalt(const QString &key)
     const auto &&buf6( JQFoundation::hashString( buf4 + "+" + buf5, QCryptographicHash::Sha1) );
 
     return buf6;
-}
-
-QPoint JQFoundation::getWidgetGlobalPos(const QWidget *widget)
-{
-    if (!widget)
-    {
-        return QPoint(-1,-1);
-    }
-
-    float px = 0;
-    float py = 0;
-    QWidget const *parent = widget;
-    QWidget const *preParent = nullptr;
-
-    do
-    {
-        QPoint p = parent->pos();
-        px += p.x();
-        py += p.y();
-        preParent = parent;
-        parent = parent->parentWidget();
-    }
-    while (parent);
-
-    QSize size = preParent->frameSize();
-    QSize size2 = preParent->size();
-    px = px + (size.width() - size2.width()) / 2;
-    py = py + (size.height() - size2.height() - (size.width() - size2.width()) / 2);
-
-    QPoint pr(px, py);
-    return pr;
-}
-
-QRect JQFoundation::getWidgetGlobalGeometry(const QWidget *widget)
-{
-    return QRect(getWidgetGlobalPos(widget), widget->size());
-}
-
-QWidget *JQFoundation::topParentWidget(QWidget *widget)
-{
-    QWidget *parent = widget;
-
-    while (parent->parentWidget())
-    {
-        parent = parent->parentWidget();
-    }
-
-    return parent;
-}
-
-const QWidget *JQFoundation::topParentWidget(const QWidget *widget)
-{
-    QWidget const *parent = widget;
-
-    while (parent->parentWidget())
-    {
-        parent = parent->parentWidget();
-    }
-
-    return parent;
-}
-
-#if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
-bool JQFoundation::singleApplication(const QString &flag)
-{
-    static QSharedMemory *shareMem = nullptr;
-
-    if (shareMem)
-    {
-        return true;
-    }
-
-    shareMem = new QSharedMemory( "JQFoundationSingleApplication_" + flag );
-
-    for ( auto count = 0; count < 2; ++count )
-    {
-        if (shareMem->attach( QSharedMemory::ReadOnly ))
-        {
-            shareMem->detach();
-        }
-    }
-
-    if ( shareMem->create( 1 ) )
-    {
-        return true;
-    }
-
-    return false;
-}
-#else
-bool JQFoundation::singleApplication(const QString &)
-{
-    return true;
-}
-#endif
-
-#if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
-bool JQFoundation::singleApplicationExist(const QString &flag)
-{
-    QSharedMemory shareMem( "JQFoundationSingleApplication_" + flag );
-
-    for ( auto count = 0; count < 2; ++count )
-    {
-        if (shareMem.attach( QSharedMemory::ReadOnly ))
-        {
-            shareMem.detach();
-        }
-    }
-
-    if ( shareMem.create( 1 ) )
-    {
-        return false;
-    }
-
-    return true;
-}
-#else
-bool JQFoundation::singleApplicationExist(const QString &)
-{
-    return false;
-}
-#endif
-
-QString JQFoundation::byteArrayToHexString(const QByteArray &data)
-{
-    QString buf(data.toHex());
-    for (int c = 1; c < data.size(); c++)
-    {
-        buf.insert(c * 2 + c - 1, ' ');
-    }
-    return buf;
-}
-
-QByteArray JQFoundation::pixmapToByteArray(const QPixmap &pixmap, const QString &format)
-{
-    QByteArray bytes;
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    pixmap.save(&buffer, format.toLatin1().data());
-    return bytes;
-}
-
-QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &format)
-{
-    QByteArray bytes;
-    QBuffer buffer(&bytes);
-    buffer.open(QIODevice::WriteOnly);
-    image.save(&buffer, format.toLatin1().data());
-    return bytes;
-}
-
-QPixmap JQFoundation::byteArrayToPixmap(const QByteArray &byteArray)
-{
-    QPixmap Pixmap;
-    Pixmap.loadFromData(byteArray);
-    return Pixmap;
-}
-
-void JQFoundation::lineEditSetToIPLineEdit(QLineEdit *lineEdit)
-{
-    lineEdit->setValidator(new QRegExpValidator(QRegExp("^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$")));
-}
-
-void JQFoundation::lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit)
-{
-    lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9a-zA-Z]+")));
-}
-
-void JQFoundation::lineEditSetTo09LineEdit(QLineEdit *lineEdit)
-{
-    lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]+")));
-}
-
-void JQFoundation::widgetSetToTransparent(QWidget *target)
-{
-    target->setAttribute(Qt::WA_TranslucentBackground, true);
-    target->setAttribute(Qt::WA_NoSystemBackground, false);
-    target->setWindowFlags(Qt::FramelessWindowHint);
-    target->setStyleSheet(target->styleSheet() + QString("\nQWidget#%1 { background-color: transparent; }").arg(target->objectName()));
-    target->setUpdatesEnabled(true);
 }
 
 QString JQFoundation::randString(const int &stringLength, const bool &autoSetSeed)
@@ -430,13 +154,13 @@ void JQFoundation::setTimerCallback(const int &interval, const std::function<voi
     timer->start();
 }
 
-void JQFoundation::setDebugOutput(const QString &targetFilePath, const bool &argDateFlag)
+void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool &argDateFlag_)
 {
-    static QString targetFilePath_;
-    static bool argDateFlag_;
+    static QString rawTargetFilePath;
+    static bool argDateFlag;
 
-    targetFilePath_ = targetFilePath;
-    argDateFlag_ = argDateFlag;
+    rawTargetFilePath = rawTargetFilePath_;
+    argDateFlag = argDateFlag_;
 
     class HelperClass
     {
@@ -473,27 +197,291 @@ void JQFoundation::setDebugOutput(const QString &targetFilePath, const bool &arg
                 default: { break; }
             }
 
-            QString targetFilePath__;
+            QString currentTargetFilePath;
 
-            if ( argDateFlag_ )
+            if ( argDateFlag )
             {
-                targetFilePath__ = targetFilePath_.arg( ( ( argDateFlag_ ) ? ( QDateTime::currentDateTime().toString("yyyy_MM_dd") ) : ( "" ) ) );
+                currentTargetFilePath = rawTargetFilePath.arg( ( ( argDateFlag ) ? ( QDateTime::currentDateTime().toString("yyyy_MM_dd") ) : ( "" ) ) );
             }
             else
             {
-                targetFilePath__ = targetFilePath_;
+                currentTargetFilePath = rawTargetFilePath;
             }
 
-            QFile outFile( targetFilePath__ );
-            outFile.open( QIODevice::WriteOnly | QIODevice::Append );
+            if ( !QFileInfo::exists( currentTargetFilePath ) )
+            {
+                QDir().mkpath( QFileInfo( currentTargetFilePath ).path() );
+            }
 
-            QTextStream textStream( &outFile );
+            QFile file( currentTargetFilePath );
+            file.open( QIODevice::WriteOnly | QIODevice::Append );
+
+            QTextStream textStream( &file );
             textStream << QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss" ) << ": " << message << endl;
         }
     };
 
     qInstallMessageHandler( HelperClass::messageHandler );
 }
+
+#if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
+bool JQFoundation::singleApplication(const QString &flag)
+{
+    static QSharedMemory *shareMem = nullptr;
+
+    if (shareMem)
+    {
+        return true;
+    }
+
+    shareMem = new QSharedMemory( "JQFoundationSingleApplication_" + flag );
+
+    for ( auto count = 0; count < 2; ++count )
+    {
+        if (shareMem->attach( QSharedMemory::ReadOnly ))
+        {
+            shareMem->detach();
+        }
+    }
+
+    if ( shareMem->create( 1 ) )
+    {
+        return true;
+    }
+
+    return false;
+}
+#else
+bool JQFoundation::singleApplication(const QString &)
+{
+    return true;
+}
+#endif
+
+#if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
+bool JQFoundation::singleApplicationExist(const QString &flag)
+{
+    QSharedMemory shareMem( "JQFoundationSingleApplication_" + flag );
+
+    for ( auto count = 0; count < 2; ++count )
+    {
+        if (shareMem.attach( QSharedMemory::ReadOnly ))
+        {
+            shareMem.detach();
+        }
+    }
+
+    if ( shareMem.create( 1 ) )
+    {
+        return false;
+    }
+
+    return true;
+}
+#else
+bool JQFoundation::singleApplicationExist(const QString &)
+{
+    return false;
+}
+#endif
+
+QString JQFoundation::byteArrayToHexString(const QByteArray &data)
+{
+    QString buf(data.toHex());
+    for (int c = 1; c < data.size(); c++)
+    {
+        buf.insert(c * 2 + c - 1, ' ');
+    }
+    return buf;
+}
+
+QByteArray JQFoundation::pixmapToByteArray(const QPixmap &pixmap, const QString &format)
+{
+    QByteArray bytes;
+    QBuffer buffer( &bytes );
+    buffer.open( QIODevice::WriteOnly );
+    pixmap.save( &buffer, format.toLatin1().data() );
+    return bytes;
+}
+
+QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &format)
+{
+    QByteArray bytes;
+    QBuffer buffer( &bytes );
+    buffer.open( QIODevice::WriteOnly );
+    image.save( &buffer, format.toLatin1().data() );
+    return bytes;
+}
+
+QPixmap JQFoundation::byteArrayToPixmap(const QByteArray &byteArray)
+{
+    QPixmap Pixmap;
+    Pixmap.loadFromData(byteArray);
+    return Pixmap;
+}
+
+#ifdef QT_WIDGETS_LIB
+void JQFoundation::tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList)
+{
+    tableWidget->setColumnCount(stringList.size());
+    tableWidget->setHorizontalHeaderLabels(stringList);
+}
+
+void JQFoundation::tableWidgetSetColumnWidth(QTableWidget *tableWidget, const QVector<int> &columnWidth)
+{
+    int column = -1;
+    foreach (auto &&now, columnWidth)
+    {
+        tableWidget->setColumnWidth(++column, now);
+    }
+}
+
+void JQFoundation::tableWidgetAddString(QTableWidget *tableWidget, const QStringList &stringList)
+{
+    int x = 0, y = tableWidget->rowCount();
+    tableWidget->setRowCount(y + 1);
+    QTableWidgetItem *item;
+
+    foreach (QString Now, stringList)
+    {
+        item = new QTableWidgetItem(Now);
+        item->setSelected(false);
+        item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        tableWidget->setItem(y, x++, item);
+    }
+}
+
+void JQFoundation::treeWidgetSetHorizontalHeaderLabels(QTreeWidget *treeWidget, const QStringList &stringList)
+{
+    treeWidget->setColumnCount(stringList.size());
+    treeWidget->setHeaderLabels(stringList);
+}
+
+void JQFoundation::treeWidgetSetColumnWidth(QTreeWidget *treeWidget, const QVector<int> &columnWidth)
+{
+    int column = -1;
+    foreach (auto &&now, columnWidth)
+    {
+        ++column;
+        if (now > 0)
+        {
+            treeWidget->setColumnWidth(column, now);
+        }
+        else if (!now)
+        {
+            continue;
+        }
+        else
+        {
+            treeWidget->setColumnWidth(column, treeWidget->headerItem()->text(column).size() * abs(now));
+        }
+    }
+}
+
+void JQFoundation::setWidgetColor(QWidget *label, const QColor &color)
+{
+    QPalette palette;
+    palette.setColor(QPalette::WindowText, color);
+    label->setPalette(palette);
+}
+
+void JQFoundation::texetEditMoveCursorToEnd(QTextEdit *textEdit)
+{
+    QTextCursor cursor = textEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    textEdit->setTextCursor(cursor);
+}
+
+void JQFoundation::textEditAppendTextToEnd(QTextEdit *textEdit, const QString &string)
+{
+    textEdit->append(string);
+    JQFoundation::texetEditMoveCursorToEnd(textEdit);
+}
+
+QPoint JQFoundation::getWidgetGlobalPos(const QWidget *widget)
+{
+    if (!widget)
+    {
+        return QPoint(-1,-1);
+    }
+
+    float px = 0;
+    float py = 0;
+    QWidget const *parent = widget;
+    QWidget const *preParent = nullptr;
+
+    do
+    {
+        QPoint p = parent->pos();
+        px += p.x();
+        py += p.y();
+        preParent = parent;
+        parent = parent->parentWidget();
+    }
+    while (parent);
+
+    QSize size = preParent->frameSize();
+    QSize size2 = preParent->size();
+    px = px + (size.width() - size2.width()) / 2;
+    py = py + (size.height() - size2.height() - (size.width() - size2.width()) / 2);
+
+    QPoint pr(px, py);
+    return pr;
+}
+
+QRect JQFoundation::getWidgetGlobalGeometry(const QWidget *widget)
+{
+    return QRect(getWidgetGlobalPos(widget), widget->size());
+}
+
+QWidget *JQFoundation::topParentWidget(QWidget *widget)
+{
+    QWidget *parent = widget;
+
+    while (parent->parentWidget())
+    {
+        parent = parent->parentWidget();
+    }
+
+    return parent;
+}
+
+const QWidget *JQFoundation::topParentWidget(const QWidget *widget)
+{
+    QWidget const *parent = widget;
+
+    while (parent->parentWidget())
+    {
+        parent = parent->parentWidget();
+    }
+
+    return parent;
+}
+
+void JQFoundation::lineEditSetToIPLineEdit(QLineEdit *lineEdit)
+{
+    lineEdit->setValidator(new QRegExpValidator(QRegExp("^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$")));
+}
+
+void JQFoundation::lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit)
+{
+    lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9a-zA-Z]+")));
+}
+
+void JQFoundation::lineEditSetTo09LineEdit(QLineEdit *lineEdit)
+{
+    lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]+")));
+}
+
+void JQFoundation::widgetSetToTransparent(QWidget *target)
+{
+    target->setAttribute(Qt::WA_TranslucentBackground, true);
+    target->setAttribute(Qt::WA_NoSystemBackground, false);
+    target->setWindowFlags(Qt::FramelessWindowHint);
+    target->setStyleSheet(target->styleSheet() + QString("\nQWidget#%1 { background-color: transparent; }").arg(target->objectName()));
+    target->setUpdatesEnabled(true);
+}
+#endif
 
 // BeforMain
 BeforMain::BeforMain(const std::function<void ()> &funcation)
@@ -508,6 +496,7 @@ ReadyExit::ReadyExit(const QString &message):
 { }
 
 // ShowInformationMessageBoxFromOtherThread
+#ifdef QT_WIDGETS_LIB
 ShowInformationMessageBoxFromOtherThread::ShowInformationMessageBoxFromOtherThread(const QString &title, const QString &message):
     title_(title),
     message_(message)
@@ -533,6 +522,7 @@ void ShowInformationMessageBoxFromOtherThread::onShow()
     QMessageBox::information(nullptr, title_, message_);
     this->deleteLater();
 }
+#endif
 
 // ConnectionManage
 ConnectionManage::ConnectionManage()

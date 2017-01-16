@@ -58,27 +58,27 @@ void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::fun
 
 bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover)
 {
-    if (!targetFilePath.dir().isReadable())
+    if ( !targetFilePath.dir().isReadable() )
     {
-        if (!QDir().mkpath(targetFilePath.path()))
+        if ( !QDir().mkpath( targetFilePath.path() ))
         {
             return false;
         }
     }
 
-    if (targetFilePath.isFile() && !cover)
+    if ( targetFilePath.isFile() && !cover )
     {
         return true;
     }
 
-    QFile file(targetFilePath.filePath());
-    if (!file.open(QIODevice::WriteOnly))
+    QFile file( targetFilePath.filePath() );
+    if ( !file.open( QIODevice::WriteOnly ) )
     {
         return false;
     }
 
-    file.write(data);
-    file.waitForBytesWritten(10000);
+    file.write( data );
+    file.waitForBytesWritten( 15 * 1000 );
 
     return true;
 }
