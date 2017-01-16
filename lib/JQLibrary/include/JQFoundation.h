@@ -158,10 +158,37 @@ memcpy( T*, int, size_t )
 namespace JQFoundation
 {
 
-void eventLoopSleep(const int &delay);
+QString hashString(const QString &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);
 
-void foreachWidget(QWidget *parent, const std::function<void(QWidget *)> &each, const bool &recursive = false);
+QString hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);
 
+QString hashStringWithSalt(const QString &key);
+
+QString randString(const int &stringLength = 40, const bool &autoSetSeed = true);
+
+void waitForSignal(const QObject *sender, const char *signal);
+
+QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix = QJsonObject());
+
+QJsonObject jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix = QJsonObject());
+
+void setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
+
+void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
+
+bool singleApplication(const QString &flag);
+
+bool singleApplicationExist(const QString &flag);
+
+QString byteArrayToHexString(const QByteArray &data);
+
+QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format);
+
+QByteArray imageToByteArray(const QImage &image, const QString &format);
+
+QPixmap byteArrayToPixmap(const QByteArray &byteArray);
+
+#ifdef QT_WIDGETS_LIB
 void tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList);
 
 void tableWidgetSetColumnWidth(QTableWidget *tableWidget, const QVector<int> &columnWidth);
@@ -178,12 +205,6 @@ void texetEditMoveCursorToEnd(QTextEdit *textEdit);
 
 void textEditAppendTextToEnd(QTextEdit *textEdit, const QString &string);
 
-QString hashString(const QString &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);
-
-QString hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);
-
-QString hashStringWithSalt(const QString &key);
-
 QPoint getWidgetGlobalPos(const QWidget *widget);
 
 QRect getWidgetGlobalGeometry(const QWidget *widget);
@@ -192,18 +213,6 @@ QWidget *topParentWidget(QWidget *widget);
 
 const QWidget *topParentWidget(const QWidget *widget);
 
-bool singleApplication(const QString &flag);
-
-bool singleApplicationExist(const QString &flag);
-
-QString byteArrayToHexString(const QByteArray &data);
-
-QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format);
-
-QByteArray imageToByteArray(const QImage &image, const QString &format);
-
-QPixmap byteArrayToPixmap(const QByteArray &byteArray);
-
 void lineEditSetToIPLineEdit(QLineEdit *lineEdit);
 
 void lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit);
@@ -211,18 +220,7 @@ void lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit);
 void lineEditSetTo09LineEdit(QLineEdit *lineEdit);
 
 void widgetSetToTransparent(QWidget *target);
-
-QString randString(const int &stringLength = 40, const bool &autoSetSeed = true);
-
-void waitForSignal(const QObject *sender, const char *signal);
-
-QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix = QJsonObject());
-
-QJsonObject jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix = QJsonObject());
-
-void setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
-
-void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
+#endif
 
 // Template funcation define
 template <typename FunType>
@@ -248,6 +246,7 @@ private:
     QString message_;
 };
 
+#ifdef QT_WIDGETS_LIB
 class ShowInformationMessageBoxFromOtherThread: public QObject
 {
     Q_OBJECT
@@ -267,6 +266,7 @@ private:
     const QString title_;
     const QString message_;
 };
+#endif
 
 class ConnectionManage
 {

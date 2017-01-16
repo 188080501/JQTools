@@ -68,10 +68,13 @@ Item {
                 dropdown.open(label, 0, -24);
             }
 
-            materialUI.showStealthBackground(function() {
-                dropdown.close();
-                materialUI.hideStealthBackground();
-            }, dropdown);
+            if ( Qt.platform.os !== "android" )
+            {
+                materialUI.showStealthBackground(function() {
+                    dropdown.close();
+                    materialUI.hideStealthBackground();
+                }, dropdown);
+            }
         }
     }
 
