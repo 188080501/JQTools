@@ -19,15 +19,15 @@
 #define __JQFoundation_h__
 
 #if ((__cplusplus < 201103) && !(defined _MSC_VER)) || ((defined _MSC_VER) && (_MSC_VER < 1800))
-#   error("Plwase add c++11 config on pro file")
+#   error("Please add c++11 config on pro file")
 #endif
 
 #ifndef QT_CORE_LIB
-#   error("Plwaer add core in pro file")
+#   error("Please add core in pro file")
 #endif
 
 #ifndef QT_GUI_LIB
-#   error("Plwaer add gui in pro file")
+#   error("Please add gui in pro file")
 #endif
 
 // C++ lib import
