@@ -94,10 +94,8 @@ Manage::Manage():
     };
 
     jqNetworkLan_->setAppendData( this->localHostName() );
-    jqNetworkLan_->lanSettings()->lanNodeListChangedCallback = [ this ]()
-    {
-        this->refreshLanNodes();
-    };
+    jqNetworkLan_->lanSettings()->lanNodeListChangedCallback = std::bind( &Manage::refresh, this );
+    jqNetworkLan_->lanSettings()->lanNodeOfflineCallback = std::bind( &Manage::lanNodeOffline, this, std::placeholders::_1 );
 
     qDebug() << "JQNetworkServer begin:" << jqNetworkServer_->begin();
     qDebug() << "JQNetworkClient begin:" << jqNetworkClient_->begin();
@@ -108,7 +106,7 @@ void Manage::setShowSelf(const bool &showSelf)
 {
     showSelf_ = showSelf;
 
-    this->refreshLanNodes();
+    this->refresh();
 }
 
 void Manage::sendOnlinePing()
@@ -260,7 +258,7 @@ QString Manage::savePath()
     return savePath_;
 }
 
-void Manage::refreshLanNodes()
+void Manage::refresh()
 {
     qDebug() << "refreshLanNodes";
 
@@ -275,6 +273,9 @@ void Manage::refreshLanNodes()
         if ( !showSelf_ && lanNode.isSelf ) { continue; }
 
         auto connect = this->jqNetworkClient_->getConnect( hostAddress, SERVERPORT );
+
+        qDebug() << "refreshLanNodes: getConnect:" << connect.data();
+
         if ( connect )
         {
             this->mapForConnectToHostAddress_[ connect.data() ] = hostAddress;
@@ -312,6 +313,26 @@ void Manage::refreshLanNodes()
     mutex_.lock();
 
     lanNodes_ = buf;
+
+    mutex_.unlock();
+
+    emit this->lanNodeChanged();
+}
+
+void Manage::lanNodeOffline(const JQNetworkLanNode &node)
+{
+    mutex_.lock();
+
+    for ( auto index = 0; index < lanNodes_.size(); ++index )
+    {
+        if ( lanNodes_[ index ].toMap()[ "nodeMarkSummary" ] == node.nodeMarkSummary )
+        {
+//            this->jqNetworkClient_.]
+
+            lanNodes_.removeAt( index );
+            break;
+        }
+    }
 
     mutex_.unlock();
 

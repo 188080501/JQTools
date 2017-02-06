@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/CppFileMaker">
+        <file>CppFileMaker.qml</file>
+    </qresource>
+</RCC>
