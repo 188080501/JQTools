@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/CppFileMakerFiles">
+        <file>template/CppTemplate</file>
+        <file>template/cpptemplate.cpp</file>
+        <file>template/cpptemplate.h</file>
+        <file>template/cpptemplate.inc</file>
+        <file>template/QmlTemplate</file>
+        <file>template/qmltemplate.cpp</file>
+        <file>template/qmltemplate.h</file>
+        <file>template/qmltemplate.inc</file>
+    </qresource>
+</RCC>

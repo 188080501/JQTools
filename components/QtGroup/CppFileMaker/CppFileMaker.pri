@@ -10,12 +10,15 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include($$PWD/PngWarningRemover/PngWarningRemover.pri)
-include($$PWD/PropertyMaker/PropertyMaker.pri)
-include($$PWD/CppFileMaker/CppFileMaker.pri)
-
 INCLUDEPATH += \
-    $$PWD/
+    $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/qtgroup.h
+    $$PWD/cpp/cppfilemaker.h
+
+SOURCES += \
+    $$PWD/cpp/cppfilemaker.cpp
+
+RESOURCES += \
+    $$PWD/qml/CppFileMaker.qrc \
+    $$PWD/resources/files/CppFileMakerFiles.qrc

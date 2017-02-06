@@ -64,7 +64,9 @@ public slots:
     QString savePath();
 
 private:
-    void refreshLanNodes();
+    void refresh();
+
+    void lanNodeOffline(const JQNetworkLanNode &node);
 
     void emitSendingSignal(const QString &hostName, const SendCounter &counter);
 

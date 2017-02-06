@@ -1,0 +1,7 @@
+﻿#ifndef __%MACROPROTECTSPREFIX%_%CLASSNAME%__
+#define __%MACROPROTECTSPREFIX%_%CLASSNAME%__
+
+// .h include
+#include "%classname%.h"
+
+#endif//__%MACROPROTECTSPREFIX%_%CLASSNAME%__

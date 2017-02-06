@@ -42,16 +42,20 @@ void checkVersion();
 
 int main(int argc, char *argv[])
 {
+    qputenv( "QSG_RENDER_LOOP", "basic" );
+
     QApplication app(argc, argv);
 
     checkVersion();
 
     if ( !JQFoundation::singleApplication( "JQTools" ) )
     {
+        QTimer::singleShot( 3000, qApp, &QCoreApplication::quit );
+
         QMessageBox::warning(
                     nullptr,
                     QStringLiteral( "\u542F\u52A8\u5931\u8D25" ),
-                    QStringLiteral( "\u7A0B\u5E8F\u5DF2\u7ECF\u542F\u52A8" )
+                    QStringLiteral( "\u7A0B\u5E8F\u5DF2\u7ECF\u542F\u52A8\n3\u79D2\u540E\u81EA\u52A8\u9000\u51FA" )
                 );
         return -1;
     }

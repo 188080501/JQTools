@@ -16,9 +16,11 @@
 // QtGroup lib import
 #include <PngWarningRemover>
 #include <PropertyMaker>
+#include <CppFileMaker>
 
 #define QTGROUP_INITIALIZA \
     PNGWARNINGREMOVER_INITIALIZA; \
-    PROPERTYMAKER_INITIALIZA;
+    PROPERTYMAKER_INITIALIZA; \
+    CPPFILEMAKER_INITIALIZA;
 
 #endif//__QTGROUP_QTGROUP_H__
