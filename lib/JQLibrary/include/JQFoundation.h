@@ -133,6 +133,15 @@ for (RforeachContainer<__typeof__((container))> _container_((container));       
     _container_.__howMuch__; _container_.__howMuch__--)                             \
     for (variable = *(--_container_.__now__); ; __extension__ ({ break;}))
 
+#define RunOnReturn( ... )                                                          \
+    auto callbackOnReturnRun = __VA_ARGS__;                                         \
+    QSharedPointer< int > waitReturnRun( new int, [ callbackOnReturnRun ](int *data) \
+    {                                                                               \
+        callbackOnReturnRun();                                                      \
+        delete data;                                                                \
+    } );                                                                            \
+    if ( waitReturnRun.data() == nullptr ) { return; }
+
 template < typename T >
 class RforeachContainer {
 public:
