@@ -42,8 +42,7 @@ void checkVersion();
 
 int main(int argc, char *argv[])
 {
-    qputenv( "QSG_RENDER_LOOP", "basic" );
-
+    JQFoundation::setRenderLoop();
     QApplication app(argc, argv);
 
     checkVersion();
