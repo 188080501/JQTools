@@ -167,6 +167,8 @@ memcpy( T*, int, size_t )
 namespace JQFoundation
 {
 
+void setRenderLoop();
+
 QString hashString(const QString &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);
 
 QString hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);

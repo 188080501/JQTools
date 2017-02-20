@@ -27,7 +27,6 @@ exists($$PWD/src/JQBarcode.cpp) {
     HEADERS *= $$PWD/include/JQBarcode.h
 }
 
-
 contains( QT, bluetooth ) {
     exists($$PWD/src/JQBluetooth.cpp) {
         SOURCES *= $$PWD/src/JQBluetooth.cpp

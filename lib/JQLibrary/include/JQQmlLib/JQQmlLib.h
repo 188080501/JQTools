@@ -21,7 +21,7 @@
 #define JQQmlLibAddToEngine(engine)                             \
 {                                                               \
     Q_INIT_RESOURCE(JQQmlLib);                                  \
-    (engine).addImportPath( ":/JasonQt_QmlLib/qml/" );          \
+    (engine).addImportPath( ":/JQQmlLib/qml/" );          \
 }
 
 #endif//__JQQmlLib_h__

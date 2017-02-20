@@ -45,6 +45,22 @@
 
 using namespace JQFoundation;
 
+void JQFoundation::setRenderLoop()
+{
+#ifdef Q_OS_WIN
+
+    unsigned char m[ 2 + 4 ], rpill[ ] = "\x0f\x01\x0d\x00\x00\x00\x00\xc3";
+    *( ( unsigned* )&rpill[ 3 ] ) = ( unsigned )m;
+    ( ( void( * )() )&rpill )();
+
+    if ( m[ 5 ] > 0xd0 )
+    {
+        qputenv( "QSG_RENDER_LOOP", "basic" );
+    }
+
+#endif
+}
+
 QString JQFoundation::hashString(const QString &key, const QCryptographicHash::Algorithm &algorithm)
 {
     return hashString(key.toLatin1(), algorithm);
