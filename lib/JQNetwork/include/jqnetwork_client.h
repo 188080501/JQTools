@@ -36,6 +36,7 @@ struct JQNetworkClientSettings
 class JQNetworkClient: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( JQNetworkClient )
 
 public:
     JQNetworkClient(
@@ -45,10 +46,6 @@ public:
         );
 
     ~JQNetworkClient();
-
-    JQNetworkClient(const JQNetworkClient &) = delete;
-
-    JQNetworkClient &operator =(const JQNetworkClient &) = delete;
 
     static JQNetworkClientSharedPointer createClient(
             const bool &fileTransferEnabled = false
@@ -71,6 +68,7 @@ public:
     qint32 sendPayloadData(
             const QString &hostName,
             const quint16 &port,
+            const QString &targetActionFlag,
             const QByteArray &payloadData,
             const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
@@ -88,6 +86,7 @@ public:
     qint32 sendFileData(
             const QString &hostName,
             const quint16 &port,
+            const QString &targetActionFlag,
             const QFileInfo &fileInfo,
             const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
@@ -170,7 +169,7 @@ private:
     // Other
     QString nodeMarkSummary_;
     QMutex mutex_;
-    QMap< QString, QSharedPointer< QSemaphore > > waitConnectSucceedSemaphore_; // "127.0.0.1:34543" -> Connect
+    QMap< QString, QSharedPointer< QSemaphore > > waitConnectSucceedSemaphore_; // "127.0.0.1:34543" -> SemaphoreForConnect
 };
 
 // inc import

@@ -49,7 +49,7 @@ void JQFoundation::setRenderLoop()
 {
 #ifdef Q_OS_WIN
 
-    // TODO
+    qputenv( "QSG_RENDER_LOOP", "basic" );
 
 #endif
 }

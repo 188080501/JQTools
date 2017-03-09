@@ -19,15 +19,12 @@
 class JQNetworkProcessor: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( JQNetworkProcessor )
 
 public:
     JQNetworkProcessor() = default;
 
     ~JQNetworkProcessor() = default;
-
-    JQNetworkProcessor(const JQNetworkProcessor &) = delete;
-
-    JQNetworkProcessor &operator =(const JQNetworkProcessor &) = delete;
 
     QSet< QString > availableSlots();
 

@@ -10,4 +10,10 @@
     GitHub: https://github.com/188080501/
 */
 
-#include "jqnetwork_forwarf.h"
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_CLIENGFORQML_INC
+#define JQNETWORK_INCLUDE_JQNETWORK_CLIENGFORQML_INC
+
+// JQNetwork lib import
+#include "jqnetwork_clientforqml.h"
+
+#endif//JQNETWORK_INCLUDE_JQNETWORK_CLIENGFORQML_INC

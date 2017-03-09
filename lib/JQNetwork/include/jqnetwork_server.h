@@ -40,6 +40,7 @@ struct JQNetworkServerSettings
 class JQNetworkServer: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( JQNetworkServer )
 
 public:
     JQNetworkServer(
@@ -49,10 +50,6 @@ public:
         );
 
     ~JQNetworkServer();
-
-    JQNetworkServer(const JQNetworkServer &) = delete;
-
-    JQNetworkServer &operator =(const JQNetworkServer &) = delete;
 
     static JQNetworkServerSharedPointer createServer(
             const quint16 &listenPort,

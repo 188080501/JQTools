@@ -36,6 +36,7 @@ struct JQNetworkConnectPoolSettings
 class JQNetworkConnectPool: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( JQNetworkConnectPool )
 
 public:
     JQNetworkConnectPool(
@@ -44,10 +45,6 @@ public:
         );
 
     ~JQNetworkConnectPool();
-
-    JQNetworkConnectPool(const JQNetworkConnectPool &) = delete;
-
-    JQNetworkConnectPool &operator =(const JQNetworkConnectPool &) = delete;
 
     void createConnect(
             const std::function< void( std::function< void() > ) > runOnConnectThreadCallback,

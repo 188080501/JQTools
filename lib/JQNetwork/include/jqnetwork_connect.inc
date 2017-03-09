@@ -60,8 +60,9 @@ inline qint32 JQNetworkConnect::sendPayloadData(
     )
 {
     return this->sendPayloadData(
+                { }, // empty targetActionFlag
                 payloadData,
-                { },
+                { }, // empty appendData
                 succeedCallback,
                 failCallback
             );
@@ -74,8 +75,9 @@ inline qint32 JQNetworkConnect::sendFileData(
     )
 {
     return this->sendFileData(
+                { }, // empty targetActionFlag
                 fileInfo,
-                { },
+                { }, // empty appendData
                 succeedCallback,
                 failCallback
             );
@@ -89,7 +91,7 @@ inline qint32 JQNetworkConnect::replyPayloadData(
     return this->replyPayloadData(
                 receivedPackageRandomFlag,
                 payloadData,
-                { }
+                { } // empty appendData
             );
 }
 
@@ -101,7 +103,7 @@ inline qint32 JQNetworkConnect::replyFile(
     return this->replyFile(
                 receivedPackageRandomFlag,
                 fileInfo,
-                { }
+                { } // empty appendData
             );
 }
 

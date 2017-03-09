@@ -114,10 +114,9 @@ JQNetworkPackageSharedPointer JQNetworkPackage::readPackage(QByteArray &rawData)
 }
 
 QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportPackages(
-        const QString &targetNodeFlag,
         const QString &targerActionFlag,
-        const QVariantMap &appendData,
         const QByteArray &payloadData,
+        const QVariantMap &appendData,
         const qint32 &randomFlag,
         const qint64 cutPackageSize,
         const bool &compressionData
@@ -127,11 +126,10 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
 
     QByteArray metaData;
 
-    if ( !targetNodeFlag.isEmpty() || !targerActionFlag.isEmpty() || !appendData.isEmpty() )
+    if ( !targerActionFlag.isEmpty() || !appendData.isEmpty() )
     {
         QVariantMap metaDataInVariantMap;
 
-        metaDataInVariantMap[ "targetNodeFlag" ] = targetNodeFlag;
         metaDataInVariantMap[ "targerActionFlag" ] = targerActionFlag;
         metaDataInVariantMap[ "appendData" ] = appendData;
 
@@ -243,11 +241,10 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
 }
 
 JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
-        const QString &targetNodeFlag,
         const QString &targerActionFlag,
-        const QVariantMap &appendData,
         const QFileInfo &fileInfo,
         const QByteArray &fileData,
+        const QVariantMap &appendData,
         const qint32 &randomFlag,
         const bool &compressionData
     )
@@ -259,7 +256,6 @@ JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
     {
         QVariantMap metaDataInVariantMap;
 
-        metaDataInVariantMap[ "targetNodeFlag" ] = targetNodeFlag;
         metaDataInVariantMap[ "targerActionFlag" ] = targerActionFlag;
         metaDataInVariantMap[ "appendData" ] = appendData;
 
