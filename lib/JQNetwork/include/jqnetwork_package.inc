@@ -21,80 +21,6 @@ inline int JQNetworkPackage::headSize()
     return sizeof( head_ );
 }
 
-inline QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportPackages(
-        const QVariantMap &appendData,
-        const QByteArray &payloadData,
-        const qint32 &randomFlag,
-        const qint64 cutPackageSize,
-        const bool &compressionData
-    )
-{
-    return JQNetworkPackage::createPayloadTransportPackages(
-                "",
-                "",
-                appendData,
-                payloadData,
-                randomFlag,
-                cutPackageSize,
-                compressionData
-            );
-}
-
-inline QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportPackages(
-        const QByteArray &payloadData,
-        const qint32 &randomFlag,
-        const qint64 cutPackageSize,
-        const bool &compressionData
-    )
-{
-    return JQNetworkPackage::createPayloadTransportPackages(
-                "",
-                "",
-                { },
-                payloadData,
-                randomFlag,
-                cutPackageSize,
-                compressionData
-            );
-}
-
-inline JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
-        const QFileInfo &fileInfo,
-        const QByteArray &fileData,
-        const qint32 &randomFlag,
-        const bool &compressionData
-    )
-{
-    return JQNetworkPackage::createFileTransportPackage(
-                "",
-                "",
-                { },
-                fileInfo,
-                fileData,
-                randomFlag,
-                compressionData
-            );
-}
-
-inline JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
-        const QVariantMap &appendData,
-        const QFileInfo &fileInfo,
-        const QByteArray &fileData,
-        const qint32 &randomFlag,
-        const bool &compressionData
-    )
-{
-    return JQNetworkPackage::createFileTransportPackage(
-                "",
-                "",
-                appendData,
-                fileInfo,
-                fileData,
-                randomFlag,
-                compressionData
-            );
-}
-
 inline bool JQNetworkPackage::isCompletePackage() const 
 { 
     return isCompletePackage_; 
@@ -198,11 +124,6 @@ inline qint32 JQNetworkPackage::payloadDataOriginalCurrentSize() const
 inline QVariantMap JQNetworkPackage::metaDataInVariantMap() const
 {
     return metaDataInVariantMap_;
-}
-
-inline QString JQNetworkPackage::targetNodeFlag() const
-{
-    return ( metaDataInVariantMap_.contains( "targetNodeFlag" ) ) ? ( metaDataInVariantMap_[ "targetNodeFlag" ].toString() ) : ( QString() );
 }
 
 inline QString JQNetworkPackage::targerActionFlag() const

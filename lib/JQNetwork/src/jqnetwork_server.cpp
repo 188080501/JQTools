@@ -245,23 +245,31 @@ void JQNetworkServer::incomingConnection(const qintptr &socketDescriptor)
                 rotaryIndex
     );
 }
-
+#include <JQNetwork>
 void JQNetworkServer::onPackageReceived(
         const JQNetworkConnectPointer &connect,
         const JQNetworkConnectPoolPointer &,
         const JQNetworkPackageSharedPointer &package
     )
 {
-    JQNETWORK_NULLPTR_CHECK( serverSettings_->packageReceivedCallback );
+    qDebug() << package->targerActionFlag() << processor_.size();
 
-    processorThreadPool_->run(
-                [
-                    connect,
-                    package,
-                    callback = serverSettings_->packageReceivedCallback
-                ]()
-                {
-                    callback( connect, package );
-                }
-    );
+    if ( processor_.isEmpty() )
+    {
+        JQNETWORK_NULLPTR_CHECK( serverSettings_->packageReceivedCallback );
+
+        processorThreadPool_->run(
+                    [
+                        connect,
+                        package,
+                        callback = serverSettings_->packageReceivedCallback
+                    ]()
+                    {
+                        callback( connect, package );
+                    }
+        );
+    }
+    else
+    {
+    }
 }

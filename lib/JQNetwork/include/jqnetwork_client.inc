@@ -47,8 +47,9 @@ inline qint32 JQNetworkClient::sendPayloadData(
     return this->sendPayloadData(
                 hostName,
                 port,
+                { }, // empty targetActionFlag
                 payloadData,
-                { },
+                { }, // empty appendData
                 succeedCallback,
                 failCallback
             );
@@ -65,8 +66,9 @@ inline qint32 JQNetworkClient::sendFileData(
     return this->sendFileData(
                 hostName,
                 port,
+                { }, // empty targetActionFlag
                 fileInfo,
-                { },
+                { }, // empty appendData
                 succeedCallback,
                 failCallback
             );

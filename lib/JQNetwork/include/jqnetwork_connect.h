@@ -61,6 +61,7 @@ struct JQNetworkConnectSettings
 class JQNetworkConnect: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( JQNetworkConnect )
 
 private:
     struct ReceivedCallbackPackage
@@ -72,10 +73,6 @@ private:
 
 private:
     JQNetworkConnect(const JQNetworkConnectSettingsSharedPointer &connectSettings);
-
-    JQNetworkConnect(const JQNetworkConnect &) = delete;
-
-    JQNetworkConnect &operator =(const JQNetworkConnect &) = delete;
 
 public:
     ~JQNetworkConnect() = default;
@@ -112,6 +109,7 @@ public:
     void close();
 
     qint32 sendPayloadData(
+            const QString &targetActionFlag,
             const QByteArray &payloadData,
             const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
@@ -125,6 +123,7 @@ public:
         );
 
     qint32 sendFileData(
+            const QString &targetActionFlag,
             const QFileInfo &fileInfo,
             const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
@@ -187,6 +186,7 @@ private:
 
     bool readySendPayloadData(
             const qint32 &randomFlag,
+            const QString &targetActionFlag,
             const QByteArray &payloadData,
             const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
@@ -195,6 +195,7 @@ private:
 
     bool readySendFileData(
             const qint32 &randomFlag,
+            const QString &targetActionFlag,
             const QFileInfo &fileInfo,
             const QVariantMap &appendData,
             const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,

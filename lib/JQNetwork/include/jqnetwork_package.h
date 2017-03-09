@@ -42,51 +42,19 @@ public:
     static JQNetworkPackageSharedPointer readPackage(QByteArray &rawData);
 
     static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
-            const QString &targetNodeFlag,
             const QString &targerActionFlag,
+            const QByteArray &payloadData,
             const QVariantMap &appendData,
-            const QByteArray &payloadData,
-            const qint32 &randomFlag,
-            const qint64 cutPackageSize = -1,
-            const bool &compressionData = false
-        );
-
-    inline static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
-            const QVariantMap &appendData,
-            const QByteArray &payloadData,
-            const qint32 &randomFlag,
-            const qint64 cutPackageSize = -1,
-            const bool &compressionData = false
-        );
-
-    inline static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
-            const QByteArray &payloadData,
             const qint32 &randomFlag,
             const qint64 cutPackageSize = -1,
             const bool &compressionData = false
         );
 
     static JQNetworkPackageSharedPointer createFileTransportPackage(
-            const QString &targetNodeFlag,
             const QString &targerActionFlag,
+            const QFileInfo &fileInfo,
+            const QByteArray &fileData,
             const QVariantMap &appendData,
-            const QFileInfo &fileInfo,
-            const QByteArray &fileData,
-            const qint32 &randomFlag,
-            const bool &compressionData = false
-        );
-
-    inline static JQNetworkPackageSharedPointer createFileTransportPackage(
-            const QVariantMap &appendData,
-            const QFileInfo &fileInfo,
-            const QByteArray &fileData,
-            const qint32 &randomFlag,
-            const bool &compressionData = false
-        );
-
-    inline static JQNetworkPackageSharedPointer createFileTransportPackage(
-            const QFileInfo &fileInfo,
-            const QByteArray &fileData,
             const qint32 &randomFlag,
             const bool &compressionData = false
         );
@@ -138,8 +106,6 @@ public:
 
 
     inline QVariantMap metaDataInVariantMap() const;
-
-    inline QString targetNodeFlag() const;
 
     inline QString targerActionFlag() const;
 

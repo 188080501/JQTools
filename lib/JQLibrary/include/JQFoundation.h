@@ -97,10 +97,6 @@ class QLineEdit;
     operator QVariant() const { return name; }                                      \
     operator Type() const { return name; }
 
-#define DeleteClassCopy(ClassName)                                                  \
-    ClassName(const ClassName &) = delete;                                          \
-    ClassName &operator=(const ClassName &) = delete;
-
 #define ContainerToJsonArrayAndReturn(container, ...)                               \
     {                                                                               \
         QJsonArray buf;                                                             \
@@ -133,14 +129,18 @@ for (RforeachContainer<__typeof__((container))> _container_((container));       
     _container_.__howMuch__; _container_.__howMuch__--)                             \
     for (variable = *(--_container_.__now__); ; __extension__ ({ break;}))
 
-#define RunOnReturn( ... )                                                          \
-    auto callbackOnReturnRun = __VA_ARGS__;                                         \
-    QSharedPointer< int > waitReturnRun( new int, [ callbackOnReturnRun ](int *data) \
-    {                                                                               \
-        callbackOnReturnRun();                                                      \
-        delete data;                                                                \
-    } );                                                                            \
-    if ( waitReturnRun.data() == nullptr ) { return; }
+#define RUNONOUTRANGEHELPER2( x, y ) x ## y
+#define RUNONOUTRANGEHELPER( x, y ) RUNONOUTRANGEHELPER2( x, y )
+#define RUNONOUTRANGE( ... )                                                            \
+    auto RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) = __VA_ARGS__;          \
+    QSharedPointer< int > RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ )(               \
+        new int,                                                                        \
+        [ RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) ](int *data)           \
+    {                                                                                   \
+        RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ )();                       \
+        delete data;                                                                    \
+    } );                                                                                \
+    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr ) { return; }
 
 template < typename T >
 class RforeachContainer {
@@ -261,6 +261,7 @@ private:
 class ShowInformationMessageBoxFromOtherThread: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( ShowInformationMessageBoxFromOtherThread )
 
 public:
     ShowInformationMessageBoxFromOtherThread(const QString &title, const QString &message);
@@ -304,6 +305,7 @@ private:
 class ThreadHelper: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( ThreadHelper )
 
 public:
     ThreadHelper(QMutex *&mutexForWait);
@@ -346,8 +348,13 @@ private:
 class InvokeFromThreadHelper: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY( InvokeFromThreadHelper )
 
 public:
+    InvokeFromThreadHelper() = default;
+
+    ~InvokeFromThreadHelper() = default;
+
     void addCallback(const std::function<void()> &callback);
 
 public slots:
