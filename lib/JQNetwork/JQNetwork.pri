@@ -22,7 +22,27 @@ lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {
     error( JQNetwork request minimum Qt version is 5.7.0 )
 }
 
-JQNETWORK_BIN_DIR = $$PWD/bin/$$[QT_VERSION]/$$[QMAKE_XSPEC]/
+
+JQNETWORK_BIN_NO1_DIR = $$[QT_VERSION]
+JQNETWORK_BIN_NO2_DIR = $$QT_ARCH
+JQNETWORK_BIN_NO3_DIR = $$[QMAKE_XSPEC]
+
+ios {
+    CONFIG( iphonesimulator, iphonesimulator | iphoneos ) {
+        JQNETWORK_BIN_NO3_DIR = macx-iphonesimulator-clang
+    }
+    else {
+        JQNETWORK_BIN_NO3_DIR = macx-iphoneos-clang
+    }
+}
+
+contains( CONFIG, static ) {
+    JQNETWORK_BIN_NO3_DIR = $$JQNETWORK_BIN_NO3_DIR-static
+}
+
+JQNETWORK_BIN_DIR = $$PWD/bin/$$JQNETWORK_BIN_NO1_DIR/$$JQNETWORK_BIN_NO2_DIR/$$JQNETWORK_BIN_NO3_DIR
+
+#message($$JQNETWORK_BIN_DIR)
 
 !exists( $$JQNETWORK_BIN_DIR ) {
     mkpath( $$JQNETWORK_BIN_DIR )
