@@ -241,6 +241,7 @@ QString Manage::transport(const QString &hostAddress, const QVariantList &filePa
         this->jqNetworkClient_->sendFileData(
                     hostAddress,
                     SERVERPORT,
+                    { }, // empty targetActionFlag
                     currentPair.second,
                     { { "path", currentPair.first } },
                     *continueSend,
