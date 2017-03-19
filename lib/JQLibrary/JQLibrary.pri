@@ -82,14 +82,22 @@ exists($$PWD/src/JQFile.cpp) {
     HEADERS *= $$PWD/include/JQFile.h
 }
 
-exists($$PWD/src/JQFilePack.cpp) {
-    SOURCES *= $$PWD/src/JQFilePack.cpp
-    HEADERS *= $$PWD/include/JQFilePack.h
+unix | linux | mingw {
+    exists($$PWD/src/JQFilePack.cpp) {
+        SOURCES *= $$PWD/src/JQFilePack.cpp
+        HEADERS *= $$PWD/include/JQFilePack.h
+    }
 }
 
 exists($$PWD/src/JQFoundation.cpp) {
     SOURCES *= $$PWD/src/JQFoundation.cpp
     HEADERS *= $$PWD/include/JQFoundation.h
+}
+
+mac {
+    exists($$PWD/JQGuetzli.pri) {
+        include($$PWD/JQGuetzli.pri)
+    }
 }
 
 contains(QT, network) {
@@ -195,6 +203,13 @@ contains(QT, network) {
     exists($$PWD/src/JQTcpSocket.cpp) {
         SOURCES *= $$PWD/src/JQTcpSocket.cpp
         HEADERS *= $$PWD/include/JQTcpSocket.h
+    }
+}
+
+contains(QT, network) {
+    exists($$PWD/src/JQSystemFlag.cpp) {
+        SOURCES *= $$PWD/src/JQSystemFlag.cpp
+        HEADERS *= $$PWD/include/JQSystemFlag.h
     }
 }
 

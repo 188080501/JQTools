@@ -28,6 +28,7 @@
 #include <QPalette>
 #include <QFileInfo>
 #include <QDir>
+#include <QProcess>
 
 #ifdef QT_WIDGETS_LIB
 #   include <QWidget>
@@ -327,6 +328,29 @@ QPixmap JQFoundation::byteArrayToPixmap(const QByteArray &byteArray)
     QPixmap Pixmap;
     Pixmap.loadFromData(byteArray);
     return Pixmap;
+}
+
+QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
+{
+    QPair< int, QByteArray > reply;
+
+    QProcess process;
+    process.setProgram( program );
+    process.setArguments( arguments );
+    process.start();
+
+    QObject::connect( &process, (void(QProcess::*)(int))&QProcess::finished, [ &reply ](const int &exitCode)
+    {
+        reply.first = exitCode;
+    } );
+    QObject::connect( &process, &QIODevice::readyRead, [ &process, &reply ]()
+    {
+        reply.second.append( process.readAll() );
+    } );
+
+    process.waitForFinished( maximumTime );
+
+    return reply;
 }
 
 #ifdef QT_WIDGETS_LIB

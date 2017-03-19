@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/JpgOptimize">
+        <file>JpgOptimize.qml</file>
+    </qresource>
+</RCC>

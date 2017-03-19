@@ -10,7 +10,7 @@
     GitHub: https://github.com/188080501/
 */
 
-import QtQuick 2.6
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 import "qrc:/MaterialUI/Interface/"
@@ -146,7 +146,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 180
-        width: 500
+        width: 575
         height: parent.height - 180
         clip: true
         cacheBuffer: 999999
@@ -157,7 +157,7 @@ Item {
 
         delegate: Item {
             id: itemForNodes
-            width: 500
+            width: 575
             height: 54
 
             Component.onCompleted: {
@@ -191,6 +191,9 @@ Item {
                     labelForResultSize.opacity = 1;
                     labelForResultSize.text = optimizeResult[ "resultSize" ];
                     labelForResultSize.color = optimizeResult[ "compressionRatioColor" ];
+
+                    labelForTimeConsuming.opacity = 1;
+                    labelForTimeConsuming.text = optimizeResult[ "timeConsuming" ];
                 }
             }
 
@@ -265,6 +268,17 @@ Item {
                 visible: opacity !== 0
                 opacity: 0
                 color: "#000000"
+
+                Behavior on opacity { NumberAnimation { duration: 300 } }
+            }
+
+            MaterialLabel {
+                id: labelForTimeConsuming
+                anchors.left: progressCircleForOptimizing.right
+                anchors.leftMargin: 95
+                anchors.verticalCenter: parent.verticalCenter
+                visible: opacity !== 0
+                opacity: 0
 
                 Behavior on opacity { NumberAnimation { duration: 300 } }
             }
