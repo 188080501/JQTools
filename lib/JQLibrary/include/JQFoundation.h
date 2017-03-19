@@ -199,6 +199,8 @@ QByteArray imageToByteArray(const QImage &image, const QString &format);
 
 QPixmap byteArrayToPixmap(const QByteArray &byteArray);
 
+QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
+
 #ifdef QT_WIDGETS_LIB
 void tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList);
 

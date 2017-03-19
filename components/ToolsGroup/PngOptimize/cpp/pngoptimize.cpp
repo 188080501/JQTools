@@ -161,7 +161,8 @@ QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePat
                                 arg( ( optimizeResult.compressionRatio < 1 ) ? ( "-" ) : ( "" )  ).
                                 arg( 100 - (int)(optimizeResult.compressionRatio * 100) ) },
                               { "compressionRatioColor", QString( "%1" ).
-                                arg( ( optimizeResult.compressionRatio < 1 ) ? ( "#64dd17" ) : ( "#f44336" )  ) }
+                                arg( ( optimizeResult.compressionRatio < 1 ) ? ( "#64dd17" ) : ( "#f44336" )  ) },
+                              { "timeConsuming", QString( "%1ms" ).arg( optimizeResult.timeConsuming ) }
                           } }
                     );
 

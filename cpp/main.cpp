@@ -45,8 +45,6 @@ int main(int argc, char *argv[])
     JQFoundation::setRenderLoop();
     QApplication app(argc, argv);
 
-    checkVersion();
-
     if ( !JQFoundation::singleApplication( "JQTools" ) )
     {
         QTimer::singleShot( 3000, qApp, &QCoreApplication::quit );
@@ -84,24 +82,4 @@ int main(int argc, char *argv[])
     engine.load( QUrl( "qrc:/main.qml" ) );
 
     return app.exec();
-}
-
-void checkVersion()
-{
-#ifndef QT_NO_DEBUG
-    const auto &&versionNumber = QVersionNumber::fromString( JQTOOLS_VERSIONSTRING );
-    const auto &&dateTime = QDateTime::currentDateTime();
-
-    if ( versionNumber.majorVersion() != (dateTime.date().year() % 100) ||
-         versionNumber.minorVersion() != dateTime.date().month() ||
-         versionNumber.microVersion() != dateTime.date().day() )
-    {
-        QMessageBox::warning(
-                    nullptr,
-                    QStringLiteral( "\u7248\u672C\u9519\u8BEF" ),
-                    QStringLiteral( "\u8BF7\u9009\u62E9release\u7248\u672C\u6216\u8005\u66F4\u6539\u7248\u672C\u6807\u8BB0" )
-                );
-        ::exit( -1 );
-    }
-#endif
 }

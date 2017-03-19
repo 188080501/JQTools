@@ -10,7 +10,7 @@
     GitHub: https://github.com/188080501/
 */
 
-import QtQuick 2.6
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import "qrc:/MaterialUI/Interface/"
 import PngWarningRemover 1.0

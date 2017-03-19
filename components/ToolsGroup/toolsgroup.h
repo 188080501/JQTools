@@ -16,11 +16,13 @@
 // ToolsGroup lib import
 #include <LinesStatistics>
 #include <PngOptimize>
+#include <JpgOptimize>
 #include <LanFileTransport>
 
 #define TOOLSGROUP_INITIALIZA \
     LINESSTATISTICS_INITIALIZA; \
     PNGOPTIMIZE_INITIALIZA; \
+    JPGOPTIMIZE_INITIALIZA; \
     LANFILETRANSPORT_INITIALIZA;
 
 #endif//__TOOLSGROUP_TOOLSGROUP_H__

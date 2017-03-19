@@ -19,9 +19,6 @@ CONFIG *= c++11
 CONFIG *= c++14
 
 INCLUDEPATH *= \
-    $$PWD/include/JQZopfli/
-
-INCLUDEPATH *= \
     $$PWD/include/JQZopfli/ \
     $$PWD/include/JQZopfli/zopfli/ \
     $$PWD/include/JQZopfli/zopflipng/ \
