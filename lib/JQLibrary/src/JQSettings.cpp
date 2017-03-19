@@ -179,7 +179,11 @@ void Set::save()
 #ifdef Q_OS_IOS
     QSettings settings( projectName_, fileName_ );
 #else
+#   ifdef Q_OS_MAC
+    QSettings settings( filePath_, QSettings::NativeFormat );
+#   else
     QSettings settings( filePath_ );
+#   endif
 #endif
 
     settings.beginGroup( groupName_ );
@@ -215,7 +219,11 @@ void Set::read()
 #ifdef Q_OS_IOS
     QSettings settings( projectName_, fileName_ );
 #else
+#   ifdef Q_OS_MAC
+    QSettings settings( filePath_, QSettings::NativeFormat );
+#   else
     QSettings settings( filePath_ );
+#   endif
 #endif
 
     settings.beginGroup( groupName_ );
