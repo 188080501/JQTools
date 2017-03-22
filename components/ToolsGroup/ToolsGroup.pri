@@ -13,7 +13,9 @@
 include($$PWD/LinesStatistics/LinesStatistics.pri)
 include($$PWD/LanFileTransport/LanFileTransport.pri)
 include($$PWD/PngOptimize/PngOptimize.pri)
-include($$PWD/JpgOptimize/JpgOptimize.pri)
+mac {
+    include($$PWD/JpgOptimize/JpgOptimize.pri)
+}
 
 INCLUDEPATH += \
     $$PWD/
