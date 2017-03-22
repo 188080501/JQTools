@@ -10,6 +10,9 @@
 #   GitHub: https://github.com/188080501/
 #
 
+DEFINES += \
+    TOOLSGROUP_JPGOPTIMIZE_ENABLE
+
 INCLUDEPATH += \
     $$PWD/cpp/
 
