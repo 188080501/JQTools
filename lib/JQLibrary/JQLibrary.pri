@@ -161,8 +161,8 @@ contains(QT, qml) {
 }
 
 contains(QT, qml) {
-    exists($$PWD/JQQMLLib.pri) {
-        include($$PWD/JQQMLLib.pri)
+    exists($$PWD/JQQmlLib.pri) {
+        include($$PWD/JQQmlLib.pri)
     }
 }
 
