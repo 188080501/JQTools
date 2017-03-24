@@ -120,7 +120,7 @@ Item {
 
             onClicked: {
                 randomPasswordManage.setClipboardText( textFieldForPassword.text );
-                materialUI.showSnackbarMessage( "URL已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "密码已经复制到了剪切板" );
             }
         }
     }
