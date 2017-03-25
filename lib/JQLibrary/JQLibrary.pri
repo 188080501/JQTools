@@ -94,7 +94,7 @@ exists($$PWD/src/JQFoundation.cpp) {
     HEADERS *= $$PWD/include/JQFoundation.h
 }
 
-mac {
+mac : exists( /usr/local/opt/gflags/lib/libgflags.2.2.dylib ) {
     exists($$PWD/JQGuetzli.pri) {
         include($$PWD/JQGuetzli.pri)
     }
