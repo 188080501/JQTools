@@ -32,11 +32,11 @@ DEFINE_bool(verbose, false,
 DEFINE_double(quality, 95,
               "Visual quality to aim for, expressed as a JPEG quality value.");
 
-inline uint8_t JQGuetzli_BlendOnBlack(const uint8_t val, const uint8_t alpha) {
+inline uint8_t BlendOnBlack(const uint8_t val, const uint8_t alpha) {
     return (static_cast<int>(val) * static_cast<int>(alpha) + 128) / 255;
 }
 
-bool JQGuetzli_ReadPNG(FILE* f, int* xsize, int* ysize,
+bool ReadPNG(FILE* f, int* xsize, int* ysize,
              std::vector<uint8_t>* rgb) {
     png_structp png_ptr =
             png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
@@ -97,7 +97,7 @@ bool JQGuetzli_ReadPNG(FILE* f, int* xsize, int* ysize,
             const uint8_t* row_in = row_pointers[y];
             uint8_t* row_out = &(*rgb)[3 * y * (*xsize)];
             for (int x = 0; x < *xsize; ++x) {
-                const uint8_t gray = JQGuetzli_BlendOnBlack(row_in[2 * x], row_in[2 * x + 1]);
+                const uint8_t gray = BlendOnBlack(row_in[2 * x], row_in[2 * x + 1]);
                 row_out[3 * x + 0] = gray;
                 row_out[3 * x + 1] = gray;
                 row_out[3 * x + 2] = gray;
@@ -121,9 +121,9 @@ bool JQGuetzli_ReadPNG(FILE* f, int* xsize, int* ysize,
             uint8_t* row_out = &(*rgb)[3 * y * (*xsize)];
             for (int x = 0; x < *xsize; ++x) {
                 const uint8_t alpha = row_in[4 * x + 3];
-                row_out[3 * x + 0] = JQGuetzli_BlendOnBlack(row_in[4 * x + 0], alpha);
-                row_out[3 * x + 1] = JQGuetzli_BlendOnBlack(row_in[4 * x + 1], alpha);
-                row_out[3 * x + 2] = JQGuetzli_BlendOnBlack(row_in[4 * x + 2], alpha);
+                row_out[3 * x + 0] = BlendOnBlack(row_in[4 * x + 0], alpha);
+                row_out[3 * x + 1] = BlendOnBlack(row_in[4 * x + 1], alpha);
+                row_out[3 * x + 2] = BlendOnBlack(row_in[4 * x + 2], alpha);
             }
         }
         break;
@@ -136,40 +136,44 @@ bool JQGuetzli_ReadPNG(FILE* f, int* xsize, int* ysize,
     return true;
 }
 
-std::string JQGuetzli_ReadFile(FILE* f) {
+std::string ReadFileOrDie(FILE* f) {
     if (fseek(f, 0, SEEK_END) != 0) {
         perror("fseek");
-        return { };
+        exit(1);
     }
     off_t size = ftell(f);
     if (size < 0) {
         perror("ftell");
-        return { };
+        exit(1);
     }
     if (fseek(f, 0, SEEK_SET) != 0) {
         perror("fseek");
-        return { };
+        exit(1);
     }
     std::unique_ptr<char[]> buf(new char[size]);
     if (fread(buf.get(), 1, size, f) != (size_t)size) {
         perror("fread");
-        return { };
+        exit(1);
     }
     std::string result(buf.get(), size);
     return result;
 }
 
-bool JQGuetzli_WriteFile(FILE* f, const std::string& contents) {
+void WriteFileOrDie(FILE* f, const std::string& contents) {
     if (fwrite(contents.data(), 1, contents.size(), f) != contents.size()) {
         perror("fwrite");
-        return false;
+        exit(1);
     }
     if (fclose(f) < 0) {
         perror("fclose");
-        return false;
+        exit(1);
     }
+}
 
-    return true;
+void TerminateHandler() {
+    fprintf(stderr, "Unhandled exception. Most likely insufficient memory available.\n"
+                    "Make sure that there is 300MB/MPix of memory available.\n");
+    exit(1);
 }
 
 JQGuetzli::ProcessResult JQGuetzli::process(const QString &inputImageFilePath, const QString &outputImageFilePath)
@@ -179,21 +183,14 @@ JQGuetzli::ProcessResult JQGuetzli::process(const QString &inputImageFilePath, c
 
     ProcessResult result;
 
-    result.originalSize = QFileInfo( inputImageFilePath ).size();
-
     FILE* fin = fopen(inputImageFilePath.toLocal8Bit().data(), "rb");
     if (!fin) {
         fprintf(stderr, "Can't open input file\n");
         return result;
     }
 
-    std::string in_data = JQGuetzli_ReadFile(fin);
+    std::string in_data = ReadFileOrDie(fin);
     std::string out_data;
-
-    if ( in_data.empty() )
-    {
-        return result;
-    }
 
     guetzli::Params params;
     params.butteraugli_target =
@@ -212,7 +209,7 @@ JQGuetzli::ProcessResult JQGuetzli::process(const QString &inputImageFilePath, c
             memcmp(in_data.data(), kPNGMagicBytes, sizeof(kPNGMagicBytes)) == 0) {
         int xsize, ysize;
         std::vector<uint8_t> rgb;
-        if (!JQGuetzli_ReadPNG(fin, &xsize, &ysize, &rgb)) {
+        if (!ReadPNG(fin, &xsize, &ysize, &rgb)) {
             fprintf(stderr, "Error reading PNG data from input file\n");
             return result;
         }
@@ -235,12 +232,10 @@ JQGuetzli::ProcessResult JQGuetzli::process(const QString &inputImageFilePath, c
         return result;
     }
 
-    if ( !JQGuetzli_WriteFile(fout, out_data) )
-    {
-        return result;
-    }
+    WriteFileOrDie(fout, out_data);
 
     result.processSucceed = true;
+    result.originalSize = QFileInfo( inputImageFilePath ).size();
     result.resultSize = QFileInfo( outputImageFilePath ).size();
     result.compressionRatio = (double)result.resultSize / (double)result.originalSize;
     result.timeConsuming = time.elapsed();
