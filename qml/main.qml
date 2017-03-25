@@ -54,8 +54,7 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "HASH计算器", titleName: "HASH计算器", qrcLocation: "qrc:/HashCalculate/HashCalculate.qml" },
-                                { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" },
-                                { bookmarkName: "屏幕二维码解析器", titleName: "屏幕二维码解析器", qrcLocation: "notSupport" }
+                                { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" }
                             ]
                         },
                         {
@@ -65,7 +64,8 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "图标生成器", titleName: "图标生成器", qrcLocation: "qrc:/IconMaker/IconMaker.qml" },
-                                { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG", qrcLocation: "qrc:/FontToPng/FontToPng.qml" }
+                                { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG", qrcLocation: "qrc:/FontToPng/FontToPng.qml" },
+                                { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "notSupport" }
                             ]
                         },
                         {
