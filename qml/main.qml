@@ -65,7 +65,7 @@ ApplicationWindow {
                             [
                                 { bookmarkName: "图标生成器", titleName: "图标生成器", qrcLocation: "qrc:/IconMaker/IconMaker.qml" },
                                 { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG", qrcLocation: "qrc:/FontToPng/FontToPng.qml" },
-                                { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "notSupport" }
+                                { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "qrc:/QRCodeMaker/QRCodeMaker.qml" }
                             ]
                         },
                         {

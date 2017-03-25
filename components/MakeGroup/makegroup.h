@@ -16,9 +16,11 @@
 // MakeGroup lib import
 #include <IconMaker>
 #include <FontToPng>
+#include <QRCodeMaker>
 
 #define MAKEGROUP_INITIALIZA \
     ICONMAKER_INITIALIZA; \
-    FONTTOPNG_INITIALIZA;
+    FONTTOPNG_INITIALIZA; \
+    QRCODEMAKER_INITIALIZA
 
 #endif//__MAKEGROUP_MAKEGROUP_H__

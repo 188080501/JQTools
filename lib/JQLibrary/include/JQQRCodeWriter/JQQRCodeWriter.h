@@ -1,5 +1,5 @@
 ﻿/*
-    This file is part of JasonQt
+    This file is part of JQLibrary
 
     Copyright: Jason
 
