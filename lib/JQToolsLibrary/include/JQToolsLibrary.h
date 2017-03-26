@@ -15,8 +15,11 @@
 
 // Qt lib import
 #include <QObject>
+#include <QPointer>
 
 #define JQTOOLS_VERSIONSTRING "17.3.25"
+
+class QQmlApplicationEngine;
 
 class AbstractTool: public QObject
 {
@@ -28,6 +31,13 @@ public slots:
     QString clipboardText();
 
     void setClipboardText(const QString &string);
+
+    static void setQmlApplicationEngine(QQmlApplicationEngine *qmlApplicationEngine);
+
+    static QPointer< QQmlApplicationEngine > qmlApplicationEngine();
+
+private:
+    static QPointer< QQmlApplicationEngine > qmlApplicationEngine_;
 };
 
 #endif//__JQToolsLibrary_h__

@@ -26,19 +26,29 @@
 
 using namespace JQQRCodeWriter;
 
-QImage JQQRCodeWriter::makeQRcode(const QString &data)
+QImage JQQRCodeWriter::makeQRcode(const QString &data, const QSize &size)
 {
-    QImage image( QSize( 512, 512 ), QImage::Format_RGB32 );
+    QImage image( size, QImage::Format_RGB32 );
 
     QPainter painter( &image );
+
+    if ( !painter.isActive() )
+    {
+        qDebug() << "JQQRCodeWriter::makeQRcode: error";
+
+        memset( image.bits(), 0, image.width() * image.height() * 3 );
+
+        return image;
+    }
 
     QRcode *qrCode = QRcode_encodeString( data.toLatin1().data(), 1, QR_ECLEVEL_H, QR_MODE_8, true );
     if ( !qrCode )
     {
-        qDebug() << "JQQRCodeWriter::makeQRcode: error";
+        qDebug() << "JQQRCodeWriter::makeQRcode: empty qrcode";
 
-        QColor error( "red" );
+        QColor error( "#ffffff" );
         painter.setBrush( error );
+        painter.setPen( Qt::NoPen );
         painter.drawRect( 0, 0, image.width(), image.height() );
         painter.end();
 

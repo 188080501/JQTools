@@ -15,6 +15,7 @@
 
 // Qt lib import
 #include <QImage>
+#include <QQuickImageProvider>
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -35,7 +36,20 @@ class Manage: public AbstractTool
 public:
     Manage();
 
-    ~Manage() = default;
+    ~Manage();
+
+public slots:
+    QString savePng(const QString &string);
+};
+
+class ImageProvider: public QQuickImageProvider
+{
+public:
+    ImageProvider();
+
+    ~ImageProvider() = default;
+
+    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
 };
 
 }
