@@ -65,6 +65,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     JQToolsManage jqToolsManage;
 
+    jqToolsManage.setQmlApplicationEngine( &engine );
+
     // Group initializa
     WELCOMEGROUP_INITIALIZA;
     TEXTGROUP_INITIALIZA;

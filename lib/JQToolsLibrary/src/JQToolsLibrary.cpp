@@ -15,6 +15,10 @@
 // Qt lib import
 #include <QApplication>
 #include <QClipboard>
+#include <QQmlApplicationEngine>
+#include <QDebug>
+
+QPointer< QQmlApplicationEngine > AbstractTool::qmlApplicationEngine_;
 
 QString AbstractTool::jqToolsVersionString()
 {
@@ -29,4 +33,14 @@ QString AbstractTool::clipboardText()
 void AbstractTool::setClipboardText(const QString &string)
 {
     qApp->clipboard()->setText( string );
+}
+
+void AbstractTool::setQmlApplicationEngine(QQmlApplicationEngine *qmlApplicationEngine)
+{
+    qmlApplicationEngine_ = qmlApplicationEngine;
+}
+
+QPointer< QQmlApplicationEngine > AbstractTool::qmlApplicationEngine()
+{
+    return qmlApplicationEngine_;
 }
