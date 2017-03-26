@@ -19,7 +19,6 @@
 
 // JQLibrary import
 #include "JQFoundation.h"
-
 #ifdef JQQMLLIB_LIB
 #   include "JQQmlLib.h"
 #endif
