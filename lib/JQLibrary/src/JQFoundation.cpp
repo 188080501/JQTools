@@ -18,6 +18,9 @@
 // JQFoundation header include
 #include "JQFoundation.h"
 
+// C++ lib import
+#include <iostream>
+
 // Qt lib import
 #include <QSharedMemory>
 #include <QHash>
@@ -42,6 +45,11 @@
 #   include <QTableWidget>
 #   include <QTreeWidget>
 #   include <QMessageBox>
+#endif
+
+// Windows lib import
+#ifdef Q_OS_WIN
+#   include <windows.h>
 #endif
 
 using namespace JQFoundation;
@@ -188,20 +196,20 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
                 }
                 case QtWarningMsg:
                 {
-                    message.append("Warning: ");
-                    message.append(message_);
+                    message.append( "Warning: " );
+                    message.append( message_ );
                     break;
                 }
                 case QtCriticalMsg:
                 {
-                    message.append("Critical: ");
-                    message.append(message_);
+                    message.append( "Critical: " );
+                    message.append( message_ );
                     break;
                 }
                 case QtFatalMsg:
                 {
-                    message.append("Fatal: ");
-                    message.append(message_);
+                    message.append( "Fatal: " );
+                    message.append( message_ );
                     break;
                 }
                 default: { break; }
@@ -233,6 +241,55 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
 
     qInstallMessageHandler( HelperClass::messageHandler );
 }
+
+#ifdef Q_OS_WIN
+void JQFoundation::openDebugConsole()
+{
+    class HelperClass
+    {
+    public:
+        static void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &message_)
+        {
+            QString message;
+
+            switch ( type )
+            {
+                case QtDebugMsg:
+                {
+                    message = message_;
+                    break;
+                }
+                case QtWarningMsg:
+                {
+                    message.append( "Warning: " );
+                    message.append( message_ );
+                    break;
+                }
+                case QtCriticalMsg:
+                {
+                    message.append( "Critical: " );
+                    message.append( message_ );
+                    break;
+                }
+                case QtFatalMsg:
+                {
+                    message.append( "Fatal: " );
+                    message.append( message_ );
+                    break;
+                }
+                default: { break; }
+            }
+
+            std::cout << QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss" ).toUtf8().data()
+                      << ": " << message.toUtf8().data() << std::endl;
+        }
+    };
+
+    qInstallMessageHandler( HelperClass::messageHandler );
+
+    AllocConsole();
+}
+#endif
 
 #if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
 bool JQFoundation::singleApplication(const QString &flag)

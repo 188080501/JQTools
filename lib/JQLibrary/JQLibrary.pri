@@ -167,6 +167,12 @@ contains(QT, qml) {
 }
 
 contains(QT, qml) {
+    exists($$PWD/JQQmlImage.pri) {
+        include($$PWD/JQQmlImage.pri)
+    }
+}
+
+contains(QT, qml) {
     exists($$PWD/JQQRCodeReader.pri) {
         include($$PWD/JQQRCodeReader.pri)
     }
