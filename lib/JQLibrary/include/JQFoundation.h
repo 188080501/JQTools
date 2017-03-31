@@ -187,6 +187,10 @@ void setTimerCallback(const int &interval, const std::function< void(const QPoin
 
 void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
 
+#ifdef Q_OS_WIN
+void openDebugConsole();
+#endif
+
 bool singleApplication(const QString &flag);
 
 bool singleApplicationExist(const QString &flag);
