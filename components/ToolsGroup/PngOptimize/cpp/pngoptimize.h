@@ -51,6 +51,8 @@ public slots:
 
     void startOptimize(const QString &currentFilePath);
 
+    QString urlToLocalPngFilePath(const QVariant &url);
+
 private:
     QString optimizePng(const bool &coverOldFile, const QStringList &filePaths);
 

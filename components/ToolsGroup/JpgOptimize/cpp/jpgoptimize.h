@@ -51,6 +51,8 @@ public slots:
 
     void startOptimize(const QString &currentFilePath);
 
+    QString urlToLocalPngOrJpgFilePath(const QVariant &url);
+
 private:
     QString optimizeJpg(const bool &coverOldFile, const QStringList &filePaths);
 
