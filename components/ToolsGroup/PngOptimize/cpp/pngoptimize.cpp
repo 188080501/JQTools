@@ -92,6 +92,14 @@ void Manage::startOptimize(const QString &currentFilePath)
     waitOptimizeQueue_.remove( currentFilePath );
 }
 
+QString Manage::urlToLocalPngFilePath(const QVariant &url)
+{
+    QFileInfo fileInfo( url.toUrl().toLocalFile() );
+    if ( !fileInfo.isFile() ) { return { }; }
+    if ( !fileInfo.filePath().toLower().endsWith( ".png" ) ) { return { }; }
+    return fileInfo.filePath();
+}
+
 QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePaths)
 {
     QString targetDir;

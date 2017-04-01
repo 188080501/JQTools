@@ -295,12 +295,11 @@ Item {
 
             for( var index = 0; index < drop.urls.length; ++index )
             {
-                var url = drop.urls[ index ].toString();
+                var pngFilePath = pngOptimizeManage.urlToLocalPngFilePath( drop.urls[ index ] );
 
-                if ( url.indexOf( "file://" ) !== 0 ) { return; }
-                if ( url.toLowerCase().lastIndexOf( ".png" ) !== ( url.length - 4 ) )  { return; }
+                if ( pngFilePath.length === 0 ) { continue; }
 
-                filePaths.push( url.substr( 7 ) );
+                filePaths.push( pngFilePath);
             }
 
             if ( filePaths.length === 0 ) { return; }

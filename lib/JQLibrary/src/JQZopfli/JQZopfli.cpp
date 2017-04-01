@@ -533,7 +533,7 @@ OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString
     std::vector< unsigned char > originalPng;
     std::vector< unsigned char > resultPng;
 
-    if ( lodepng::load_file( originalPng, originalFilePath.toUtf8().data() ) )
+    if ( lodepng::load_file( originalPng, originalFilePath.toLocal8Bit().data() ) )
     {
         qDebug() << "JQZopfli::optimize: error2";
         return result;
@@ -541,9 +541,9 @@ OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString
 
     result.originalSize = originalPng.size();
 
-    ZopfliPNGOptions png_options;
+    ZopfliPNGOptions pngOptions;
 
-    if ( ZopfliPNGOptimize( originalPng, png_options, png_options.verbose, &resultPng ) )
+    if ( ZopfliPNGOptimize( originalPng, pngOptions, pngOptions.verbose, &resultPng ) )
     {
         qDebug() << "JQZopfli::optimize: error3";
         return result;
