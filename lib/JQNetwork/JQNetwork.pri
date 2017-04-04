@@ -22,7 +22,6 @@ lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {
     error( JQNetwork request minimum Qt version is 5.7.0 )
 }
 
-
 JQNETWORK_BIN_NO1_DIR = $$[QT_VERSION]
 JQNETWORK_BIN_NO2_DIR = $$QT_ARCH
 JQNETWORK_BIN_NO3_DIR = $$[QMAKE_XSPEC]
@@ -125,6 +124,12 @@ contains( QT, qml ) {
 
     SOURCES *= \
         $$PWD/src/jqnetwork_clientforqml.cpp
+
+    RESOURCES *= \
+        $$PWD/qml/JQNetworkQml.qrc
+
+    QML_IMPORT_PATH *= \
+        $$PWD/qml/
 }
 
 DEFINES += JQNETWORK_COMPILE_MODE_STRING=\\\"$$JQNETWORK_COMPILE_MODE\\\"

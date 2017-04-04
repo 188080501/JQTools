@@ -16,4 +16,9 @@
 // JQNetwork lib import
 #include "jqnetwork_clientforqml.h"
 
+inline void JQNetworkClientForQml::runOnClientThread(const std::function<void()> &callback)
+{
+    callback();
+}
+
 #endif//JQNETWORK_INCLUDE_JQNETWORK_CLIENGFORQML_INC

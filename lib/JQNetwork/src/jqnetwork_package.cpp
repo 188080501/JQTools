@@ -22,7 +22,7 @@
 #define BOOL_CHECK( actual, message )           \
     if ( !( actual ) )                          \
     {                                           \
-        qDebug() << __func__ << message;        \
+        qDebug() << "JQNetworkPackage::mixPackage: " << message;        \
         this->isAbandonPackage_ = true;         \
         mixPackage->isAbandonPackage_ = true;   \
         return false;                           \
@@ -114,7 +114,7 @@ JQNetworkPackageSharedPointer JQNetworkPackage::readPackage(QByteArray &rawData)
 }
 
 QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportPackages(
-        const QString &targerActionFlag,
+        const QString &targetActionFlag,
         const QByteArray &payloadData,
         const QVariantMap &appendData,
         const qint32 &randomFlag,
@@ -126,11 +126,11 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
 
     QByteArray metaData;
 
-    if ( !targerActionFlag.isEmpty() || !appendData.isEmpty() )
+    if ( !targetActionFlag.isEmpty() || !appendData.isEmpty() )
     {
         QVariantMap metaDataInVariantMap;
 
-        metaDataInVariantMap[ "targerActionFlag" ] = targerActionFlag;
+        metaDataInVariantMap[ "targetActionFlag" ] = targetActionFlag;
         metaDataInVariantMap[ "appendData" ] = appendData;
 
         metaData = QJsonDocument( QJsonObject::fromVariantMap( metaDataInVariantMap ) ).toJson( QJsonDocument::Compact );
@@ -241,7 +241,7 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
 }
 
 JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
-        const QString &targerActionFlag,
+        const QString &targetActionFlag,
         const QFileInfo &fileInfo,
         const QByteArray &fileData,
         const QVariantMap &appendData,
@@ -256,7 +256,7 @@ JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
     {
         QVariantMap metaDataInVariantMap;
 
-        metaDataInVariantMap[ "targerActionFlag" ] = targerActionFlag;
+        metaDataInVariantMap[ "targetActionFlag" ] = targetActionFlag;
         metaDataInVariantMap[ "appendData" ] = appendData;
 
         if ( fileInfo.isFile() )
@@ -341,21 +341,21 @@ QDateTime JQNetworkPackage::fileLastModifiedTime() const
 
 bool JQNetworkPackage::mixPackage(const JQNetworkPackageSharedPointer &mixPackage)
 {
-    BOOL_CHECK( !this->isCompletePackage(), ": current package is complete" );
-    BOOL_CHECK( !mixPackage->isCompletePackage(), ": mix package is complete" );
-    BOOL_CHECK( !this->isAbandonPackage(), ": current package is abandon package" );
-    BOOL_CHECK( !mixPackage->isAbandonPackage(), ": mix package is abandon package" );
-    BOOL_CHECK( this->randomFlag() == mixPackage->randomFlag(), ": randomFlag not same" );
+    BOOL_CHECK( !this->isCompletePackage(), "current package is complete" );
+    BOOL_CHECK( !mixPackage->isCompletePackage(), "mix package is complete" );
+    BOOL_CHECK( !this->isAbandonPackage(), "current package is abandon package" );
+    BOOL_CHECK( !mixPackage->isAbandonPackage(), "mix package is abandon package" );
+    BOOL_CHECK( this->randomFlag() == mixPackage->randomFlag(), "randomFlag not same" );
 
-    BOOL_CHECK( this->metaDataTotalSize() == mixPackage->metaDataTotalSize(), ": metaDataTotalSize not same" );
+    BOOL_CHECK( this->metaDataTotalSize() == mixPackage->metaDataTotalSize(), "metaDataTotalSize not same" );
     BOOL_CHECK( ( this->metaDataCurrentSize() + mixPackage->metaDataCurrentSize() ) <= this->metaDataTotalSize(),
-                ": metaDataCurrentSize overmuch" );
+                "metaDataCurrentSize overmuch" );
 
-    BOOL_CHECK( this->payloadDataTotalSize() == mixPackage->payloadDataTotalSize(), ": payloadDataTotalSize not same" );
+    BOOL_CHECK( this->payloadDataTotalSize() == mixPackage->payloadDataTotalSize(), "payloadDataTotalSize not same" );
     BOOL_CHECK( ( this->payloadDataCurrentSize() + mixPackage->payloadDataCurrentSize() ) <= this->payloadDataTotalSize(),
-                ": payloadDataCurrentSize overmuch" );
+                "payloadDataCurrentSize overmuch" );
 
-    BOOL_CHECK( ( ( this->metaDataTotalSize() > 0 ) || ( this->payloadDataTotalSize() > 0 ) ), ": data error" );
+    BOOL_CHECK( ( ( this->metaDataTotalSize() > 0 ) || ( this->payloadDataTotalSize() > 0 ) ), "data error" );
 
     if ( this->metaDataTotalSize() > 0 )
     {

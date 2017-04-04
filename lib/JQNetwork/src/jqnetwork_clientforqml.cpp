@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QMetaObject>
 
 // JQNetwork lib import
 #include <JQNetworkClient>
@@ -24,6 +25,17 @@
 
 using namespace std;
 using namespace std::placeholders;
+
+JQNetworkClientForQml::JQNetworkClientForQml()
+{
+    static bool flag = true;
+    if ( flag )
+    {
+        flag = false;
+        qRegisterMetaType< std::function<void()> >( "std::function<void()>" );
+        qRegisterMetaType< QVariantMap >( "QVariantMap" );
+    }
+}
 
 bool JQNetworkClientForQml::beginClient()
 {
@@ -52,21 +64,50 @@ void JQNetworkClientForQml::sendPayloadData(
         QJSValue failCallback
     )
 {
+    if ( !succeedCallback.isCallable() )
+    {
+        qDebug() << "JQNetworkClientForQml::sendPayloadData: error, succeedCallback not callable";
+        return;
+    }
+
+    if ( !failCallback.isCallable() )
+    {
+        qDebug() << "JQNetworkClientForQml::sendPayloadData: error, failCallback not callable";
+        return;
+    }
+
     if ( !jqNetworkClient_ )
     {
         qDebug() << "JQNetworkClientForQml::sendPayloadData: error, client need beginClient";
         return;
     }
 
-    qDebug() << "JQNetworkClientForQml::sendPayloadData:" << hostName << port << targetActionFlag;
-
     jqNetworkClient_->sendPayloadData(
                 hostName,
                 port,
                 targetActionFlag,
                 QJsonDocument( QJsonObject::fromVariantMap( payloadData ) ).toJson( QJsonDocument::Compact ),
-                { }, // emptyvappendData
-                [ succeedCallback ](const auto &, const auto &){ },
-                [ failCallback ](const auto &){ }
+                { }, // empty appendData
+                [ this, succeedCallback ](const auto &, const auto &package)
+                {
+                    const auto &&received = QJsonDocument::fromJson( package->payloadData() ).object().toVariantMap();
+
+                    QMetaObject::invokeMethod(
+                                this,
+                                "onSendSucceed",
+                                Qt::QueuedConnection,
+                                Q_ARG( QVariant, QVariant::fromValue( succeedCallback ) ),
+                                Q_ARG( QVariant, received )
+                            );
+                },
+                [ this, failCallback ](const auto &)
+                {
+                    QMetaObject::invokeMethod(
+                                this,
+                                "received",
+                                Qt::QueuedConnection,
+                                Q_ARG( QVariant, QVariant::fromValue( failCallback ) )
+                            );
+                }
             );
 }

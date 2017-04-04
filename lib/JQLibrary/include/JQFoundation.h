@@ -203,7 +203,9 @@ QByteArray imageToByteArray(const QImage &image, const QString &format);
 
 QPixmap byteArrayToPixmap(const QByteArray &byteArray);
 
+#if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
+#endif
 
 #ifdef QT_WIDGETS_LIB
 void tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList);

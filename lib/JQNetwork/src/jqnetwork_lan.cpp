@@ -317,7 +317,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
         datagram.resize( udpSocket_->pendingDatagramSize() );
         udpSocket_->readDatagram( datagram.data(), datagram.size() );
 
-        qDebug() << "JQNetworkLan::onUdpSocketReadyRead:" << datagram;
+//        qDebug() << "JQNetworkLan::onUdpSocketReadyRead:" << datagram;
 
         const auto &&data = QJsonDocument::fromJson( datagram ).object().toVariantMap();
 

@@ -86,11 +86,6 @@ inline int JQNetworkPackage::metaDataSize() const
     return metaData_.size();
 }
 
-inline QString JQNetworkPackage::metaDataActionFlag() const
-{
-    return "actionFlag";
-}
-
 inline QByteArray JQNetworkPackage::payloadData() const 
 { 
     return payloadData_; 
@@ -126,9 +121,9 @@ inline QVariantMap JQNetworkPackage::metaDataInVariantMap() const
     return metaDataInVariantMap_;
 }
 
-inline QString JQNetworkPackage::targerActionFlag() const
+inline QString JQNetworkPackage::targetActionFlag() const
 {
-    return ( metaDataInVariantMap_.contains( "targerActionFlag" ) ) ? ( metaDataInVariantMap_[ "targerActionFlag" ].toString() ) : ( QString() );
+    return ( metaDataInVariantMap_.contains( "targetActionFlag" ) ) ? ( metaDataInVariantMap_[ "targetActionFlag" ].toString() ) : ( QString() );
 }
 
 inline QVariantMap JQNetworkPackage::appendData() const

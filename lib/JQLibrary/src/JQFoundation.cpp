@@ -387,6 +387,7 @@ QPixmap JQFoundation::byteArrayToPixmap(const QByteArray &byteArray)
     return Pixmap;
 }
 
+#if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
 {
     QPair< int, QByteArray > reply;
@@ -409,6 +410,7 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
 
     return reply;
 }
+#endif
 
 #ifdef QT_WIDGETS_LIB
 void JQFoundation::tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList)

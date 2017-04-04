@@ -158,7 +158,11 @@ void JQNetworkClient::createConnect(const QString &hostName, const quint16 &port
     );
 }
 
-bool JQNetworkClient::waitForCreateConnect(const QString &hostName, const quint16 &port)
+bool JQNetworkClient::waitForCreateConnect(
+        const QString &hostName,
+        const quint16 &port,
+        const int &maximumConnectToHostWaitTime
+    )
 {
     QSharedPointer< QSemaphore > semaphore( new QSemaphore );
     const auto &&hostKey = QString( "%1:%2" ).arg( hostName, QString::number( port ) );
@@ -170,7 +174,10 @@ bool JQNetworkClient::waitForCreateConnect(const QString &hostName, const quint1
 
     mutex_.unlock();
 
-    const auto &&acquireSucceed = semaphore->tryAcquire( 1, connectSettings_->maximumConnectToHostWaitTime );
+    const auto &&acquireSucceed = semaphore->tryAcquire(
+                1,
+                ( maximumConnectToHostWaitTime == -1 ) ? ( connectSettings_->maximumConnectToHostWaitTime ) : ( maximumConnectToHostWaitTime )
+            );
 
     mutex_.lock();
 
@@ -229,6 +236,19 @@ qint32 JQNetworkClient::sendFileData(
 
 JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, const quint16 &port)
 {
+    for ( const auto &connectPool: this->connectPools_ )
+    {
+        auto connect = connectPool->getConnectByHostAndPort( hostName, port );
+
+        if ( !connect ) { continue; }
+
+        return connect;
+    }
+
+    const auto &&autoConnectSucceed = this->waitForCreateConnect( hostName, port, clientSettings_->maximumAutoConnectToHostWaitTime );
+
+    if ( !autoConnectSucceed ) { return { }; }
+
     for ( const auto &connectPool: this->connectPools_ )
     {
         auto connect = connectPool->getConnectByHostAndPort( hostName, port );

@@ -42,7 +42,7 @@ public:
     static JQNetworkPackageSharedPointer readPackage(QByteArray &rawData);
 
     static QList< JQNetworkPackageSharedPointer > createPayloadTransportPackages(
-            const QString &targerActionFlag,
+            const QString &targetActionFlag,
             const QByteArray &payloadData,
             const QVariantMap &appendData,
             const qint32 &randomFlag,
@@ -51,7 +51,7 @@ public:
         );
 
     static JQNetworkPackageSharedPointer createFileTransportPackage(
-            const QString &targerActionFlag,
+            const QString &targetActionFlag,
             const QFileInfo &fileInfo,
             const QByteArray &fileData,
             const QVariantMap &appendData,
@@ -90,8 +90,6 @@ public:
 
     inline int metaDataSize() const;
 
-    inline QString metaDataActionFlag() const;
-
     inline QByteArray payloadData() const;
 
     inline int payloadDataSize() const;
@@ -107,7 +105,7 @@ public:
 
     inline QVariantMap metaDataInVariantMap() const;
 
-    inline QString targerActionFlag() const;
+    inline QString targetActionFlag() const;
 
     inline QVariantMap appendData() const;
 
