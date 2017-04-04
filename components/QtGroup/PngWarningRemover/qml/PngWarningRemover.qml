@@ -58,8 +58,8 @@ libpng warning: iCCP: known incorrect sRGB profile
             switch( reply )
             {
                 case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
-                case "openSourceError": materialUI.showSnackbarMessage( "打开源文件失败" ); break;
-                case "saveTargetError": materialUI.showSnackbarMessage( "保存目标文件失败" ); break;
+                case "openSourceError": materialUI.showSnackbarMessage( "打开源文件失败：" + pngWarningRemoverManage.lastErrorFileName() ); break;
+                case "saveTargetError": materialUI.showSnackbarMessage( "保存目标文件失败：" + pngWarningRemoverManage.lastErrorFileName() ); break;
                 case "OK": materialUI.showSnackbarMessage( "所有图片转换已经完成" ); break;
             }
 

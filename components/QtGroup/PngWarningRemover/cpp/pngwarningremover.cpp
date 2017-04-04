@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QtConcurrent>
+#include <QFileInfo>
 
 using namespace PngWarningRemover;
 
@@ -32,7 +33,9 @@ QString Manage::conversationPng()
                     "*.png"
                 );
 
-    QtConcurrent::run( [ &eventLoop, &reply, &filePaths ]()
+    this->lastErrorFileName_.clear();
+
+    QtConcurrent::run( [ this, &eventLoop, &reply, &filePaths ]()
     {
         if ( filePaths.isEmpty() )
         {
@@ -48,6 +51,7 @@ QString Manage::conversationPng()
             if ( image.isNull() || !image.save( filePath ) )
             {
                 reply = "openSourceError";
+                this->lastErrorFileName_ = QFileInfo( filePath ).fileName();
                 QMetaObject::invokeMethod( &eventLoop, "quit" );
                 return;
             }
@@ -57,6 +61,7 @@ QString Manage::conversationPng()
             if ( image2.isNull() || !image2.save( filePath ) )
             {
                 reply = "saveTargetError";
+                this->lastErrorFileName_ = QFileInfo( filePath ).fileName();
                 QMetaObject::invokeMethod( &eventLoop, "quit" );
                 return;
             }

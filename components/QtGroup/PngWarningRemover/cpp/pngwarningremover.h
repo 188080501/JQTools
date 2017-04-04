@@ -36,6 +36,11 @@ public:
 
 public slots:
     QString conversationPng();
+
+    inline QString lastErrorFileName() { return lastErrorFileName_; }
+
+private:
+    QString lastErrorFileName_;
 };
 
 }
