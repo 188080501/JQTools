@@ -26,7 +26,7 @@
 #include <QVariant>
 #include <QHostAddress>
 
-#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 5, 2 )
+#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 5, 5 )
 
 #define JQNETWORKPACKAGE_BOOTFLAG qint8( 0x7d )
 #define JQNETWORKPACKAGE_PAYLOADDATATRANSPORTPACKGEFLAG qint8( 0x1 )
@@ -57,6 +57,7 @@ class QJsonArray;
 class QJsonValue;
 class QJsonDocument;
 class QFile;
+class QDir;
 class QFileInfo;
 class QTcpSocket;
 class QTcpServer;
@@ -87,6 +88,8 @@ typedef QPointer< JQNetworkServer > JQNetworkServerPointer;
 typedef QPointer< JQNetworkProcessor > JQNetworkProcessorPointer;
 typedef QPointer< JQNetworkClient > JQNetworkClientPointer;
 typedef QPointer< JQNetworkLan > JQNetworkLanPointer;
+
+typedef std::shared_ptr< void > JQNetworkVoidSharedPointer;
 
 typedef QSharedPointer< JQNetworkPackage > JQNetworkPackageSharedPointer;
 typedef QSharedPointer< JQNetworkConnect > JQNetworkConnectSharedPointer;

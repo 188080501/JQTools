@@ -16,13 +16,15 @@
 // Qt lib import
 #include <QJSValue>
 #include <QJSValueList>
+#include <QDateTime>
 
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
 #ifdef QT_QML_LIB
-#   define JQNETWORKCLIENTFORQML_REGISTERTYPE \
-    qmlRegisterType< JQNetworkClientForQml >( "JQNetwork", 1, 0, "JQNetworkClientForQml" );
+#   define JQNETWORKCLIENTFORQML_REGISTERTYPE( engine ) \
+    qmlRegisterType< JQNetworkClientForQml >( "JQNetworkClientForQml", 1, 0, "JQNetworkClientForQml" ); \
+    engine.addImportPath( ":/JQNetwork/" );
 #endif
 
 class JQNetworkClientForQml: public QObject
@@ -30,12 +32,16 @@ class JQNetworkClientForQml: public QObject
     Q_OBJECT
 
 public:
-    JQNetworkClientForQml() = default;
+    JQNetworkClientForQml();
 
     ~JQNetworkClientForQml() = default;
 
 public slots:
     bool beginClient();
+
+    QVariantMap test() { return { { "key", QDateTime::currentDateTime() }, { "key2", QByteArray::fromHex( "00112233" ) } }; }
+
+    void print(const QVariant &d) { qDebug() << d; }
 
     void createConnect(const QString &hostName, const quint16 &port);
 
@@ -47,6 +53,9 @@ public slots:
             QJSValue succeedCallback,
             QJSValue failCallback
         );
+
+private Q_SLOTS:
+    inline void runOnClientThread(const std::function<void()> &callback);
 
 signals:
     void connectToHostError(const QString &hostName, const quint16 &port);

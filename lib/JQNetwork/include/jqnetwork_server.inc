@@ -36,6 +36,11 @@ inline QString JQNetworkServer::nodeMarkSummary() const
     return nodeMarkSummary_;
 }
 
+inline QSet< QString > JQNetworkServer::availableProcessorMethodNames() const
+{
+    return QSet< QString >::fromList( processorCallbacks_.keys() );
+}
+
 inline void JQNetworkServer::onConnectToHostError(const JQNetworkConnectPointer &connect, const JQNetworkConnectPoolPointer &)
 {
     if ( !serverSettings_->connectToHostErrorCallback ) { return; }

@@ -13,7 +13,7 @@
 #include "jqnetwork_connect.h"
 
 // C lib import
-#ifdef _POSIX_VERSION
+#if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
 #   include <utime.h>
 #endif
 
@@ -37,7 +37,13 @@ void JQNetworkConnectSettings::setFilePathProviderToDefaultDir()
     const auto &&defaultDir = QStandardPaths::writableLocation( QStandardPaths::TempLocation );
 
     filePathProvider = [ defaultDir ](const auto &, const auto &, const auto &fileName)
-    { return QString( "%1/JQNetworkReceivedFile/%2" ).arg( defaultDir ).arg( fileName ); };
+    { return QString( "%1/JQNetworkReceivedFile/%2" ).arg( defaultDir, fileName ); };
+}
+
+void JQNetworkConnectSettings::setFilePathProviderToDir(const QDir &dir)
+{
+    filePathProvider = [ dir ](const auto &, const auto &, const auto &fileName)
+    { return QString( "%1/%2" ).arg( dir.path(), fileName ); };
 }
 
 // JQNetworkConnect
@@ -551,6 +557,11 @@ void JQNetworkConnect::onDataTransportPackageReceived(const JQNetworkPackageShar
     if ( ( package->randomFlag() >= connectSettings_->randomFlagRangeStart ) &&
          ( package->randomFlag() < connectSettings_->randomFlagRangeEnd ) )
     {
+        if ( package->packageFlag() == JQNETWORKPACKAGE_FILEDATATRANSPORTPACKGEFLAG )
+        {
+            this->onFileDataTransportPackageReceived( package, false );
+        }
+
         auto it = onReceivedCallbacks_.find( package->randomFlag() );
         if ( it == onReceivedCallbacks_.end() ) { return; }
 
@@ -574,7 +585,7 @@ void JQNetworkConnect::onDataTransportPackageReceived(const JQNetworkPackageShar
             }
             case JQNETWORKPACKAGE_FILEDATATRANSPORTPACKGEFLAG:
             {
-                this->onFileDataTransportPackageReceived( package );
+                this->onFileDataTransportPackageReceived( package, true );
                 break;
             }
             default:
@@ -586,12 +597,15 @@ void JQNetworkConnect::onDataTransportPackageReceived(const JQNetworkPackageShar
     }
 }
 
-void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackageSharedPointer &package)
+bool JQNetworkConnect::onFileDataTransportPackageReceived(
+        const JQNetworkPackageSharedPointer &package,
+        const bool &callbackOnFinish
+    )
 {
     const auto &&itForPackage = receivedFilePackagePool_.find( package->randomFlag() );
     const auto &&packageIsCached = itForPackage != receivedFilePackagePool_.end();
 
-    auto checkFinish = [ this, packageIsCached ](const JQNetworkPackageSharedPointer &firstPackage, QSharedPointer< QFile > &file)
+    auto checkFinish = [ this, packageIsCached, callbackOnFinish ](const JQNetworkPackageSharedPointer &firstPackage, QSharedPointer< QFile > &file)->bool
     {
         const auto &&fileSize = firstPackage->fileSize();
 
@@ -603,7 +617,7 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
             }
 
             this->sendDataRequestToRemote( firstPackage );
-            return;
+            return false;
         }
 
         const auto &&filePermissions = firstPackage->filePermissions();
@@ -613,13 +627,18 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
         file->close();
         file.clear();
 
-#ifdef _POSIX_VERSION
-        utimbuf timeBuf = { firstPackage->fileLastReadTime().toTime_t(), firstPackage->fileLastModifiedTime().toTime_t() };
+#if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
+        utimbuf timeBuf = { (time_t)firstPackage->fileLastReadTime().toTime_t(), (time_t)firstPackage->fileLastModifiedTime().toTime_t() };
         utime( firstPackage->localFilePath().toLatin1().data(), &timeBuf );
 #endif
 
-        JQNETWORK_NULLPTR_CHECK( this->connectSettings_->packageReceivedCallback );
-        this->connectSettings_->packageReceivedCallback( this, firstPackage );
+        if ( callbackOnFinish )
+        {
+            JQNETWORK_NULLPTR_CHECK( this->connectSettings_->packageReceivedCallback, false );
+            this->connectSettings_->packageReceivedCallback( this, firstPackage );
+        }
+
+        return true;
     };
 
     if ( packageIsCached )
@@ -627,20 +646,20 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
         itForPackage.value().second->write( package->payloadData() );
         itForPackage.value().second->waitForBytesWritten( connectSettings_->maximumFileWriteWaitTime );
 
-        checkFinish( itForPackage.value().first, itForPackage.value().second );
+        return checkFinish( itForPackage.value().first, itForPackage.value().second );
     }
     else
     {
         const auto &&fileName = package->fileName();
         const auto &&fileSize = package->fileSize();
 
-        JQNETWORK_NULLPTR_CHECK( connectSettings_->filePathProvider );
+        JQNETWORK_NULLPTR_CHECK( connectSettings_->filePathProvider, false );
         const auto &&localFilePath = connectSettings_->filePathProvider( this, package, fileName );
 
         if ( localFilePath.isEmpty() )
         {
             qDebug() << "JQNetworkConnect::onFileDataTransportPackageReceived: File path is empty, fileName:" << fileName;
-            return;
+            return false;
         }
 
         const auto &&localFileInfo = QFileInfo( localFilePath );
@@ -648,20 +667,20 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
         if ( !localFileInfo.dir().exists() && !localFileInfo.dir().mkpath( localFileInfo.dir().absolutePath() ) )
         {
             qDebug() << "JQNetworkConnect::onFileDataTransportPackageReceived: mkpath error, filePath:" << localFilePath;
-            return;
+            return false;
         }
 
         QSharedPointer< QFile > file( new QFile( localFilePath ) );
         if ( !file->open( QIODevice::WriteOnly ) )
         {
             qDebug() << "JQNetworkConnect::onFileDataTransportPackageReceived: Open file error, filePath:" << localFilePath;
-            return;
+            return false;
         }
 
         if ( !file->resize( fileSize ) )
         {
             qDebug() << "JQNetworkConnect::onFileDataTransportPackageReceived: File resize error, filePath:" << localFilePath;
-            return;
+            return false;
         }
 
         package->setLocalFilePath( localFilePath );
@@ -671,7 +690,7 @@ void JQNetworkConnect::onFileDataTransportPackageReceived(const JQNetworkPackage
 
         package->clearPayloadData();
 
-        checkFinish( package, file );
+        return checkFinish( package, file );
     }
 }
 

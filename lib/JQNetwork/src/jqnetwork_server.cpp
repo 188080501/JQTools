@@ -19,6 +19,7 @@
 #include <QMetaObject>
 
 // JQNetwork lib import
+#include <JQNetworkPackage>
 #include <JQNetworkConnectPool>
 #include <JQNetworkConnect>
 #include <JQNetworkProcessor>
@@ -139,6 +140,21 @@ bool JQNetworkServer::begin()
         globalProcessorThreadPool_ = processorThreadPool_.toWeakRef();
     }
 
+    if ( !processors_.isEmpty() )
+    {
+        QSet< QThread * > receivedPossibleThreads;
+
+        processorThreadPool_->waitRunEach( [ &receivedPossibleThreads ]()
+        {
+            receivedPossibleThreads.insert( QThread::currentThread() );
+        } );
+
+        for ( const auto &processor: processors_ )
+        {
+            processor->setReceivedPossibleThreads( receivedPossibleThreads );
+        }
+    }
+
     bool listenSucceed = false;
 
     serverThreadPool_->waitRun(
@@ -193,11 +209,18 @@ bool JQNetworkServer::begin()
 
 void JQNetworkServer::registerProcessor(const JQNetworkProcessorPointer &processor)
 {
+    if ( tcpServer_ )
+    {
+        qDebug() << "JQNetworkServer::registerProcessor: please use registerProcessor befor begin()";
+        return;
+    }
+
     const auto &&availableSlots = processor->availableSlots();
+    auto counter = 0;
 
     for ( const auto &currentSlot: availableSlots )
     {
-        if ( processor_.contains( currentSlot ) )
+        if ( processorCallbacks_.contains( currentSlot ) )
         {
             qDebug() << "JQNetworkServer::registerProcessor: double register:" << currentSlot;
             continue;
@@ -213,7 +236,16 @@ void JQNetworkServer::registerProcessor(const JQNetworkProcessorPointer &process
 
             processor->handlePackage( connect, package );
         };
-        processor_[ currentSlot ] = callback;
+
+        processorCallbacks_[ currentSlot ] = callback;
+        ++counter;
+    }
+
+    processors_.insert( processor );
+
+    if ( !counter )
+    {
+        qDebug() << "JQNetworkServer::registerProcessor: no available slots";
     }
 }
 
@@ -245,16 +277,14 @@ void JQNetworkServer::incomingConnection(const qintptr &socketDescriptor)
                 rotaryIndex
     );
 }
-#include <JQNetwork>
+
 void JQNetworkServer::onPackageReceived(
         const JQNetworkConnectPointer &connect,
         const JQNetworkConnectPoolPointer &,
         const JQNetworkPackageSharedPointer &package
     )
 {
-    qDebug() << package->targerActionFlag() << processor_.size();
-
-    if ( processor_.isEmpty() )
+    if ( processorCallbacks_.isEmpty() )
     {
         JQNETWORK_NULLPTR_CHECK( serverSettings_->packageReceivedCallback );
 
@@ -271,5 +301,28 @@ void JQNetworkServer::onPackageReceived(
     }
     else
     {
+        if ( package->targetActionFlag().isEmpty() )
+        {
+            qDebug() << "JQNetworkServer::onPackageReceived: processor is enable, but package targetActionFlag is empty";
+            return;
+        }
+
+        const auto &&it = processorCallbacks_.find( package->targetActionFlag() );
+        if ( it == processorCallbacks_.end() )
+        {
+            qDebug() << "JQNetworkServer::onPackageReceived: processor is enable, but targetActionFlag not contains:" << package->targetActionFlag();
+            return;
+        }
+
+        processorThreadPool_->run(
+                    [
+                        connect,
+                        package,
+                        callback = *it
+                    ]()
+                    {
+                        callback( connect, package );
+                    }
+        );
     }
 }

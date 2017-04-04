@@ -36,6 +36,13 @@ protected:
     JQNetworkConnectPointer currentThreadConnect();
 
 private:
+    inline static void deleteByteArray(QByteArray *ptr);
+
+    inline static void deleteVariantMap(QVariantMap *ptr);
+
+    static void deleteFileInfo(QFileInfo *ptr);
+
+private:
     static QSet< QString > exceptionSlots_;
 
     QSet< QString > availableSlots_;

@@ -56,6 +56,8 @@ struct JQNetworkConnectSettings
     std::function< QString( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer &, const QString & ) > filePathProvider = nullptr;
 
     void setFilePathProviderToDefaultDir();
+
+    void setFilePathProviderToDir(const QDir &dir);
 };
 
 class JQNetworkConnect: public QObject
@@ -176,7 +178,10 @@ private:
 
     void onDataTransportPackageReceived(const JQNetworkPackageSharedPointer &package);
 
-    void onFileDataTransportPackageReceived(const JQNetworkPackageSharedPointer &package);
+    bool onFileDataTransportPackageReceived(
+            const JQNetworkPackageSharedPointer &package,
+            const bool &callbackOnFinish
+        );
 
     void onReadyToDelete();
 

@@ -16,4 +16,14 @@
 // JQNetwork lib import
 #include "jqnetwork_processor.h"
 
+inline void JQNetworkProcessor::deleteByteArray(QByteArray *ptr)
+{
+    delete ptr;
+}
+
+inline void JQNetworkProcessor::deleteVariantMap(QVariantMap *ptr)
+{
+    delete ptr;
+}
+
 #endif//JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_INC
