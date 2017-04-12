@@ -39,6 +39,26 @@ inline QString JQNetworkClient::nodeMarkSummary() const
 inline qint32 JQNetworkClient::sendPayloadData(
         const QString &hostName,
         const quint16 &port,
+        const QString &targetActionFlag,
+        const QByteArray &payloadData,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendPayloadData(
+                hostName,
+                port,
+                targetActionFlag,
+                payloadData,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::sendPayloadData(
+        const QString &hostName,
+        const quint16 &port,
         const QByteArray &payloadData,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
         const JQNetworkConnectPointerFunction &failCallback
@@ -55,6 +75,65 @@ inline qint32 JQNetworkClient::sendPayloadData(
             );
 }
 
+inline qint32 JQNetworkClient::sendVariantMapData(
+        const QString &hostName,
+        const quint16 &port,
+        const QString &targetActionFlag,
+        const QVariantMap &variantMap,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendVariantMapData(
+                hostName,
+                port,
+                targetActionFlag,
+                variantMap,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::sendVariantMapData(
+        const QString &hostName,
+        const quint16 &port,
+        const QVariantMap &variantMap,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendVariantMapData(
+                hostName,
+                port,
+                { }, // empty targetActionFlag
+                variantMap,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::sendFileData(
+        const QString &hostName,
+        const quint16 &port,
+        const QString &targetActionFlag,
+        const QFileInfo &fileInfo,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendFileData(
+                hostName,
+                port,
+                targetActionFlag,
+                fileInfo,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
 inline qint32 JQNetworkClient::sendFileData(
         const QString &hostName,
         const quint16 &port,
@@ -64,6 +143,123 @@ inline qint32 JQNetworkClient::sendFileData(
     )
 {
     return this->sendFileData(
+                hostName,
+                port,
+                { }, // empty targetActionFlag
+                fileInfo,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::waitForSendPayloadData(
+        const QString &hostName,
+        const quint16 &port,
+        const QString &targetActionFlag,
+        const QByteArray &payloadData,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->waitForSendPayloadData(
+                hostName,
+                port,
+                targetActionFlag,
+                payloadData,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::waitForSendPayloadData(
+        const QString &hostName,
+        const quint16 &port,
+        const QByteArray &payloadData,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->waitForSendPayloadData(
+                hostName,
+                port,
+                { }, // empty targetActionFlag
+                payloadData,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::waitForSendVariantMapData(
+        const QString &hostName,
+        const quint16 &port,
+        const QString &targetActionFlag,
+        const QVariantMap &variantMap,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->waitForSendVariantMapData(
+                hostName,
+                port,
+                targetActionFlag,
+                variantMap,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::waitForSendVariantMapData(
+        const QString &hostName,
+        const quint16 &port,
+        const QVariantMap &variantMap,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->waitForSendVariantMapData(
+                hostName,
+                port,
+                { }, // empty targetActionFlag
+                variantMap,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::waitForSendFileData(
+        const QString &hostName,
+        const quint16 &port,
+        const QString &targetActionFlag,
+        const QFileInfo &fileInfo,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->waitForSendFileData(
+                hostName,
+                port,
+                targetActionFlag,
+                fileInfo,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
+inline qint32 JQNetworkClient::waitForSendFileData(
+        const QString &hostName,
+        const quint16 &port,
+        const QFileInfo &fileInfo,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->waitForSendFileData(
                 hostName,
                 port,
                 { }, // empty targetActionFlag

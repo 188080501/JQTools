@@ -10,8 +10,8 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include($$PWD/HashCalculate/HashCalculate.pri)
-include($$PWD/TimestampTransform/TimestampTransform.pri)
+include( $$PWD/HashCalculate/HashCalculate.pri )
+include( $$PWD/TimestampTransform/TimestampTransform.pri )
 
 INCLUDEPATH += \
     $$PWD/

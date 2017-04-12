@@ -95,8 +95,8 @@ exists($$PWD/src/JQFoundation.cpp) {
 }
 
 mac : exists( /usr/local/opt/gflags/lib/libgflags.2.2.dylib ) {
-    exists($$PWD/JQGuetzli.pri) {
-        include($$PWD/JQGuetzli.pri)
+    exists($$PWD/JQGuetzli.pri ) {
+        include( $$PWD/JQGuetzli.pri )
     }
 }
 
@@ -122,8 +122,8 @@ ios {
     }
 }
 
-exists($$PWD/JQgSoap.pri) {
-    include($$PWD/JQgSoap.pri)
+exists($$PWD/JQgSoap.pri ) {
+    include( $$PWD/JQgSoap.pri )
 }
 
 exists($$PWD/src/JQJsonStream.cpp) {
@@ -161,25 +161,25 @@ contains(QT, qml) {
 }
 
 contains(QT, qml) {
-    exists($$PWD/JQQmlLib.pri) {
-        include($$PWD/JQQmlLib.pri)
+    exists($$PWD/JQQmlLib.pri ) {
+        include( $$PWD/JQQmlLib.pri )
     }
 }
 
 contains(QT, qml) {
-    exists($$PWD/JQQmlImage.pri) {
-        include($$PWD/JQQmlImage.pri)
+    exists($$PWD/JQQmlImage.pri ) {
+        include( $$PWD/JQQmlImage.pri )
     }
 }
 
 contains(QT, qml) {
-    exists($$PWD/JQQRCodeReader.pri) {
-        include($$PWD/JQQRCodeReader.pri)
+    exists($$PWD/JQQRCodeReader.pri ) {
+        include( $$PWD/JQQRCodeReader.pri )
     }
 }
 
-exists($$PWD/JQQRCodeWriter.pri) {
-    include($$PWD/JQQRCodeWriter.pri)
+exists($$PWD/JQQRCodeWriter.pri ) {
+    include( $$PWD/JQQRCodeWriter.pri )
 }
 
 contains(QT, serialport) {
@@ -195,8 +195,8 @@ exists($$PWD/src/JQSettings.cpp) {
 }
 
 contains(QT, network) {
-    exists($$PWD/JQSjf.pri) {
-        include($$PWD/JQSjf.pri)
+    exists($$PWD/JQSjf.pri ) {
+        include( $$PWD/JQSjf.pri )
     }
 }
 
@@ -249,8 +249,8 @@ contains(QT, webenginewidgets) {
 }
 
 win32 {
-    exists($$PWD/JQWinPcap.pri) {
-        include($$PWD/JQWinPcap.pri)
+    exists($$PWD/JQWinPcap.pri ) {
+        include( $$PWD/JQWinPcap.pri )
     }
 }
 
@@ -259,6 +259,6 @@ exists($$PWD/src/JQXmlToJson.cpp) {
     HEADERS *= $$PWD/include/JQXmlToJson.h
 }
 
-exists($$PWD/JQZopfli.pri) {
-    include($$PWD/JQZopfli.pri)
+exists($$PWD/JQZopfli.pri ) {
+    include( $$PWD/JQZopfli.pri )
 }

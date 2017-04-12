@@ -55,7 +55,7 @@ void JQNetworkClientForQml::createConnect(const QString &hostName, const quint16
     jqNetworkClient_->createConnect( hostName, port );
 }
 
-void JQNetworkClientForQml::sendPayloadData(
+void JQNetworkClientForQml::sendVariantMapData(
         const QString &hostName,
         const quint16 &port,
         const QString &targetActionFlag,
@@ -82,11 +82,11 @@ void JQNetworkClientForQml::sendPayloadData(
         return;
     }
 
-    jqNetworkClient_->sendPayloadData(
+    jqNetworkClient_->sendVariantMapData(
                 hostName,
                 port,
                 targetActionFlag,
-                QJsonDocument( QJsonObject::fromVariantMap( payloadData ) ).toJson( QJsonDocument::Compact ),
+                payloadData,
                 { }, // empty appendData
                 [ this, succeedCallback ](const auto &, const auto &package)
                 {

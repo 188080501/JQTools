@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/QRCodeReader">
+        <file>QRCodeReader.qml</file>
+    </qresource>
+</RCC>

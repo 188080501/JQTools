@@ -10,9 +10,9 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include($$PWD/IconMaker/IconMaker.pri)
-include($$PWD/FontToPng/FontToPng.pri)
-include($$PWD/QRCodeMaker/QRCodeMaker.pri)
+include( $$PWD/IconMaker/IconMaker.pri )
+include( $$PWD/FontToPng/FontToPng.pri )
+include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
 
 INCLUDEPATH += \
     $$PWD/

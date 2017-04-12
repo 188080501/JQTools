@@ -15,11 +15,10 @@
 #   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/include/JQQRCodeWriter/
 
-# qrencode
-HEADERS += \
+HEADERS *= \
     $$PWD/src/JQQRCodeWriter/qrencode/qrencode.h \
     $$PWD/src/JQQRCodeWriter/qrencode/bitstream.h \
     $$PWD/src/JQQRCodeWriter/qrencode/mask.h \
@@ -33,7 +32,7 @@ HEADERS += \
     $$PWD/src/JQQRCodeWriter/qrencode/config.h \
     $$PWD/include/JQQRCodeWriter/JQQRCodeWriter.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/src/JQQRCodeWriter/qrencode/qrencode.c \
     $$PWD/src/JQQRCodeWriter/qrencode/bitstream.c \
     $$PWD/src/JQQRCodeWriter/qrencode/mask.c \

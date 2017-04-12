@@ -16,6 +16,7 @@
 // C++ lib import
 #include <functional>
 #include <vector>
+#include <memory>
 
 // Qt lib import
 #include <QObject>
@@ -26,7 +27,7 @@
 #include <QVariant>
 #include <QHostAddress>
 
-#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 5, 5 )
+#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 5, 7 )
 
 #define JQNETWORKPACKAGE_BOOTFLAG qint8( 0x7d )
 #define JQNETWORKPACKAGE_PAYLOADDATATRANSPORTPACKGEFLAG qint8( 0x1 )
