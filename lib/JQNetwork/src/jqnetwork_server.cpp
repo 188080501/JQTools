@@ -245,7 +245,7 @@ void JQNetworkServer::registerProcessor(const JQNetworkProcessorPointer &process
 
     if ( !counter )
     {
-        qDebug() << "JQNetworkServer::registerProcessor: no available slots";
+        qDebug() << "JQNetworkServer::registerProcessor: no available slots in processor:" << processor->metaObject()->className();
     }
 }
 

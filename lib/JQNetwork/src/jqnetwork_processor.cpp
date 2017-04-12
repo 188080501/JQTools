@@ -305,6 +305,76 @@ void JQNetworkProcessor::setReceivedPossibleThreads(const QSet< QThread * > &thr
     }
 }
 
+bool JQNetworkProcessor::checkMapContains(const QStringList &keys, const QVariantMap &received, QVariantMap &send)
+{
+    for ( const auto &key: keys )
+    {
+        if ( !received.contains( key ) )
+        {
+            JQNP_FAIL( QString( "error: %1 not contains" ).arg( key ) );
+        }
+    }
+
+    return true;
+}
+
+bool JQNetworkProcessor::checkMapContainsAndNot0(const QStringList &keys, const QVariantMap &received, QVariantMap &send)
+{
+    for ( const auto &key: keys )
+    {
+        if ( !received.contains( key ) || !received[ key ].toLongLong() )
+        {
+            JQNP_FAIL( QString( "error: %1 is 0" ).arg( key ) );
+        }
+    }
+
+    return true;
+}
+
+bool JQNetworkProcessor::checkMapContainsAndNotEmpty(const QStringList &keys, const QVariantMap &received, QVariantMap &send)
+{
+    for ( const auto &key: keys )
+    {
+        if ( !received.contains( key ) || received[ key ].toString().isEmpty() )
+        {
+            JQNP_FAIL( QString( "error: %1 is empty" ).arg( key ) );
+        }
+    }
+
+    return true;
+}
+
+bool JQNetworkProcessor::checkDataContasinsExpectedContent(const QString &key, const QVariantList &expectedContentList, const QVariantMap &received, QVariantMap &send)
+{
+    if ( !checkMapContains( { key }, received, send ) ) { return false; }
+
+    const auto &&data = received[ key ];
+
+    if ( data.isNull() ) { JQNP_FAIL( QString( "error: %1 is null" ).arg( key ) ) }
+
+    for ( const auto &expectedContent: expectedContentList )
+    {
+        if ( data == expectedContent )
+        {
+            return true;
+        }
+    }
+
+    auto message = QString( "error: %1 not match, expected: " );
+
+    for ( auto index = 0; index < expectedContentList.length(); ++index )
+    {
+        if ( !index )
+        {
+            message += "/";
+        }
+
+        message += expectedContentList[ index ].toString();
+    }
+
+    JQNP_FAIL( message );
+}
+
 JQNetworkConnectPointer JQNetworkProcessor::currentThreadConnect()
 {
     auto currentThreadConnect = connectMapByThread_.find( QThread::currentThread() );

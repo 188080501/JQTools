@@ -10,12 +10,13 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include($$PWD/LinesStatistics/LinesStatistics.pri)
-include($$PWD/LanFileTransport/LanFileTransport.pri)
-include($$PWD/PngOptimize/PngOptimize.pri)
+include( $$PWD/LinesStatistics/LinesStatistics.pri )
+include( $$PWD/LanFileTransport/LanFileTransport.pri )
+include( $$PWD/PngOptimize/PngOptimize.pri )
 mac {
-    include($$PWD/JpgOptimize/JpgOptimize.pri)
+    include( $$PWD/JpgOptimize/JpgOptimize.pri )
 }
+include( $$PWD/QRCodeReader/QRCodeReader.pri )
 
 INCLUDEPATH += \
     $$PWD/

@@ -10,7 +10,7 @@
     GitHub: https://github.com/188080501/
 */
 
-#include "QRCodeMaker.h"
+#include "qrcodemaker.h"
 
 // Qt lib import
 #include <QDebug>

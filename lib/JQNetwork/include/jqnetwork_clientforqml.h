@@ -45,7 +45,7 @@ public slots:
 
     void createConnect(const QString &hostName, const quint16 &port);
 
-    void sendPayloadData(
+    void sendVariantMapData(
             const QString &hostName,
             const quint16 &port,
             const QString &targetActionFlag,

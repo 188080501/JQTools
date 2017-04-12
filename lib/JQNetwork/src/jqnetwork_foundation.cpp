@@ -196,12 +196,12 @@ QString JQNetworkNodeMark::calculateNodeMarkSummary(const QString &dutyMark)
 // JQNetwork
 void JQNetwork::printVersionInformation(const char *jqNetworkCompileModeString)
 {
-    qDebug() << "JQNetwork library version:" << ( JQNETWORK_VERSIONNUMBER.toString() )
+    qDebug() << "JQNetwork library version:" << JQNETWORK_VERSIONNUMBER.toString().toLatin1().data()
 #ifdef __STDC__
              << ", build in:" << QDateTime(
                     QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy"),
                     QTime::fromString( __TIME__, "hh:mm:ss" )
-                ).toString( "yyyy-MM-dd hh:mm:ss" )
+                ).toString( "yyyy-MM-dd hh:mm:ss" ).toLatin1().data()
 #endif
             << ", compile mode:" << jqNetworkCompileModeString;
 }

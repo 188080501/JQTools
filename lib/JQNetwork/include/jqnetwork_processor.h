@@ -16,6 +16,64 @@
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
+#define JQNP_SUCCEED()                                                                  \
+    send[ "succeed" ] = true;                                                           \
+    send[ "message" ] = "";                                                             \
+    return true;
+
+#define JQNP_FAIL( errorMessage )                                                       \
+    send[ "succeed" ] = false;                                                          \
+    send[ "message" ] = errorMessage;                                                   \
+    return false;
+
+#define JQNP_SERVERFAIL( errorMessage )                                                 \
+    const auto &&message = QString( "Server error: " ) + errorMessage;                  \
+    qDebug() << message.toLocal8Bit().data();                                           \
+    send[ "succeed" ] = false;                                                          \
+    send[ "message" ] = errorMessage;                                                   \
+    return false;
+
+#define JQNP_CHECKRECEIVEDATACONTAINS( ... )                                            \
+    if (                                                                                \
+        !JQNetworkProcessor::checkMapContains(                                          \
+            { __VA_ARGS__ },                                                            \
+            received,                                                                   \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKRECEIVEDATACONTAINSANDNOT0( ... )                                     \
+    if (                                                                                \
+        !JQNetworkProcessor::checkMapContainsAndNot0(                                   \
+            { __VA_ARGS__ },                                                            \
+            received,                                                                   \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKRECEIVEDATACONTAINSANDNOTEMPTY( ... )                                 \
+    if (                                                                                \
+        !JQNetworkProcessor::checkMapContainsAndNotEmpty(                               \
+            { __VA_ARGS__ },                                                            \
+            received,                                                                   \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKDATACONTAINSEXPECTEDCONTENT( key, ... )                               \
+    if (                                                                                \
+        !JQNetworkProcessor::checkDataContasinsExpectedContent(                         \
+            key,                                                                        \
+            __VA_ARGS__,                                                                \
+            received,                                                                   \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
 class JQNetworkProcessor: public QObject
 {
     Q_OBJECT
@@ -31,6 +89,14 @@ public:
     bool handlePackage(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package);
 
     void setReceivedPossibleThreads(const QSet< QThread * > &threads);
+
+    static bool checkMapContains(const QStringList &keys, const QVariantMap &received, QVariantMap &send);
+
+    static bool checkMapContainsAndNot0(const QStringList &keys, const QVariantMap &received, QVariantMap &send);
+
+    static bool checkMapContainsAndNotEmpty(const QStringList &keys, const QVariantMap &received, QVariantMap &send);
+
+    static bool checkDataContasinsExpectedContent(const QString &key, const QVariantList &expectedContentList, const QVariantMap &received, QVariantMap &send);
 
 protected:
     JQNetworkConnectPointer currentThreadConnect();
