@@ -268,3 +268,27 @@ win32-g++ {
     SOURCES *= \
         $$PWD/src/JQQRCodeReader/zxing/win32/zxing/win_iconv.c
 }
+
+contains( QT, qml ) {
+
+    contains(QT, concurrent) {
+
+        contains(QT, multimedia) {
+
+            HEADERS *= \
+                $$PWD/include/JQQRCodeReader/JQQRCodeReaderForQml.h
+
+            SOURCES *= \
+                $$PWD/src/JQQRCodeReader/JQQRCodeReaderForQml.cpp
+
+            RESOURCES *= \
+                $$PWD/qml/JQQRCodeReaderQml.qrc
+
+            QML_IMPORT_PATH *= \
+                $$PWD/qml/
+
+            PLUGINS *= \
+                declarative_multimedia
+        }
+    }
+}

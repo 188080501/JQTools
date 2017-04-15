@@ -128,8 +128,7 @@ private:
 };
 
 // JQQRCodeReader
-JQQRCodeReader::JQQRCodeReader(QObject *parent):
-    QObject( parent ),
+JQQRCodeReader::JQQRCodeReader():
     decoder_( new zxing::MultiFormatReader )
 { }
 

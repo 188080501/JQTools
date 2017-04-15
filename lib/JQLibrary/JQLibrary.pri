@@ -172,10 +172,8 @@ contains(QT, qml) {
     }
 }
 
-contains(QT, qml) {
-    exists($$PWD/JQQRCodeReader.pri ) {
-        include( $$PWD/JQQRCodeReader.pri )
-    }
+exists($$PWD/JQQRCodeReader.pri ) {
+    include( $$PWD/JQQRCodeReader.pri )
 }
 
 exists($$PWD/JQQRCodeWriter.pri ) {

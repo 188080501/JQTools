@@ -35,7 +35,7 @@ class JQQRCodeReader: public QObject
     Q_DISABLE_COPY( JQQRCodeReader )
 
 public:
-    JQQRCodeReader(QObject *parent = nullptr);
+    JQQRCodeReader();
 
     ~JQQRCodeReader() = default;
 
