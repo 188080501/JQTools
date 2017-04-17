@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  BitMatrixParser.cpp
  *  zxing
  *
@@ -26,7 +26,7 @@ namespace zxing {
 namespace qrcode {
 
 int BitMatrixParser::copyBit(size_t x, size_t y, int versionBits) {
-  return bitMatrix_->get(x, y) ? (versionBits << 1) | 0x1 : versionBits << 1;
+  return (int)(bitMatrix_->get((int)x, (int)y) ? (versionBits << 1) | 0x1 : versionBits << 1);
 }
 
 BitMatrixParser::BitMatrixParser(Ref<BitMatrix> bitMatrix) :

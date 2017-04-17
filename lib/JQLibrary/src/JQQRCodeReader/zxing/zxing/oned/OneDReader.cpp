@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -158,7 +158,7 @@ int OneDReader::patternMatchVariance(vector<int>& counters,
 int OneDReader::patternMatchVariance(vector<int>& counters,
                                      int const pattern[],
                                      int maxIndividualVariance) {
-  int numCounters = counters.size();
+  int numCounters = (int)counters.size();
   unsigned int total = 0;
   unsigned int patternLength = 0;
   for (int i = 0; i < numCounters; i++) {
@@ -192,7 +192,7 @@ int OneDReader::patternMatchVariance(vector<int>& counters,
 void OneDReader::recordPattern(Ref<BitArray> row,
                                int start,
                                vector<int>& counters) {
-  int numCounters = counters.size();
+  int numCounters = (int)counters.size();
   for (int i = 0; i < numCounters; i++) {
     counters[i] = 0;
   }

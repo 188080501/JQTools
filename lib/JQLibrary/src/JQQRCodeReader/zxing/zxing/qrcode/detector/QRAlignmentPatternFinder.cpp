@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2008 ZXing authors All rights reserved.
  *
@@ -102,7 +102,7 @@ Ref<AlignmentPattern> AlignmentPatternFinder::handlePossibleCenter(vector<int> &
   float centerI = crossCheckVertical(i, (int)centerJ, 2 * stateCount[1], stateCountTotal);
   if (!isnan_z(centerI)) {
     float estimatedModuleSize = (float)(stateCount[0] + stateCount[1] + stateCount[2]) / 3.0f;
-    int max = possibleCenters_->size();
+    int max = (int)possibleCenters_->size();
     for (int index = 0; index < max; index++) {
       Ref<AlignmentPattern> center((*possibleCenters_)[index]);
       // Look for about the same center and module size:

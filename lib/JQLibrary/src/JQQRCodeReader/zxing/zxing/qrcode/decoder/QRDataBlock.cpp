@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  DataBlock.cpp
  *  zxing
  *
@@ -72,7 +72,7 @@ std::vector<Ref<DataBlock> > DataBlock::getDataBlocks(ArrayRef<char> rawCodeword
   // All blocks have the same amount of data, except that the last n
   // (where n may be 0) have 1 more byte. Figure out where these start.
   int shorterBlocksTotalCodewords = result[0]->codewords_->size();
-  int longerBlocksStartAt = result.size() - 1;
+  int longerBlocksStartAt = (int)result.size() - 1;
   while (longerBlocksStartAt >= 0) {
     int numCodewords = result[longerBlocksStartAt]->codewords_->size();
     if (numCodewords == shorterBlocksTotalCodewords) {

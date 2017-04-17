@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -184,7 +184,7 @@ vector<int> Code128Reader::findStartPattern(Ref<BitArray> row){
   vector<int> counters (6, 0);
   int patternStart = rowOffset;
   bool isWhite = false;
-  int patternLength =  counters.size();
+  int patternLength = (int)counters.size();
 
   for (int i = rowOffset; i < width; i++) {
     if (row->get(i) ^ isWhite) {
@@ -307,7 +307,7 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
 
     // Advance to where the next code will to start
     lastStart = nextStart;
-    for (int i = 0, e = counters.size(); i < e; i++) {
+    for (int i = 0, e = (int)counters.size(); i < e; i++) {
       nextStart += counters[i];
     }
 
@@ -454,7 +454,7 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
   }
 
   // Need to pull out the check digits from string
-  int resultLength = result.length();
+  int resultLength = (int)result.length();
   if (resultLength == 0) {
     // false positive
     throw NotFoundException();
@@ -473,7 +473,7 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
   float left = (float) (startPatternInfo[1] + startPatternInfo[0]) / 2.0f;
   float right = lastStart + lastPatternSize / 2.0f;
 
-  int rawCodesSize = rawCodes.size();
+  int rawCodesSize = (int)rawCodes.size();
   ArrayRef<char> rawBytes (rawCodesSize);
   for (int i = 0; i < rawCodesSize; i++) {
     rawBytes[i] = rawCodes[i];

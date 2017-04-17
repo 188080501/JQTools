@@ -63,6 +63,20 @@ JQNetworkConnect::JQNetworkConnect(const JQNetworkConnectSettingsSharedPointer &
         qDebug() << "JQNetworkConnect: fileTransfer is enabled, but filePathProvider is null, use default dir:"
                  << connectSettings_->filePathProvider( JQNetworkConnectPointer( nullptr ), JQNetworkPackageSharedPointer( nullptr ), QString() );
     }
+
+#ifdef Q_OS_IOS
+
+    static bool flag = true;
+    if ( flag )
+    {
+        flag = false;
+
+        QTcpSocket socket;
+        socket.connectToHost( "baidu.com", 12345 );
+        socket.waitForConnected( 10 );
+    }
+
+#endif
 }
 
 void JQNetworkConnect::createConnect(

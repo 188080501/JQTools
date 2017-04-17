@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -79,7 +79,7 @@ CodaBarReader::CodaBarReader()
 Ref<Result> CodaBarReader::decodeRow(int rowNumber, Ref<BitArray> row) {
 
   { // Arrays.fill(counters, 0);
-    int size = counters.size();
+    int size = (int)counters.size();
     counters.resize(0);
     counters.resize(size); }
 
@@ -170,7 +170,7 @@ void CodaBarReader::validatePattern(int start)  {
   // First, sum up the total size of our four categories of stripe sizes;
   vector<int> sizes (4, 0);
   vector<int> counts (4, 0);
-  int end = decodeRowResult.length() - 1;
+  int end = (int)decodeRowResult.length() - 1;
 
   // We break out of this loop in the middle, in order to handle
   // inter-character spaces properly.

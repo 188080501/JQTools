@@ -261,7 +261,7 @@ QString Manage::savePath()
 
 void Manage::refresh()
 {
-    qDebug() << "refreshLanNodes";
+    qDebug() << "\nrefreshLanNodes start";
 
     QVariantList buf;
 
@@ -318,6 +318,8 @@ void Manage::refresh()
     mutex_.unlock();
 
     emit this->lanNodeChanged();
+
+    qDebug() << "refreshLanNodes end";
 }
 
 void Manage::lanNodeOffline(const JQNetworkLanNode &node)
@@ -338,6 +340,8 @@ void Manage::lanNodeOffline(const JQNetworkLanNode &node)
     mutex_.unlock();
 
     emit this->lanNodeChanged();
+
+    qDebug() << "refreshLanNodes";
 }
 
 void Manage::emitSendingSignal(const QString &hostName, const SendCounter &counter)
