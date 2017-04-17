@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2011 ZXing authors
  *
@@ -138,7 +138,7 @@ vector<Ref<FinderPatternInfo> > MultiFinderPatternFinder::findMulti(DecodeHints 
 vector<vector<Ref<FinderPattern> > > MultiFinderPatternFinder::selectBestPatterns(){
   vector<Ref<FinderPattern> > possibleCenters = possibleCenters_;
   
-  int size = possibleCenters.size();
+  int size = (int)possibleCenters.size();
 
   if (size < 3) {
     // Couldn't find enough finder patterns

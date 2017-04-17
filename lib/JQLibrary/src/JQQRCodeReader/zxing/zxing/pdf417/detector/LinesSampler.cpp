@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  * Copyright 2010, 2012 ZXing authors All rights reserved.
  *
@@ -157,7 +157,7 @@ Ref<BitMatrix> LinesSampler::sample() {
   detectedCodeWords.resize(rowCount);
 
   // XXX
-  Ref<BitMatrix> grid(new BitMatrix(dimension_, detectedCodeWords.size()));
+  Ref<BitMatrix> grid(new BitMatrix(dimension_, (int)detectedCodeWords.size()));
   codewordsToBitMatrix(detectedCodeWords, grid);
 
   return grid;

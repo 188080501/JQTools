@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Exception.cpp
  *  ZXing
@@ -33,7 +33,7 @@ void Exception::deleteMessage() {
 char const* Exception::copy(char const* msg) {
   char* message = 0;
   if (msg) {
-    int l = strlen(msg)+1;
+    int l = (int)strlen(msg)+1;
     if (l) {
       message = new char[l];
       strcpy(message, msg);

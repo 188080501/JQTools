@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  UPCEANReader.cpp
  *  ZXing
@@ -206,7 +206,7 @@ UPCEANReader::Range UPCEANReader::findGuardPattern(Ref<BitArray> row,
     }
     std::cerr << std::endl;
   }
-  int patternLength = pattern.size();
+  int patternLength = (int)pattern.size();
   int width = row->getSize();
   bool isWhite = whiteFirst;
   rowOffset = whiteFirst ? row->getNextUnset(rowOffset) : row->getNextSet(rowOffset);
@@ -249,7 +249,7 @@ int UPCEANReader::decodeDigit(Ref<BitArray> row,
   recordPattern(row, rowOffset, counters);
   int bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
   int bestMatch = -1;
-  int max = patterns.size();
+  int max = (int)patterns.size();
   for (int i = 0; i < max; i++) {
     int const* pattern (patterns[i]);
     int variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
@@ -281,7 +281,7 @@ bool UPCEANReader::checkChecksum(Ref<String> const& s) {
  */
 bool UPCEANReader::checkStandardUPCEANChecksum(Ref<String> const& s_) {
   std::string const& s (s_->getText());
-  int length = s.length();
+  int length = (int)s.length();
   if (length == 0) {
     return false;
   }

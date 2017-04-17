@@ -1,4 +1,4 @@
-// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 #ifndef __ARRAY_H__
 #define __ARRAY_H__
 
@@ -70,7 +70,7 @@ public:
     return values_[i];
   }
   int size() const {
-    return values_.size();
+    return (int)values_.size();
   }
   bool empty() const {
     return values_.size() == 0;

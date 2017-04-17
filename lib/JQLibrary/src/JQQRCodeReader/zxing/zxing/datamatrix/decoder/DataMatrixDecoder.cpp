@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Decoder.cpp
  *  zxing
  *
@@ -67,7 +67,7 @@ Ref<DecoderResult> Decoder::decode(Ref<BitMatrix> bits) {
   // Separate into data blocks
   std::vector<Ref<DataBlock> > dataBlocks = DataBlock::getDataBlocks(codewords, version);
 
-  int dataBlocksCount = dataBlocks.size();
+  int dataBlocksCount = (int)dataBlocks.size();
 
   // Count total number of data bytes
   int totalBytes = 0;
