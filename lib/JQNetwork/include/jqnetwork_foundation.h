@@ -27,7 +27,7 @@
 #include <QVariant>
 #include <QHostAddress>
 
-#define JQNETWORK_VERSIONNUMBER QVersionNumber( 0, 5, 7 )
+#define JQNETWORK_VERSIONNUMBER QVersionNumber::fromString( JQNETWORK_VERSIONSTRING )
 
 #define JQNETWORKPACKAGE_BOOTFLAG qint8( 0x7d )
 #define JQNETWORKPACKAGE_PAYLOADDATATRANSPORTPACKGEFLAG qint8( 0x1 )

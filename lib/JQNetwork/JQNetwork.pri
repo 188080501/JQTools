@@ -22,18 +22,12 @@ lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {
     error( JQNetwork request minimum Qt version is 5.7.0 )
 }
 
-JQNETWORK_BIN_NO1_DIR = $$[QT_VERSION]
+JQNETWORK_VERSIONSTRING = 0.5.8
+
+JQNETWORK_BIN_NO1_DIR = JQNetwork$$JQNETWORK_VERSIONSTRING/Qt$$[QT_VERSION]
 JQNETWORK_BIN_NO2_DIR = $$QT_ARCH
 JQNETWORK_BIN_NO3_DIR = $$[QMAKE_XSPEC]
-
-ios {
-    CONFIG( iphonesimulator, iphonesimulator | iphoneos ) {
-        JQNETWORK_BIN_NO3_DIR = macx-iphonesimulator-clang
-    }
-    else {
-        JQNETWORK_BIN_NO3_DIR = macx-iphoneos-clang
-    }
-}
+JQNETWORK_BIN_NO3_DIR ~= s/g\+\+/gcc
 
 contains( CONFIG, static ) {
     JQNETWORK_BIN_NO3_DIR = $$JQNETWORK_BIN_NO3_DIR-static
@@ -110,6 +104,7 @@ equals(JQNETWORK_COMPILE_MODE,SRC) {
 
 }
 else : equals(JQNETWORK_COMPILE_MODE,LIB) {
+
     LIBS *= $$JQNETWORK_LIB_FILEPATH
 }
 else {
@@ -133,3 +128,4 @@ contains( QT, qml ) {
 }
 
 DEFINES += JQNETWORK_COMPILE_MODE_STRING=\\\"$$JQNETWORK_COMPILE_MODE\\\"
+DEFINES += JQNETWORK_VERSIONSTRING=\\\"$$JQNETWORK_VERSIONSTRING\\\"
