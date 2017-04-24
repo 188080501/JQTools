@@ -180,9 +180,16 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
             if ( !metaData.isEmpty() )
             {
                 package->head_.metaDataTotalSize_ = metaData.size();
-                package->head_.metaDataCurrentSize_ = metaData.size();
 
-                package->metaData_ = metaData;
+                if ( !index )
+                {
+                    package->head_.metaDataCurrentSize_ = metaData.size();
+                    package->metaData_ = metaData;
+                }
+                else
+                {
+                    package->head_.metaDataCurrentSize_ = 0;
+                }
             }
 
             package->head_.payloadDataFlag_ = ( compressionData ) ? ( JQNETWORKPACKAGE_COMPRESSEDFLAG ) : ( JQNETWORKPACKAGE_UNCOMPRESSEDFLAG );
