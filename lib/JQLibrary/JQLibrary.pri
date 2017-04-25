@@ -131,8 +131,11 @@ exists( $$PWD/src/JQNet.cpp) {
     HEADERS *= $$PWD/include/JQNet.h
 }
 
-exists( $$PWD/JQOpenCV.pri ) {
-    include( $$PWD/JQOpenCV.pri )
+ios | android { }
+else {
+    exists( $$PWD/JQOpenCV.pri ) {
+        include( $$PWD/JQOpenCV.pri )
+    }
 }
 
 exists( $$PWD/src/JQPropertyAnimation.cpp) {
