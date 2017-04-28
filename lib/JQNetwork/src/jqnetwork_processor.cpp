@@ -51,11 +51,17 @@ QSet< QString > JQNetworkProcessor::availableSlots()
         }
 
         QSharedPointer< std::function< JQNetworkVoidSharedPointer() > > receiveArgumentPreparer;
-        QSharedPointer< std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendArg, const JQNetworkPackageSharedPointer &package) > > receiveArgumentMaker;
+        QSharedPointer< std::function< QGenericArgument(const JQNetworkVoidSharedPointer &receivedArg, const JQNetworkPackageSharedPointer &package) > > receiveArgumentMaker;
 
         QSharedPointer< std::function< JQNetworkVoidSharedPointer() > > sendArgumentPreparer;
         QSharedPointer< std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendArg) > > sendArgumentMaker;
-        QSharedPointer< std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package, const JQNetworkVoidSharedPointer &sendArg) > > sendArgumentAnswer;
+        QSharedPointer< std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package, const JQNetworkVoidSharedPointer &sendArg, const QVariantMap &sendAppend) > > sendArgumentAnswer;
+
+        QSharedPointer< std::function< JQNetworkVoidSharedPointer() > > receiveAppendArgumentPreparer;
+        QSharedPointer< std::function< QGenericArgument(const JQNetworkVoidSharedPointer &receivedAppendArg, const JQNetworkPackageSharedPointer &package) > > receiveAppendArgumentMaker;
+
+        QSharedPointer< std::function< JQNetworkVoidSharedPointer() > > sendAppendArgumentPreparer;
+        QSharedPointer< std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendAppendArg) > > sendAppendArgumentMaker;
 
         if ( method.parameterTypes().size() >= 1 )
         {
@@ -68,11 +74,11 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 {
                     return JQNetworkVoidSharedPointer( new QByteArray, &JQNetworkProcessor::deleteByteArray );
                 } ) );
-                receiveArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendArg, const JQNetworkPackageSharedPointer &package) >
-                                            ( [ ](const auto &sendArg, const auto &package)
+                receiveArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &receivedArg, const JQNetworkPackageSharedPointer &package) >
+                                            ( [ ](const auto &receivedArg, const auto &package)
                 {
-                    ( *( QByteArray * )sendArg.get() ) = package->payloadData();
-                    return Q_ARG( const QByteArray &, *( const QByteArray * )sendArg.get() );
+                    ( *( QByteArray * )receivedArg.get() ) = package->payloadData();
+                    return Q_ARG( const QByteArray &, *( const QByteArray * )receivedArg.get() );
                 } ) );
             }
             else if ( currentSum == "QVariantMap:received" )
@@ -82,11 +88,11 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 {
                     return JQNetworkVoidSharedPointer( new QVariantMap, &JQNetworkProcessor::deleteVariantMap );
                 } ) );
-                receiveArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendArg, const JQNetworkPackageSharedPointer &package) >
-                                            ( [ ](const auto &sendArg, const auto &package)
+                receiveArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &receivedArg, const JQNetworkPackageSharedPointer &package) >
+                                            ( [ ](const auto &receivedArg, const auto &package)
                 {
-                    ( *( QVariantMap * )sendArg.get() ) = QJsonDocument::fromJson( package->payloadData() ).object().toVariantMap();
-                    return Q_ARG( const QVariantMap &, *( const QVariantMap * )sendArg.get() );
+                    ( *( QVariantMap * )receivedArg.get() ) = QJsonDocument::fromJson( package->payloadData() ).object().toVariantMap();
+                    return Q_ARG( const QVariantMap &, *( const QVariantMap * )receivedArg.get() );
                 } ) );
             }
             else if ( currentSum == "QFileInfo:received" )
@@ -96,16 +102,17 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 {
                     return JQNetworkVoidSharedPointer( new QFileInfo, &JQNetworkProcessor::deleteFileInfo);
                 } ) );
-                receiveArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendArg, const JQNetworkPackageSharedPointer &package) >
-                                            ( [ ](const auto &sendArg, const auto &package)
+                receiveArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &receivedArg, const JQNetworkPackageSharedPointer &package) >
+                                            ( [ ](const auto &receivedArg, const auto &package)
                 {
-                    ( *( QFileInfo * )sendArg.get() ) = QFileInfo( package->localFilePath() );
-                    return Q_ARG( const QFileInfo &, *( const QFileInfo * )sendArg.get() );
+                    ( *( QFileInfo * )receivedArg.get() ) = QFileInfo( package->localFilePath() );
+                    return Q_ARG( const QFileInfo &, *( const QFileInfo * )receivedArg.get() );
                 } ) );
             }
             else
             {
                 qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
+                continue;
             }
         }
 
@@ -125,8 +132,18 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 {
                     return Q_ARG( QByteArray &, ( QByteArray & )*( QByteArray * )sendArg.get() );
                 } ) );
-                sendArgumentAnswer.reset( new std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package, const JQNetworkVoidSharedPointer &sendArg) >
-                                          ( [ ](const auto &connect, const auto &package, const auto &sendArg)
+                sendArgumentAnswer.reset( new std::function< void(
+                                              const JQNetworkConnectPointer &connect,
+                                              const JQNetworkPackageSharedPointer &package,
+                                              const JQNetworkVoidSharedPointer &sendArg,
+                                              const QVariantMap &sendAppend
+                                          ) >
+                                          ( [ ](
+                                            const auto &connect,
+                                            const auto &package,
+                                            const auto &sendArg,
+                                            const auto &sendAppend
+                                        )
                 {
                     if ( !connect )
                     {
@@ -136,7 +153,8 @@ QSet< QString > JQNetworkProcessor::availableSlots()
 
                     const auto &&replyReply = connect->replyPayloadData(
                                 package->randomFlag(),
-                                *( QByteArray * )sendArg.get()
+                                *( QByteArray * )sendArg.get(),
+                                sendAppend
                             );
                     if ( !replyReply )
                     {
@@ -156,8 +174,18 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 {
                     return Q_ARG( QVariantMap &, ( QVariantMap & )*( QVariantMap * )sendArg.get() );
                 } ) );
-                sendArgumentAnswer.reset( new std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package, const JQNetworkVoidSharedPointer &sendArg) >
-                                          ( [ ](const auto &connect, const auto &package, const auto &sendArg)
+                sendArgumentAnswer.reset( new std::function< void(
+                                              const JQNetworkConnectPointer &connect,
+                                              const JQNetworkPackageSharedPointer &package,
+                                              const JQNetworkVoidSharedPointer &sendArg,
+                                              const QVariantMap &sendAppend
+                                          ) >
+                                          ( [ ](
+                                            const auto &connect,
+                                            const auto &package,
+                                            const auto &sendArg,
+                                            const auto &sendAppend
+                                        )
                 {
                     if ( !connect )
                     {
@@ -167,7 +195,8 @@ QSet< QString > JQNetworkProcessor::availableSlots()
 
                     const auto &&replyReply = connect->replyPayloadData(
                                 package->randomFlag(),
-                                QJsonDocument( QJsonObject::fromVariantMap( *( QVariantMap * )sendArg.get() ) ).toJson( QJsonDocument::Compact )
+                                QJsonDocument( QJsonObject::fromVariantMap( *( QVariantMap * )sendArg.get() ) ).toJson( QJsonDocument::Compact ),
+                                sendAppend
                             );
                     if ( !replyReply )
                     {
@@ -187,8 +216,18 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 {
                     return Q_ARG( QFileInfo &, ( QFileInfo & )*( QFileInfo * )sendArg.get() );
                 } ) );
-                sendArgumentAnswer.reset( new std::function< void(const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package, const JQNetworkVoidSharedPointer &sendArg) >
-                                          ( [ ](const auto &connect, const auto &package, const auto &sendArg)
+                sendArgumentAnswer.reset( new std::function< void(
+                                              const JQNetworkConnectPointer &connect,
+                                              const JQNetworkPackageSharedPointer &package,
+                                              const JQNetworkVoidSharedPointer &sendArg,
+                                              const QVariantMap &sendAppend
+                                          ) >
+                                          ( [ ](
+                                            const auto &connect,
+                                            const auto &package,
+                                            const auto &sendArg,
+                                            const auto &sendAppend
+                                        )
                 {
                     if ( !connect )
                     {
@@ -206,7 +245,8 @@ QSet< QString > JQNetworkProcessor::availableSlots()
 
                     const auto &&replyReply = connect->replyFile(
                                 package->randomFlag(),
-                                sendFileInfo
+                                sendFileInfo,
+                                sendAppend
                             );
                     if ( !replyReply )
                     {
@@ -217,6 +257,56 @@ QSet< QString > JQNetworkProcessor::availableSlots()
             else
             {
                 qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
+                continue;
+            }
+        }
+
+        if ( method.parameterTypes().size() >= 3 )
+        {
+            const auto &&currentSum = QString( "%1:%2" ).arg( QString( method.parameterTypes()[ 2 ] ), QString( method.parameterNames()[ 2 ] ) );
+
+            if ( currentSum == "QVariantMap:receivedAppend" )
+            {
+                receiveAppendArgumentPreparer.reset( new std::function< JQNetworkVoidSharedPointer() >
+                                            ( [ ]()
+                {
+                    return JQNetworkVoidSharedPointer( new QVariantMap, &JQNetworkProcessor::deleteVariantMap );
+                } ) );
+                receiveAppendArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &receivedAppendArg, const JQNetworkPackageSharedPointer &package) >
+                                            ( [ ](const auto &receivedAppendArg, const auto &package)
+                {
+                    ( *( QVariantMap * )receivedAppendArg.get() ) = package->appendData();
+                    return Q_ARG( const QVariantMap &, *( const QVariantMap * )receivedAppendArg.get() );
+                } ) );
+            }
+            else
+            {
+                qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
+                continue;
+            }
+        }
+
+        if ( method.parameterTypes().size() >= 4 )
+        {
+            const auto &&currentSum = QString( "%1:%2" ).arg( QString( method.parameterTypes()[ 3 ] ), QString( method.parameterNames()[ 3 ] ) );
+
+            if ( currentSum == "QVariantMap&:sendAppend" )
+            {
+                sendAppendArgumentPreparer.reset( new std::function< JQNetworkVoidSharedPointer() >
+                                            ( [ ]()
+                {
+                    return JQNetworkVoidSharedPointer( new QVariantMap, &JQNetworkProcessor::deleteVariantMap );
+                } ) );
+                sendAppendArgumentMaker.reset( new std::function< QGenericArgument(const JQNetworkVoidSharedPointer &sendAppendArg) >
+                                         ( [ ](const auto &sendAppendArg)
+                {
+                    return Q_ARG( QVariantMap &, ( QVariantMap & )*( QVariantMap * )sendAppendArg.get() );
+                } ) );
+            }
+            else
+            {
+                qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
+                continue;
             }
         }
 
@@ -228,7 +318,11 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                     receiveArgumentMaker,
                     sendArgumentPreparer,
                     sendArgumentMaker,
-                    sendArgumentAnswer
+                    sendArgumentAnswer,
+                    receiveAppendArgumentPreparer,
+                    receiveAppendArgumentMaker,
+                    sendAppendArgumentPreparer,
+                    sendAppendArgumentMaker
                 ]
                 (const auto &connect, const auto &package)
         {
@@ -244,12 +338,26 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                 sendArg = ( *sendArgumentPreparer )();
             }
 
+            JQNetworkVoidSharedPointer receiveAppendArg;
+            if ( receiveAppendArgumentPreparer )
+            {
+                receiveAppendArg = ( *receiveAppendArgumentPreparer )();
+            }
+
+            JQNetworkVoidSharedPointer sendAppendArg;
+            if ( sendAppendArgumentPreparer )
+            {
+                sendAppendArg = ( *sendAppendArgumentPreparer )();
+            }
+
             const auto &&invokeMethodReply = QMetaObject::invokeMethod(
                         this,
                         methodName.data(),
                         Qt::DirectConnection,
                         ( ( receiveArgumentMaker ) ? ( ( *receiveArgumentMaker )( receiveArg, package ) ) : ( QGenericArgument() ) ),
-                        ( ( sendArgumentMaker ) ? ( ( *sendArgumentMaker )( sendArg ) ) : ( QGenericArgument() ) )
+                        ( ( sendArgumentMaker ) ? ( ( *sendArgumentMaker )( sendArg ) ) : ( QGenericArgument() ) ),
+                        ( ( receiveAppendArgumentMaker ) ? ( ( *receiveAppendArgumentMaker )( receiveAppendArg, package ) ) : ( QGenericArgument() ) ),
+                        ( ( sendAppendArgumentMaker ) ? ( ( *sendAppendArgumentMaker )( sendAppendArg ) ) : ( QGenericArgument() ) )
                     );
             if ( !invokeMethodReply )
             {
@@ -258,7 +366,14 @@ QSet< QString > JQNetworkProcessor::availableSlots()
 
             if ( sendArgumentAnswer )
             {
-                ( *sendArgumentAnswer )( connect, package, sendArg );
+                if ( sendAppendArg )
+                {
+                    ( *sendArgumentAnswer )( connect, package, sendArg, *(const QVariantMap *)sendAppendArg.get() );
+                }
+                else
+                {
+                    ( *sendArgumentAnswer )( connect, package, sendArg, { } );
+                }
             }
         };
 
