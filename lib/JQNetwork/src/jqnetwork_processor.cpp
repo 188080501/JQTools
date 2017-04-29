@@ -109,7 +109,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                     return Q_ARG( const QFileInfo &, *( const QFileInfo * )receivedArg.get() );
                 } ) );
             }
-            else
+            else if ( !method.parameterNames()[ 0 ].isEmpty() )
             {
                 qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
                 continue;
@@ -254,7 +254,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                     }
                 } ) );
             }
-            else
+            else if ( !method.parameterNames()[ 1 ].isEmpty() )
             {
                 qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
                 continue;
@@ -279,7 +279,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                     return Q_ARG( const QVariantMap &, *( const QVariantMap * )receivedAppendArg.get() );
                 } ) );
             }
-            else
+            else if ( !method.parameterNames()[ 2 ].isEmpty() )
             {
                 qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
                 continue;
@@ -303,7 +303,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                     return Q_ARG( QVariantMap &, ( QVariantMap & )*( QVariantMap * )sendAppendArg.get() );
                 } ) );
             }
-            else
+            else if ( !method.parameterNames()[ 3 ].isEmpty() )
             {
                 qDebug() << "JQNetworkProcessor::availableSlots: Unknow argument:" << currentSum;
                 continue;

@@ -43,6 +43,8 @@ JQNetworkClient::JQNetworkClient(
 
 JQNetworkClient::~JQNetworkClient()
 {
+    if ( !socketThreadPool_ ) { return; }
+
     socketThreadPool_->waitRunEach(
                 [ & ]()
                 {
@@ -132,6 +134,12 @@ bool JQNetworkClient::begin()
 
 void JQNetworkClient::createConnect(const QString &hostName, const quint16 &port)
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::createConnect: this client need to begin," << this;
+        return;
+    }
+
     const auto &&rotaryIndex = socketThreadPool_->nextRotaryIndex();
 
     auto runOnConnectThreadCallback =
@@ -167,12 +175,23 @@ bool JQNetworkClient::waitForCreateConnect(
         const int &maximumConnectToHostWaitTime
     )
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::waitForCreateConnect: this client need to begin," << this;
+        return false;
+    }
+
+    if ( this->containsConnect( hostName, port ) )
+    {
+        return true;
+    }
+
     QSharedPointer< QSemaphore > semaphore( new QSemaphore );
     const auto &&hostKey = QString( "%1:%2" ).arg( hostName, QString::number( port ) );
 
     mutex_.lock();
 
-    waitConnectSucceedSemaphore_[ hostKey ] = semaphore;
+    waitConnectSucceedSemaphore_[ hostKey ] = semaphore.toWeakRef();
     this->createConnect( hostName, port );
 
     mutex_.unlock();
@@ -201,6 +220,17 @@ qint32 JQNetworkClient::sendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::sendPayloadData: this client need to begin," << this;
+
+        if ( failCallback )
+        {
+            failCallback( nullptr );
+        }
+        return 0;
+    }
+
     auto connect = this->getConnect( hostName, port );
 
     if ( !connect )
@@ -231,6 +261,17 @@ qint32 JQNetworkClient::sendVariantMapData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::sendVariantMapData: this client need to begin," << this;
+
+        if ( failCallback )
+        {
+            failCallback( nullptr );
+        }
+        return 0;
+    }
+
     return this->sendPayloadData(
                 hostName,
                 port,
@@ -252,6 +293,17 @@ qint32 JQNetworkClient::sendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::sendFileData: this client need to begin," << this;
+
+        if ( failCallback )
+        {
+            failCallback( nullptr );
+        }
+        return 0;
+    }
+
     auto connect = this->getConnect( hostName, port );
 
     if ( !connect )
@@ -282,6 +334,17 @@ qint32 JQNetworkClient::waitForSendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::waitForSendPayloadData: this client need to begin," << this;
+
+        if ( failCallback )
+        {
+            failCallback( nullptr );
+        }
+        return 0;
+    }
+
     QSemaphore semaphore;
 
     const auto &&sendReply = this->sendPayloadData(
@@ -352,6 +415,17 @@ qint32 JQNetworkClient::waitForSendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::waitForSendFileData: this client need to begin," << this;
+
+        if ( failCallback )
+        {
+            failCallback( nullptr );
+        }
+        return 0;
+    }
+
     QSemaphore semaphore;
 
     const auto &&sendReply = this->sendFileData(
@@ -393,6 +467,12 @@ qint32 JQNetworkClient::waitForSendFileData(
 
 JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, const quint16 &port)
 {
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::getConnect: this client need to begin," << this;
+        return { };
+    }
+
     for ( const auto &connectPool: this->connectPools_ )
     {
         auto connect = connectPool->getConnectByHostAndPort( hostName, port );
@@ -416,6 +496,26 @@ JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, con
     }
 
     return { };
+}
+
+bool JQNetworkClient::containsConnect(const QString &hostName, const quint16 &port)
+{
+    if ( !socketThreadPool_ )
+    {
+        qDebug() << "JQNetworkClient::containsConnect: this client need to begin," << this;
+        return { };
+    }
+
+    for ( const auto &connectPool: this->connectPools_ )
+    {
+        auto connect = connectPool->getConnectByHostAndPort( hostName, port );
+
+        if ( !connect ) { continue; }
+
+        return true;
+    }
+
+    return false;
 }
 
 void JQNetworkClient::onConnectToHostError(const JQNetworkConnectPointer &connect, const JQNetworkConnectPoolPointer &connectPool)
@@ -474,7 +574,7 @@ void JQNetworkClient::onConnectToHostSucceed(const JQNetworkConnectPointer &conn
 
     if ( reply.first.isEmpty() || !reply.second )
     {
-        qDebug() << "JQNetworkClient::onConnectToHostSucceed: error";
+        qDebug() << "JQNetworkClient::onConnectToHostSucceed: connect error";
         return;
     }
 
@@ -490,10 +590,19 @@ void JQNetworkClient::onConnectToHostSucceed(const JQNetworkConnectPointer &conn
 
                     this->mutex_.lock();
 
-                    auto it = this->waitConnectSucceedSemaphore_.find( hostKey );
-                    if ( it != this->waitConnectSucceedSemaphore_.end() )
                     {
-                        ( *it )->release( 1 );
+                        auto it = this->waitConnectSucceedSemaphore_.find( hostKey );
+                        if ( it != this->waitConnectSucceedSemaphore_.end() )
+                        {
+                            if ( it->data() )
+                            {
+                                it->data()->release( 1 );
+                            }
+                            else
+                            {
+                                qDebug() << "JQNetworkClient::onConnectToHostSucceed: semaphore error";
+                            }
+                        }
                     }
 
                     this->mutex_.unlock();

@@ -190,7 +190,7 @@ JQNetworkConnectPointer JQNetworkConnectPool::getConnectByHostAndPort(const QStr
     mutex_.lock();
 
     {
-        auto it = bimapForHostAndPort1.find( QString( "%1:%2" ).arg( hostName ).arg( port ) );
+        auto it = bimapForHostAndPort1.find( QString( "%1:%2" ).arg( hostName, QString::number( port ) ) );
         if ( it != bimapForHostAndPort1.end() )
         {
             reply = it.value();

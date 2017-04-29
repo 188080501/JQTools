@@ -33,7 +33,7 @@
     send[ "message" ] = errorMessage;                                                   \
     return false;
 
-#define JQNP_CHECKRECEIVEDATACONTAINS( ... )                                            \
+#define JQNP_CHECKRECEIVEDDATACONTAINS( ... )                                           \
     if (                                                                                \
         !JQNetworkProcessor::checkMapContains(                                          \
             { __VA_ARGS__ },                                                            \
@@ -43,7 +43,7 @@
     )                                                                                   \
     { return false; }
 
-#define JQNP_CHECKRECEIVEDATACONTAINSANDNOT0( ... )                                     \
+#define JQNP_CHECKRECEIVEDDATACONTAINSANDNOT0( ... )                                    \
     if (                                                                                \
         !JQNetworkProcessor::checkMapContainsAndNot0(                                   \
             { __VA_ARGS__ },                                                            \
@@ -53,7 +53,7 @@
     )                                                                                   \
     { return false; }
 
-#define JQNP_CHECKRECEIVEDATACONTAINSANDNOTEMPTY( ... )                                 \
+#define JQNP_CHECKRECEIVEDDATACONTAINSANDNOTEMPTY( ... )                                \
     if (                                                                                \
         !JQNetworkProcessor::checkMapContainsAndNotEmpty(                               \
             { __VA_ARGS__ },                                                            \
@@ -63,12 +63,53 @@
     )                                                                                   \
     { return false; }
 
-#define JQNP_CHECKDATACONTAINSEXPECTEDCONTENT( key, ... )                               \
+#define JQNP_CHECKRECEIVEDDATACONTAINSEXPECTEDCONTENT( key, ... )                       \
     if (                                                                                \
         !JQNetworkProcessor::checkDataContasinsExpectedContent(                         \
             key,                                                                        \
             __VA_ARGS__,                                                                \
             received,                                                                   \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKRECEIVEDAPPENDDATACONTAINS( ... )                                     \
+    if (                                                                                \
+        !JQNetworkProcessor::checkMapContains(                                          \
+            { __VA_ARGS__ },                                                            \
+            receivedAppend,                                                             \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKRECEIVEDAPPENDDATACONTAINSANDNOT0( ... )                              \
+    if (                                                                                \
+        !JQNetworkProcessor::checkMapContainsAndNot0(                                   \
+            { __VA_ARGS__ },                                                            \
+            receivedAppend,                                                             \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKRECEIVEDAPPENDDATACONTAINSANDNOTEMPTY( ... )                          \
+    if (                                                                                \
+        !JQNetworkProcessor::checkMapContainsAndNotEmpty(                               \
+            { __VA_ARGS__ },                                                            \
+            receivedAppend,                                                             \
+            send                                                                        \
+        )                                                                               \
+    )                                                                                   \
+    { return false; }
+
+#define JQNP_CHECKRECEIVEDAPPENDDATACONTAINSEXPECTEDCONTENT( key, ... )                 \
+    if (                                                                                \
+        !JQNetworkProcessor::checkDataContasinsExpectedContent(                         \
+            key,                                                                        \
+            __VA_ARGS__,                                                                \
+            receivedAppend,                                                             \
             send                                                                        \
         )                                                                               \
     )                                                                                   \
