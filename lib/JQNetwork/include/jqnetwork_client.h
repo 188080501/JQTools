@@ -19,7 +19,7 @@
 struct JQNetworkClientSettings
 {
     QString dutyMark;
-    int maximumAutoConnectToHostWaitTime = 15 * 1000;
+    int maximumAutoConnectToHostWaitTime = 10 * 1000;
 
     std::function< void( const JQNetworkConnectPointer &, const QString &hostName, const quint16 &port ) > connectToHostErrorCallback = nullptr;
     std::function< void( const JQNetworkConnectPointer &, const QString &hostName, const quint16 &port ) > connectToHostTimeoutCallback = nullptr;
@@ -234,6 +234,8 @@ public:
 
     JQNetworkConnectPointer getConnect(const QString &hostName, const quint16 &port);
 
+    bool containsConnect(const QString &hostName, const quint16 &port);
+
 private:
     void onConnectToHostError(const JQNetworkConnectPointer &connect, const JQNetworkConnectPoolPointer &connectPool);
 
@@ -300,7 +302,7 @@ private:
     // Other
     QString nodeMarkSummary_;
     QMutex mutex_;
-    QMap< QString, QSharedPointer< QSemaphore > > waitConnectSucceedSemaphore_; // "127.0.0.1:34543" -> SemaphoreForConnect
+    QMap< QString, QWeakPointer< QSemaphore > > waitConnectSucceedSemaphore_; // "127.0.0.1:34543" -> SemaphoreForConnect
 };
 
 // inc import
