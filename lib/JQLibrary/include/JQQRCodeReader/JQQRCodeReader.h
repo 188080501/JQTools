@@ -27,6 +27,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+class QSemaphore;
+
 namespace zxing { class MultiFormatReader; }
 
 class JQQRCodeReader: public QObject
@@ -35,12 +37,34 @@ class JQQRCodeReader: public QObject
     Q_DISABLE_COPY( JQQRCodeReader )
 
 public:
+    enum DecodeType
+    {
+        DecodeAztecType = 1 << 1,
+        DecodeCodaBarType = 1 << 2,
+        DecodeCode39Type = 1 << 3,
+        DecodeCode93Type = 1 << 4,
+        DecodeCode128Type = 1 << 5,
+        DecodeDataMatrixType = 1 << 6,
+        DecodeEan8Type = 1 << 7,
+        DecodeEan13Type = 1 << 8,
+        DecodeItfType = 1 << 9,
+        DecodeMaxiCodeType = 1 << 10,
+        DecodePdf417Type = 1 << 11,
+        DecodeQrCodeType = 1 << 12,
+        DecodeRss14Type = 1 << 13,
+        DecodeRssExpandedType = 1 << 14,
+        DecodeUpcAType = 1 << 15,
+        DecodeUpcEType = 1 << 16,
+        DecodeUpcEanExtensionType = 1 << 17
+    };
+
+public:
     JQQRCodeReader();
 
-    ~JQQRCodeReader() = default;
+    ~JQQRCodeReader();
 
 public slots:
-    QString decodeImage(const QImage &image);
+    QString decodeImage(const QImage &image, const int &decodeType = ( int )DecodeQrCodeType);
 
 signals:
     void decodingStarted();
@@ -51,6 +75,7 @@ signals:
 
 private:
     QSharedPointer< zxing::MultiFormatReader > decoder_;
+    QSharedPointer< QSemaphore > semaphore_;
 };
 
 #endif//__JQQRCodeReader_h__

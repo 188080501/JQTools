@@ -71,7 +71,7 @@ void JQQRCodeReaderForQmlManage::analysisItem(QQuickItem *item)
                         );
             }
 
-            this->decodeImage( buf );
+            this->decodeImage( buf, this->decodeQrCodeType_ );
 
             quickItemGrabResult_.reset();
         } );

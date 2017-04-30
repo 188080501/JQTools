@@ -25,6 +25,8 @@
 // Qt lib import
 #include <QDebug>
 #include <QImage>
+#include <QMetaObject>
+#include <QSemaphore>
 
 // zxing lib import
 #include "zxing/common/GlobalHistogramBinarizer.h"
@@ -129,18 +131,28 @@ private:
 
 // JQQRCodeReader
 JQQRCodeReader::JQQRCodeReader():
-    decoder_( new zxing::MultiFormatReader )
+    decoder_( new zxing::MultiFormatReader ),
+    semaphore_( new QSemaphore( 1 ) )
 { }
 
-QString JQQRCodeReader::decodeImage(const QImage &image)
+JQQRCodeReader::~JQQRCodeReader()
 {
+    semaphore_->acquire( 1 );
+}
+
+QString JQQRCodeReader::decodeImage(const QImage &image, const int &decodeType)
+{
+    semaphore_->acquire( 1 );
+
     zxing::Ref< zxing::Result > res;
-    emit decodingStarted();
+    QMetaObject::invokeMethod( this, "decodingStarted", Qt::QueuedConnection );
 
     if( image.isNull() )
     {
         qDebug() << "JQQRCodeReader::decodeImage: error: image is null";
         emit decodingFinished( false );
+
+        semaphore_->release( 1 );
         return { };
     }
 
@@ -156,18 +168,21 @@ QString JQQRCodeReader::decodeImage(const QImage &image)
 
         zxing::Ref< zxing::BinaryBitmap > ref( bb );
 
-        res = decoder_->decode( ref, zxing::DecodeHints::QR_CODE_HINT );
+        res = decoder_->decode( ref, ( zxing::DecodeHints )decodeType );
 
         QString string = QString( res->getText()->getText().c_str() );
 
-        emit tagFound( string );
-        emit decodingFinished( true );
+        QMetaObject::invokeMethod( this, "tagFound", Qt::QueuedConnection, Q_ARG( QString, string ) );
+        QMetaObject::invokeMethod( this, "decodingFinished", Qt::QueuedConnection, Q_ARG( bool, true ) );
 
+        semaphore_->release( 1 );
         return string;
     }
     catch(zxing::Exception &)
     {
-       emit decodingFinished( false );
-       return { };
+        QMetaObject::invokeMethod( this, "decodingFinished", Qt::QueuedConnection, Q_ARG( bool, false ) );
+
+        semaphore_->release( 1 );
+        return { };
     }
 }
