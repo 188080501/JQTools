@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
+#include <QNetworkProxy>
 
 // JQNetwork lib import
 #include <JQNetworkPackage>
@@ -72,6 +73,7 @@ JQNetworkConnect::JQNetworkConnect(const JQNetworkConnectSettingsSharedPointer &
         flag = false;
 
         QTcpSocket socket;
+        socket.setProxy( QNetworkProxy::NoProxy );
         socket.connectToHost( "baidu.com", 12345 );
         socket.waitForConnected( 10 );
     }
@@ -96,6 +98,7 @@ void JQNetworkConnect::createConnect(
 
     newConnect->startTimerForConnectToHostTimeOut();
 
+    newConnect->tcpSocket_->setProxy( QNetworkProxy::NoProxy );
     newConnect->tcpSocket_->connectToHost( hostName, port );
 }
 

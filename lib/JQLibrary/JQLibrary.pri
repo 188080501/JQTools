@@ -104,6 +104,10 @@ exists( $$PWD/src/JQIODevice.cpp) {
     HEADERS *= $$PWD/include/JQIODevice.h
 }
 
+exists( $$PWD/JQImageTextPainter.pri ) {
+    include( $$PWD/JQImageTextPainter.pri )
+}
+
 ios {
     exists( $$PWD/src/JQiOS.cpp) {
         LIBS *= -framework Foundation -framework UIKit
