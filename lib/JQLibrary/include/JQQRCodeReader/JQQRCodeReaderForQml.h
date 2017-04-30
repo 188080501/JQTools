@@ -39,6 +39,7 @@ class JQQRCodeReaderForQmlManage: public JQQRCodeReader
 {
     Q_OBJECT
     Q_DISABLE_COPY( JQQRCodeReaderForQmlManage )
+    Q_PROPERTY(int decodeQrCodeType READ decodeQrCodeType WRITE setDecodeQrCodeType)
 
 public:
     JQQRCodeReaderForQmlManage();
@@ -51,6 +52,15 @@ public slots:
 private:
     QSharedPointer< QThreadPool > threadPool_;
     QSharedPointer< QQuickItemGrabResult > quickItemGrabResult_;
+
+    // Property code start
+    private: int decodeQrCodeType_ = JQQRCodeReader::DecodeQrCodeType;
+    public: Q_SLOT inline int decodeQrCodeType() const
+    { return decodeQrCodeType_; }
+    public: Q_SLOT inline void setDecodeQrCodeType(const int &newValue)
+    { if ( newValue == decodeQrCodeType_ ) { return; } decodeQrCodeType_ = newValue; }
+    private:
+    // Property code end
 };
 
 #endif//__JQQRCodeReaderForQml_h__
