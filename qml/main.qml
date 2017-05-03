@@ -205,6 +205,7 @@ ApplicationWindow {
         y: 64
         width: 180
         height: parent.height - 64
+        cacheBuffer: 9999
 
         model: ListModel {
             id: listModelForBookmark
