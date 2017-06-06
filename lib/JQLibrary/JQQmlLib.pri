@@ -23,13 +23,13 @@ HEADERS *= \
 
 contains( CONFIG, static ) {
 
-    equals(QT_VERSION, 5.8.0) {
+    equals(QT_VERSION, 5.9.0) {
 
         win32-g++ {
 
             DEFINES *= JQQMLLIB_LIB
 
-            LIBS *= $$PWD/bin/JQQmlLib/Qt5.8.0/MinGW/libJQQmlLib.a
+            LIBS *= $$PWD/bin/JQQmlLib/Qt5.9.0/MinGW/libJQQmlLib.a
         }
     }
 }
