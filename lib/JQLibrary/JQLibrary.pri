@@ -84,12 +84,6 @@ exists( $$PWD/src/JQFoundation.cpp) {
     HEADERS *= $$PWD/include/JQFoundation.h
 }
 
-mac : exists( /usr/local/opt/gflags/lib/libgflags.2.2.dylib ) {
-    exists( $$PWD/JQGuetzli.pri ) {
-        include( $$PWD/JQGuetzli.pri )
-    }
-}
-
 contains(QT, network) {
     contains(QT, concurrent) {
         exists( $$PWD/src/JQHttpServer.cpp) {
@@ -104,20 +98,12 @@ exists( $$PWD/src/JQIODevice.cpp) {
     HEADERS *= $$PWD/include/JQIODevice.h
 }
 
-exists( $$PWD/JQImageTextPainter.pri ) {
-    include( $$PWD/JQImageTextPainter.pri )
-}
-
 ios {
     exists( $$PWD/src/JQiOS.cpp) {
         LIBS *= -framework Foundation -framework UIKit
         OBJECTIVE_SOURCES *= $$PWD/src/JQiOS.mm
         HEADERS *= $$PWD/include/JQiOS.h
     }
-}
-
-exists( $$PWD/JQgSoap.pri ) {
-    include( $$PWD/JQgSoap.pri )
 }
 
 exists( $$PWD/src/JQJsonStream.cpp) {
@@ -135,13 +121,6 @@ exists( $$PWD/src/JQNet.cpp) {
     HEADERS *= $$PWD/include/JQNet.h
 }
 
-ios | android { }
-else {
-    exists( $$PWD/JQOpenCV.pri ) {
-        include( $$PWD/JQOpenCV.pri )
-    }
-}
-
 exists( $$PWD/src/JQPropertyAnimation.cpp) {
     SOURCES *= $$PWD/src/JQPropertyAnimation.cpp
     HEADERS *= $$PWD/include/JQPropertyAnimation.h
@@ -154,26 +133,6 @@ contains(QT, qml) {
     }
 }
 
-contains(QT, qml) {
-    exists( $$PWD/JQQmlLib.pri ) {
-        include( $$PWD/JQQmlLib.pri )
-    }
-}
-
-contains(QT, qml) {
-    exists( $$PWD/JQQmlImage.pri ) {
-        include( $$PWD/JQQmlImage.pri )
-    }
-}
-
-exists( $$PWD/JQQRCodeReader.pri ) {
-    include( $$PWD/JQQRCodeReader.pri )
-}
-
-exists( $$PWD/JQQRCodeWriter.pri ) {
-    include( $$PWD/JQQRCodeWriter.pri )
-}
-
 contains(QT, serialport) {
     exists( $$PWD/src/JQSerialPort.cpp) {
         SOURCES *= $$PWD/src/JQSerialPort.cpp
@@ -184,12 +143,6 @@ contains(QT, serialport) {
 exists( $$PWD/src/JQSettings.cpp) {
     SOURCES *= $$PWD/src/JQSettings.cpp
     HEADERS *= $$PWD/include/JQSettings.h
-}
-
-contains(QT, network) {
-    exists( $$PWD/JQSjf.pri ) {
-        include( $$PWD/JQSjf.pri )
-    }
 }
 
 exists( $$PWD/src/JQSms.cpp) {
@@ -238,14 +191,4 @@ contains(QT, webenginewidgets) {
         SOURCES *= $$PWD/src/JQWebEngine.cpp
         HEADERS *= $$PWD/include/JQWebEngine.h
     }
-}
-
-win32 {
-    exists( $$PWD/JQWinPcap.pri ) {
-        include( $$PWD/JQWinPcap.pri )
-    }
-}
-
-exists( $$PWD/JQZopfli.pri ) {
-    include( $$PWD/JQZopfli.pri )
 }
