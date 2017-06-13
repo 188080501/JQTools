@@ -21,13 +21,14 @@
 // Qt lib import
 #include <QObject>
 #include <QSharedPointer>
+#include <QQmlContext>
 
 // JQLibrary import
 #include "JQQRCodeReader.h"
 
 #ifdef QT_QML_LIB
 #   define JQQRCODEREADERFORQML_REGISTERTYPE( engine ) \
-    qmlRegisterType< JQQRCodeReaderForQmlManage >( "JQQRCodeReader", 1, 0, "JQQRCodeReaderForQmlManage" ); \
+    engine.rootContext()->setContextProperty( "JQQRCodeReaderForQmlManage", new JQQRCodeReaderForQmlManage ); \
     engine.addImportPath( ":/JQQRCodeReader/" );
 #endif
 
