@@ -1,5 +1,5 @@
-﻿#ifndef __%MACROPROTECTSPREFIX%_%CLASSNAME%_H__
-#define __%MACROPROTECTSPREFIX%_%CLASSNAME%_H__
+﻿#ifndef %MACROPROTECTSPREFIX%_%CLASSNAME%_H_
+#define %MACROPROTECTSPREFIX%_%CLASSNAME%_H_
 
 // Qt lib import
 #include <QObject>
@@ -24,4 +24,4 @@ private:
 // .inc include
 #include "%classname%.inc"
 
-#endif//__%MACROPROTECTSPREFIX%_%CLASSNAME%_H__
+#endif//%MACROPROTECTSPREFIX%_%CLASSNAME%_H_
