@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H__
-#define __GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H__
+#ifndef GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H_
+#define GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H_
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
@@ -44,7 +44,7 @@ class Manage: public AbstractTool
 public:
     Manage();
 
-    ~Manage() = default;
+    ~Manage();
 
 public slots:
     void setShowSelf(const bool &showSelf);
@@ -93,4 +93,4 @@ private:
 
 }
 
-#endif//__GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H__
+#endif//GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H_

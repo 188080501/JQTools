@@ -102,6 +102,17 @@ Manage::Manage():
     qDebug() << "JQNetworkLan begin:" << jqNetworkLan_->begin();
 }
 
+Manage::~Manage()
+{
+    jqNetworkLan_.clear();
+    jqNetworkClient_.clear();
+    jqNetworkServer_.clear();
+
+    mutex_.lock();
+    lanNodes_.clear();
+    mutex_.unlock();
+}
+
 void Manage::setShowSelf(const bool &showSelf)
 {
     showSelf_ = showSelf;
@@ -235,9 +246,12 @@ QString Manage::transport(const QString &hostAddress, const QVariantList &filePa
         }
         else
         {
+//            qDebug() << "continueSend: finished:" << hostAddress;
             emit this->sendFinish( hostAddress );
             return;
         }
+
+//        qDebug() << "continueSend:" << hostAddress << currentPair.first;
 
         this->jqNetworkClient_->sendFileData(
                     hostAddress,
@@ -246,7 +260,10 @@ QString Manage::transport(const QString &hostAddress, const QVariantList &filePa
                     currentPair.second,
                     { { "path", currentPair.first } },
                     *continueSend,
-                    nullptr
+                    [ ](const JQNetworkConnectPointer &)
+                    {
+                        qDebug() << "continueSend error";
+                    }
         );
     };
 
@@ -331,8 +348,6 @@ void Manage::lanNodeOffline(const JQNetworkLanNode &node)
     {
         if ( lanNodes_[ index ].toMap()[ "nodeMarkSummary" ] == node.nodeMarkSummary )
         {
-//            this->jqNetworkClient_.]
-
             lanNodes_.removeAt( index );
             break;
         }
@@ -349,7 +364,8 @@ void Manage::emitSendingSignal(const QString &hostName, const SendCounter &count
 {
 //    qDebug() << "emitSendingSignal:" << hostName << counter.alreadySendSizeTotal << counter.alreadySendFileCount << counter.sizeTotal << counter.fileCount;
 
-    qreal sendPercentage = ( ( (double)counter.alreadySendSizeTotal / (double)counter.sizeTotal * 0.7 ) + ( (double)counter.alreadySendFileCount / (double)counter.fileCount * 0.3 ) );
+    qreal sendPercentage = ( static_cast< double >( counter.alreadySendSizeTotal ) / static_cast< double >( counter.sizeTotal ) ) * 0.7 +
+                           ( static_cast< double >( counter.alreadySendFileCount ) / static_cast< double >( counter.fileCount ) ) * 0.3;
 
     emit this->sending( hostName, sendPercentage );
 }
