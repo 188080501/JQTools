@@ -79,24 +79,40 @@ Item {
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForSource
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            selectionColor: "#2799f3"
+            contentWidth: textFieldForSource.paintedWidth
+            contentHeight: textFieldForSource.paintedHeight
+            clip: true
 
-            onTextChanged: {
-                if ( hashCalculate.changingFlag ) { return; }
+            TextEdit {
+                id: textFieldForSource
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
 
-                hashCalculate.changingFlag = true;
+                onTextChanged: {
+                    if ( hashCalculate.changingFlag ) { return; }
 
-                hashCalculateManage.setSource( textFieldForSource.text );
+                    hashCalculate.changingFlag = true;
 
-                hashCalculate.changingFlag = false;
+                    hashCalculateManage.setSource( textFieldForSource.text );
+
+                    hashCalculate.changingFlag = false;
+                }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForSource.focus
+
+            onClicked: {
+                textFieldForSource.focus = true;
             }
         }
     }
@@ -133,16 +149,31 @@ Item {
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForTarget
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            readOnly: true
-            selectionColor: "#2799f3"
+            contentWidth: textFieldForTarget.paintedWidth
+            contentHeight: textFieldForTarget.paintedHeight
+            clip: true
+
+            TextEdit {
+                id: textFieldForTarget
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForTarget.focus
+
+            onClicked: {
+                textFieldForTarget.focus = true;
+            }
         }
     }
 

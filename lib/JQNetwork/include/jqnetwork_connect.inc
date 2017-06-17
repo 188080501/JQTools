@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC
-#define JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC_
+#define JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC_
 
 // JQNetwork lib import
 #include "jqnetwork_connect.h"
@@ -128,4 +128,4 @@ inline bool JQNetworkConnect::needCompressionPayloadData(const int &dataSize)
     return compressionPayloadData;
 }
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC
+#endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECT_INC_

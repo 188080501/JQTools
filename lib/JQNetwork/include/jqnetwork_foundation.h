@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H
-#define JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H_
+#define JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H_
 
 // C++ lib import
 #include <functional>
@@ -208,4 +208,4 @@ void printVersionInformation(const char *jqNetworkCompileModeString = JQNETWORK_
 // inc import
 #include "jqnetwork_foundation.inc"
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H
+#endif//JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_H_

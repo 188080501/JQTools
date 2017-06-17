@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_LAN_H
-#define JQNETWORK_INCLUDE_JQNETWORK_LAN_H
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_LAN_H_
+#define JQNETWORK_INCLUDE_JQNETWORK_LAN_H_
 
 // JQNetwork lib import
 #include <JQNetworkFoundation>
@@ -37,6 +37,7 @@ struct JQNetworkLanSettings
 struct JQNetworkLanNode
 {
     QString nodeMarkSummary;
+    int dataPackageIndex = 0;
     qint64 lastActiveTime = 0;
     QList< QHostAddress > ipList;
     QVariant appendData;
@@ -129,9 +130,10 @@ private:
     QVariant appendData_;
     QSharedPointer< QTimer > timerForCheckLoop_;
     int checkLoopCounting_ = -1;
+    int nextDataPackageIndex_ = 0;
 };
 
 // inc import
 #include "jqnetwork_lan.inc"
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_LAN_H
+#endif//JQNETWORK_INCLUDE_JQNETWORK_LAN_H_

@@ -89,24 +89,40 @@ Item {
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForSource
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            selectionColor: "#2799f3"
+            contentWidth: textFieldForSource.paintedWidth
+            contentHeight: textFieldForSource.paintedHeight
+            clip: true
 
-            onTextChanged: {
-                if ( utf16Transform.changingFlag ) { return; }
+            TextEdit {
+                id: textFieldForSource
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
 
-                utf16Transform.changingFlag = true;
+                onTextChanged: {
+                    if ( utf16Transform.changingFlag ) { return; }
 
-                textFieldForTarget.text = utf16TransformManage.toUtf16( textFieldForSource.text );
+                    utf16Transform.changingFlag = true;
 
-                utf16Transform.changingFlag = false;
+                    textFieldForTarget.text = utf16TransformManage.toUtf16( textFieldForSource.text );
+
+                    utf16Transform.changingFlag = false;
+                }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForSource.focus
+
+            onClicked: {
+                textFieldForSource.focus = true;
             }
         }
     }
@@ -143,24 +159,40 @@ Item {
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForTarget
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            selectionColor: "#2799f3"
+            contentWidth: textFieldForTarget.paintedWidth
+            contentHeight: textFieldForTarget.paintedHeight
+            clip: true
 
-            onTextChanged: {
-                if ( utf16Transform.changingFlag ) { return; }
+            TextEdit {
+                id: textFieldForTarget
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
 
-                utf16Transform.changingFlag = true;
+                onTextChanged: {
+                    if ( utf16Transform.changingFlag ) { return; }
 
-                textFieldForSource.text = utf16TransformManage.fromUtf16( textFieldForTarget.text );
+                    utf16Transform.changingFlag = true;
 
-                utf16Transform.changingFlag = false;
+                    textFieldForSource.text = utf16TransformManage.fromUtf16( textFieldForTarget.text );
+
+                    utf16Transform.changingFlag = false;
+                }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForTarget.focus
+
+            onClicked: {
+                textFieldForTarget.focus = true;
             }
         }
     }

@@ -66,7 +66,7 @@ void JQNetworkThreadPoolHelper::onRun()
     alreadyCall_ = false;
 
     lastRunTime_ = currentTime;
-    lastRunCallbackCount_ = callbacks.size();
+    lastRunCallbackCount_ = static_cast< int >( callbacks.size() );
 
     mutex_.unlock();
 
@@ -165,7 +165,7 @@ QString JQNetworkNodeMark::localHostName_;
 
 JQNetworkNodeMark::JQNetworkNodeMark(const QString &dutyMark):
     nodeMarkCreatedTime_( QDateTime::currentMSecsSinceEpoch() ),
-    nodeMarkClassAddress_( QString::number( (qint64)this, 16 ) ),
+    nodeMarkClassAddress_( QString::number( reinterpret_cast< qint64 >( this ), 16 ) ),
     dutyMark_( dutyMark )
 {
     if ( applicationFilePath_.isEmpty() )

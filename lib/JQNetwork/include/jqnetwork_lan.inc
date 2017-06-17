@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_LAN_INC
-#define JQNETWORK_INCLUDE_JQNETWORK_LAN_INC
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_LAN_INC_
+#define JQNETWORK_INCLUDE_JQNETWORK_LAN_INC_
 
 // JQNetwork lib import
 #include "jqnetwork_lan.h"
@@ -59,4 +59,4 @@ inline void JQNetworkLan::onLanNodeListChanged()
     lanSettings_->lanNodeListChangedCallback();
 }
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_LAN_INC
+#endif//JQNETWORK_INCLUDE_JQNETWORK_LAN_INC_

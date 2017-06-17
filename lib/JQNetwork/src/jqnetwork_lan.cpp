@@ -38,7 +38,7 @@ JQNetworkLan::~JQNetworkLan()
                     mutex_.lock();
 
                     this->sendOffline();
-                    QThread::msleep( 50 );
+                    QThread::msleep( 100 );
 
                     timerForCheckLoop_.clear();
 
@@ -142,7 +142,7 @@ bool JQNetworkLan::begin()
                 {
                     timerForCheckLoop_.reset( new QTimer );
                     timerForCheckLoop_->setSingleShot( true );
-                    timerForCheckLoop_->setInterval(  lanSettings_->checkLoopInterval);
+                    timerForCheckLoop_->setInterval( lanSettings_->checkLoopInterval );
 
                     QObject::connect( timerForCheckLoop_.data(), &QTimer::timeout, this, &JQNetworkLan::checkLoop, Qt::DirectConnection );
 
@@ -163,7 +163,7 @@ QHostAddress JQNetworkLan::matchLanAddressEntries(const QList< QHostAddress > &i
         for ( const auto &lanAddressEntries: lanAddressEntries_ )
         {
             if ( ( ( currentAddress.toIPv4Address() & lanAddressEntries.netmask.toIPv4Address() ) == lanAddressEntries.ipSegment.toIPv4Address() ) ||
-                 ( currentAddress == QHostAddress::LocalHost))
+                 ( currentAddress == QHostAddress::LocalHost ) )
             {
                 return currentAddress;
             }
@@ -192,6 +192,12 @@ QList< JQNetworkLanNode > JQNetworkLan::availableLanNodes()
 void JQNetworkLan::sendOnline()
 {
 //    qDebug() << "JQNetworkLan::sendOnline";
+
+    if ( ( lanAddressEntries_.size() == 1 ) && ( lanAddressEntries_.first().ip == QHostAddress::LocalHost ) )
+    {
+        qDebug() << "JQNetworkLan::sendOnline: current lanAddressEntries only contains local host, skip sendOnline";
+        return;
+    }
 
     const auto &&data = this->makeData( false, true );
 
@@ -299,7 +305,7 @@ QByteArray JQNetworkLan::makeData(const bool &requestOffline, const bool &reques
     }
 
     data[ "nodeMarkSummary" ] = nodeMarkSummary_;
-    data[ "lastActiveTime" ] = QDateTime::currentMSecsSinceEpoch();
+    data[ "dataPackageIndex" ] = ++nextDataPackageIndex_;
     data[ "ipList" ] = ipList;
     data[ "requestOffline" ] = requestOffline;
     data[ "requestFeedback" ] = requestFeedback;
@@ -314,7 +320,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
     {
         QByteArray datagram;
 
-        datagram.resize( udpSocket_->pendingDatagramSize() );
+        datagram.resize( static_cast< int >( udpSocket_->pendingDatagramSize() ) );
         udpSocket_->readDatagram( datagram.data(), datagram.size() );
 
 //        qDebug() << "JQNetworkLan::onUdpSocketReadyRead:" << datagram;
@@ -322,7 +328,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
         const auto &&data = QJsonDocument::fromJson( datagram ).object().toVariantMap();
 
         const auto &&nodeMarkSummary = data[ "nodeMarkSummary" ].toString();
-        const auto &&lastActiveTime = data[ "lastActiveTime" ].toLongLong();
+        const auto &&dataPackageIndex = data[ "dataPackageIndex" ].toInt();
         const auto &&requestOffline = data[ "requestOffline" ].toBool();
         const auto &&requestFeedback = data[ "requestFeedback" ].toBool();
         const auto &&appendData = data[ "appendData" ];
@@ -333,7 +339,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
             continue;
         }
 
-        if ( !lastActiveTime )
+        if ( !dataPackageIndex )
         {
             qDebug() << "JQNetworkLan::onUdpSocketReadyRead: error data2:" << datagram;
             continue;
@@ -361,7 +367,8 @@ void JQNetworkLan::onUdpSocketReadyRead()
             if ( !availableLanNodes_.contains( nodeMarkSummary ) )
             {
                 lanNode.nodeMarkSummary = nodeMarkSummary;
-                lanNode.lastActiveTime = lastActiveTime;
+                lanNode.lastActiveTime = QDateTime::currentMSecsSinceEpoch();
+                lanNode.dataPackageIndex = dataPackageIndex;
                 lanNode.ipList = ipList;
                 lanNode.appendData = appendData;
                 lanNode.matchAddress = this->matchLanAddressEntries( ipList );
@@ -380,9 +387,10 @@ void JQNetworkLan::onUdpSocketReadyRead()
             {
                 lanNode = availableLanNodes_[ nodeMarkSummary ];
 
-                if ( lanNode.lastActiveTime < lastActiveTime )
+                if ( lanNode.dataPackageIndex < dataPackageIndex )
                 {
-                    lanNode.lastActiveTime = lastActiveTime;
+                    lanNode.lastActiveTime = QDateTime::currentMSecsSinceEpoch();
+                    lanNode.dataPackageIndex = dataPackageIndex;
                     lanNode.ipList = ipList;
                     lanNode.appendData = appendData;
                     lanNode.matchAddress = this->matchLanAddressEntries( ipList );

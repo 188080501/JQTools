@@ -153,7 +153,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
 
                     const auto &&replyReply = connect->replyPayloadData(
                                 package->randomFlag(),
-                                *( QByteArray * )sendArg.get(),
+                                *static_cast< QByteArray * >( sendArg.get() ),
                                 sendAppend
                             );
                     if ( !replyReply )
@@ -195,7 +195,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
 
                     const auto &&replyReply = connect->replyPayloadData(
                                 package->randomFlag(),
-                                QJsonDocument( QJsonObject::fromVariantMap( *( QVariantMap * )sendArg.get() ) ).toJson( QJsonDocument::Compact ),
+                                QJsonDocument( QJsonObject::fromVariantMap( *static_cast< QVariantMap * >( sendArg.get() ) ) ).toJson( QJsonDocument::Compact ),
                                 sendAppend
                             );
                     if ( !replyReply )
@@ -235,7 +235,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
                         return;
                     }
 
-                    const auto &sendFileInfo = *( QFileInfo * )sendArg.get();
+                    const auto &sendFileInfo = *static_cast< QFileInfo * >( sendArg.get() );
 
                     if ( !sendFileInfo.isFile() )
                     {
@@ -368,7 +368,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
             {
                 if ( sendAppendArg )
                 {
-                    ( *sendArgumentAnswer )( connect, package, sendArg, *(const QVariantMap *)sendAppendArg.get() );
+                    ( *sendArgumentAnswer )( connect, package, sendArg, *static_cast< const QVariantMap * >( sendAppendArg.get() ) );
                 }
                 else
                 {

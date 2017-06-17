@@ -10,14 +10,14 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __JQToolsLibrary_h__
-#define __JQToolsLibrary_h__
+#ifndef JQTOOLSLIBRARY_H_
+#define JQTOOLSLIBRARY_H_
 
 // Qt lib import
 #include <QObject>
 #include <QPointer>
 
-#define JQTOOLS_VERSIONSTRING "17.6.13"
+#define JQTOOLS_VERSIONSTRING "17.6.17"
 
 class QQmlApplicationEngine;
 
@@ -40,4 +40,4 @@ private:
     static QPointer< QQmlApplicationEngine > qmlApplicationEngine_;
 };
 
-#endif//__JQToolsLibrary_h__
+#endif//JQTOOLSLIBRARY_H_
