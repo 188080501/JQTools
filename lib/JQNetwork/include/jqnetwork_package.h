@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_H
-#define JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_H
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_H_
+#define JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_H_
 
 // Qt lib import
 #include <QVariant>
@@ -176,4 +176,4 @@ private:
 // inc import
 #include "jqnetwork_package.inc"
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_H
+#endif//JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_H_

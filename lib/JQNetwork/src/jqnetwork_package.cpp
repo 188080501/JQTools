@@ -39,7 +39,7 @@ qint32 JQNetworkPackage::checkDataIsReadyReceive(const QByteArray &rawData)
 
     if ( rawData.size() < JQNetworkPackage::headSize() ) { return JQNetworkPackage::headSize() - rawData.size(); }
 
-    auto head = ( Head * )rawData.data();
+    const auto *head = reinterpret_cast< const Head * >( rawData.data() );
     auto dataSize = rawData.size() - JQNetworkPackage::headSize();
 
     if ( head->bootFlag_ != JQNETWORKPACKAGE_BOOTFLAG ) { return -1; }
@@ -93,7 +93,7 @@ JQNetworkPackageSharedPointer JQNetworkPackage::readPackage(QByteArray &rawData)
     auto package = JQNetworkPackageSharedPointer( new JQNetworkPackage );
     auto data = rawData.data() + JQNetworkPackage::headSize();
 
-    package->head_ = *( Head * )rawData.data();
+    package->head_ = *reinterpret_cast< const Head * >( rawData.data() );
 
     if ( package->metaDataCurrentSize() > 0 )
     {
@@ -106,7 +106,7 @@ JQNetworkPackageSharedPointer JQNetworkPackage::readPackage(QByteArray &rawData)
         data += package->payloadDataCurrentSize();
     }
 
-    rawData.remove( 0, data - rawData.data() );
+    rawData.remove( 0, static_cast< int> ( data - rawData.data() ) );
 
     package->refreshPackage();
 
@@ -229,12 +229,12 @@ QList< JQNetworkPackageSharedPointer > JQNetworkPackage::createPayloadTransportP
                 }
                 else
                 {
-                    package->payloadData_ = ( compressionData ) ? ( qCompress( payloadData.mid( index, cutPackageSize ), 4 ) ) : ( payloadData.mid( index, cutPackageSize ) );
+                    package->payloadData_ = ( compressionData ) ? ( qCompress( payloadData.mid( index, static_cast< int >( cutPackageSize ) ), 4 ) ) : ( payloadData.mid( index, static_cast< int >( cutPackageSize ) ) );
                     package->head_.payloadDataCurrentSize_ = package->payloadData_.size();
                     package->isCompletePackage_ = !index && ( ( index + cutPackageSize ) == payloadData.size() );
 
                     package->payloadDataOriginalIndex_ = index;
-                    package->payloadDataOriginalCurrentSize_ = cutPackageSize;
+                    package->payloadDataOriginalCurrentSize_ = static_cast< int >( cutPackageSize );
 
                     index += cutPackageSize;
                 }
@@ -270,7 +270,7 @@ JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
         {
             metaDataInVariantMap[ "fileName" ] = fileInfo.fileName();
             metaDataInVariantMap[ "fileSize" ] = fileInfo.size();
-            metaDataInVariantMap[ "filePermissions" ] = (qint32)fileInfo.permissions();
+            metaDataInVariantMap[ "filePermissions" ] = static_cast< qint32 >( fileInfo.permissions() );
             metaDataInVariantMap[ "fileCreatedTime" ] = fileInfo.created().toMSecsSinceEpoch();
             metaDataInVariantMap[ "fileLastReadTime" ] = fileInfo.lastRead().toMSecsSinceEpoch();
             metaDataInVariantMap[ "fileLastModifiedTime" ] = fileInfo.lastModified().toMSecsSinceEpoch();

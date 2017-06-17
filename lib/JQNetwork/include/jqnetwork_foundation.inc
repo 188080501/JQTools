@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_INC
-#define JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_INC
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_INC_
+#define JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_INC_
 
 // JQNetwork lib import
 #include "jqnetwork_foundation.h"
@@ -75,4 +75,4 @@ inline QString JQNetworkNodeMark::nodeMarkSummary() const
     return nodeMarkSummary_;
 }
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_INC
+#endif//JQNETWORK_INCLUDE_JQNETWORK_FOUNDATION_INC_

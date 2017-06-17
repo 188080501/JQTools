@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_CONNECTPOOL_INC
-#define JQNETWORK_INCLUDE_JQNETWORK_CONNECTPOOL_INC
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_CONNECTPOOL_INC_
+#define JQNETWORK_INCLUDE_JQNETWORK_CONNECTPOOL_INC_
 
 // JQNetwork lib import
 #include "jqnetwork_connectpool.h"
@@ -108,4 +108,4 @@ inline void JQNetworkConnectPool::onWaitReplyPackageFail(
     connectPoolSettings_->waitReplyPackageFailCallback( connect, this, failCallback );
 }
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECTPOOL_INC
+#endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECTPOOL_INC_

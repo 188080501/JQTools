@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_SERVER_INC
-#define JQNETWORK_INCLUDE_JQNETWORK_SERVER_INC
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_SERVER_INC_
+#define JQNETWORK_INCLUDE_JQNETWORK_SERVER_INC_
 
 // JQNetwork lib import
 #include "jqnetwork_server.h"
@@ -168,4 +168,4 @@ inline void JQNetworkServer::onPackageReceiving(
     );
 }
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_SERVER_INC
+#endif//JQNETWORK_INCLUDE_JQNETWORK_SERVER_INC_

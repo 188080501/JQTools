@@ -96,15 +96,32 @@ Item {
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForSource
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            selectionColor: "#2799f3"
+            contentWidth: textFieldForSource.paintedWidth
+            contentHeight: textFieldForSource.paintedHeight
+            clip: true
+
+            TextEdit {
+                id: textFieldForSource
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
+                text: "{}"
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForSource.focus
+
+            onClicked: {
+                textFieldForSource.focus = true;
+            }
         }
     }
 }

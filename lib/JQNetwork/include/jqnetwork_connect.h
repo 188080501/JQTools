@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H
-#define JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H_
+#define JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H_
 
 // JQNetwork lib import
 #include <JQNetworkFoundation>
@@ -256,4 +256,4 @@ private:
 // inc import
 #include "jqnetwork_connect.inc"
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H
+#endif//JQNETWORK_INCLUDE_JQNETWORK_CONNECT_H_

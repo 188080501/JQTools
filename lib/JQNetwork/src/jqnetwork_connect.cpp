@@ -645,7 +645,7 @@ bool JQNetworkConnect::onFileDataTransportPackageReceived(
         file.clear();
 
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
-        utimbuf timeBuf = { (time_t)firstPackage->fileLastReadTime().toTime_t(), (time_t)firstPackage->fileLastModifiedTime().toTime_t() };
+        utimbuf timeBuf = { static_cast< time_t >( firstPackage->fileLastReadTime().toTime_t() ), static_cast< time_t >( firstPackage->fileLastModifiedTime().toTime_t() ) };
         utime( firstPackage->localFilePath().toLatin1().data(), &timeBuf );
 #endif
 

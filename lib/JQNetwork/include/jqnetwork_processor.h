@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
-#define JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H_
+#define JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H_
 
 // JQNetwork lib import
 #include <JQNetworkFoundation>
@@ -161,4 +161,4 @@ private:
 // inc import
 #include "jqnetwork_processor.inc"
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H
+#endif//JQNETWORK_INCLUDE_JQNETWORK_PROCESSOR_H_

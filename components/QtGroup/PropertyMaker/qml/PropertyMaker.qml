@@ -66,7 +66,15 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 20
 
-        onClicked: propertyMaker.make();
+        onClicked: {
+            if ( !propertyMaker.make() )
+            {
+                materialUI.showSnackbarMessage( "生成失败" );
+                return;
+            }
+
+            materialUI.showSnackbarMessage( "生成成功" );
+        }
     }
 
     MaterialButton {
@@ -118,18 +126,34 @@ Item {
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForSource
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            text:
+            contentWidth: textFieldForSource.paintedWidth
+            contentHeight: textFieldForSource.paintedHeight
+            clip: true
+
+            TextEdit {
+                id: textFieldForSource
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
+                text:
 "Q_PROPERTY(QString name_ READ name WRITE setName RESET resetName NOTIFY nameChanged)
 Q_PROPERTY(int age_ READ age WRITE setAge)"
-            selectionColor: "#2799f3"
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForSource.focus
+
+            onClicked: {
+                textFieldForSource.focus = true;
+            }
         }
     }
 
@@ -165,15 +189,31 @@ Q_PROPERTY(int age_ READ age WRITE setAge)"
             color: "#ffffff"
         }
 
-        TextEdit {
-            id: textFieldForTarget
+        Flickable {
             x: 5
             y: 5
             width: parent.width - 10
             height: parent.height - 10
-            wrapMode: TextInput.WrapAnywhere
-            selectByMouse: true
-            selectionColor: "#2799f3"
+            contentWidth: textFieldForTarget.paintedWidth
+            contentHeight: textFieldForTarget.paintedHeight
+            clip: true
+
+            TextEdit {
+                id: textFieldForTarget
+                width: parent.width
+                height: parent.height
+                selectByMouse: true
+                selectionColor: "#2799f3"
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            visible: !textFieldForTarget.focus
+
+            onClicked: {
+                textFieldForTarget.focus = true;
+            }
         }
     }
 }

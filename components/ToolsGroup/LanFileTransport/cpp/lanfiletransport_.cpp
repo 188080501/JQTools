@@ -75,7 +75,7 @@ Manage::Manage():
 
         if ( it == this->mapForConnectSendCounter_.end() )
         {
-            qDebug() << "packageSendingCallback: error";
+//            qDebug() << "packageSendingCallback: error";
 
             this->mutex_.unlock();
             return;
@@ -127,10 +127,11 @@ QVariantList Manage::lanNodes()
 
 QString Manage::localHostName() const
 {
-#ifdef Q_OS_MAC
+#if ( defined Q_OS_MAC )
     return QHostInfo::localHostName().replace( ".local", "" );
-#endif
+#else
     return QHostInfo::localHostName();
+#endif
 }
 
 QString Manage::localHostAddress()
@@ -261,13 +262,13 @@ QString Manage::savePath()
 
 void Manage::refresh()
 {
-    qDebug() << "\nrefreshLanNodes start";
+    qDebug() << "\nManage::refreshLanNodes start";
 
     QVariantList buf;
 
     for ( const auto &lanNode: this->jqNetworkLan_->availableLanNodes() )
     {
-        qDebug() << "refreshLanNodes:" << lanNode.matchAddress;
+        qDebug() << "Manage::refreshLanNodes:" << lanNode.matchAddress;
 
         const auto &hostAddress = lanNode.matchAddress.toString();
 
@@ -275,7 +276,7 @@ void Manage::refresh()
 
         auto connect = this->jqNetworkClient_->getConnect( hostAddress, SERVERPORT );
 
-        qDebug() << "refreshLanNodes: getConnect:" << connect.data();
+        qDebug() << "Manage::refreshLanNodes: getConnect:" << connect.data();
 
         if ( connect )
         {
@@ -286,7 +287,7 @@ void Manage::refresh()
             auto connectCount = 0;
             for ( ; connectCount < 2; ++connectCount )
             {
-                qDebug() << "refreshLanNodes: connect to:" << hostAddress;
+                qDebug() << "Manage::refreshLanNodes: connect to:" << hostAddress;
 
                 if ( this->jqNetworkClient_->waitForCreateConnect( hostAddress, SERVERPORT ) )
                 {
@@ -296,11 +297,11 @@ void Manage::refresh()
 
             if ( connectCount == 2 )
             {
-                qDebug() << "refreshLanNodes: connect fail:" << hostAddress;
+                qDebug() << "Manage::refreshLanNodes: connect fail:" << hostAddress;
             }
             else
             {
-                qDebug() << "refreshLanNodes: connect succeed:" << hostAddress;
+                qDebug() << "Manage::refreshLanNodes: connect succeed:" << hostAddress;
             }
         }
 
@@ -319,7 +320,7 @@ void Manage::refresh()
 
     emit this->lanNodeChanged();
 
-    qDebug() << "refreshLanNodes end";
+    qDebug() << "Manage::refreshLanNodes end";
 }
 
 void Manage::lanNodeOffline(const JQNetworkLanNode &node)
@@ -341,7 +342,7 @@ void Manage::lanNodeOffline(const JQNetworkLanNode &node)
 
     emit this->lanNodeChanged();
 
-    qDebug() << "refreshLanNodes";
+    qDebug() << "Manage::refreshLanNodes";
 }
 
 void Manage::emitSendingSignal(const QString &hostName, const SendCounter &counter)

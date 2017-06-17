@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_INC
-#define JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_INC
+#ifndef JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_INC_
+#define JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_INC_
 
 // JQNetwork lib import
 #include "jqnetwork_package.h"
@@ -175,7 +175,7 @@ inline QByteArray JQNetworkPackage::toByteArray() const
 {
     QByteArray buffer;
 
-    buffer.append( (const char *)&head_, JQNetworkPackage::headSize() );
+    buffer.append( reinterpret_cast< const char * >( &head_ ), JQNetworkPackage::headSize() );
     if ( head_.metaDataCurrentSize_ > 0 )
     {
         buffer.append( metaData_ );
@@ -188,4 +188,4 @@ inline QByteArray JQNetworkPackage::toByteArray() const
     return buffer;
 }
 
-#endif//JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_INC
+#endif//JQNETWORK_INCLUDE_JQNETWORK_PACKAGE_INC_
