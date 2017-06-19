@@ -24,12 +24,13 @@
 #include <JQNetworkConnectPool>
 #include <JQNetworkConnect>
 #include <JQNetworkPackage>
+#include <JQNetworkProcessor>
 
 using namespace std;
 using namespace std::placeholders;
 
 QWeakPointer< JQNetworkThreadPool > JQNetworkClient::globalSocketThreadPool_;
-QWeakPointer< JQNetworkThreadPool > JQNetworkClient::globalProcessorThreadPool_;
+QWeakPointer< JQNetworkThreadPool > JQNetworkClient::globalCallbackThreadPool_;
 
 JQNetworkClient::JQNetworkClient(
         const JQNetworkClientSettingsSharedPointer &clientSettings,
@@ -46,9 +47,9 @@ JQNetworkClient::~JQNetworkClient()
     if ( !socketThreadPool_ ) { return; }
 
     socketThreadPool_->waitRunEach(
-                [ & ]()
+                [ this ]()
                 {
-                    connectPools_[ QThread::currentThread() ].clear();
+                    this->connectPools_[ QThread::currentThread() ].clear();
                 }
     );
 }
@@ -72,6 +73,8 @@ JQNetworkClientSharedPointer JQNetworkClient::createClient(
 
 bool JQNetworkClient::begin()
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::begin", false );
+
     nodeMarkSummary_ = JQNetworkNodeMark::calculateNodeMarkSummary( clientSettings_->dutyMark );
 
     if ( globalSocketThreadPool_ )
@@ -84,14 +87,29 @@ bool JQNetworkClient::begin()
         globalSocketThreadPool_ = socketThreadPool_.toWeakRef();
     }
 
-    if ( globalProcessorThreadPool_ )
+    if ( globalCallbackThreadPool_ )
     {
-        processorThreadPool_ = globalProcessorThreadPool_.toStrongRef();
+        callbackThreadPool_ = globalCallbackThreadPool_.toStrongRef();
     }
     else
     {
-        processorThreadPool_ = QSharedPointer< JQNetworkThreadPool >( new JQNetworkThreadPool( clientSettings_->globalProcessorThreadCount ) );
-        globalProcessorThreadPool_ = processorThreadPool_.toWeakRef();
+        callbackThreadPool_ = QSharedPointer< JQNetworkThreadPool >( new JQNetworkThreadPool( clientSettings_->globalProcessorThreadCount ) );
+        globalCallbackThreadPool_ = callbackThreadPool_.toWeakRef();
+    }
+
+    if ( !processors_.isEmpty() )
+    {
+        QSet< QThread * > receivedPossibleThreads;
+
+        callbackThreadPool_->waitRunEach( [ &receivedPossibleThreads ]()
+        {
+            receivedPossibleThreads.insert( QThread::currentThread() );
+        } );
+
+        for ( const auto &processor: processors_ )
+        {
+            processor->setReceivedPossibleThreads( receivedPossibleThreads );
+        }
     }
 
     socketThreadPool_->waitRunEach(
@@ -132,11 +150,57 @@ bool JQNetworkClient::begin()
     return true;
 }
 
+void JQNetworkClient::registerProcessor(const JQNetworkProcessorPointer &processor)
+{
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::registerProcessor" );
+
+    if ( !connectPools_.isEmpty() )
+    {
+        qDebug() << "JQNetworkClient::registerProcessor: please use registerProcessor befor begin()";
+        return;
+    }
+
+    const auto &&availableSlots = processor->availableSlots();
+    auto counter = 0;
+
+    for ( const auto &currentSlot: availableSlots )
+    {
+        if ( processorCallbacks_.contains( currentSlot ) )
+        {
+            qDebug() << "JQNetworkClient::registerProcessor: double register:" << currentSlot;
+            continue;
+        }
+
+        const auto &&callback = [ processor ](const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)
+        {
+            if ( !processor )
+            {
+                qDebug() << "JQNetworkClient::registerProcessor: processor is null";
+                return;
+            }
+
+            processor->handlePackage( connect, package );
+        };
+
+        processorCallbacks_[ currentSlot ] = callback;
+        ++counter;
+    }
+
+    processors_.insert( processor );
+
+    if ( !counter )
+    {
+        qDebug() << "JQNetworkClient::registerProcessor: no available slots in processor:" << processor->metaObject()->className();
+    }
+}
+
 void JQNetworkClient::createConnect(const QString &hostName, const quint16 &port)
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::createConnect" );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::createConnect: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::createConnect: this client need to begin:" << this;
         return;
     }
 
@@ -175,9 +239,11 @@ bool JQNetworkClient::waitForCreateConnect(
         const int &maximumConnectToHostWaitTime
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForCreateConnect", false );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::waitForCreateConnect: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::waitForCreateConnect: this client need to begin:" << this;
         return false;
     }
 
@@ -220,9 +286,11 @@ qint32 JQNetworkClient::sendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendPayloadData", 0 );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::sendPayloadData: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::sendPayloadData: this client need to begin:" << this;
 
         if ( failCallback )
         {
@@ -261,9 +329,11 @@ qint32 JQNetworkClient::sendVariantMapData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendVariantMapData", 0 );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::sendVariantMapData: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::sendVariantMapData: this client need to begin:" << this;
 
         if ( failCallback )
         {
@@ -293,9 +363,11 @@ qint32 JQNetworkClient::sendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendFileData", 0 );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::sendFileData: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::sendFileData: this client need to begin:" << this;
 
         if ( failCallback )
         {
@@ -334,9 +406,11 @@ qint32 JQNetworkClient::waitForSendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendPayloadData", 0 );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::waitForSendPayloadData: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::waitForSendPayloadData: this client need to begin:" << this;
 
         if ( failCallback )
         {
@@ -394,6 +468,8 @@ qint32 JQNetworkClient::waitForSendVariantMapData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendVariantMapData", 0 );
+
     return this->waitForSendPayloadData(
                 hostName,
                 port,
@@ -415,9 +491,11 @@ qint32 JQNetworkClient::waitForSendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendFileData", 0 );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::waitForSendFileData: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::waitForSendFileData: this client need to begin:" << this;
 
         if ( failCallback )
         {
@@ -467,9 +545,11 @@ qint32 JQNetworkClient::waitForSendFileData(
 
 JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, const quint16 &port)
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::getConnect", nullptr );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::getConnect: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::getConnect: this client need to begin:" << this;
         return { };
     }
 
@@ -500,9 +580,11 @@ JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, con
 
 bool JQNetworkClient::containsConnect(const QString &hostName, const quint16 &port)
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::containsConnect", false );
+
     if ( !socketThreadPool_ )
     {
-        qDebug() << "JQNetworkClient::containsConnect: this client need to begin," << this;
+        qDebug() << "JQNetworkClient::containsConnect: this client need to begin:" << this;
         return { };
     }
 
@@ -530,7 +612,7 @@ void JQNetworkClient::onConnectToHostError(const JQNetworkConnectPointer &connec
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -555,7 +637,7 @@ void JQNetworkClient::onConnectToHostTimeout(const JQNetworkConnectPointer &conn
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -578,7 +660,7 @@ void JQNetworkClient::onConnectToHostSucceed(const JQNetworkConnectPointer &conn
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -625,7 +707,7 @@ void JQNetworkClient::onRemoteHostClosed(const JQNetworkConnectPointer &connect,
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -650,7 +732,7 @@ void JQNetworkClient::onReadyToDelete(const JQNetworkConnectPointer &connect, co
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -682,7 +764,7 @@ void JQNetworkClient::onPackageSending(
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -726,7 +808,7 @@ void JQNetworkClient::onPackageReceiving(
         return;
     }
 
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     this,
                     connect,
@@ -757,28 +839,57 @@ void JQNetworkClient::onPackageReceived(
         const JQNetworkPackageSharedPointer &package
     )
 {
-    if ( !clientSettings_->packageReceivedCallback ) { return; }
-
-    const auto &&reply = connectPool->getHostAndPortByConnect( connect );
-
-    if ( reply.first.isEmpty() || !reply.second )
+    if ( processorCallbacks_.isEmpty() )
     {
-        qDebug() << "JQNetworkClient::onPackageReceived: error";
-        return;
-    }
+        if ( !clientSettings_->packageReceivedCallback ) { return; }
 
-    processorThreadPool_->run(
-                [
-                    this,
-                    connect,
-                    hostName = reply.first,
-                    port = reply.second,
-                    package
-                ]()
-                {
-                    this->clientSettings_->packageReceivedCallback( connect, hostName, port, package );
-                }
-    );
+        const auto &&reply = connectPool->getHostAndPortByConnect( connect );
+
+        if ( reply.first.isEmpty() || !reply.second )
+        {
+            qDebug() << "JQNetworkClient::onPackageReceived: error";
+            return;
+        }
+
+        callbackThreadPool_->run(
+                    [
+                        this,
+                        connect,
+                        hostName = reply.first,
+                        port = reply.second,
+                        package
+                    ]()
+                    {
+                        this->clientSettings_->packageReceivedCallback( connect, hostName, port, package );
+                    }
+        );
+    }
+    else
+    {
+        if ( package->targetActionFlag().isEmpty() )
+        {
+            qDebug() << "JQNetworkClient::onPackageReceived: processor is enable, but package targetActionFlag is empty";
+            return;
+        }
+
+        const auto &&it = processorCallbacks_.find( package->targetActionFlag() );
+        if ( it == processorCallbacks_.end() )
+        {
+            qDebug() << "JQNetworkClient::onPackageReceived: processor is enable, but package targetActionFlag not match:" << package->targetActionFlag();
+            return;
+        }
+
+        callbackThreadPool_->run(
+                    [
+                        connect,
+                        package,
+                        callback = *it
+                    ]()
+                    {
+                        callback( connect, package );
+                    }
+        );
+    }
 }
 
 void JQNetworkClient::onWaitReplySucceedPackage(
@@ -788,7 +899,7 @@ void JQNetworkClient::onWaitReplySucceedPackage(
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback
     )
 {
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     connect,
                     package,
@@ -806,7 +917,7 @@ void JQNetworkClient::onWaitReplyPackageFail(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    processorThreadPool_->run(
+    callbackThreadPool_->run(
                 [
                     connect,
                     failCallback

@@ -19,13 +19,13 @@
 #include <QFileInfo>
 #include <QDateTime>
 
-#define BOOL_CHECK( actual, message )           \
-    if ( !( actual ) )                          \
-    {                                           \
-        qDebug() << "JQNetworkPackage::mixPackage: " << message;        \
-        this->isAbandonPackage_ = true;         \
-        mixPackage->isAbandonPackage_ = true;   \
-        return false;                           \
+#define BOOL_CHECK( actual, message )                           \
+    if ( !( actual ) )                                          \
+    {                                                           \
+        qDebug() << "JQNetworkPackage::mixPackage:" << message; \
+        this->isAbandonPackage_ = true;                         \
+        mixPackage->isAbandonPackage_ = true;                   \
+        return false;                                           \
     }
 
 qint32 JQNetworkPackage::checkDataIsReadyReceive(const QByteArray &rawData)
@@ -51,7 +51,7 @@ qint32 JQNetworkPackage::checkDataIsReadyReceive(const QByteArray &rawData)
         case JQNETWORKPACKAGE_FILEDATAREQUESTPACKGEFLAG: { break; }
         default: { return -1; }
     }
-    if ( head->randomFlag_ == 0 ) { return -1; }
+    if ( head->randomFlag_ <= 0 ) { return -1; }
 
     switch ( head->metaDataFlag_ )
     {

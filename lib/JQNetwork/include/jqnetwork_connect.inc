@@ -68,6 +68,21 @@ inline qint32 JQNetworkConnect::sendPayloadData(
             );
 }
 
+inline qint32 JQNetworkConnect::sendVariantMapData(
+        const QVariantMap &variantMap,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    return this->sendVariantMapData(
+                { }, // empty targetActionFlag
+                variantMap,
+                { }, // empty appendData
+                succeedCallback,
+                failCallback
+            );
+}
+
 inline qint32 JQNetworkConnect::sendFileData(
         const QFileInfo &fileInfo,
         const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
@@ -83,27 +98,39 @@ inline qint32 JQNetworkConnect::sendFileData(
             );
 }
 
-inline qint32 JQNetworkConnect::replyPayloadData(
-        const qint32 &receivedPackageRandomFlag,
-        const QByteArray &payloadData
+inline bool JQNetworkConnect::putPayloadData(
+        const QByteArray &payloadData,
+        const QVariantMap &appendData
     )
 {
-    return this->replyPayloadData(
-                receivedPackageRandomFlag,
+    return this->putPayloadData(
+                { }, // empty targetActionFlag,
                 payloadData,
-                { } // empty appendData
+                appendData
             );
 }
 
-inline qint32 JQNetworkConnect::replyFile(
-        const qint32 &receivedPackageRandomFlag,
-        const QFileInfo &fileInfo
+inline bool JQNetworkConnect::putVariantMapData(
+        const QVariantMap &variantMap,
+        const QVariantMap &appendData
     )
 {
-    return this->replyFile(
-                receivedPackageRandomFlag,
+    return this->putVariantMapData(
+                { }, // empty targetActionFlag,
+                variantMap,
+                appendData
+            );
+}
+
+inline bool JQNetworkConnect::putFile(
+        const QFileInfo &fileInfo,
+        const QVariantMap &appendData
+    )
+{
+    return this->putFile(
+                { }, // empty targetActionFlag,
                 fileInfo,
-                { } // empty appendData
+                appendData
             );
 }
 

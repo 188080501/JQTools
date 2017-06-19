@@ -48,6 +48,16 @@
 #define JQNETWORK_NULLPTR_CHECK( ptr, ... ) \
     if ( !ptr ) { qDebug( "%s: %s is null", __func__, # ptr ); return __VA_ARGS__; }
 
+#define JQNETWORK_THISNULL_CHECK( message, ... )                \
+    {                                                           \
+        auto this_ = this;                                      \
+        if ( !this_ )                                           \
+        {                                                       \
+            qDebug( "%s: this is null", message );              \
+            return __VA_ARGS__;                                 \
+        }                                                       \
+    }
+
 class QSemaphore;
 class QMutex;
 class QTimer;

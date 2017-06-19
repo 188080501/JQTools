@@ -114,8 +114,8 @@ private:
     QSharedPointer< JQNetworkThreadPool > serverThreadPool_;
     static QWeakPointer< JQNetworkThreadPool > globalSocketThreadPool_;
     QSharedPointer< JQNetworkThreadPool > socketThreadPool_;
-    static QWeakPointer< JQNetworkThreadPool > globalProcessorThreadPool_;
-    QSharedPointer< JQNetworkThreadPool > processorThreadPool_;
+    static QWeakPointer< JQNetworkThreadPool > globalCallbackThreadPool_;
+    QSharedPointer< JQNetworkThreadPool > callbackThreadPool_;
 
     // Settings
     JQNetworkServerSettingsSharedPointer serverSettings_;
@@ -126,12 +126,12 @@ private:
     QSharedPointer< QTcpServer > tcpServer_;
     QMap< QThread *, JQNetworkConnectPoolSharedPointer > connectPools_;
 
-    // Other
-    QString nodeMarkSummary_;
-
     // Processor
     QSet< JQNetworkProcessor * > processors_;
     QMap< QString, std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer & ) > > processorCallbacks_;
+
+    // Other
+    QString nodeMarkSummary_;
 };
 
 // inc import

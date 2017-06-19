@@ -124,6 +124,20 @@ public:
             const JQNetworkConnectPointerFunction &failCallback = nullptr
         );
 
+    qint32 sendVariantMapData(
+            const QString &targetActionFlag,
+            const QVariantMap &variantMap,
+            const QVariantMap &appendData,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
+    inline qint32 sendVariantMapData(
+            const QVariantMap &variantMap,
+            const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback = nullptr,
+            const JQNetworkConnectPointerFunction &failCallback = nullptr
+        );
+
     qint32 sendFileData(
             const QString &targetActionFlag,
             const QFileInfo &fileInfo,
@@ -141,23 +155,52 @@ public:
     qint32 replyPayloadData(
             const qint32 &receivedPackageRandomFlag,
             const QByteArray &payloadData,
-            const QVariantMap &appendData
+            const QVariantMap &appendData = QVariantMap()
         );
 
-    inline qint32 replyPayloadData(
+    qint32 replyVariantMapData(
             const qint32 &receivedPackageRandomFlag,
-            const QByteArray &payloadData
+            const QVariantMap &variantMap,
+            const QVariantMap &appendData = QVariantMap()
         );
 
     qint32 replyFile(
             const qint32 &receivedPackageRandomFlag,
             const QFileInfo &fileInfo,
-            const QVariantMap &appendData
+            const QVariantMap &appendData = QVariantMap()
         );
 
-    inline qint32 replyFile(
-            const qint32 &receivedPackageRandomFlag,
-            const QFileInfo &fileInfo
+    bool putPayloadData(
+            const QString &targetActionFlag,
+            const QByteArray &payloadData,
+            const QVariantMap &appendData = QVariantMap()
+        );
+
+    inline bool putPayloadData(
+            const QByteArray &payloadData,
+            const QVariantMap &appendData = QVariantMap()
+        );
+
+    bool putVariantMapData(
+            const QString &targetActionFlag,
+            const QVariantMap &variantMap,
+            const QVariantMap &appendData = QVariantMap()
+        );
+
+    inline bool putVariantMapData(
+            const QVariantMap &variantMap,
+            const QVariantMap &appendData = QVariantMap()
+        );
+
+    bool putFile(
+            const QString &targetActionFlag,
+            const QFileInfo &fileInfo,
+            const QVariantMap &appendData = QVariantMap()
+        );
+
+    inline bool putFile(
+            const QFileInfo &fileInfo,
+            const QVariantMap &appendData = QVariantMap()
         );
 
 private Q_SLOTS:

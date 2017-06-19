@@ -36,6 +36,11 @@ inline QString JQNetworkClient::nodeMarkSummary() const
     return nodeMarkSummary_;
 }
 
+inline QSet< QString > JQNetworkClient::availableProcessorMethodNames() const
+{
+    return QSet< QString >::fromList( processorCallbacks_.keys() );
+}
+
 inline qint32 JQNetworkClient::sendPayloadData(
         const QString &hostName,
         const quint16 &port,

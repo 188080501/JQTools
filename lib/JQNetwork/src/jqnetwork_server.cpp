@@ -50,7 +50,7 @@ private:
 // JQNetworkServer
 QWeakPointer< JQNetworkThreadPool > JQNetworkServer::globalServerThreadPool_;
 QWeakPointer< JQNetworkThreadPool > JQNetworkServer::globalSocketThreadPool_;
-QWeakPointer< JQNetworkThreadPool > JQNetworkServer::globalProcessorThreadPool_;
+QWeakPointer< JQNetworkThreadPool > JQNetworkServer::globalCallbackThreadPool_;
 
 JQNetworkServer::JQNetworkServer(
         const JQNetworkServerSettingsSharedPointer serverSettings,
@@ -108,6 +108,8 @@ JQNetworkServerSharedPointer JQNetworkServer::createServer(
 
 bool JQNetworkServer::begin()
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkServer::begin", false );
+
     nodeMarkSummary_ = JQNetworkNodeMark::calculateNodeMarkSummary( serverSettings_->dutyMark );
 
     if ( globalServerThreadPool_ )
@@ -130,21 +132,21 @@ bool JQNetworkServer::begin()
         globalSocketThreadPool_ = socketThreadPool_.toWeakRef();
     }
 
-    if ( globalProcessorThreadPool_ )
+    if ( globalCallbackThreadPool_ )
     {
-        processorThreadPool_ = globalProcessorThreadPool_.toStrongRef();
+        callbackThreadPool_ = globalCallbackThreadPool_.toStrongRef();
     }
     else
     {
-        processorThreadPool_ = QSharedPointer< JQNetworkThreadPool >( new JQNetworkThreadPool( serverSettings_->globalProcessorThreadCount ) );
-        globalProcessorThreadPool_ = processorThreadPool_.toWeakRef();
+        callbackThreadPool_ = QSharedPointer< JQNetworkThreadPool >( new JQNetworkThreadPool( serverSettings_->globalProcessorThreadCount ) );
+        globalCallbackThreadPool_ = callbackThreadPool_.toWeakRef();
     }
 
     if ( !processors_.isEmpty() )
     {
         QSet< QThread * > receivedPossibleThreads;
 
-        processorThreadPool_->waitRunEach( [ &receivedPossibleThreads ]()
+        callbackThreadPool_->waitRunEach( [ &receivedPossibleThreads ]()
         {
             receivedPossibleThreads.insert( QThread::currentThread() );
         } );
@@ -209,6 +211,8 @@ bool JQNetworkServer::begin()
 
 void JQNetworkServer::registerProcessor(const JQNetworkProcessorPointer &processor)
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkServer::registerProcessor" );
+
     if ( tcpServer_ )
     {
         qDebug() << "JQNetworkServer::registerProcessor: please use registerProcessor befor begin()";
@@ -288,7 +292,7 @@ void JQNetworkServer::onPackageReceived(
     {
         JQNETWORK_NULLPTR_CHECK( serverSettings_->packageReceivedCallback );
 
-        processorThreadPool_->run(
+        callbackThreadPool_->run(
                     [
                         connect,
                         package,
@@ -310,11 +314,11 @@ void JQNetworkServer::onPackageReceived(
         const auto &&it = processorCallbacks_.find( package->targetActionFlag() );
         if ( it == processorCallbacks_.end() )
         {
-            qDebug() << "JQNetworkServer::onPackageReceived: processor is enable, but targetActionFlag not contains:" << package->targetActionFlag();
+            qDebug() << "JQNetworkServer::onPackageReceived: processor is enable, but package targetActionFlag not match:" << package->targetActionFlag();
             return;
         }
 
-        processorThreadPool_->run(
+        callbackThreadPool_->run(
                     [
                         connect,
                         package,

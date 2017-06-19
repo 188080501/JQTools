@@ -27,6 +27,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include <QNetworkProxy>
 
 // JQNetwork lib import
@@ -123,6 +125,8 @@ void JQNetworkConnect::createConnect(
 
 void JQNetworkConnect::close()
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::close" );
+
     if ( isAbandonTcpSocket_ ) { return; }
     JQNETWORK_NULLPTR_CHECK( tcpSocket_ );
 
@@ -137,6 +141,8 @@ qint32 JQNetworkConnect::sendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::sendPayloadData", 0 );
+
     if ( isAbandonTcpSocket_ ) { return 0; }
     JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
 
@@ -155,6 +161,25 @@ qint32 JQNetworkConnect::sendPayloadData(
     return currentRandomFlag;
 }
 
+qint32 JQNetworkConnect::sendVariantMapData(
+        const QString &targetActionFlag,
+        const QVariantMap &variantMap,
+        const QVariantMap &appendData,
+        const JQNetworkConnectPointerAndPackageSharedPointerFunction &succeedCallback,
+        const JQNetworkConnectPointerFunction &failCallback
+    )
+{
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::sendVariantMapData", 0 );
+
+    return this->sendPayloadData(
+                targetActionFlag,
+                QJsonDocument( QJsonObject::fromVariantMap( variantMap ) ).toJson( QJsonDocument::Compact ),
+                appendData,
+                succeedCallback,
+                failCallback
+            );
+}
+
 qint32 JQNetworkConnect::sendFileData(
         const QString &targetActionFlag,
         const QFileInfo &fileInfo,
@@ -163,6 +188,8 @@ qint32 JQNetworkConnect::sendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::sendFileData", 0 );
+
     if ( isAbandonTcpSocket_ ) { return 0; }
     JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
 
@@ -187,6 +214,8 @@ qint32 JQNetworkConnect::replyPayloadData(
         const QVariantMap &appendData
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::replyPayloadData", 0 );
+
     if ( isAbandonTcpSocket_ ) { return 0; }
     JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
 
@@ -203,12 +232,29 @@ qint32 JQNetworkConnect::replyPayloadData(
     return receivedPackageRandomFlag;
 }
 
+qint32 JQNetworkConnect::replyVariantMapData(
+        const qint32 &receivedPackageRandomFlag,
+        const QVariantMap &variantMap,
+        const QVariantMap &appendData
+    )
+{
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::replyVariantMapData", 0 );
+
+    return this->replyPayloadData(
+                receivedPackageRandomFlag,
+                QJsonDocument( QJsonObject::fromVariantMap( variantMap ) ).toJson( QJsonDocument::Compact ),
+                appendData
+            );
+}
+
 qint32 JQNetworkConnect::replyFile(
         const qint32 &receivedPackageRandomFlag,
         const QFileInfo &fileInfo,
         const QVariantMap &appendData
     )
 {
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::replyFile", 0 );
+
     if ( isAbandonTcpSocket_ ) { return 0; }
     JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
 
@@ -223,6 +269,69 @@ qint32 JQNetworkConnect::replyFile(
     if ( !readySendFileData ) { return 0; }
 
     return receivedPackageRandomFlag;
+}
+
+bool JQNetworkConnect::putPayloadData(
+        const QString &targetActionFlag,
+        const QByteArray &payloadData,
+        const QVariantMap &appendData
+    )
+{
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::putPayloadData", 0 );
+
+    if ( isAbandonTcpSocket_ ) { return 0; }
+    JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
+
+    const auto &&readySendPayloadDataSucceed = this->readySendPayloadData(
+                2000000001,
+                targetActionFlag,
+                payloadData,
+                appendData,
+                nullptr,
+                nullptr
+            );
+    if ( !readySendPayloadDataSucceed ) { return 0; }
+
+    return true;
+}
+
+bool JQNetworkConnect::putVariantMapData(
+        const QString &targetActionFlag,
+        const QVariantMap &variantMap,
+        const QVariantMap &appendData
+    )
+{
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::putVariantMapData", 0 );
+
+    return this->putPayloadData(
+                targetActionFlag,
+                QJsonDocument( QJsonObject::fromVariantMap( variantMap ) ).toJson( QJsonDocument::Compact ),
+                appendData
+            );
+}
+
+bool JQNetworkConnect::putFile(
+        const QString &targetActionFlag,
+        const QFileInfo &fileInfo,
+        const QVariantMap &appendData
+    )
+{
+    JQNETWORK_THISNULL_CHECK( "JQNetworkConnect::putFile", 0 );
+
+    if ( isAbandonTcpSocket_ ) { return 0; }
+    JQNETWORK_NULLPTR_CHECK( runOnConnectThreadCallback_, 0 );
+
+    const auto &&readySendFileData = this->readySendFileData(
+                2000000001,
+                targetActionFlag,
+                fileInfo,
+                appendData,
+                nullptr,
+                nullptr
+            );
+    if ( !readySendFileData ) { return 0; }
+
+    return true;
 }
 
 void JQNetworkConnect::onTcpSocketStateChanged()
@@ -837,43 +946,7 @@ void JQNetworkConnect::readySendPackages(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    if ( this->thread() == QThread::currentThread() )
-    {
-        auto firstPackage = packages.first();
-
-        this->sendPackageToRemote( firstPackage );
-
-        if ( succeedCallback || failCallback )
-        {
-            onReceivedCallbacks_[ randomFlag ] =
-            {
-                QDateTime::currentMSecsSinceEpoch(),
-                succeedCallback,
-                failCallback
-            };
-
-            if ( !timerForSendPackageCheck_ )
-            {
-                this->startTimerForSendPackageCheck();
-            }
-        }
-
-        if ( packages.size() > 1 )
-        {
-            sendPayloadPackagePool_[ randomFlag ].swap( packages );
-            sendPayloadPackagePool_[ randomFlag ].pop_front();
-        }
-
-        JQNETWORK_NULLPTR_CHECK( connectSettings_->packageSendingCallback );
-        connectSettings_->packageSendingCallback(
-                    this,
-                    randomFlag,
-                    0,
-                    firstPackage->payloadDataOriginalCurrentSize(),
-                    firstPackage->payloadDataTotalSize()
-                );
-    }
-    else
+    if ( this->thread() != QThread::currentThread() )
     {
         runOnConnectThreadCallback_(
                     [
@@ -889,7 +962,43 @@ void JQNetworkConnect::readySendPackages(
                         this->readySendPackages( randomFlag, buf, succeedCallback, failCallback );
                     }
         );
+
+        return;
     }
+
+    auto firstPackage = packages.first();
+
+    this->sendPackageToRemote( firstPackage );
+
+    if ( succeedCallback || failCallback )
+    {
+        onReceivedCallbacks_[ randomFlag ] =
+        {
+            QDateTime::currentMSecsSinceEpoch(),
+            succeedCallback,
+            failCallback
+        };
+
+        if ( !timerForSendPackageCheck_ )
+        {
+            this->startTimerForSendPackageCheck();
+        }
+    }
+
+    if ( packages.size() > 1 )
+    {
+        sendPayloadPackagePool_[ randomFlag ].swap( packages );
+        sendPayloadPackagePool_[ randomFlag ].pop_front();
+    }
+
+    JQNETWORK_NULLPTR_CHECK( connectSettings_->packageSendingCallback );
+    connectSettings_->packageSendingCallback(
+                this,
+                randomFlag,
+                0,
+                firstPackage->payloadDataOriginalCurrentSize(),
+                firstPackage->payloadDataTotalSize()
+            );
 }
 
 void JQNetworkConnect::sendDataRequestToRemote(const JQNetworkPackageSharedPointer &package)

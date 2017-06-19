@@ -62,6 +62,11 @@ public:
 
     bool begin();
 
+    void registerProcessor(const JQNetworkProcessorPointer &processor);
+
+    inline QSet< QString > availableProcessorMethodNames() const;
+
+
     void createConnect(const QString &hostName, const quint16 &port);
 
     bool waitForCreateConnect(
@@ -288,8 +293,8 @@ private:
     // Thread pool
     static QWeakPointer< JQNetworkThreadPool > globalSocketThreadPool_;
     QSharedPointer< JQNetworkThreadPool > socketThreadPool_;
-    static QWeakPointer< JQNetworkThreadPool > globalProcessorThreadPool_;
-    QSharedPointer< JQNetworkThreadPool > processorThreadPool_;
+    static QWeakPointer< JQNetworkThreadPool > globalCallbackThreadPool_;
+    QSharedPointer< JQNetworkThreadPool > callbackThreadPool_;
 
     // Settings
     JQNetworkClientSettingsSharedPointer clientSettings_;
@@ -298,6 +303,10 @@ private:
 
     // Client
     QMap< QThread *, JQNetworkConnectPoolSharedPointer > connectPools_;
+
+    // Processor
+    QSet< JQNetworkProcessor * > processors_;
+    QMap< QString, std::function< void( const JQNetworkConnectPointer &, const JQNetworkPackageSharedPointer & ) > > processorCallbacks_;
 
     // Other
     QString nodeMarkSummary_;
