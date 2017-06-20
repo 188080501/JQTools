@@ -19,7 +19,7 @@
 struct JQNetworkConnectPoolSettings
 {
     bool autoReconnect = true;
-    bool reconnectIntervalTime = 15 * 1000;
+    int reconnectIntervalTime = 15 * 1000;
 
     std::function< void( const JQNetworkConnectPointer &, const JQNetworkConnectPoolPointer & ) > connectToHostErrorCallback = nullptr;
     std::function< void( const JQNetworkConnectPointer &, const JQNetworkConnectPoolPointer & ) > connectToHostTimeoutCallback = nullptr;

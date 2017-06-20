@@ -121,7 +121,7 @@ class JQNetworkProcessor: public QObject
     Q_DISABLE_COPY( JQNetworkProcessor )
 
 public:
-    JQNetworkProcessor() = default;
+    JQNetworkProcessor(const bool &invokeMethodByProcessorThread = false);
 
     ~JQNetworkProcessor() = default;
 
@@ -151,6 +151,8 @@ private:
 
 private:
     static QSet< QString > exceptionSlots_;
+
+    bool invokeMethodByProcessorThread_;
 
     QSet< QString > availableSlots_;
     QMap< QThread *, JQNetworkConnectPointer > connectMapByThread_;

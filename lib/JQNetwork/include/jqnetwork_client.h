@@ -30,8 +30,8 @@ struct JQNetworkClientSettings
     std::function< void( const JQNetworkConnectPointer &, const QString &hostName, const quint16 &port, const qint32 &, const qint64 &, const qint64 &, const qint64 & ) > packageReceivingCallback = nullptr;
     std::function< void( const JQNetworkConnectPointer &, const QString &hostName, const quint16 &port, const JQNetworkPackageSharedPointer & ) > packageReceivedCallback = nullptr;
 
-    int globalSocketThreadCount = JQNETWORK_ADVISE_THREADCOUNT;
-    int globalProcessorThreadCount = 1;
+    int globalSocketThreadCount = 1;
+    int globalCallbackThreadCount = JQNETWORK_ADVISE_THREADCOUNT;
 };
 
 class JQNetworkClient: public QObject

@@ -93,7 +93,7 @@ bool JQNetworkClient::begin()
     }
     else
     {
-        callbackThreadPool_ = QSharedPointer< JQNetworkThreadPool >( new JQNetworkThreadPool( clientSettings_->globalProcessorThreadCount ) );
+        callbackThreadPool_ = QSharedPointer< JQNetworkThreadPool >( new JQNetworkThreadPool( clientSettings_->globalCallbackThreadCount ) );
         globalCallbackThreadPool_ = callbackThreadPool_.toWeakRef();
     }
 

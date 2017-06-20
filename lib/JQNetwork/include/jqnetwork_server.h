@@ -34,7 +34,7 @@ struct JQNetworkServerSettings
 
     int globalServerThreadCount = 1;
     int globalSocketThreadCount = JQNETWORK_ADVISE_THREADCOUNT;
-    int globalProcessorThreadCount = JQNETWORK_ADVISE_THREADCOUNT;
+    int globalCallbackThreadCount = JQNETWORK_ADVISE_THREADCOUNT;
 };
 
 class JQNetworkServer: public QObject

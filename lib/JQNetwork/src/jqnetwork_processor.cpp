@@ -30,6 +30,17 @@
 // JQNetworkProcessor
 QSet< QString > JQNetworkProcessor::exceptionSlots_( { "deleteLater", "_q_reregisterTimers" } );
 
+JQNetworkProcessor::JQNetworkProcessor(const bool &invokeMethodByProcessorThread):
+    invokeMethodByProcessorThread_( invokeMethodByProcessorThread )
+{
+    static bool flag = true;
+    if ( flag )
+    {
+        flag = false;
+        qRegisterMetaType< QVariantMap >( "QVariantMap" );
+    }
+}
+
 QSet< QString > JQNetworkProcessor::availableSlots()
 {
     if ( !availableSlots_.isEmpty() ) { return availableSlots_; }
@@ -371,7 +382,7 @@ QSet< QString > JQNetworkProcessor::availableSlots()
             const auto &&invokeMethodReply = QMetaObject::invokeMethod(
                         this,
                         methodName.data(),
-                        Qt::DirectConnection,
+                        ( ( invokeMethodByProcessorThread_ ) ? ( Qt::QueuedConnection ) : ( Qt::DirectConnection ) ),
                         ( ( receiveArgumentMaker ) ? ( ( *receiveArgumentMaker )( receiveArg, package ) ) : ( QGenericArgument() ) ),
                         ( ( sendArgumentMaker ) ? ( ( *sendArgumentMaker )( sendArg ) ) : ( QGenericArgument() ) ),
                         ( ( receiveAppendArgumentMaker ) ? ( ( *receiveAppendArgumentMaker )( receiveAppendArg, package ) ) : ( QGenericArgument() ) ),
