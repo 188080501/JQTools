@@ -37,6 +37,7 @@
 
 // Qt lib import
 #include <QCoreApplication>
+#include <QSharedPointer>
 #include <QMutex>
 #include <QCryptographicHash>
 #include <QSettings>
@@ -183,7 +184,7 @@ QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, co
 
 QJsonObject jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix = QJsonObject());
 
-void setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
+QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
 
 void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
 
@@ -223,10 +224,6 @@ void setWidgetColor(QWidget *label, const QColor &color);
 void texetEditMoveCursorToEnd(QTextEdit *textEdit);
 
 void textEditAppendTextToEnd(QTextEdit *textEdit, const QString &string);
-
-QPoint getWidgetGlobalPos(const QWidget *widget);
-
-QRect getWidgetGlobalGeometry(const QWidget *widget);
 
 QWidget *topParentWidget(QWidget *widget);
 

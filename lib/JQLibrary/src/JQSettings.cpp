@@ -41,10 +41,10 @@ QString JQSettings::documentsPath(const QString &projectName, const QString &pro
 
 #if (defined Q_OS_IOS)
 
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    QDir dir( QStandardPaths::writableLocation( QStandardPaths::TempLocation ) );
     dir.cdUp();
-    dir.cd("Library");
-    dir.cd("Preferences");
+    dir.cd( "Library" );
+    dir.cd( "Preferences" );
     return dir.path() + "/";
 
 #elif (defined Q_OS_ANDROID)
@@ -53,20 +53,20 @@ QString JQSettings::documentsPath(const QString &projectName, const QString &pro
 
 #elif (defined Q_OS_MAC)
 
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    QDir dir( QStandardPaths::writableLocation( QStandardPaths::TempLocation ) );
     dir.cdUp();
-    dir.cd("C");
+    dir.cd( "C" );
     return dir.path() + "/" + projectGroupName + "_" + projectName + "/";
 
 #elif (defined Q_OS_WIN)
 
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    QDir dir( QStandardPaths::writableLocation( QStandardPaths::AppDataLocation ) );
     dir.cdUp();
     return dir.path() + "/" + projectGroupName + "_" + projectName + "/";
 
 #else
 
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    QDir dir( QStandardPaths::writableLocation( QStandardPaths::TempLocation ) );
     return dir.path() + "/" + projectGroupName + "_" + projectName + "/";
 
 #endif

@@ -57,9 +57,7 @@ using namespace JQFoundation;
 void JQFoundation::setRenderLoop()
 {
 #ifdef Q_OS_WIN
-
     qputenv( "QSG_RENDER_LOOP", "basic" );
-
 #endif
 }
 
@@ -152,24 +150,27 @@ QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const char *left
     return JQFoundation::jsonFilter( source, QStringList( { leftKey } ), mix );
 }
 
-void JQFoundation::setTimerCallback(const int &interval, const std::function<void (const QPointer< QTimer > &)> &callback, const bool &callbackOnStart)
+QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, const std::function<void (const QPointer< QTimer > &)> &callback, const bool &callbackOnStart)
 {
-    auto timer = new QTimer;
-    QObject::connect(timer, &QTimer::timeout, [=]()
+    QSharedPointer< QTimer > timer( new QTimer );
+
+    QObject::connect( timer.data(), &QTimer::timeout, [ timer, callback ]()
     {
-        callback( { timer } );
+        callback( { timer.data() } );
         timer->start();
-    });
+    } );
 
-    timer->setInterval(interval);
-    timer->setSingleShot(true);
+    timer->setInterval( interval );
+    timer->setSingleShot( true );
 
-    if (callbackOnStart)
+    if ( callbackOnStart )
     {
-        callback( { timer } );
+        callback( { timer.data() } );
     }
 
     timer->start();
+
+    return timer;
 }
 
 void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool &argDateFlag_)
@@ -490,47 +491,11 @@ void JQFoundation::textEditAppendTextToEnd(QTextEdit *textEdit, const QString &s
     JQFoundation::texetEditMoveCursorToEnd(textEdit);
 }
 
-QPoint JQFoundation::getWidgetGlobalPos(const QWidget *widget)
-{
-    if (!widget)
-    {
-        return QPoint(-1,-1);
-    }
-
-    float px = 0;
-    float py = 0;
-    QWidget const *parent = widget;
-    QWidget const *preParent = nullptr;
-
-    do
-    {
-        QPoint p = parent->pos();
-        px += p.x();
-        py += p.y();
-        preParent = parent;
-        parent = parent->parentWidget();
-    }
-    while (parent);
-
-    QSize size = preParent->frameSize();
-    QSize size2 = preParent->size();
-    px = px + (size.width() - size2.width()) / 2;
-    py = py + (size.height() - size2.height() - (size.width() - size2.width()) / 2);
-
-    QPoint pr(px, py);
-    return pr;
-}
-
-QRect JQFoundation::getWidgetGlobalGeometry(const QWidget *widget)
-{
-    return QRect(getWidgetGlobalPos(widget), widget->size());
-}
-
 QWidget *JQFoundation::topParentWidget(QWidget *widget)
 {
     QWidget *parent = widget;
 
-    while (parent->parentWidget())
+    while ( parent->parentWidget() )
     {
         parent = parent->parentWidget();
     }
@@ -552,26 +517,26 @@ const QWidget *JQFoundation::topParentWidget(const QWidget *widget)
 
 void JQFoundation::lineEditSetToIPLineEdit(QLineEdit *lineEdit)
 {
-    lineEdit->setValidator(new QRegExpValidator(QRegExp("^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$")));
+    lineEdit->setValidator( new QRegExpValidator( QRegExp( "^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$" ) ) );
 }
 
 void JQFoundation::lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit)
 {
-    lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9a-zA-Z]+")));
+    lineEdit->setValidator( new QRegExpValidator( QRegExp( "[0-9a-zA-Z]+" ) ) );
 }
 
 void JQFoundation::lineEditSetTo09LineEdit(QLineEdit *lineEdit)
 {
-    lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]+")));
+    lineEdit->setValidator( new QRegExpValidator( QRegExp( "[0-9]+" ) ) );
 }
 
 void JQFoundation::widgetSetToTransparent(QWidget *target)
 {
-    target->setAttribute(Qt::WA_TranslucentBackground, true);
-    target->setAttribute(Qt::WA_NoSystemBackground, false);
-    target->setWindowFlags(Qt::FramelessWindowHint);
-    target->setStyleSheet(target->styleSheet() + QString("\nQWidget#%1 { background-color: transparent; }").arg(target->objectName()));
-    target->setUpdatesEnabled(true);
+    target->setAttribute( Qt::WA_TranslucentBackground, true );
+    target->setAttribute( Qt::WA_NoSystemBackground, false );
+    target->setWindowFlags( Qt::FramelessWindowHint );
+    target->setStyleSheet( target->styleSheet() + QString( "\nQWidget#%1 { background-color: transparent; }" ).arg( target->objectName() ) );
+    target->setUpdatesEnabled( true );
 }
 #endif
 
@@ -584,34 +549,34 @@ BeforMain::BeforMain(const std::function<void ()> &funcation)
 
 // ReadyExit
 ReadyExit::ReadyExit(const QString &message):
-    message_(message)
+    message_( message )
 { }
 
 // ShowInformationMessageBoxFromOtherThread
 #ifdef QT_WIDGETS_LIB
 ShowInformationMessageBoxFromOtherThread::ShowInformationMessageBoxFromOtherThread(const QString &title, const QString &message):
-    title_(title),
-    message_(message)
+    title_( title ),
+    message_( message )
 { }
 
 void ShowInformationMessageBoxFromOtherThread::show(const QString &title, const QString &message)
 {
     QEventLoop eventLoop;
     auto messageBox = new ShowInformationMessageBoxFromOtherThread(title, message);
-    connect(messageBox, &ShowInformationMessageBoxFromOtherThread::destroyed, &eventLoop, &QEventLoop::quit);
+    connect( messageBox, &ShowInformationMessageBoxFromOtherThread::destroyed, &eventLoop, &QEventLoop::quit );
     messageBox->readyShow();
     eventLoop.exec();
 }
 
 void ShowInformationMessageBoxFromOtherThread::readyShow()
 {
-    this->moveToThread(qApp->thread());
-    QTimer::singleShot(0, this, SLOT(onShow()));
+    this->moveToThread( qApp->thread() );
+    QTimer::singleShot( 0, this, &ShowInformationMessageBoxFromOtherThread::onShow );
 }
 
 void ShowInformationMessageBoxFromOtherThread::onShow()
 {
-    QMessageBox::information(nullptr, title_, message_);
+    QMessageBox::information( nullptr, title_, message_ );
     this->deleteLater();
 }
 #endif
@@ -623,11 +588,13 @@ ConnectionManage::ConnectionManage()
 ConnectionManage::~ConnectionManage()
 {
     disconnectAll();
-    if (vectorData_)
+
+    if ( vectorData_ )
     {
         delete vectorData_;
     }
-    if (mapData_)
+
+    if ( mapData_ )
     {
         delete mapData_;
     }
@@ -637,40 +604,41 @@ void ConnectionManage::push(const QMetaObject::Connection &connection)
 {
     if (!vectorData_)
     {
-        vectorData_ = new QVector<QMetaObject::Connection>;
+        vectorData_ = new QVector< QMetaObject::Connection >;
     }
 
-    vectorData_->push_back(connection);
+    vectorData_->push_back( connection );
 }
 
 void ConnectionManage::insert(const QString &key, const QMetaObject::Connection &connection)
 {
-    if (!mapData_)
+    if ( !mapData_ )
     {
-        mapData_ = new QMap<QString, QMetaObject::Connection>;
+        mapData_ = new QMap< QString, QMetaObject::Connection >;
     }
 
-    mapData_->insert(key, connection);
+    mapData_->insert( key, connection );
 }
 
 void ConnectionManage::remove(const QString &key)
 {
-    mapData_->erase(mapData_->find(key));
+    mapData_->erase( mapData_->find( key ) );
 }
 
 void ConnectionManage::disconnectAll()
 {
     if (vectorData_)
     {
-        for (auto &connection: *vectorData_)
+        for ( auto &connection: *vectorData_ )
         {
-            QObject::disconnect(connection);
+            QObject::disconnect( connection );
         }
         vectorData_->clear();
     }
-    if (mapData_)
+
+    if ( mapData_ )
     {
-        for (auto &connection: *mapData_)
+        for ( auto &connection: *mapData_ )
         {
             QObject::disconnect(connection);
         }
@@ -687,7 +655,7 @@ void ConnectionManage::deleteLater()
 ThreadHelper::ThreadHelper(QMutex *&mutexForWait):
     mutexForWait_(mutexForWait)
 {
-    connect(this, &ThreadHelper::readyRun, this, &ThreadHelper::onRun, Qt::QueuedConnection);
+    connect( this, &ThreadHelper::readyRun, this, &ThreadHelper::onRun, Qt::QueuedConnection );
 }
 
 void ThreadHelper::run(const std::function<void ()> &callback)
@@ -703,7 +671,7 @@ void ThreadHelper::run(const std::function<void ()> &callback)
 
 void ThreadHelper::onRun()
 {
-    if (!waitCallbacks_.isEmpty())
+    if ( !waitCallbacks_.isEmpty() )
     {
         mutex_.lock();
 
@@ -714,7 +682,7 @@ void ThreadHelper::onRun()
 
         callback();
 
-        if (mutexForWait_)
+        if ( mutexForWait_ )
         {
             mutexForWait_->unlock();
         }
@@ -729,9 +697,9 @@ Thread::Thread()
 
 Thread::~Thread()
 {
-    for (auto index = 0; (index < 200) && !this->isRunning(); index++)
+    for ( auto index = 0; ( index < 200 ) && !this->isRunning(); ++index )
     {
-        QThread::msleep(10);
+        QThread::msleep( 10 );
     }
 
     this->quit();
@@ -746,9 +714,9 @@ void Thread::start(const std::function<void ()> &callback)
 
 void Thread::waitForStart(const std::function<void ()> &callback)
 {
-    if (mutexForWait_)
+    if ( mutexForWait_ )
     {
-        qDebug("JQ_Thread::start: error");
+        qDebug( "Thread::start: error" );
         return;
     }
 
@@ -757,7 +725,7 @@ void Thread::waitForStart(const std::function<void ()> &callback)
 
     this->start(callback);
 
-    if (mutexForWait_)
+    if ( mutexForWait_ )
     {
         mutexForWait_->lock();
         mutexForWait_->unlock();
@@ -768,7 +736,7 @@ void Thread::waitForStart(const std::function<void ()> &callback)
 
 void Thread::waitForRunning()
 {
-    for (auto index = 0; (index < 200) && !helper_; index++)
+    for ( auto index = 0; (index < 200) && !helper_; ++index )
     {
         QThread::msleep(10);
     }
@@ -776,26 +744,26 @@ void Thread::waitForRunning()
 
 void Thread::run()
 {
-    helper_ = new ThreadHelper(mutexForWait_);
+    helper_ = new ThreadHelper( mutexForWait_ );
     this->exec();
     delete helper_;
     helper_ = nullptr;
 
     QEventLoop eventLoop;
-    while (eventLoop.processEvents(QEventLoop::ExcludeUserInputEvents));
+    while ( eventLoop.processEvents( QEventLoop::ExcludeUserInputEvents ) );
 }
 
 // InvokeFromThreadHelper
 void InvokeFromThreadHelper::addCallback(const std::function<void ()> &callback)
 {
     mutex_.lock();
-    waitCallbacks_.push_back(callback);
+    waitCallbacks_.push_back( callback );
     mutex_.unlock();
 }
 
 void InvokeFromThreadHelper::onRun()
 {
-    if (!waitCallbacks_.isEmpty())
+    if ( !waitCallbacks_.isEmpty() )
     {
         mutex_.lock();
 
@@ -814,7 +782,7 @@ QMap< QThread *, InvokeFromThreadHelper * > InvokeFromThread::helpers_;
 
 void InvokeFromThread::invoke(QThread *thread, const std::function<void ()> &callback)
 {
-    if (!(thread->isRunning()))
+    if ( !thread->isRunning() )
     {
         qDebug() << "InvokeFromThread::invoke: Target thread" << thread << "is not running!";
         return;
@@ -822,40 +790,40 @@ void InvokeFromThread::invoke(QThread *thread, const std::function<void ()> &cal
 
     mutex_.lock();
 
-    auto it = helpers_.find(thread);
+    auto it = helpers_.find( thread );
 
-    if (it == helpers_.end())
+    if ( it == helpers_.end() )
     {
         auto helper = new InvokeFromThreadHelper;
-        helper->moveToThread(thread);
+        helper->moveToThread( thread );
 
-        QObject::connect(thread, &QThread::finished, [=]()
+        QObject::connect( thread, &QThread::finished, [=]()
         {
             mutex_.lock();
 
-            auto it = helpers_.find(thread);
-            if (it != helpers_.end())
+            auto it = helpers_.find( thread );
+            if ( it != helpers_.end() )
             {
-                helpers_.erase(it);
+                helpers_.erase( it );
             }
 
             mutex_.unlock();
-        });
+        } );
 
         helpers_.insert( thread, helper );
-        it = helpers_.find(thread);
+        it = helpers_.find( thread );
     }
 
-    it.value()->addCallback(callback);
+    it.value()->addCallback( callback );
 
-    QMetaObject::invokeMethod(it.value(), "onRun", Qt::QueuedConnection);
+    QMetaObject::invokeMethod( it.value(), "onRun", Qt::QueuedConnection );
 
     mutex_.unlock();
 }
 
 void InvokeFromThread::waitForInvoke(QThread *thread, const std::function<void ()> &callback)
 {
-    if (!(thread->isRunning()))
+    if ( !thread->isRunning() )
     {
         qDebug() << "InvokeFromThread::waitForInvoke: Target thread" << thread << "is not running!";
         return;
@@ -863,9 +831,9 @@ void InvokeFromThread::waitForInvoke(QThread *thread, const std::function<void (
 
     mutex_.lock();
 
-    auto it = helpers_.find(thread);
+    auto it = helpers_.find( thread );
 
-    if (it == helpers_.end())
+    if ( it == helpers_.end() )
     {
         auto helper = new InvokeFromThreadHelper;
         helper->moveToThread(thread);
@@ -874,26 +842,26 @@ void InvokeFromThread::waitForInvoke(QThread *thread, const std::function<void (
         {
             mutex_.lock();
 
-            auto it = helpers_.find(thread);
-            if (it != helpers_.end())
+            auto it = helpers_.find( thread );
+            if ( it != helpers_.end() )
             {
                 helpers_.erase(it);
             }
 
             mutex_.unlock();
-        });
+        } );
 
         helpers_.insert( thread, helper );
-        it = helpers_.find(thread);
+        it = helpers_.find( thread );
     }
 
-    it.value()->addCallback([&]()
+    it.value()->addCallback( [&]()
     {
         mutex_.unlock();
         callback();
-    });
+    } );
 
-    QMetaObject::invokeMethod(it.value(), "onRun", Qt::QueuedConnection);
+    QMetaObject::invokeMethod( it.value(), "onRun", Qt::QueuedConnection );
 
     mutex_.lock();
     mutex_.unlock();
