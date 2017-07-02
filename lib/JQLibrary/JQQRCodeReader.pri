@@ -265,7 +265,7 @@ equals(JQQRCODEREADER_COMPILE_MODE,SRC) {
         $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/decoder/DataMatrixDecoder.cpp \
         $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/decoder/DataMatrixBitMatrixParser.cpp \
         $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/decoder/DataMatrixDataBlock.cpp \
-        $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/decoder/DataMatrixDecodedBitStreamParser.cpp \
+        $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/decoder/DataMatrixDecodedBitSP.cpp \
         $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/detector/DataMatrixCornerPoint.cpp \
         $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/detector/DataMatrixDetector.cpp \
         $$PWD/src/JQQRCodeReader/zxing/zxing/datamatrix/detector/DataMatrixDetectorException.cpp \
