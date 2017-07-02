@@ -14,7 +14,7 @@ INCLUDEPATH *= \
     $$PWD/include/JQQRCodeReader/
 
 # 定义JQQRCodeReader的版本
-JQQRCODEREADER_VERSIONSTRING = 1.1
+JQQRCODEREADER_VERSIONSTRING = 1.2
 
 # 判断Qt版本，小于等于5.6就报错
 lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {

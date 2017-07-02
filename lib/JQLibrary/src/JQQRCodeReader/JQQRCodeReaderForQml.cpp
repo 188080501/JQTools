@@ -20,15 +20,18 @@
 // Qt lib import
 #include <QDebug>
 #include <QImage>
+#include <QSemaphore>
 #include <QThreadPool>
 #include <QtConcurrent>
 #include <QQuickItem>
 #include <QQuickItemGrabResult>
 
 JQQRCodeReaderForQmlManage::JQQRCodeReaderForQmlManage():
-    threadPool_( new QThreadPool )
+    threadPool_( new QThreadPool ),
+    semaphore_( new QSemaphore )
 {
-    threadPool_->setMaxThreadCount( 1 );
+    threadPool_->setMaxThreadCount( std::max( QThread::idealThreadCount() - 1, 1 ) );
+    semaphore_->release( threadPool_->maxThreadCount() );
 }
 
 JQQRCodeReaderForQmlManage::~JQQRCodeReaderForQmlManage()
@@ -38,16 +41,13 @@ JQQRCodeReaderForQmlManage::~JQQRCodeReaderForQmlManage()
 
 void JQQRCodeReaderForQmlManage::analysisItem(QQuickItem *item)
 {
-    if ( quickItemGrabResult_ )
-    {
-        return;
-    }
+    if ( !semaphore_->tryAcquire( 1 ) ) { return; }
 
-    quickItemGrabResult_ = item->grabToImage();
+    auto result = item->grabToImage();
 
-    connect( quickItemGrabResult_.data(), &QQuickItemGrabResult::ready, [ this ]()
+    connect( result.data(), &QQuickItemGrabResult::ready, [ this, result ]()
     {
-        const auto image = this->quickItemGrabResult_->image();
+        const auto image = result->image();
 
         QtConcurrent::run( [ this, image ]()
         {
@@ -73,7 +73,7 @@ void JQQRCodeReaderForQmlManage::analysisItem(QQuickItem *item)
 
             this->decodeImage( buf, this->decodeQrCodeType_ );
 
-            quickItemGrabResult_.reset();
+            semaphore_->release( 1 );
         } );
     } );
 }

@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQQRCodeReaderForQml_h__
-#define __JQQRCodeReaderForQml_h__
+#ifndef JQQRCODEREADERFORQML_H_
+#define JQQRCODEREADERFORQML_H_
 
 // Qt lib import
 #include <QObject>
@@ -33,6 +33,7 @@
 #endif
 
 class QThreadPool;
+class QSemaphore;
 class QQuickItem;
 class QQuickItemGrabResult;
 
@@ -52,6 +53,7 @@ public slots:
 
 private:
     QSharedPointer< QThreadPool > threadPool_;
+    QSharedPointer< QSemaphore > semaphore_;
     QSharedPointer< QQuickItemGrabResult > quickItemGrabResult_;
 
     // Property code start
@@ -64,5 +66,5 @@ private:
     // Property code end
 };
 
-#endif//__JQQRCodeReaderForQml_h__
+#endif//JQQRCODEREADERFORQML_H_
 

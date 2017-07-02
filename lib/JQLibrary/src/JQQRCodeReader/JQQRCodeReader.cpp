@@ -175,6 +175,8 @@ QString JQQRCodeReader::decodeImage(const QImage &image, const int &decodeType)
         QMetaObject::invokeMethod( this, "tagFound", Qt::QueuedConnection, Q_ARG( QString, string ) );
         QMetaObject::invokeMethod( this, "decodingFinished", Qt::QueuedConnection, Q_ARG( bool, true ) );
 
+//        qDebug() << image.save( QString( "/Users/jason/Desktop/%1.png" ).arg( QDateTime::currentMSecsSinceEpoch() ), "PNG" );
+
         semaphore_->release( 1 );
         return string;
     }

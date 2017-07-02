@@ -20,8 +20,8 @@
     https://github.com/ftylitak/qzxing
 */
 
-#ifndef __JQQRCodeReader_h__
-#define __JQQRCodeReader_h__
+#ifndef JQQRCODEREADER_H_
+#define JQQRCODEREADER_H_
 
 // Qt lib import
 #include <QObject>
@@ -64,7 +64,7 @@ public:
     ~JQQRCodeReader();
 
 public slots:
-    QString decodeImage(const QImage &image, const int &decodeType = ( int )DecodeQrCodeType);
+    QString decodeImage(const QImage &image, const int &decodeType = static_cast< int >( DecodeQrCodeType ) );
 
 signals:
     void decodingStarted();
@@ -78,5 +78,5 @@ private:
     QSharedPointer< QSemaphore > semaphore_;
 };
 
-#endif//__JQQRCodeReader_h__
+#endif//JQQRCODEREADER_H_
 
