@@ -14,7 +14,7 @@ INCLUDEPATH *= \
     $$PWD/include/JQQRCodeWriter/
 
 # 定义JQQRCodeWriter的版本
-JQQRCODEWRITER_VERSIONSTRING = 1.2
+JQQRCODEWRITER_VERSIONSTRING = 1.3
 
 # 判断Qt版本，小于等于5.6就报错
 lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {
