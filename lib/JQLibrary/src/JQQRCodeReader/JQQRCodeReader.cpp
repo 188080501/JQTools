@@ -27,6 +27,7 @@
 #include <QImage>
 #include <QMetaObject>
 #include <QSemaphore>
+#include <QThread>
 
 // zxing lib import
 #include "zxing/common/GlobalHistogramBinarizer.h"
@@ -36,7 +37,7 @@
 #include "zxing/DecodeHints.h"
 #include "zxing/LuminanceSource.h"
 
-// CameraImageWrapper
+// ImageWrapper
 class ImageWrapper: public zxing::LuminanceSource
 {
     Q_DISABLE_COPY( ImageWrapper )
@@ -47,34 +48,7 @@ public:
         image_( sourceImage )
     { }
 
-    ~ImageWrapper() = default;
-
-    inline int getWidth() const { return image_.width(); }
-
-    inline int getHeight() const { return image_.height(); }
-
-    unsigned char getPixel(int x, int y) const
-    {
-        QRgb pixel = image_.pixel( x,y );
-
-        return qGray( pixel ); //((qRed(pixel) + qGreen(pixel) + qBlue(pixel)) / 3);
-    }
-
-    unsigned char *copyMatrix() const
-    {
-        unsigned char* newMatrix = ( unsigned char * )malloc( image_.width() * image_.height() * sizeof( unsigned char ) );
-
-        int cnt = 0;
-        for( int i = 0; i < image_.width(); ++i )
-        {
-            for( int j = 0; j < image_.height(); ++j )
-            {
-                newMatrix[ cnt++ ] = getPixel( i, j );
-            }
-        }
-
-        return newMatrix;
-    }
+    virtual ~ImageWrapper() = default;
 
     // Callers take ownership of the returned memory and must call delete [] on it themselves.
     zxing::ArrayRef< char > getRow(int y, zxing::ArrayRef< char > row) const
@@ -88,7 +62,7 @@ public:
 
         for ( int x = 0; x < width; ++x )
         {
-            row[ x ] = getPixel( x, y );
+            row[ x ] = static_cast< char >( qGray( image_.pixel( x,y ) ) );
         }
 
         return row;
@@ -96,8 +70,8 @@ public:
 
     zxing::ArrayRef< char > getMatrix() const
     {
-        int width = getWidth();
-        int height = getHeight();
+        int width = image_.width();
+        int height = image_.height();
         char *matrix = new char[ width * height ];
         char *m = matrix;
 
@@ -156,35 +130,34 @@ QString JQQRCodeReader::decodeImage(const QImage &image, const int &decodeType)
         return { };
     }
 
+    auto ciw = new ImageWrapper( image );
+
+    zxing::Ref< zxing::LuminanceSource > imageRef( ciw );
+    zxing::GlobalHistogramBinarizer* binz = new zxing::GlobalHistogramBinarizer( imageRef );
+
+    zxing::Ref< zxing::Binarizer > bz( binz );
+    zxing::BinaryBitmap *bb = new zxing::BinaryBitmap( bz );
+
+    zxing::Ref< zxing::BinaryBitmap > ref( bb );
+
     try
     {
-        auto ciw = new ImageWrapper( image );
-
-        zxing::Ref< zxing::LuminanceSource > imageRef( ciw );
-        zxing::GlobalHistogramBinarizer* binz = new zxing::GlobalHistogramBinarizer( imageRef );
-
-        zxing::Ref< zxing::Binarizer > bz( binz );
-        zxing::BinaryBitmap *bb = new zxing::BinaryBitmap( bz );
-
-        zxing::Ref< zxing::BinaryBitmap > ref( bb );
-
-        res = decoder_->decode( ref, ( zxing::DecodeHints )decodeType );
+        res = decoder_->decode( ref, static_cast< zxing::DecodeHints >( static_cast< unsigned int >( decodeType ) ) );
 
         QString string = QString( res->getText()->getText().c_str() );
 
         QMetaObject::invokeMethod( this, "tagFound", Qt::QueuedConnection, Q_ARG( QString, string ) );
         QMetaObject::invokeMethod( this, "decodingFinished", Qt::QueuedConnection, Q_ARG( bool, true ) );
 
-//        qDebug() << image.save( QString( "/Users/jason/Desktop/%1.png" ).arg( QDateTime::currentMSecsSinceEpoch() ), "PNG" );
-
         semaphore_->release( 1 );
         return string;
     }
-    catch(zxing::Exception &)
+    catch ( zxing::Exception & )
     {
         QMetaObject::invokeMethod( this, "decodingFinished", Qt::QueuedConnection, Q_ARG( bool, false ) );
 
         semaphore_->release( 1 );
-        return { };
     }
+
+    return { };
 }

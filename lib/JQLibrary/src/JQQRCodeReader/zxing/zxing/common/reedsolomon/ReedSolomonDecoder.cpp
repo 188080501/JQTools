@@ -40,7 +40,7 @@ ReedSolomonDecoder::~ReedSolomonDecoder() {
 }
 
 void ReedSolomonDecoder::decode(ArrayRef<int> received, int twoS) {
-  Ref<GenericGFPoly> poly(new GenericGFPoly(field, received));
+  Ref<GenericGFPoly> poly(new GenericGFPoly(*field, received));
   ArrayRef<int> syndromeCoefficients(twoS);
   bool noError = true;
   for (int i = 0; i < twoS; i++) {
@@ -53,7 +53,7 @@ void ReedSolomonDecoder::decode(ArrayRef<int> received, int twoS) {
   if (noError) {
     return;
   }
-  Ref<GenericGFPoly> syndrome(new GenericGFPoly(field, syndromeCoefficients));
+  Ref<GenericGFPoly> syndrome(new GenericGFPoly(*field, syndromeCoefficients));
   vector<Ref<GenericGFPoly> > sigmaOmega =
     runEuclideanAlgorithm(field->buildMonomial(twoS, 1), syndrome, twoS);
   Ref<GenericGFPoly> sigma = sigmaOmega[0];

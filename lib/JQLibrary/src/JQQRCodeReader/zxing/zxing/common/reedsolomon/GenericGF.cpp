@@ -67,10 +67,10 @@ void GenericGF::initialize() {
   }
   //logTable[0] == 0 but this should never be used
   zero =
-    Ref<GenericGFPoly>(new GenericGFPoly(Ref<GenericGF>(this), ArrayRef<int>(new Array<int>(1))));
+    Ref<GenericGFPoly>(new GenericGFPoly(*this, ArrayRef<int>(new Array<int>(1))));
   zero->getCoefficients()[0] = 0;
   one =
-    Ref<GenericGFPoly>(new GenericGFPoly(Ref<GenericGF>(this), ArrayRef<int>(new Array<int>(1))));
+    Ref<GenericGFPoly>(new GenericGFPoly(*this, ArrayRef<int>(new Array<int>(1))));
   one->getCoefficients()[0] = 1;
   initialized = true;
 }
@@ -103,7 +103,7 @@ Ref<GenericGFPoly> GenericGF::buildMonomial(int degree, int coefficient) {
   ArrayRef<int> coefficients(new Array<int>(degree + 1));
   coefficients[0] = coefficient;
     
-  return Ref<GenericGFPoly>(new GenericGFPoly(Ref<GenericGF>(this), coefficients));
+  return Ref<GenericGFPoly>(new GenericGFPoly(*this, coefficients));
 }
   
 int GenericGF::addOrSubtract(int a, int b) {

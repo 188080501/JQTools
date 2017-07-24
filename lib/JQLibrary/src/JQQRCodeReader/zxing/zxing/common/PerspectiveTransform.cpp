@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  PerspectiveTransform.cpp
  *  zxing
  *
@@ -87,7 +87,7 @@ Ref<PerspectiveTransform> PerspectiveTransform::times(Ref<PerspectiveTransform> 
 }
 
 void PerspectiveTransform::transformPoints(vector<float> &points) {
-  int max = (int)points.size();
+  int max = points.size();
   for (int i = 0; i < max; i += 2) {
     float x = points[i];
     float y = points[i + 1];

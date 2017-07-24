@@ -1,4 +1,4 @@
-﻿/*
+/*
  * iconv implementation using Win32 API to convert.
  *
  * This file is placed in the public domain.
@@ -759,10 +759,9 @@ win_iconv_open(rec_iconv_t *cd, const char *tocode, const char *fromcode)
 }
 
 static int
-win_iconv_close(iconv_t t)
+win_iconv_close(iconv_t cd)
 {
     return 0;
-    win_iconv_close( t );
 }
 
 static size_t
@@ -784,7 +783,7 @@ win_iconv(iconv_t _cd, char **inbuf, size_t *inbytesleft, char **outbuf, size_t 
         if (outbuf != NULL && *outbuf != NULL && cd->to.flush != NULL)
         {
             tomode = cd->to.mode;
-            outsize = cd->to.flush(&cd->to, (uchar *)*outbuf, (int)*outbytesleft);
+            outsize = cd->to.flush(&cd->to, (uchar *)*outbuf, *outbytesleft);
             if (outsize == -1)
             {
                 if ((cd->to.flags & FLAG_IGNORE) && errno != E2BIG)
@@ -811,7 +810,7 @@ win_iconv(iconv_t _cd, char **inbuf, size_t *inbytesleft, char **outbuf, size_t 
         tomode = cd->to.mode;
         wsize = MB_CHAR_MAX;
 
-        insize = cd->from.mbtowc(&cd->from, (const uchar *)*inbuf, (int)*inbytesleft, wbuf, &wsize);
+        insize = cd->from.mbtowc(&cd->from, (const uchar *)*inbuf, *inbytesleft, wbuf, &wsize);
         if (insize == -1)
         {
             if (cd->to.flags & FLAG_IGNORE)
@@ -862,7 +861,7 @@ win_iconv(iconv_t _cd, char **inbuf, size_t *inbytesleft, char **outbuf, size_t 
             }
         }
 
-        outsize = cd->to.wctomb(&cd->to, wbuf, wsize, (uchar *)*outbuf, (int)*outbytesleft);
+        outsize = cd->to.wctomb(&cd->to, wbuf, wsize, (uchar *)*outbuf, *outbytesleft);
         if (outsize == -1)
         {
             if ((cd->to.flags & FLAG_IGNORE) && errno != E2BIG)
@@ -1084,7 +1083,7 @@ must_use_null_useddefaultchar(int codepage)
 static char *
 strrstr(const char *str, const char *token)
 {
-    int len = (int)strlen(token);
+    int len = strlen(token);
     const char *p = str + strlen(str);
 
     while (str <= --p)
@@ -1257,7 +1256,6 @@ static int
 sbcs_mblen(csconv_t *cv, const uchar *buf, int bufsize)
 {
     return 1;
-    sbcs_mblen( cv, buf, bufsize );
 }
 
 static int
@@ -1292,7 +1290,7 @@ mbcs_mblen(csconv_t *cv, const uchar *buf, int bufsize)
 }
 
 static int
-utf8_mblen(csconv_t *t, const uchar *buf, int bufsize)
+utf8_mblen(csconv_t *cv, const uchar *buf, int bufsize)
 {
     int len = 0;
 
@@ -1308,11 +1306,10 @@ utf8_mblen(csconv_t *t, const uchar *buf, int bufsize)
     else if (bufsize < len)
         return seterror(EINVAL);
     return len;
-    utf8_mblen( t, buf, bufsize );
 }
 
 static int
-eucjp_mblen(csconv_t *t, const uchar *buf, int bufsize)
+eucjp_mblen(csconv_t *cv, const uchar *buf, int bufsize)
 {
     if (buf[0] < 0x80) /* ASCII */
         return 1;
@@ -1342,7 +1339,6 @@ eucjp_mblen(csconv_t *t, const uchar *buf, int bufsize)
             return seterror(EILSEQ);
         return 2;
     }
-    utf8_mblen( t, buf, bufsize );
 }
 
 static int
@@ -1546,7 +1542,7 @@ static int
 utf32_mbtowc(csconv_t *cv, const uchar *buf, int bufsize, ushort *wbuf, int *wbufsize)
 {
     int codepage = cv->codepage;
-    uint wc = 0;
+    uint wc;
 
     /* swap endian: 12000 <-> 12001 */
     if (cv->mode & UNICODE_MODE_SWAPPED)
@@ -1772,8 +1768,8 @@ iso2022jp_mbtowc(csconv_t *cv, const uchar *buf, int bufsize, ushort *wbuf, int 
         return seterror(EILSEQ);
 
     /* reset the mode for informal sequence */
-    if (cv->mode != (DWORD)ISO2022_MODE(cs, shift))
-        cv->mode = (DWORD)ISO2022_MODE(cs, shift);
+    if (cv->mode != ISO2022_MODE(cs, shift))
+        cv->mode = ISO2022_MODE(cs, shift);
 
     return len;
 }
@@ -1843,7 +1839,7 @@ iso2022jp_wctomb(csconv_t *cv, ushort *wbuf, int wbufsize, uchar *buf, int bufsi
     else if (tmpsize < esc_len + len)
         return seterror(EILSEQ);
 
-    if (cv->mode == (DWORD)ISO2022_MODE(cs, shift))
+    if (cv->mode == ISO2022_MODE(cs, shift))
     {
         /* remove escape sequence */
         if (esc_len != 0)

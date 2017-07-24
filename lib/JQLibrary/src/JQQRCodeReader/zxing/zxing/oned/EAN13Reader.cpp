@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -45,7 +45,7 @@ int EAN13Reader::decodeMiddle(Ref<BitArray> row,
   for (int x = 0; x < 6 && rowOffset < end; x++) {
     int bestMatch = decodeDigit(row, counters, rowOffset, L_AND_G_PATTERNS);
     resultString.append(1, (char) ('0' + bestMatch % 10));
-    for (int i = 0, end = (int)counters.size(); i <end; i++) {
+    for (int i = 0, end = counters.size(); i <end; i++) {
       rowOffset += counters[i];
     }
     if (bestMatch >= 10) {
@@ -62,7 +62,7 @@ int EAN13Reader::decodeMiddle(Ref<BitArray> row,
     int bestMatch =
       decodeDigit(row, counters, rowOffset, L_PATTERNS);
     resultString.append(1, (char) ('0' + bestMatch));
-    for (int i = 0, end = (int)counters.size(); i < end; i++) {
+    for (int i = 0, end = counters.size(); i < end; i++) {
       rowOffset += counters[i];
     }
   }
@@ -73,7 +73,7 @@ void EAN13Reader::determineFirstDigit(std::string& resultString, int lgPatternFo
   // std::cerr << "K " << resultString << " " << lgPatternFound << " " <<FIRST_DIGIT_ENCODINGS << std::endl;
   for (int d = 0; d < 10; d++) {
     if (lgPatternFound == FIRST_DIGIT_ENCODINGS[d]) {
-      resultString.insert((size_t)0, (size_t)1, (char) ('0' + d));
+      resultString.insert(0, 1, (char) ('0' + d));
       return;
     }
   }

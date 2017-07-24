@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -81,7 +81,7 @@ MultiFormatOneDReader::MultiFormatOneDReader(DecodeHints hints) : readers() {
 #include <typeinfo>
 
 Ref<Result> MultiFormatOneDReader::decodeRow(int rowNumber, Ref<BitArray> row) {
-  int size = (int)readers.size();
+  int size = readers.size();
   for (int i = 0; i < size; i++) {
     OneDReader* reader = readers[i];
     try {

@@ -33,7 +33,7 @@ void Exception::deleteMessage() {
 char const* Exception::copy(char const* msg) {
   char* message = 0;
   if (msg) {
-    int l = (int)strlen(msg)+1;
+    int l = static_cast<int>(strlen(msg)+1);
     if (l) {
       message = new char[l];
       strcpy(message, msg);

@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  * Copyright 2010, 2012 ZXing authors All rights reserved.
  *
@@ -20,8 +20,7 @@
 #include <zxing/pdf417/decoder/BitMatrixParser.h>
 #include <zxing/NotFoundException.h>
 #include <zxing/common/Point.h>
-#include <cmath>
-#include <qglobal.h>
+#include <algorithm>
 
 using std::map;
 using std::vector;
@@ -36,14 +35,6 @@ using zxing::Point;
 
 // VC++
 using zxing::Line;
-
-//favoritas37-22-01-14-change
-#ifndef Q_CC_MSVC
-const int LinesSampler::MODULES_IN_SYMBOL;
-const int LinesSampler::BARS_IN_SYMBOL;
-const int LinesSampler::POSSIBLE_SYMBOLS;
-const int LinesSampler::BARCODE_START_OFFSET;
-#endif //Q_CC_MSVC
 
 namespace {
 
@@ -157,7 +148,7 @@ Ref<BitMatrix> LinesSampler::sample() {
   detectedCodeWords.resize(rowCount);
 
   // XXX
-  Ref<BitMatrix> grid(new BitMatrix(dimension_, (int)detectedCodeWords.size()));
+  Ref<BitMatrix> grid(new BitMatrix(dimension_, detectedCodeWords.size()));
   codewordsToBitMatrix(detectedCodeWords, grid);
 
   return grid;
@@ -387,7 +378,7 @@ void LinesSampler::linesMatrixToCodewords(vector<vector<int> >& clusterNumbers,
       float cwWidth = 0;
 
       // For symbols with 9 bar length simply ignore the last bar.
-      for (int j = 0; j < min(BARS_IN_SYMBOL, cwLength); ++j) {
+      for (int j = 0; j < min((int)LinesSampler::BARS_IN_SYMBOL, cwLength); ++j) {
         cwWidth += (float)barWidths[cwStart + j];
       }
 

@@ -69,6 +69,10 @@ ArrayRef<char> GreyscaleLuminanceSource::getMatrix() const {
   return result;
 }
 
+Ref<LuminanceSource> GreyscaleLuminanceSource::crop(int left, int top, int width, int height) const {
+  return Ref<LuminanceSource>(new GreyscaleLuminanceSource(greyData_, dataWidth_, dataHeight_, left, top, width, height));
+}
+
 Ref<LuminanceSource> GreyscaleLuminanceSource::rotateCounterClockwise() const {
   // Intentionally flip the left, top, width, and height arguments as
   // needed. dataWidth and dataHeight are always kept unrotated.

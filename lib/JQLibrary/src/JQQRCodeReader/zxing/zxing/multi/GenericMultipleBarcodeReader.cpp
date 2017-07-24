@@ -128,7 +128,7 @@ Ref<Result> GenericMultipleBarcodeReader::translateResultPoints(Ref<Result> resu
   if (oldResultPoints->empty()) {
     return result;
   }
-  ArrayRef< Ref<ResultPoint> > newResultPoints;
+  ArrayRef< Ref<ResultPoint> > newResultPoints(new zxing::Array< Ref<ResultPoint> >());
   for (int i = 0; i < oldResultPoints->size(); i++) {
     Ref<ResultPoint> oldPoint = oldResultPoints[i];
     newResultPoints->values().push_back(Ref<ResultPoint>(new ResultPoint(oldPoint->getX() + xOffset, oldPoint->getY() + yOffset)));

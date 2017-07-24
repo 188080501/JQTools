@@ -31,8 +31,7 @@ private:
   Ref<Result> doDecode(Ref<BinaryBitmap> image, DecodeHints hints);
 
 protected:
-  static const int INTEGER_MATH_SHIFT = 8;
-
+ 
   struct Range {
   private:
     int data[2];
@@ -50,15 +49,12 @@ protected:
     }
   };
 
-  static int patternMatchVariance(std::vector<int>& counters,
-                                  std::vector<int> const& pattern,
-                                  int maxIndividualVariance);
-  static int patternMatchVariance(std::vector<int>& counters,
-                                  int const pattern[],
-                                  int maxIndividualVariance);
-
-protected:
-  static const int PATTERN_MATCH_RESULT_SCALE_FACTOR = 1 << INTEGER_MATH_SHIFT;
+  static float patternMatchVariance(std::vector<int>& counters,
+                                    std::vector<int> const& pattern,
+                                    float maxIndividualVariance);
+  static float patternMatchVariance(std::vector<int>& counters,
+                                    int const pattern[],
+                                    float maxIndividualVariance);
 
 public:
 

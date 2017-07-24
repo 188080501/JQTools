@@ -31,15 +31,16 @@ class UPCEANReader : public OneDReader {
   // UPCEANExtensionSupport extensionReader;
   // EANManufacturerOrgSupport eanManSupport;
 
-  static const int MAX_AVG_VARIANCE;
-  static const int MAX_INDIVIDUAL_VARIANCE;
+  static const float MAX_AVG_VARIANCE;
+  static const float MAX_INDIVIDUAL_VARIANCE;
 
   static Range findStartGuardPattern(Ref<BitArray> row);
 
   virtual Range decodeEnd(Ref<BitArray> row, int endStart);
 
   static bool checkStandardUPCEANChecksum(Ref<String> const& s);
-
+  static int  getStandardUPCEANChecksum  (const std::string &s);
+ 
   static Range findGuardPattern(Ref<BitArray> row,
                                 int rowOffset,
                                 bool whiteFirst,

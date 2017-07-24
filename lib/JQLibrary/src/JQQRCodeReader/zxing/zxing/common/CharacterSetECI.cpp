@@ -24,8 +24,8 @@ using std::string;
 using zxing::common::CharacterSetECI;
 using zxing::IllegalArgumentException;
 
-std::map<int, CharacterSetECI*> CharacterSetECI::VALUE_TO_ECI;
-std::map<std::string, CharacterSetECI*> CharacterSetECI::NAME_TO_ECI;
+std::map<int, zxing::Ref<CharacterSetECI> > CharacterSetECI::VALUE_TO_ECI;
+std::map<std::string, zxing::Ref<CharacterSetECI> > CharacterSetECI::NAME_TO_ECI;
 
 const bool CharacterSetECI::inited = CharacterSetECI::init_tables();
 
@@ -72,11 +72,12 @@ bool CharacterSetECI::init_tables() {
 CharacterSetECI::CharacterSetECI(int const* values,
                                  char const* const* names) 
   : values_(values), names_(names) {
+  zxing::Ref<CharacterSetECI> this_ref(this);
   for(int const* values = values_; *values != -1; values++) {
-    VALUE_TO_ECI[*values] = this;
+    VALUE_TO_ECI[*values] = this_ref;
   }
   for(char const* const* names = names_; *names; names++) {
-    NAME_TO_ECI[string(*names)] = this;
+    NAME_TO_ECI[string(*names)] = this_ref;
   }
 }
 

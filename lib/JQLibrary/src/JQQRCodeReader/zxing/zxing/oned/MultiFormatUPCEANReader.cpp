@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  MultiFormatUPCEANReader.cpp
  *  ZXing
@@ -64,7 +64,7 @@ MultiFormatUPCEANReader::MultiFormatUPCEANReader(DecodeHints hints) : readers() 
 Ref<Result> MultiFormatUPCEANReader::decodeRow(int rowNumber, Ref<BitArray> row) {
   // Compute this location once and reuse it on multiple implementations
   UPCEANReader::Range startGuardPattern = UPCEANReader::findStartGuardPattern(row);
-  for (int i = 0, e = (int)readers.size(); i < e; i++) {
+  for (int i = 0, e = readers.size(); i < e; i++) {
     Ref<UPCEANReader> reader = readers[i];
     Ref<Result> result;
     try {

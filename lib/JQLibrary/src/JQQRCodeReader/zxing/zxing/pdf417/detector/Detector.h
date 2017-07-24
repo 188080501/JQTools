@@ -1,5 +1,5 @@
-#ifndef __DETECTOR_H__
-#define __DETECTOR_H__
+#ifndef __DETECTOR_PDF417_H__
+#define __DETECTOR_PDF417_H__
 
 /*
  *  Detector.h
@@ -31,7 +31,7 @@ namespace pdf417 {
 namespace detector {
 
 class Detector {
-private:
+protected:
   static const int INTEGER_MATH_SHIFT = 8;
   static const int PATTERN_MATCH_RESULT_SCALE_FACTOR = 1 << INTEGER_MATH_SHIFT;
   static const int MAX_AVG_VARIANCE;
@@ -103,4 +103,4 @@ public:
 }
 }
 
-#endif // __DETECTOR_H__
+#endif // __DETECTOR_PDF417_H__

@@ -70,7 +70,7 @@ public:
     return values_[i];
   }
   int size() const {
-    return (int)values_.size();
+    return static_cast<int>(values_.size());
   }
   bool empty() const {
     return values_.size() == 0;

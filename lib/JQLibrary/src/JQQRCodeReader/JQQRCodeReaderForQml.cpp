@@ -30,7 +30,7 @@ JQQRCodeReaderForQmlManage::JQQRCodeReaderForQmlManage():
     threadPool_( new QThreadPool ),
     semaphore_( new QSemaphore )
 {
-    threadPool_->setMaxThreadCount( std::max( QThread::idealThreadCount() - 1, 1 ) );
+    threadPool_->setMaxThreadCount( std::max( QThread::idealThreadCount() - 1, 2 ) );
     semaphore_->release( threadPool_->maxThreadCount() );
 }
 
@@ -41,39 +41,53 @@ JQQRCodeReaderForQmlManage::~JQQRCodeReaderForQmlManage()
 
 void JQQRCodeReaderForQmlManage::analysisItem(QQuickItem *item)
 {
+    static bool lastIsVideoOutput = false;
+
+    if ( lastIsVideoOutput && item->objectName().contains( "VideoOutput" ) ) { return; }
+
     if ( !semaphore_->tryAcquire( 1 ) ) { return; }
+
+    lastIsVideoOutput = item->objectName().contains( "VideoOutput" );
 
     auto result = item->grabToImage();
 
-    connect( result.data(), &QQuickItemGrabResult::ready, [ this, result ]()
+    QSharedPointer< QMetaObject::Connection > connection( new QMetaObject::Connection );
+    *connection = connect( result.data(), &QQuickItemGrabResult::ready, [ this, result, connection ]()
     {
         const auto image = result->image();
 
         QtConcurrent::run( [ this, image ]()
         {
             QImage buf;
+
+            const auto cut = std::min( image.width(), image.height() ) * 0.1;
+
             if ( image.width() > image.height() )
             {
                 buf = image.copy(
-                            ( image.width() - image.height() ) / 2,
-                            0,
-                            image.height(),
-                            image.height()
+                            ( image.width() - image.height() ) / 2 + cut,
+                            0 + cut,
+                            image.height() - cut * 2,
+                            image.height() - cut * 2
                         );
             }
             else
             {
                 buf = image.copy(
-                            0,
-                            ( image.height() - image.width() ) / 2,
-                            image.width(),
-                            image.width()
+                            0 + cut,
+                            ( image.height() - image.width() ) / 2 + cut,
+                            image.width() - cut * 2,
+                            image.width() - cut * 2
                         );
             }
 
             this->decodeImage( buf, this->decodeQrCodeType_ );
 
             semaphore_->release( 1 );
+
+            buf = QImage();
         } );
+
+        disconnect( *connection );
     } );
 }

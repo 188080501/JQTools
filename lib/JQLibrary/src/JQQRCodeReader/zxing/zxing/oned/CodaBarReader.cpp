@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -68,10 +68,8 @@ namespace {
 // These values are critical for determining how permissive the decoding
 // will be. All stripe sizes must be within the window these define, as
 // compared to the average stripe size.
-const int CodaBarReader::MAX_ACCEPTABLE =
-  (int) (PATTERN_MATCH_RESULT_SCALE_FACTOR * 2.0f);
-const int CodaBarReader::PADDING = 
-  (int) (PATTERN_MATCH_RESULT_SCALE_FACTOR * 1.5f);
+const float CodaBarReader::MAX_ACCEPTABLE = 2.0f;
+const float CodaBarReader::PADDING = 1.5f;
 
 CodaBarReader::CodaBarReader() 
   : counters(80, 0), counterLength(0) {}
@@ -79,7 +77,7 @@ CodaBarReader::CodaBarReader()
 Ref<Result> CodaBarReader::decodeRow(int rowNumber, Ref<BitArray> row) {
 
   { // Arrays.fill(counters, 0);
-    int size = (int)counters.size();
+    int size = counters.size();
     counters.resize(0);
     counters.resize(size); }
 
@@ -170,7 +168,7 @@ void CodaBarReader::validatePattern(int start)  {
   // First, sum up the total size of our four categories of stripe sizes;
   vector<int> sizes (4, 0);
   vector<int> counts (4, 0);
-  int end = (int)decodeRowResult.length() - 1;
+  int end = decodeRowResult.length() - 1;
 
   // We break out of this loop in the middle, in order to handle
   // inter-character spaces properly.
@@ -193,15 +191,15 @@ void CodaBarReader::validatePattern(int start)  {
   }
 
   // Calculate our allowable size thresholds using fixed-point math.
-  vector<int> maxes (4, 0);
-  vector<int> mins (4, 0);
+  vector<float> maxes (4, 0.0f);
+  vector<float> mins (4, 0.0f);
   // Define the threshold of acceptability to be the midpoint between the
   // average small stripe and the average large stripe. No stripe lengths
   // should be on the "wrong" side of that line.
   for (int i = 0; i < 2; i++) {
-    mins[i] = 0;  // Accept arbitrarily small "short" stripes.
-    mins[i + 2] = ((sizes[i] << INTEGER_MATH_SHIFT) / counts[i] +
-                   (sizes[i + 2] << INTEGER_MATH_SHIFT) / counts[i + 2]) >> 1;
+    mins[i] = 0.0f;  // Accept arbitrarily small "short" stripes.
+    mins[i + 2] = ((float) sizes[i] / counts[i] + (float) sizes[i + 2] / 
+                  counts[i + 2]) / 2.0f;
     maxes[i] = mins[i + 2];
     maxes[i + 2] = (sizes[i + 2] * MAX_ACCEPTABLE + PADDING) / counts[i + 2];
   }
@@ -214,7 +212,7 @@ void CodaBarReader::validatePattern(int start)  {
       // Even j = bars, while odd j = spaces. Categories 2 and 3 are for
       // long stripes, while 0 and 1 are for short stripes.
       int category = (j & 1) + (pattern & 1) * 2;
-      int size = counters[pos + j] << INTEGER_MATH_SHIFT;
+      int size = counters[pos + j];
       if (size < mins[category] || size > maxes[category]) {
         throw NotFoundException();
       }

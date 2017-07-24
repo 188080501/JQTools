@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -26,6 +26,7 @@
 #include <math.h>
 #include <string.h>
 #include <sstream>
+#include <algorithm>
 
 using std::vector;
 using std::string;
@@ -39,8 +40,8 @@ using zxing::oned::Code128Reader;
 // VC++
 using zxing::BitArray;
 
-const int Code128Reader::MAX_AVG_VARIANCE = int(PATTERN_MATCH_RESULT_SCALE_FACTOR * 250/1000);
-const int Code128Reader::MAX_INDIVIDUAL_VARIANCE = int(PATTERN_MATCH_RESULT_SCALE_FACTOR * 700/1000);
+const float Code128Reader::MAX_AVG_VARIANCE = 0.25f;
+const float Code128Reader::MAX_INDIVIDUAL_VARIANCE = 0.7f;
 
 namespace {
 
@@ -184,17 +185,17 @@ vector<int> Code128Reader::findStartPattern(Ref<BitArray> row){
   vector<int> counters (6, 0);
   int patternStart = rowOffset;
   bool isWhite = false;
-  int patternLength = (int)counters.size();
+  int patternLength =  counters.size();
 
   for (int i = rowOffset; i < width; i++) {
     if (row->get(i) ^ isWhite) {
       counters[counterPosition]++;
     } else {
       if (counterPosition == patternLength - 1) {
-        int bestVariance = MAX_AVG_VARIANCE;
+        float bestVariance = MAX_AVG_VARIANCE;
         int bestMatch = -1;
         for (int startCode = CODE_START_A; startCode <= CODE_START_C; startCode++) {
-          int variance = patternMatchVariance(counters, CODE_PATTERNS[startCode], MAX_INDIVIDUAL_VARIANCE);
+          float variance = patternMatchVariance(counters, CODE_PATTERNS[startCode], MAX_INDIVIDUAL_VARIANCE);
           if (variance < bestVariance) {
             bestVariance = variance;
             bestMatch = startCode;
@@ -228,11 +229,11 @@ vector<int> Code128Reader::findStartPattern(Ref<BitArray> row){
 
 int Code128Reader::decodeCode(Ref<BitArray> row, vector<int>& counters, int rowOffset) {
   recordPattern(row, rowOffset, counters);
-  int bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
+  float bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
   int bestMatch = -1;
   for (int d = 0; d < CODE_PATTERNS_LENGTH; d++) {
-    int const* const pattern = CODE_PATTERNS[d];
-    int variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
+    int const* const pattern = CODE_PATTERNS[d]; // const pointer to const int
+    float variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
     if (variance < bestVariance) {
       bestVariance = variance;
       bestMatch = d;
@@ -282,6 +283,9 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
   int multiplier = 0;
   bool lastCharacterWasPrintable = true;
 
+  bool upperMode = false;
+  bool shiftUpperMode = false;
+
   std::ostringstream oss;
 
   while (!done) {
@@ -307,7 +311,7 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
 
     // Advance to where the next code will to start
     lastStart = nextStart;
-    for (int i = 0, e = (int)counters.size(); i < e; i++) {
+    for (int i = 0, e = counters.size(); i < e; i++) {
       nextStart += counters[i];
     }
 
@@ -323,9 +327,19 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
 
       case CODE_CODE_A:
         if (code < 64) {
-          result.append(1, (char) (' ' + code));
+          if (shiftUpperMode == upperMode) {
+              result.append(1, (char) (' ' + code));
+            } else {
+             result.append(1, (char) (' ' + code + 128));
+           }
+           shiftUpperMode = false;
         } else if (code < 96) {
-          result.append(1, (char) (code - 64));
+          if (shiftUpperMode == upperMode) {
+            result.append(1, (char) (code - 64));
+          } else {
+            result.append(1, (char) (code + 64));
+          }
+          shiftUpperMode = false;
         } else {
           // Don't let CODE_STOP, which always appears, affect whether whether we think the
           // last code was printable or not.
@@ -348,8 +362,21 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
             case CODE_FNC_2:
             case CODE_FNC_3:
             case CODE_FNC_4_A:
-              // do nothing?
-              break;
+            {
+              if (!upperMode && shiftUpperMode) 
+              {
+                upperMode = true;
+                shiftUpperMode = false;
+              } else if (upperMode && shiftUpperMode) 
+              {
+                upperMode = false;
+                shiftUpperMode = false;
+              } else 
+              {
+                shiftUpperMode = true;
+              }
+            }
+            break;
             case CODE_SHIFT:
               isNextShifted = true;
               codeSet = CODE_CODE_B;
@@ -368,7 +395,12 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
         break;
       case CODE_CODE_B:
         if (code < 96) {
-          result.append(1, (char) (' ' + code));
+          if (shiftUpperMode == upperMode) {
+            result.append(1, (char) (' ' + code));
+          } else {
+            result.append(1, (char) (' ' + code + 128));
+          }
+          shiftUpperMode = false;
         } else {
           if (code != CODE_STOP) {
             lastCharacterWasPrintable = false;
@@ -378,8 +410,21 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
             case CODE_FNC_2:
             case CODE_FNC_3:
             case CODE_FNC_4_B:
-              // do nothing?
-              break;
+            {
+              if (!upperMode && shiftUpperMode) 
+              {
+                upperMode = true;
+                shiftUpperMode = false;
+              } else if (upperMode && shiftUpperMode) 
+              {
+                upperMode = false;
+                shiftUpperMode = false;
+              } else 
+              {
+                shiftUpperMode = true;
+              }
+            }
+            break;
             case CODE_SHIFT:
               isNextShifted = true;
               codeSet = CODE_CODE_A;
@@ -454,7 +499,7 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
   }
 
   // Need to pull out the check digits from string
-  int resultLength = (int)result.length();
+  int resultLength = result.length();
   if (resultLength == 0) {
     // false positive
     throw NotFoundException();
@@ -473,7 +518,7 @@ Ref<Result> Code128Reader::decodeRow(int rowNumber, Ref<BitArray> row) {
   float left = (float) (startPatternInfo[1] + startPatternInfo[0]) / 2.0f;
   float right = lastStart + lastPatternSize / 2.0f;
 
-  int rawCodesSize = (int)rawCodes.size();
+  int rawCodesSize = rawCodes.size();
   ArrayRef<char> rawBytes (rawCodesSize);
   for (int i = 0; i < rawCodesSize; i++) {
     rawBytes[i] = rawCodes[i];

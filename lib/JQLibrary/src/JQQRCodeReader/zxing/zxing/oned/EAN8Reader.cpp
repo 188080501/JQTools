@@ -1,4 +1,4 @@
-﻿// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
+// -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 /*
  *  Copyright 2010 ZXing authors All rights reserved.
  *
@@ -42,7 +42,7 @@ int EAN8Reader::decodeMiddle(Ref<BitArray> row,
   for (int x = 0; x < 4 && rowOffset < end; x++) {
     int bestMatch = decodeDigit(row, counters, rowOffset, L_PATTERNS);
     result.append(1, (char) ('0' + bestMatch));
-    for (int i = 0, end = (int)counters.size(); i < end; i++) {
+    for (int i = 0, end = counters.size(); i < end; i++) {
       rowOffset += counters[i];
     }
   }
@@ -53,7 +53,7 @@ int EAN8Reader::decodeMiddle(Ref<BitArray> row,
   for (int x = 0; x < 4 && rowOffset < end; x++) {
     int bestMatch = decodeDigit(row, counters, rowOffset, L_PATTERNS);
     result.append(1, (char) ('0' + bestMatch));
-    for (int i = 0, end = (int)counters.size(); i < end; i++) {
+    for (int i = 0, end = counters.size(); i < end; i++) {
       rowOffset += counters[i];
     }
   }

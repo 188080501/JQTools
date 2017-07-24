@@ -1,7 +1,7 @@
 // -*- mode:c++; tab-width:2; indent-tabs-mode:nil; c-basic-offset:2 -*-
 
-#ifndef __ChecksumException_h__
-#define __ChecksumException_h__
+#ifndef __CHECKSUM_EXCEPTION_H__
+#define __CHECKSUM_EXCEPTION_H__
 
 /*
  * Copyright 20011 ZXing authors
@@ -31,4 +31,4 @@ namespace zxing {
   };
 }
 
-#endif // __ChecksumException_h__
+#endif // __CHECKSUM_EXCEPTION_H__

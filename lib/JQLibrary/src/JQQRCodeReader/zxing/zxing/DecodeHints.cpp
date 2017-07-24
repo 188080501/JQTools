@@ -20,7 +20,6 @@
 
 #include <zxing/DecodeHints.h>
 #include <zxing/common/IllegalArgumentException.h>
-#include <qglobal.h>
 
 using zxing::Ref;
 using zxing::ResultPointCallback;
@@ -30,12 +29,9 @@ using zxing::DecodeHints;
 // VC++
 using zxing::BarcodeFormat;
 
-//favoritas37-22-01-14-change
-#ifndef Q_CC_MSVC
-const zxing::DecodeHintType DecodeHints::CHARACTER_SET;
-#endif // Q_CC_MSVC
+const DecodeHintType DecodeHints::CHARACTER_SET;
 
-const zxing::DecodeHints DecodeHints::PRODUCT_HINT(
+const DecodeHints DecodeHints::PRODUCT_HINT(
   UPC_A_HINT |
   UPC_E_HINT |
   EAN_13_HINT |
@@ -43,7 +39,7 @@ const zxing::DecodeHints DecodeHints::PRODUCT_HINT(
   RSS_14_HINT
   );
 
-const zxing::DecodeHints DecodeHints::ONED_HINT(
+const DecodeHints DecodeHints::ONED_HINT(
   CODE_39_HINT |
   CODE_93_HINT |
   CODE_128_HINT |
@@ -52,7 +48,7 @@ const zxing::DecodeHints DecodeHints::ONED_HINT(
   DecodeHints::PRODUCT_HINT
   );
 
-const zxing::DecodeHints DecodeHints::DEFAULT_HINT(
+const DecodeHints DecodeHints::DEFAULT_HINT(
   ONED_HINT |
   QR_CODE_HINT |
   DATA_MATRIX_HINT |
@@ -136,7 +132,7 @@ Ref<ResultPointCallback> DecodeHints::getResultPointCallback() const {
   return callback;
 }
 
-zxing::DecodeHints zxing::operator | (DecodeHints const& l, DecodeHints const& r) {
+DecodeHints zxing::operator | (DecodeHints const& l, DecodeHints const& r) {
   DecodeHints result (l);
   result.hints |= r.hints;
   if (!result.callback) {

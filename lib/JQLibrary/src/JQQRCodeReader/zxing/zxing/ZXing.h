@@ -35,52 +35,27 @@ typedef char byte;
 typedef bool boolean;
 }
 
-#include <QtCore>
 #include <limits>
-#include <cmath>
 
 #if defined(_WIN32) || defined(_WIN64)
 
 #include <float.h>
 
 namespace zxing {
-inline bool isnan_z(float v) {return _isnan(v) != 0;}
-inline bool isnan_z(double v) {return _isnan(v) != 0;}
+inline bool isnan(float v) {return _isnan(v) != 0;}
+inline bool isnan(double v) {return _isnan(v) != 0;}
 inline float nan() {return std::numeric_limits<float>::quiet_NaN();}
 }
 
 #else
 
-#ifdef Q_OS_MAC
-
-#   define isnan2(x)                                                     \
-    ( sizeof(x) == sizeof(float)  ? __inline_isnanf((float)(x))          \
-    : sizeof(x) == sizeof(double) ? __inline_isnand((double)(x))         \
-                                  : __inline_isnanl((long double)(x)))
+#include <cmath>
 
 namespace zxing {
-inline bool isnan_z(float v) {
-    return isnan2(v);
-}
-inline bool isnan_z(double v) {
-    return isnan2(v);
-}
+inline bool isnan(float v) {return std::isnan(v);}
+inline bool isnan(double v) {return std::isnan(v);}
 inline float nan() {return std::numeric_limits<float>::quiet_NaN();}
 }
-
-#else
-
-namespace zxing {
-inline bool isnan_z(float v) {
-    return isnan(v);
-}
-inline bool isnan_z(double v) {
-    return isnan(v);
-}
-inline float nan() {return std::numeric_limits<float>::quiet_NaN();}
-}
-
-#endif
 
 #endif
 
