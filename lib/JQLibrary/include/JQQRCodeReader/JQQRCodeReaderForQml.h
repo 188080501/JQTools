@@ -22,6 +22,9 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QQmlContext>
+#include <QQuickPaintedItem>
+#include <QMutex>
+#include <QPainter>
 
 // JQLibrary import
 #include "JQQRCodeReader.h"
@@ -36,6 +39,17 @@ class QThreadPool;
 class QSemaphore;
 class QQuickItem;
 class QQuickItemGrabResult;
+class QImage;
+
+//class TestClass: public QQuickPaintedItem
+//{
+//public:
+//    void paint(QPainter *p);
+
+//    static TestClass *o;
+//    static QMutex mutex;
+//    static QImage image;
+//};
 
 class JQQRCodeReaderForQmlManage: public JQQRCodeReader
 {
@@ -52,9 +66,17 @@ public slots:
     void analysisItem(QQuickItem *item);
 
 private:
+    int getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd);
+
+    qreal avgReference(const qreal &referenceAvg, const qreal &currentReference);
+
+    void processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset);
+
+private:
     QSharedPointer< QThreadPool > threadPool_;
     QSharedPointer< QSemaphore > semaphore_;
     QSharedPointer< QQuickItemGrabResult > quickItemGrabResult_;
+    qreal correctionValue_ = 1.42;
 
     // Property code start
     private: int decodeQrCodeType_ = JQQRCodeReader::DecodeQrCodeType;
