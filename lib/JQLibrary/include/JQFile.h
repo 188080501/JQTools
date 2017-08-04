@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQFile_h__
-#define __JQFile_h__
+#ifndef JQFILE_H_
+#define JQFILE_H_
 
 // C++ lib import
 #include <functional>
@@ -50,4 +50,4 @@ bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &las
 
 }
 
-#endif//__JQFile_h__
+#endif//JQFILE_H_

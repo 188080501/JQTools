@@ -92,33 +92,56 @@ QString JQFoundation::hashStringWithSalt(const QString &key)
     return buf6;
 }
 
-QString JQFoundation::randString(const int &stringLength, const bool &autoSetSeed)
+QString JQFoundation::variantToString(const QVariant &value)
 {
-    if (autoSetSeed)
+    QString result;
+
+    switch ( value.type() )
     {
-        static bool flag = true;
-        if (flag)
+        case QVariant::ByteArray:
         {
-            flag = false;
-            srand(QDateTime::currentDateTime().toTime_t());
+            result = QString( "\\x" );
+            result += value.toByteArray().toHex();
+            break;
+        }
+        case QVariant::String:
+        {
+            result = value.toString();
+            break;
+        }
+        case QVariant::Int:
+        case QVariant::Double:
+        {
+            result = QString::number( value.toDouble(), 'f', 8 );
+            while ( result.endsWith( '0' ) )
+            {
+                result = result.mid( 0, result.size() - 1 );
+            }
+            if ( result.endsWith( '.' ) )
+            {
+                result = result.mid( 0, result.size() - 1 );
+            }
+            if ( result == "" )
+            {
+                result = "0";
+            }
+
+            break;
+        }
+        case 51:
+        case QVariant::Invalid:
+        {
+            result = "NULL";
+            break;
+        }
+        default:
+        {
+            result = value.toString();
+            break;
         }
     }
 
-    auto table = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-    QString buf;
-    for (auto index = 0; index < stringLength; index++)
-    {
-        buf.append(table[rand() % 62]);
-    }
-    return buf;
-}
-
-void JQFoundation::waitForSignal(const QObject *sender, const char *signal)
-{
-    QEventLoop eventLoop;
-    QObject::connect(sender, signal, &eventLoop, SLOT(quit()));
-    eventLoop.exec();
+    return result;
 }
 
 QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix)
@@ -581,178 +604,6 @@ void ShowInformationMessageBoxFromOtherThread::onShow()
 }
 #endif
 
-// ConnectionManage
-ConnectionManage::ConnectionManage()
-{ }
-
-ConnectionManage::~ConnectionManage()
-{
-    disconnectAll();
-
-    if ( vectorData_ )
-    {
-        delete vectorData_;
-    }
-
-    if ( mapData_ )
-    {
-        delete mapData_;
-    }
-}
-
-void ConnectionManage::push(const QMetaObject::Connection &connection)
-{
-    if (!vectorData_)
-    {
-        vectorData_ = new QVector< QMetaObject::Connection >;
-    }
-
-    vectorData_->push_back( connection );
-}
-
-void ConnectionManage::insert(const QString &key, const QMetaObject::Connection &connection)
-{
-    if ( !mapData_ )
-    {
-        mapData_ = new QMap< QString, QMetaObject::Connection >;
-    }
-
-    mapData_->insert( key, connection );
-}
-
-void ConnectionManage::remove(const QString &key)
-{
-    mapData_->erase( mapData_->find( key ) );
-}
-
-void ConnectionManage::disconnectAll()
-{
-    if (vectorData_)
-    {
-        for ( auto &connection: *vectorData_ )
-        {
-            QObject::disconnect( connection );
-        }
-        vectorData_->clear();
-    }
-
-    if ( mapData_ )
-    {
-        for ( auto &connection: *mapData_ )
-        {
-            QObject::disconnect(connection);
-        }
-        mapData_->clear();
-    }
-}
-
-void ConnectionManage::deleteLater()
-{
-    delete this;
-}
-
-// ThreadHelper
-ThreadHelper::ThreadHelper(QMutex *&mutexForWait):
-    mutexForWait_(mutexForWait)
-{
-    connect( this, &ThreadHelper::readyRun, this, &ThreadHelper::onRun, Qt::QueuedConnection );
-}
-
-void ThreadHelper::run(const std::function<void ()> &callback)
-{
-    mutex_.lock();
-
-    waitCallbacks_.push_back(callback);
-
-    mutex_.unlock();
-
-    emit readyRun();
-}
-
-void ThreadHelper::onRun()
-{
-    if ( !waitCallbacks_.isEmpty() )
-    {
-        mutex_.lock();
-
-        auto callback = waitCallbacks_.first();
-        waitCallbacks_.pop_front();
-
-        mutex_.unlock();
-
-        callback();
-
-        if ( mutexForWait_ )
-        {
-            mutexForWait_->unlock();
-        }
-    }
-}
-
-// Thread
-Thread::Thread()
-{
-    this->QThread::start();
-}
-
-Thread::~Thread()
-{
-    for ( auto index = 0; ( index < 200 ) && !this->isRunning(); ++index )
-    {
-        QThread::msleep( 10 );
-    }
-
-    this->quit();
-    this->wait();
-}
-
-void Thread::start(const std::function<void ()> &callback)
-{
-    this->waitForRunning();
-    helper_->run(callback);
-}
-
-void Thread::waitForStart(const std::function<void ()> &callback)
-{
-    if ( mutexForWait_ )
-    {
-        qDebug( "Thread::start: error" );
-        return;
-    }
-
-    mutexForWait_ = new QMutex;
-    mutexForWait_->lock();
-
-    this->start(callback);
-
-    if ( mutexForWait_ )
-    {
-        mutexForWait_->lock();
-        mutexForWait_->unlock();
-        delete mutexForWait_;
-        mutexForWait_ = nullptr;
-    }
-}
-
-void Thread::waitForRunning()
-{
-    for ( auto index = 0; (index < 200) && !helper_; ++index )
-    {
-        QThread::msleep(10);
-    }
-}
-
-void Thread::run()
-{
-    helper_ = new ThreadHelper( mutexForWait_ );
-    this->exec();
-    delete helper_;
-    helper_ = nullptr;
-
-    QEventLoop eventLoop;
-    while ( eventLoop.processEvents( QEventLoop::ExcludeUserInputEvents ) );
-}
-
 // InvokeFromThreadHelper
 void InvokeFromThreadHelper::addCallback(const std::function<void ()> &callback)
 {
@@ -864,20 +715,5 @@ void InvokeFromThread::waitForInvoke(QThread *thread, const std::function<void (
     QMetaObject::invokeMethod( it.value(), "onRun", Qt::QueuedConnection );
 
     mutex_.lock();
-    mutex_.unlock();
-}
-
-// WaitForOtherThread
-int WaitForOtherThread::wait()
-{
-    mutex_.lock();
-    mutex_.lock();
-    mutex_.unlock();
-    return flag_;
-}
-
-void WaitForOtherThread::finish(const int &flag)
-{
-    flag_ = flag;
     mutex_.unlock();
 }

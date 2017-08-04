@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQFoundation_h__
-#define __JQFoundation_h__
+#ifndef JQFOUNDATION_H_
+#define JQFOUNDATION_H_
 
 #if ((__cplusplus < 201103) && !(defined _MSC_VER)) || ((defined _MSC_VER) && (_MSC_VER < 1800))
 #   error("Please add c++11 config on pro file")
@@ -176,9 +176,7 @@ QString hashString(const QByteArray &key, const QCryptographicHash::Algorithm &a
 
 QString hashStringWithSalt(const QString &key);
 
-QString randString(const int &stringLength = 40, const bool &autoSetSeed = true);
-
-void waitForSignal(const QObject *sender, const char *signal);
+QString variantToString(const QVariant &value);
 
 QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix = QJsonObject());
 
@@ -285,71 +283,6 @@ private:
 };
 #endif
 
-class ConnectionManage
-{
-public:
-    ConnectionManage();
-
-    ~ConnectionManage();
-
-    void push(const QMetaObject::Connection &connection);
-
-    void insert(const QString &key, const QMetaObject::Connection &connection);
-
-    void remove(const QString &key);
-
-    void disconnectAll();
-
-    void deleteLater();
-
-private:
-    QVector<QMetaObject::Connection> *vectorData_ = nullptr;
-    QMap<QString, QMetaObject::Connection> *mapData_ = nullptr;
-};
-
-class ThreadHelper: public QObject
-{
-    Q_OBJECT
-    Q_DISABLE_COPY( ThreadHelper )
-
-public:
-    ThreadHelper(QMutex *&mutexForWait);
-
-    void run(const std::function<void()> &callback);
-
-public slots:
-    void onRun();
-
-signals:
-    void readyRun();
-
-private:
-    QMutex mutex_;
-    QList< std::function<void()> > waitCallbacks_;
-    QMutex *&mutexForWait_;
-};
-
-class Thread: public QThread
-{
-public:
-    Thread();
-
-    ~Thread();
-
-    void start(const std::function< void() > &callback);
-
-    void waitForStart(const std::function< void() > &callback);
-
-    void waitForRunning();
-
-private:
-    void run();
-
-private:
-    ThreadHelper *helper_ = nullptr;
-    QMutex *mutexForWait_ = nullptr;
-};
-
 class InvokeFromThreadHelper: public QObject
 {
     Q_OBJECT
@@ -382,37 +315,6 @@ private:
     static QMap< QThread *, InvokeFromThreadHelper * > helpers_;
 };
 
-class WaitForOtherThread
-{
-public:
-    int wait();
-
-    void finish(const int &flag = 0);
-
-private:
-    QMutex mutex_;
-    int flag_ = 0;
-};
-
-// Template define
-template <typename Func1>
-bool waitBoolSignal(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal)
-{
-    QEventLoop eventLoop;
-
-    QObject::connect(
-                sender,
-                signal,
-                sender,
-                [&](const bool &flag)
-    {
-        eventLoop.exit(flag);
-    },
-    Qt::DirectConnection);
-
-    return eventLoop.exec();
 }
 
-}
-
-#endif//__JQFoundation_h__
+#endif//JQFOUNDATION_H_
