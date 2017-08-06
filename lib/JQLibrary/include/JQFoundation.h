@@ -52,6 +52,7 @@
 #include <QVariant>
 #include <QPointer>
 #include <QFile>
+#include <QMap>
 #include <QDebug>
 
 class QTableWidget;
@@ -181,6 +182,15 @@ QString variantToString(const QVariant &value);
 QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix = QJsonObject());
 
 QJsonObject jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix = QJsonObject());
+
+template< class Key, class T >
+QMap< Key, T > mapFilter(const QMap< Key, T > &source, const QStringList &leftKey, const QMap< Key, T > &mix = QMap< Key, T >());
+
+template< class Key, class T >
+QMap< Key, T > mapFilter(const QMap< Key, T > &source, const char *leftKey, const QMap< Key, T > &mix = QMap< Key, T >());
+
+template< class Key, class T >
+QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix);
 
 QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
 
@@ -314,6 +324,50 @@ private:
     static QMutex mutex_;
     static QMap< QThread *, InvokeFromThreadHelper * > helpers_;
 };
+
+template< class Key, class T >
+QMap< Key, T > mapFilter(const QMap< Key, T > &source, const QStringList &leftKey, const QMap< Key, T > &mix)
+{
+    QMap< Key, T > result;
+
+    for ( const auto &key: leftKey )
+    {
+        auto buf = source.find( key );
+        if ( buf != source.end() )
+        {
+            result[ buf.key() ] = buf.value();
+        }
+    }
+
+    if ( !mix.isEmpty() )
+    {
+        for ( auto it = mix.begin(); it != mix.end(); ++it )
+        {
+            result.insert( it.key(), it.value() );
+        }
+    }
+
+    return result;
+}
+
+template< class Key, class T >
+QMap< Key, T > mapFilter(const QMap< Key, T > &source, const char *leftKey, const QMap< Key, T > &mix)
+{
+    return JQFoundation::mapFilter( source, QStringList( { leftKey } ), mix );
+}
+
+template< class Key, class T >
+QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix)
+{
+    QMap< Key, T > result = source;
+
+    for ( auto it = mix.begin(); it != mix.end(); ++it )
+    {
+        result[ it.key() ] = it.value();
+    }
+
+    return result;
+}
 
 }
 

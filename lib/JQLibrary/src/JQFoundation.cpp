@@ -96,8 +96,15 @@ QString JQFoundation::variantToString(const QVariant &value)
 {
     QString result;
 
+    if ( ( value.type() == 31 ) || ( value.type() == 51 ) || ( value.type() == QVariant::Invalid ) ) { return "NULL"; }
+
     switch ( value.type() )
     {
+        case QVariant::Bool:
+        {
+            result = ( ( value.toBool() ) ? ( "1" ) : ( "0" ) );
+            break;
+        }
         case QVariant::ByteArray:
         {
             result = QString( "\\x" );
@@ -128,14 +135,9 @@ QString JQFoundation::variantToString(const QVariant &value)
 
             break;
         }
-        case 51:
-        case QVariant::Invalid:
-        {
-            result = "NULL";
-            break;
-        }
         default:
         {
+            qDebug() << "JQFoundation::variantToString: unexpected type:" << value;
             result = value.toString();
             break;
         }
@@ -146,14 +148,14 @@ QString JQFoundation::variantToString(const QVariant &value)
 
 QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix)
 {
-    QJsonObject data;
+    QJsonObject result;
 
     for ( const auto &key: leftKey )
     {
         auto buf = source.find( key );
         if ( buf != source.end() )
         {
-            data[ buf.key() ] = buf.value();
+            result[ buf.key() ] = buf.value();
         }
     }
 
@@ -161,11 +163,11 @@ QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringLis
     {
         for ( auto it = mix.begin(); it != mix.end(); ++it )
         {
-            data.insert( it.key(), it.value() );
+            result.insert( it.key(), it.value() );
         }
     }
 
-    return data;
+    return result;
 }
 
 QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix)
