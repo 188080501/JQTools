@@ -17,6 +17,7 @@
 #include <QQmlApplicationEngine>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QPainter>
 
 // JQLibrary lib import
 #include "JQQRCodeWriter.h"
@@ -49,7 +50,18 @@ QString Manage::savePng(const QString &string)
         filePath += ".png";
     }
 
-    const auto &&saveSucceed = JQQRCodeWriter::makeQRcode( string ).save( filePath );
+    QImage targetImage( QSize( 500, 500 ), QImage::Format_RGB888 );
+    targetImage.fill( QColor( "#ffffff" ) );
+
+    const auto &&qrCodeImage = JQQRCodeWriter::makeQRcode( string, QSize( 475, 475 ) );
+
+    {
+        QPainter painter;
+        painter.begin( &targetImage );
+        painter.drawImage( 10, 10, qrCodeImage );
+    }
+
+    const auto &&saveSucceed = targetImage.save( filePath );
     if ( !saveSucceed )
     {
         return "error";

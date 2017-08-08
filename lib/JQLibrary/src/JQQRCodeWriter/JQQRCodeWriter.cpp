@@ -29,14 +29,13 @@ using namespace JQQRCodeWriter;
 QImage JQQRCodeWriter::makeQRcode(const QString &data, const QSize &size)
 {
     QImage image( size, QImage::Format_RGB32 );
+    image.fill( QColor( "#000000" ) );
 
     QPainter painter( &image );
 
     if ( !painter.isActive() )
     {
         qDebug() << "JQQRCodeWriter::makeQRcode: error";
-
-        memset( image.bits(), 0, image.width() * image.height() * 3 );
 
         return image;
     }

@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQQRCodeWriter_h__
-#define __JQQRCodeWriter_h__
+#ifndef JQQRCODEWRITER_H_
+#define JQQRCODEWRITER_H_
 
 // Qt lib import
 #include <QString>
@@ -29,4 +29,4 @@ QImage makeQRcode(const QString &data, const QSize &size = QSize( 512, 512 ));
 
 }
 
-#endif//__JQQRCodeWriter_h__
+#endif//JQQRCODEWRITER_H_
