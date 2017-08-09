@@ -94,6 +94,8 @@ public:
             const qintptr &socketDescriptor
         );
 
+    inline QWeakPointer< QTcpSocket > tcpSocket();
+
     inline bool onceConnectSucceed() const;
 
     inline bool isAbandonTcpSocket() const;

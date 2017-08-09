@@ -16,6 +16,11 @@
 // JQNetwork lib import
 #include "jqnetwork_connect.h"
 
+inline QWeakPointer< QTcpSocket > JQNetworkConnect::tcpSocket()
+{
+    return tcpSocket_.toWeakRef();
+}
+
 inline bool JQNetworkConnect::onceConnectSucceed() const
 {
     return onceConnectSucceed_;

@@ -16,6 +16,14 @@
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
+#define JQNP_PRINTRECEIVED()                                                            \
+    {                                                                                   \
+        const auto &&buffer = QString( Q_FUNC_INFO );                                   \
+        const auto &&indexForEnd = buffer.indexOf( '(' );                               \
+        const auto functionName = buffer.mid( 0, indexForEnd ).remove( "bool " );       \
+        qDebug() << ( functionName + ": received:" ).toLocal8Bit().data() << received;  \
+    }
+
 #define JQNP_SUCCEED()                                                                  \
     send[ "succeed" ] = true;                                                           \
     send[ "message" ] = "";                                                             \
@@ -27,8 +35,9 @@
     return false;
 
 #define JQNP_SERVERFAIL( errorMessage )                                                 \
-    const auto &&message = QString( "Server error: " ) + errorMessage;                  \
-    qDebug() << message.toLocal8Bit().data();                                           \
+    const auto &&message = QString( ": Server error: " ) + errorMessage;                \
+    qDebug() << QString( Q_FUNC_INFO ).remove( "bool " ).toLocal8Bit().data()           \
+             << message.toLocal8Bit().data();                                           \
     send[ "succeed" ] = false;                                                          \
     send[ "message" ] = errorMessage;                                                   \
     return false;
