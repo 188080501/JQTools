@@ -21,6 +21,7 @@
 // Qt lib import
 #include <QObject>
 #include <QSharedPointer>
+#include <QPointer>
 #include <QQmlContext>
 #include <QQuickPaintedItem>
 #include <QMutex>
@@ -32,7 +33,8 @@
 #ifdef QT_QML_LIB
 #   define JQQRCODEREADERFORQML_REGISTERTYPE( engine ) \
     engine.rootContext()->setContextProperty( "JQQRCodeReaderForQmlManage", new JQQRCodeReaderForQmlManage ); \
-    engine.addImportPath( ":/JQQRCodeReader/" );
+    engine.addImportPath( ":/JQQRCodeReader/" ); \
+    qmlRegisterType< ImagePreviewView >( "ImagePreviewView", 1, 0, "ImagePreviewView" );
 #endif
 
 class QThreadPool;
@@ -41,15 +43,25 @@ class QQuickItem;
 class QQuickItemGrabResult;
 class QImage;
 
-//class TestClass: public QQuickPaintedItem
-//{
-//public:
-//    void paint(QPainter *p);
+class ImagePreviewView: public QQuickPaintedItem
+{
+    Q_OBJECT
 
-//    static TestClass *o;
-//    static QMutex mutex;
-//    static QImage image;
-//};
+public:
+    ImagePreviewView() = default;
+
+    ~ImagePreviewView() = default;
+
+    static void pushImage(const QImage &image);
+
+private:
+    void paint(QPainter *p);
+
+private:
+    static QPointer< ImagePreviewView > object_;
+    static QMutex mutex_;
+    static QImage image_;
+};
 
 class JQQRCodeReaderForQmlManage: public JQQRCodeReader
 {
@@ -63,20 +75,28 @@ public:
     ~JQQRCodeReaderForQmlManage();
 
 public slots:
-    void analysisItem(QQuickItem *item);
+    void analysisItem(
+            QQuickItem *item,
+            const int &apertureX,
+            const int &apertureY,
+            const int &apertureWidth,
+            const int &apertureHeight
+        );
 
 private:
-    int getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd);
+    static QImage binarization(const QImage &image, const qreal &correctionValue);
 
-    qreal avgReference(const qreal &referenceAvg, const qreal &currentReference);
+    static int getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &correctionValue);
 
-    void processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset);
+    static qreal avgReference(const qreal &referenceAvg, const qreal &currentReference);
+
+    static void processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset, const qreal &correctionValue);
 
 private:
     QSharedPointer< QThreadPool > threadPool_;
     QSharedPointer< QSemaphore > semaphore_;
     QSharedPointer< QQuickItemGrabResult > quickItemGrabResult_;
-    qreal correctionValue_ = 1.42;
+    qreal defaultCorrectionValue_ = 1.42;
 
     // Property code start
     private: int decodeQrCodeType_ = JQQRCodeReader::DecodeQrCodeType;

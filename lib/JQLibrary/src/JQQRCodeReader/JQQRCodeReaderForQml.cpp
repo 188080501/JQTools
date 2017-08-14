@@ -26,6 +26,42 @@
 #include <QQuickItem>
 #include <QQuickItemGrabResult>
 
+// ImagePreviewView
+QPointer< ImagePreviewView > ImagePreviewView::object_;
+QMutex ImagePreviewView::mutex_;
+QImage ImagePreviewView::image_;
+
+void ImagePreviewView::pushImage(const QImage &image)
+{
+    if ( !object_ ) { return; }
+
+    mutex_.lock();
+    image_ = image;
+    mutex_.unlock();
+
+    QMetaObject::invokeMethod( object_, "update", Qt::QueuedConnection );
+}
+
+void ImagePreviewView::paint(QPainter *p)
+{
+    if ( !object_ )
+    {
+        object_ = this;
+    }
+
+    if ( image_.isNull() ) { return; }
+
+    if ( QSize( static_cast< int >( this->width() ), static_cast< int >( this->height() ) ) != image_.size() )
+    {
+        this->setSize( QSizeF( image_.width(), image_.height() ) );
+    }
+
+    mutex_.lock();
+    p->drawImage( 0, 0, image_ );
+    mutex_.unlock();
+}
+
+// JQQRCodeReaderForQmlManage
 JQQRCodeReaderForQmlManage::JQQRCodeReaderForQmlManage():
     threadPool_( new QThreadPool ),
     semaphore_( new QSemaphore )
@@ -39,71 +75,75 @@ JQQRCodeReaderForQmlManage::~JQQRCodeReaderForQmlManage()
     threadPool_->waitForDone();
 }
 
-void JQQRCodeReaderForQmlManage::analysisItem(QQuickItem *item)
+void JQQRCodeReaderForQmlManage::analysisItem(
+        QQuickItem *item,
+        const int &apertureX,
+        const int &apertureY,
+        const int &apertureWidth,
+        const int &apertureHeight
+    )
 {
     if ( !semaphore_->tryAcquire( 1 ) ) { return; }
 
-    auto result = item->grabToImage();
+    const auto &&result = item->grabToImage();
+    const auto &&itemSize = QSizeF( item->width(), item->height() );
+    const auto &&geometry = QRect( apertureX, apertureY, apertureWidth, apertureHeight );
 
     QSharedPointer< QMetaObject::Connection > connection( new QMetaObject::Connection );
-    *connection = connect( result.data(), &QQuickItemGrabResult::ready, [ this, result, connection ]()
+    *connection = connect( result.data(), &QQuickItemGrabResult::ready, [ this, result, itemSize, connection, geometry ]()
     {
         const auto image = result->image();
 
-        QtConcurrent::run( [ this, image ]()
+        QtConcurrent::run( [ this, image, itemSize, geometry ]()
         {
-            QImage buf;
+//            QTime time;
+//            time.start();
 
-            const auto cut = std::min( image.width(), image.height() ) * 0.28;
+            QImage apertureImage = image.copy( geometry );
 
-            if ( image.width() > image.height() )
-            {
-                buf = image.copy(
-                            ( image.width() - image.height() ) / 2 + cut,
-                            0 + cut,
-                            image.height() - cut * 2,
-                            image.height() - cut * 2
-                        );
-            }
-            else
-            {
-                buf = image.copy(
-                            0 + cut,
-                            ( image.height() - image.width() ) / 2 + cut,
-                            image.width() - cut * 2,
-                            image.width() - cut * 2
-                        );
-            }
+            this->decodeImage( apertureImage, this->decodeQrCodeType_ );
 
-            this->decodeImage( buf, this->decodeQrCodeType_ );
+            const auto &&binarizationImage1 = this->binarization( apertureImage, defaultCorrectionValue_ );
+            this->decodeImage( binarizationImage1, this->decodeQrCodeType_ );
+//            ImagePreviewView::pushImage( binarizationResult1 );
 
-            int reference1 = this->getReference( buf, 0, 0, buf.width() / 2, buf.height() / 2 );
-            int reference2 = this->getReference( buf, buf.width() / 2, 0, buf.width(), buf.height() / 2 );
-            int reference3 = this->getReference( buf, 0, buf.height() / 2, buf.width() / 2, buf.height() );
-            int reference4 = this->getReference( buf, buf.width() / 2, buf.height() / 2, buf.width(), buf.height() );
+            const auto &&binarizationImage2 = this->binarization( apertureImage, defaultCorrectionValue_ + 0.3 );
+            this->decodeImage( binarizationImage2, this->decodeQrCodeType_ );
+//            ImagePreviewView::pushImage( binarizationResult2 );
 
-            double referenceAvg = ( reference1 + reference2 + reference3 + reference4 ) / 4;
-
-            this->processImage( buf, 0, 0, buf.width() / 2, buf.height() / 2, this->avgReference( referenceAvg, reference1 ) );
-            this->processImage( buf, buf.width() / 2, 0, buf.width(), buf.height() / 2, this->avgReference( referenceAvg, reference2 ) );
-            this->processImage( buf, 0, buf.height() / 2, buf.width() / 2, buf.height(), this->avgReference( referenceAvg, reference3 ) );
-            this->processImage( buf, buf.width() / 2, buf.height() / 2, buf.width(), buf.height(), this->avgReference( referenceAvg, reference4 ) );
-
-            this->decodeImage( buf, this->decodeQrCodeType_ );
-
-//            TestClass::o->mutex.lock();
-//            TestClass::o->image = buf;
-//            TestClass::o->mutex.unlock();
-//            QMetaObject::invokeMethod( TestClass::o, "update", Qt::QueuedConnection );
+            const auto &&binarizationImage3 = this->binarization( apertureImage, defaultCorrectionValue_ - 0.3 );
+            this->decodeImage( binarizationImage3, this->decodeQrCodeType_ );
+//            ImagePreviewView::pushImage( binarizationResult3 );
 
             semaphore_->release( 1 );
+
+//            qDebug() << time.elapsed();
         } );
 
         disconnect( *connection );
     } );
 }
 
-int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd)
+QImage JQQRCodeReaderForQmlManage::binarization(const QImage &image, const qreal &correctionValue)
+{
+    QImage result = image;
+
+    int reference1 = getReference( result, 0, 0, result.width() / 2, result.height() / 2, correctionValue );
+    int reference2 = getReference( result, result.width() / 2, 0, result.width(), result.height() / 2, correctionValue );
+    int reference3 = getReference( result, 0, result.height() / 2, result.width() / 2, result.height(), correctionValue );
+    int reference4 = getReference( result, result.width() / 2, result.height() / 2, result.width(), result.height(), correctionValue );
+
+    double referenceAvg = ( reference1 + reference2 + reference3 + reference4 ) / 4;
+
+    processImage( result, 0, 0, result.width() / 2, result.height() / 2, avgReference( referenceAvg, reference1 ), correctionValue );
+    processImage( result, result.width() / 2, 0, result.width(), result.height() / 2, avgReference( referenceAvg, reference2 ), correctionValue );
+    processImage( result, 0, result.height() / 2, result.width() / 2, result.height(), avgReference( referenceAvg, reference3 ), correctionValue );
+    processImage( result, result.width() / 2, result.height() / 2, result.width(), result.height(), avgReference( referenceAvg, reference4 ), correctionValue );
+
+    return result;
+}
+
+int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &correctionValue)
 {
     qint64 total = 0;
 
@@ -128,7 +168,7 @@ int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, c
             const auto &&color = image.pixelColor( x, y );
             const auto &&value = color.red() + color.green() + color.blue();
 
-            if ( value > ( avg / correctionValue_ ) )
+            if ( value > ( avg / correctionValue ) )
             {
                 ++reference;
             }
@@ -140,16 +180,16 @@ int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, c
 
 qreal JQQRCodeReaderForQmlManage::avgReference(const qreal &referenceAvg, const qreal &currentReference)
 {
-    if ( ( currentReference / referenceAvg ) > 1.15 ) { return 0.08; }
-    if ( ( currentReference / referenceAvg ) > 1.1 ) { return 0.04; }
-    if ( ( currentReference / referenceAvg ) > 1.05 ) { return 0.02; }
-    if ( ( currentReference / referenceAvg ) < 0.95 ) { return -0.02; }
-    if ( ( currentReference / referenceAvg ) < 0.9 ) { return -0.04; }
-    if ( ( currentReference / referenceAvg ) < 0.85 ) { return -0.08; }
+    if ( ( currentReference / referenceAvg ) > 1.15 ) { return 0.08 * 2; }
+    if ( ( currentReference / referenceAvg ) > 1.1 ) { return 0.04 * 2; }
+    if ( ( currentReference / referenceAvg ) > 1.05 ) { return 0.02 * 2; }
+    if ( ( currentReference / referenceAvg ) < 0.95 ) { return -0.02 * 2; }
+    if ( ( currentReference / referenceAvg ) < 0.9 ) { return -0.04 * 2; }
+    if ( ( currentReference / referenceAvg ) < 0.85 ) { return -0.08 * 2; }
     return 0;
 }
 
-void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset)
+void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset, const qreal &correctionValue)
 {
     qint64 total = 0;
 
@@ -173,7 +213,7 @@ void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, 
             const auto &&color = image.pixelColor( x, y );
             const auto &&value = color.red() + color.green() + color.blue();
 
-            if ( value > ( avg / ( correctionValue_ + offset ) ) )
+            if ( value > ( avg / ( correctionValue + offset ) ) )
             {
                 image.setPixelColor( x, y, QColor( 255, 255, 255 ) );
             }
@@ -184,16 +224,3 @@ void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, 
         }
     }
 }
-
-//TestClass *TestClass::o;
-//QMutex TestClass::mutex;
-//QImage TestClass::image;
-
-//void TestClass::paint(QPainter *p)
-//{
-//    o = this;
-
-//    mutex.lock();
-//    p->drawImage( 0, 0, image );
-//    mutex.unlock();
-//}
