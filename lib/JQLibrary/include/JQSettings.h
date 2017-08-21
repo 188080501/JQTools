@@ -15,27 +15,24 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQSETTINGS_H__
-#define __JQSETTINGS_H__
+#ifndef JQSETTINGS_H_
+#define JQSETTINGS_H_
 
 // Qt lib import
 #include <QSettings>
 #include <QSharedPointer>
 #include <QVariant>
 
-#define JQSETTINGS_DEFAULTPROJECTGROUPNAME "JasonQt"
-
 class QTimer;
 
 namespace JQSettings
 {
 
-QString documentsPath(const QString &projectName, const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME);
+QString documentsPath(const QString &projectName);
 
 QSharedPointer< QSettings > settingsFile(
         const QString &fileName,
-        const QString &projectName,
-        const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME
+        const QString &projectName
     );
 
 class Set: public QObject
@@ -46,8 +43,7 @@ public:
     Set(
             const QString &fileName,
             const QString &groupName,
-            const QString &projectName,
-            const QString &projectGroupName = JQSETTINGS_DEFAULTPROJECTGROUPNAME
+            const QString &projectName
         );
 
     ~Set();
@@ -86,4 +82,4 @@ private:
 
 }
 
-#endif//__JQSETTINGS_H__
+#endif//JQSETTINGS_H_
