@@ -362,6 +362,8 @@ void JQNetworkConnect::onTcpSocketStateChanged()
         }
         case QAbstractSocket::UnconnectedState:
         {
+//            qDebug() << "onTcpSocketStateChanged:" << this << ": UnconnectedState: error:" << tcpSocket_->error();
+
             switch ( tcpSocket_->error() )
             {
                 case QAbstractSocket::UnknownSocketError:

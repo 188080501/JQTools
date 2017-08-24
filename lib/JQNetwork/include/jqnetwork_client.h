@@ -289,6 +289,8 @@ private:
             const JQNetworkConnectPointerFunction &failCallback
         );
 
+    void releaseWaitConnectSucceedSemaphore(const QString &hostName, const quint16 &port, const bool &succeed);
+
 private:
     // Thread pool
     static QWeakPointer< JQNetworkThreadPool > globalSocketThreadPool_;

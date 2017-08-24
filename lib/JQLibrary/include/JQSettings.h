@@ -19,65 +19,72 @@
 #define JQSETTINGS_H_
 
 // Qt lib import
-#include <QSettings>
 #include <QSharedPointer>
 #include <QVariant>
 
 class QTimer;
+class QSettings;
+
+namespace JQSettings{ class Set; }
+
+typedef QSharedPointer< JQSettings::Set > JQSettingsSetSharedPointer;
 
 namespace JQSettings
 {
 
 QString documentsPath(const QString &projectName);
 
-QSharedPointer< QSettings > settingsFile(
-        const QString &fileName,
-        const QString &projectName
-    );
+QSharedPointer< QSettings > settingsFile(const QString &fileName, const QString &projectName);
 
 class Set: public QObject
 {
     Q_OBJECT
 
-public:
-    Set(
-            const QString &fileName,
-            const QString &groupName,
-            const QString &projectName
-        );
+private:
+    Set(const QString &fileName, const QString &defaultGroup, const QString &projectName);
 
+    Set(const QString &settingsFilePath, const QString &defaultGroup);
+
+public:
     ~Set();
 
-    QVariant operator[](const QString &key) const;
+    static JQSettingsSetSharedPointer createSet(const QString &fileName, const QString &defaultGroup, const QString &projectName);
 
-    QVariant operator[](const QString &key);
+    static JQSettingsSetSharedPointer createSet(const QString &settingsFilePath, const QString &defaultGroup);
 
-    QString filePath() const;
+    QString settingsFilePath() const;
 
 public slots:
     bool contains(const QString &key);
 
-    QVariant value(const QString &key, const QVariant &defaultValue);
+    QVariant value(const QString &groupName, const QString &key) const;
 
     QVariant value(const QString &key) const;
 
-    void setValue(const QString &key, const QVariant &data);
+    QVariantMap values(const QString &groupName);
+
+    QVariantMap values();
+
+    void setValue(const QString &groupName, const QString &key, const QVariant &value);
+
+    void setValue(const QString &key, const QVariant &value);
+
+    void setValues(const QString &groupName, const QVariantMap &values);
+
+    void setValues(const QVariantMap &values);
 
     void save();
 
-    void readySave(const int &delayTime = 1000);
+    void saveLater(const int &delayTime = 1000);
 
     void read();
 
 private:
-    QString fileName_;
-    QString groupName_;
-    QString projectName_;
-    QString filePath_;
+    QString settingsFilePath_;
+    QString defaultGroupName_;
 
-    QMap< QString, QVariant > datas_;
-
-    QSharedPointer< QTimer > timer_;
+    QMap< QString, QVariantMap > allValues_; // group -> key -> value
+    QSharedPointer< QTimer > timerForSaveLater_;
 };
 
 }

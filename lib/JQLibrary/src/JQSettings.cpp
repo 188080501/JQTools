@@ -18,6 +18,7 @@
 #include "JQSettings.h"
 
 // Qt lib import
+#include <QSettings>
 #include <QDir>
 #include <QDebug>
 #include <QJsonObject>
@@ -68,10 +69,7 @@ QString JQSettings::documentsPath(const QString &projectName)
 #endif
 }
 
-QSharedPointer< QSettings > JQSettings::settingsFile(
-        const QString &fileName,
-        const QString &projectName
-    )
+QSharedPointer< QSettings > JQSettings::settingsFile(const QString &fileName, const QString &projectName)
 {
     if ( fileName.isEmpty() )
     {
@@ -86,81 +84,110 @@ QSharedPointer< QSettings > JQSettings::settingsFile(
     return QSharedPointer< QSettings >( new QSettings( JQSettings::documentsPath( projectName ) + fileName, QSettings::IniFormat ) );
 }
 
-Set::Set(
-        const QString &fileName,
-        const QString &groupName,
-        const QString &projectName
-    ):
-    fileName_( fileName ),
-    groupName_( groupName ),
-    projectName_( projectName ),
-    filePath_( documentsPath( projectName ) + fileName )
+Set::Set(const QString &fileName, const QString &defaultGroup, const QString &projectName):
+    settingsFilePath_( documentsPath( projectName ) + fileName ),
+  defaultGroupName_( defaultGroup )
+{
+    this->read();
+}
+
+Set::Set(const QString &settingsFilePath, const QString &defaultGroup):
+    settingsFilePath_( settingsFilePath ),
+    defaultGroupName_( defaultGroup )
 {
     this->read();
 }
 
 Set::~Set()
 {
-    if ( timer_ )
+    if ( timerForSaveLater_ )
     {
-        if ( timer_->isActive() )
+        if ( timerForSaveLater_->isActive() )
         {
             this->save();
         }
-        timer_.clear();
+        timerForSaveLater_.clear();
     }
 }
 
-QVariant Set::operator[](const QString &key) const
+JQSettingsSetSharedPointer Set::createSet(const QString &fileName, const QString &defaultGroup, const QString &projectName)
 {
-    if ( !datas_.contains( key ) )
-    {
-        return { };
-    }
-    return datas_[ key ];
+    JQSettingsSetSharedPointer result( new Set( fileName, defaultGroup, projectName ) );
+
+    return result;
 }
 
-QVariant Set::operator[](const QString &key)
+JQSettingsSetSharedPointer Set::createSet(const QString &settingsFilePath, const QString &defaultGroup)
 {
-    if ( !datas_.contains( key ) )
-    {
-        return { };
-    }
-    return datas_[ key ];
+    JQSettingsSetSharedPointer result( new Set( settingsFilePath, defaultGroup ) );
+
+    return result;
 }
 
-QString Set::filePath() const
+QString Set::settingsFilePath() const
 {
-    return filePath_;
+    return settingsFilePath_;
 }
 
 bool Set::contains(const QString &key)
 {
-    return datas_.contains( key );
+    return allValues_[ defaultGroupName_ ].contains( key );
 }
 
-QVariant Set::value(const QString &key, const QVariant &defaultValue)
+QVariant Set::value(const QString &groupName, const QString &key) const
 {
-    if ( !datas_.contains( key ) )
+    if ( !allValues_[ groupName ].contains( key ) )
     {
-        this->setValue(key, defaultValue);
+        return { };
     }
-    return datas_[ key ];
+    return allValues_[ key ];
 }
 
 QVariant Set::value(const QString &key) const
 {
-    if ( !datas_.contains( key ) )
+    if ( !allValues_[ defaultGroupName_ ].contains( key ) )
     {
         return { };
     }
-    return datas_[ key ];
+    return allValues_[ key ];
 }
 
-void Set::setValue(const QString &key, const QVariant &data)
+QVariantMap Set::values(const QString &groupName)
 {
-    datas_[ key ] = data;
-    this->readySave();
+    if ( !allValues_.contains( groupName ) ) { return { }; }
+
+    return allValues_[ groupName ];
+}
+
+QVariantMap Set::values()
+{
+    if ( !allValues_.contains( defaultGroupName_ ) ) { return { }; }
+
+    return allValues_[ defaultGroupName_ ];
+}
+
+void Set::setValue(const QString &groupName, const QString &key, const QVariant &value)
+{
+    allValues_[ groupName ][ key ] = value;
+    this->saveLater();
+}
+
+void Set::setValue(const QString &key, const QVariant &value)
+{
+    allValues_[ defaultGroupName_ ][ key ] = value;
+    this->saveLater();
+}
+
+void Set::setValues(const QString &groupName, const QVariantMap &values)
+{
+    allValues_[ groupName ] = values;
+    this->saveLater();
+}
+
+void Set::setValues(const QVariantMap &values)
+{
+    allValues_[ defaultGroupName_ ] = values;
+    this->saveLater();
 }
 
 void Set::save()
@@ -169,38 +196,41 @@ void Set::save()
     QSettings settings( projectName_, fileName_ );
 #else
 #   ifdef Q_OS_MAC
-    QSettings settings( filePath_, QSettings::NativeFormat );
+    QSettings settings( settingsFilePath_, QSettings::NativeFormat );
 #   else
     QSettings settings( filePath_ );
 #   endif
 #endif
 
-    settings.beginGroup( groupName_ );
-
-    for (auto it = datas_.begin(); it != datas_.end(); it++)
+    for ( auto itForGroup = allValues_.begin(); itForGroup != allValues_.end(); ++itForGroup )
     {
-        settings.setValue( it.key(), it.value() );
+        settings.beginGroup( itForGroup.key() );
+
+        for ( auto itForData = itForGroup.value().begin(); itForData != itForGroup.value().end(); ++itForData )
+        {
+            settings.setValue( itForData.key(), itForData.value() );
+        }
+
+        settings.endGroup();
     }
-    
-    settings.endGroup();
 }
 
-void Set::readySave(const int &delayTime)
+void Set::saveLater(const int &delayTime)
 {
-    if ( !timer_ )
+    if ( !timerForSaveLater_ )
     {
-        timer_.reset( new QTimer );
-        timer_->setSingleShot( true );
+        timerForSaveLater_.reset( new QTimer );
+        timerForSaveLater_->setSingleShot( true );
 
-        connect( timer_.data(), &QTimer::timeout, this, &Set::save );
+        connect( timerForSaveLater_.data(), &QTimer::timeout, this, &Set::save );
     }
 
-    if ( timer_->isActive() )
+    if ( timerForSaveLater_->isActive() )
     {
-        timer_->stop();
+        timerForSaveLater_->stop();
     }
 
-    timer_->start( delayTime );
+    timerForSaveLater_->start( delayTime );
 }
 
 void Set::read()
@@ -209,20 +239,23 @@ void Set::read()
     QSettings settings( projectName_, fileName_ );
 #else
 #   ifdef Q_OS_MAC
-    QSettings settings( filePath_, QSettings::NativeFormat );
+    QSettings settings( settingsFilePath_, QSettings::NativeFormat );
 #   else
     QSettings settings( filePath_ );
 #   endif
 #endif
-
-    settings.beginGroup( groupName_ );
     
-    datas_.clear();
+    allValues_.clear();
 
-    for ( const auto &key: settings.allKeys() )
+    for ( const auto &group: settings.childGroups() )
     {
-        datas_[ key ] = settings.value( key );
+        settings.beginGroup( group );
+
+        for ( const auto &key: settings.allKeys() )
+        {
+            allValues_[ group ][ key ] = settings.value( key );
+        }
+
+        settings.endGroup();
     }
-    
-    settings.endGroup();
 }
