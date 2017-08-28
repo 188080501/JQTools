@@ -39,7 +39,6 @@ struct JQNetworkConnectSettings
     int maximumConnectToHostWaitTime = 15 * 1000;
     int maximumSendPackageWaitTime = 30 * 1000;
     int maximumReceivePackageWaitTime = 30 * 1000;
-    int maximumNoCommunicationTime = 30 * 1000;
     int maximumFileWriteWaitTime = 30 * 1000;
     int maximumConnectionTime = -1;
 

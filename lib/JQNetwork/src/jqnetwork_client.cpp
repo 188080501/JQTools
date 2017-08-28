@@ -437,7 +437,7 @@ qint32 JQNetworkClient::waitForSendPayloadData(
                     {
                         succeedCallback( connect, package );
                     }
-                    semaphore.release( 1 );
+                    semaphore.release( 2 );
                 },
                 [
                     &semaphore,
@@ -453,9 +453,9 @@ qint32 JQNetworkClient::waitForSendPayloadData(
                 }
             );
 
-    semaphore.acquire();
+    semaphore.acquire( 1 );
 
-    return sendReply;
+    return ( semaphore.tryAcquire( 1 ) ) ? ( sendReply ) : ( 0 );
 }
 
 qint32 JQNetworkClient::waitForSendVariantMapData(
@@ -522,7 +522,7 @@ qint32 JQNetworkClient::waitForSendFileData(
                     {
                         succeedCallback( connect, package );
                     }
-                    semaphore.release( 1 );
+                    semaphore.release( 2 );
                 },
                 [
                     &semaphore,
@@ -538,9 +538,9 @@ qint32 JQNetworkClient::waitForSendFileData(
                 }
             );
 
-    semaphore.acquire();
+    semaphore.acquire( 1 );
 
-    return sendReply;
+    return ( semaphore.tryAcquire( 1 ) ) ? ( sendReply ) : ( 0 );
 }
 
 JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, const quint16 &port)
@@ -917,7 +917,7 @@ void JQNetworkClient::onWaitReplyPackageFail(
 
 void JQNetworkClient::releaseWaitConnectSucceedSemaphore(const QString &hostName, const quint16 &port, const bool &succeed)
 {
-    qDebug() << "releaseWaitConnectSucceedSemaphore: hostName:" << hostName << ", port:" << port;
+//    qDebug() << "releaseWaitConnectSucceedSemaphore: hostName:" << hostName << ", port:" << port;
 
     const auto &&hostKey = QString( "%1:%2" ).arg( hostName, QString::number( port ) );
 

@@ -388,6 +388,10 @@ void JQNetworkConnect::onTcpSocketStateChanged()
                     connectSettings_->connectToHostErrorCallback( this );
                     break;
                 }
+                case QAbstractSocket::NetworkError:
+                {
+                    break;
+                }
                 default:
                 {
                     qDebug() << "onTcpSocketStateChanged: unknow error:" << tcpSocket_->error();
@@ -830,6 +834,14 @@ void JQNetworkConnect::onReadyToDelete()
     if ( !timerForConnectToHostTimeOut_ )
     {
         timerForConnectToHostTimeOut_.clear();
+    }
+
+    if ( !onReceivedCallbacks_.isEmpty() )
+    {
+        for ( const auto &callback: onReceivedCallbacks_ )
+        {
+            callback.failCallback( this );
+        }
     }
 
     JQNETWORK_NULLPTR_CHECK( tcpSocket_ );
