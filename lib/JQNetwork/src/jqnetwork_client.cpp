@@ -262,7 +262,7 @@ bool JQNetworkClient::waitForCreateConnect(
 
     mutex_.unlock();
 
-    const auto &&acquireSucceed = semaphore->tryAcquire(
+    auto acquireSucceed = semaphore->tryAcquire(
                 1,
                 ( maximumConnectToHostWaitTime == -1 ) ? ( connectSettings_->maximumConnectToHostWaitTime ) : ( maximumConnectToHostWaitTime )
             );
@@ -273,7 +273,13 @@ bool JQNetworkClient::waitForCreateConnect(
 
     mutex_.unlock();
 
-    return acquireSucceed && semaphore->tryAcquire( 1 );
+    if ( !acquireSucceed ) { return false; }
+
+    acquireSucceed = semaphore->tryAcquire( 1 );
+
+//    qDebug() << "-->" << acquireSucceed;
+
+    return acquireSucceed;
 }
 
 qint32 JQNetworkClient::sendPayloadData(
@@ -561,6 +567,8 @@ JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, con
 
         return connect;
     }
+
+    if ( !clientSettings_->autoCreateConnect ) { return { }; }
 
     const auto &&autoConnectSucceed = this->waitForCreateConnect( hostName, port, clientSettings_->maximumAutoConnectToHostWaitTime );
 

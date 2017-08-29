@@ -223,7 +223,7 @@ JQNetworkConnectPointer JQNetworkConnectPool::getConnectBySocketDescriptor(const
 
 void JQNetworkConnectPool::onConnectToHostSucceed(const JQNetworkConnectPointer &connect)
 {
-//    qDebug() << __func__ << connect.data();
+//    qDebug() << "JQNetworkConnectPool::onConnectToHostSucceed:" << connect.data();
 
     mutex_.lock();
 
@@ -233,7 +233,7 @@ void JQNetworkConnectPool::onConnectToHostSucceed(const JQNetworkConnectPointer 
     {
         mutex_.unlock();
 
-        qDebug() << __func__ << ": error: connect not contains" << connect.data();
+        qDebug() << "JQNetworkConnectPool::onConnectToHostSucceed: error: connect not contains" << connect.data();
         return;
     }
 
@@ -248,7 +248,7 @@ void JQNetworkConnectPool::onConnectToHostSucceed(const JQNetworkConnectPointer 
 
 void JQNetworkConnectPool::onReadyToDelete(const JQNetworkConnectPointer &connect)
 {
-//    qDebug() << "onReadyToDelete:" << connect.data();
+//    qDebug() << "JQNetworkConnectPool::onReadyToDelete:" << connect.data();
 
     JQNETWORK_NULLPTR_CHECK( connectPoolSettings_->readyToDeleteCallback );
     connectPoolSettings_->readyToDeleteCallback( connect, this );
@@ -264,7 +264,7 @@ void JQNetworkConnectPool::onReadyToDelete(const JQNetworkConnectPointer &connec
     {
         mutex_.unlock();
 
-        qDebug() << __func__ << ": error: connect not contains" << connect.data();
+        qDebug() << "JQNetworkConnectPool::onReadyToDelete: error: connect not contains" << connect.data();
         return;
     }
 

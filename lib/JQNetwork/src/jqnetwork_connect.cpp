@@ -840,6 +840,8 @@ void JQNetworkConnect::onReadyToDelete()
     {
         for ( const auto &callback: onReceivedCallbacks_ )
         {
+            if ( !callback.failCallback ) { continue; }
+
             callback.failCallback( this );
         }
     }

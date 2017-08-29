@@ -25,12 +25,12 @@ struct JQNetworkConnectSettings
     qint64 cutPackageSize = JQNETWORKPACKAGE_ADVISE_CUTPACKAGESIZE;
     qint64 packageCompressionMinimumBytes = 1024;
     int packageCompressionThresholdForConnectSucceedElapsed = 500;
-    qint64 maximumSendForTotalByteCount = -1;
-    qint64 maximumSendPackageByteCount = -1;
-    int maximumSendSpeed = -1; // Byte/s
-    qint64 maximumReceiveForTotalByteCount = -1;
-    qint64 maximumReceivePackageByteCount = -1;
-    int maximumReceiveSpeed = -1; // Byte/s
+    qint64 maximumSendForTotalByteCount = -1; // reserve
+    qint64 maximumSendPackageByteCount = -1; // reserve
+    int maximumSendSpeed = -1; // Byte/s reserve
+    qint64 maximumReceiveForTotalByteCount = -1; // reserve
+    qint64 maximumReceivePackageByteCount = -1;// reserve
+    int maximumReceiveSpeed = -1; // Byte/s reserve
     bool fileTransferEnabled = false;
 
     qint32 randomFlagRangeStart = -1;

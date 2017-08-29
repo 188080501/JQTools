@@ -21,11 +21,13 @@
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
-#ifdef QT_QML_LIB
-#   define JQNETWORKCLIENTFORQML_REGISTERTYPE( engine ) \
+#ifndef QT_CORE_LIB
+#   error("Please add qml in pro file")
+#endif
+
+#define JQNETWORKCLIENTFORQML_REGISTERTYPE( engine ) \
     qmlRegisterType< JQNetworkClientForQml >( "JQNetworkClientForQml", 1, 0, "JQNetworkClientForQml" ); \
     engine.addImportPath( ":/JQNetwork/" );
-#endif
 
 class JQNetworkClientForQml: public QObject
 {
