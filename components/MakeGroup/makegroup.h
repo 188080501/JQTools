@@ -10,17 +10,19 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __MAKEGROUP_MAKEGROUP_H__
-#define __MAKEGROUP_MAKEGROUP_H__
+#ifndef MAKEGROUP_MAKEGROUP_H_
+#define MAKEGROUP_MAKEGROUP_H_
 
 // MakeGroup lib import
 #include <IconMaker>
 #include <FontToPng>
 #include <QRCodeMaker>
+#include <BarcodeMaker>
 
 #define MAKEGROUP_INITIALIZA \
     ICONMAKER_INITIALIZA; \
     FONTTOPNG_INITIALIZA; \
-    QRCODEMAKER_INITIALIZA
+    QRCODEMAKER_INITIALIZA; \
+    BARCODEMAKER_INITIALIZA;
 
-#endif//__MAKEGROUP_MAKEGROUP_H__
+#endif//MAKEGROUP_MAKEGROUP_H_

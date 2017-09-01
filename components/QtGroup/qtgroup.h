@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __QTGROUP_QTGROUP_H__
-#define __QTGROUP_QTGROUP_H__
+#ifndef QTGROUP_QTGROUP_H_
+#define QTGROUP_QTGROUP_H_
 
 // QtGroup lib import
 #include <PngWarningRemover>
@@ -23,4 +23,4 @@
     PROPERTYMAKER_INITIALIZA; \
     CPPFILEMAKER_INITIALIZA;
 
-#endif//__QTGROUP_QTGROUP_H__
+#endif//QTGROUP_QTGROUP_H_

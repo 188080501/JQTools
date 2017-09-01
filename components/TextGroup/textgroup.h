@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __TEXTGROUP_TEXTGROUP_H__
-#define __TEXTGROUP_TEXTGROUP_H__
+#ifndef TEXTGROUP_TEXTGROUP_H_
+#define TEXTGROUP_TEXTGROUP_H_
 
 // TextGroup lib import
 #include <Utf16Transform>
@@ -29,4 +29,4 @@
     URLENCODE_INITIALIZA; \
     JSONFORMAT_INITIALIZA;
 
-#endif//__TEXTGROUP_TEXTGROUP_H__
+#endif//TEXTGROUP_TEXTGROUP_H_

@@ -10,13 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include( $$PWD/IconMaker/IconMaker.pri )
-include( $$PWD/FontToPng/FontToPng.pri )
-include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
-include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
-
 INCLUDEPATH += \
-    $$PWD/
+    $$PWD/cpp/
 
 HEADERS += \
-    $$PWD/makegroup.h
+    $$PWD/cpp/barcodemaker.h
+
+SOURCES += \
+    $$PWD/cpp/barcodemaker.cpp
+
+RESOURCES += \
+    $$PWD/qml/BarcodeMakerQml.qrc

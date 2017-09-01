@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/BarcodeMaker">
+        <file>BarcodeMaker.qml</file>
+    </qresource>
+</RCC>

@@ -13,15 +13,15 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import "qrc:/MaterialUI/Interface/"
-import QRCodeMaker 1.0
+import BarcodeMaker 1.0
 
 Item {
-    id: qrCodeMaker
+    id: qrcodeMaker
     width: 620
     height: 540
 
-    QRCodeMakerManage {
-        id: qrCodeMakerManage
+    BarcodeMakerManage {
+        id: barcodeMakerManage
     }
 
     Item {
@@ -34,12 +34,12 @@ Item {
             x: 40
             y: 50
             width: 540
-            placeholderText: "需要被编码的字符串"
-            text: "JQTools"
+            placeholderText: "条形码ID\n目前仅支持EAN-13，并且需要6开头"
+            text: "6901234567892"
         }
 
         Image {
-            id: imageForQRCode
+            id: imageForBarcode
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.horizontalCenterOffset: -100
             anchors.verticalCenter: parent.verticalCenter
@@ -47,7 +47,7 @@ Item {
             width: 250
             height: 250
             fillMode: Image.PreserveAspectFit
-            source: "image://QRCodeMaker/" + textFieldForLower.text
+            source: "image://BarcodeMaker/" + textFieldForLower.text
 
             MaterialButton {
                 anchors.left: parent.right
@@ -58,7 +58,7 @@ Item {
                 onClicked: {
                     materialUI.showLoading();
 
-                    var reply = qrCodeMakerManage.savePng(
+                    var reply = barcodeMakerManage.savePng(
                                 textFieldForLower.text
                             );
 

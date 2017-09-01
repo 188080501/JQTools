@@ -10,13 +10,13 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H__
-#define __GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H__
+#ifndef GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H_
+#define GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H_
 
 // JQToolsLibrary import
 #include "JQToolsLibrary.h"
 
-#define URLENCODE_INITIALIZA                                                     \
+#define URLENCODE_INITIALIZA                                                    \
 {                                                                               \
     qmlRegisterType<UrlEncode::Manage>("UrlEncode", 1, 0, "UrlEncodeManage");   \
 }
@@ -42,4 +42,4 @@ public slots:
 
 }
 
-#endif//__GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H__
+#endif//GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H_

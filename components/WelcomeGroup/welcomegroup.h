@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __WELCOMEGROUP_WELCOMEGROUP_H__
-#define __WELCOMEGROUP_WELCOMEGROUP_H__
+#ifndef WELCOMEGROUP_WELCOMEGROUP_H_
+#define WELCOMEGROUP_WELCOMEGROUP_H_
 
 // WelcomeGroup lib import
 #include "welcome.h"
@@ -19,4 +19,4 @@
 #define WELCOMEGROUP_INITIALIZA \
     WELCOME_INITIALIZA;
 
-#endif//__WELCOMEGROUP_WELCOMEGROUP_H__
+#endif//WELCOMEGROUP_WELCOMEGROUP_H_

@@ -22,6 +22,12 @@ CONFIG *= c++11
 INCLUDEPATH *= \
     $$PWD/include/
 
+exists( $$PWD/src/JQBarcode.cpp ) {
+
+    SOURCES *= $$PWD/src/JQBarcode.cpp
+    HEADERS *= $$PWD/include/JQBarcode.h
+}
+
 contains( QT, bluetooth ) {
 
     exists( $$PWD/src/JQBluetooth.cpp ) {

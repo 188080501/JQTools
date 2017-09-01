@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __TOOLSGROUP_TOOLSGROUP_H__
-#define __TOOLSGROUP_TOOLSGROUP_H__
+#ifndef TOOLSGROUP_TOOLSGROUP_H_
+#define TOOLSGROUP_TOOLSGROUP_H_
 
 // ToolsGroup lib import
 #include <LinesStatistics>
@@ -37,4 +37,4 @@
     QRCODEREADER_INITIALIZA;
 #endif
 
-#endif//__TOOLSGROUP_TOOLSGROUP_H__
+#endif//TOOLSGROUP_TOOLSGROUP_H_
