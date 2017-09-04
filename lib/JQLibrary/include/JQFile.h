@@ -22,10 +22,12 @@
 #include <functional>
 
 // Qt lib import
-#include <QFile>
-#include <QFileInfo>
+#include <QByteArray>
+#include <QPair>
 #include <QDir>
-#include <QDebug>
+
+class QFileInfo;
+class QDir;
 
 namespace JQFile
 {
@@ -36,7 +38,7 @@ void foreachDirectoryFromDirectory(const QDir &directory, const std::function<vo
 
 bool writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover = true);
 
-QPair<bool, QByteArray> readFile(const QFileInfo &filePath);
+QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
 
 bool copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, const bool &cover = true);
 

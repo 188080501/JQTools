@@ -179,6 +179,8 @@ QString hashStringWithSalt(const QString &key);
 
 QString variantToString(const QVariant &value);
 
+QString createUuidString();
+
 QJsonObject jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix = QJsonObject());
 
 QJsonObject jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix = QJsonObject());

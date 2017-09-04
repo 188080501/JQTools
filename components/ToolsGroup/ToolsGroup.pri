@@ -17,6 +17,7 @@ mac {
     include( $$PWD/JpgOptimize/JpgOptimize.pri )
 }
 include( $$PWD/QRCodeReader/QRCodeReader.pri )
+include( $$PWD/BatchReplacement/BatchReplacement.pri )
 
 INCLUDEPATH += \
     $$PWD/

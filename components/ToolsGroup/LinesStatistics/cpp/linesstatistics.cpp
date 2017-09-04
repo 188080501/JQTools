@@ -70,7 +70,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
             if ( !availableSuffixs.contains( info.suffix().toLower() ) ) { return; }
 
             QFile file( info.filePath() );
-            if ( !file.open(QIODevice::ReadOnly) ) { return; }
+            if ( !file.open( QIODevice::ReadOnly ) ) { return; }
 
             fileCount++;
 
@@ -81,7 +81,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
             if ( imageSuffixs.contains( info.suffix().toLower() ) ) { return; }
 
             lineCount += fileAllData.count('\n') + 1;
-        }, true);
+        }, true );
 
         eventLoop.quit();
     } );

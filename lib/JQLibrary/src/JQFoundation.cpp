@@ -32,6 +32,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QProcess>
+#include <QUuid>
 
 #ifdef QT_WIDGETS_LIB
 #   include <QWidget>
@@ -144,6 +145,11 @@ QString JQFoundation::variantToString(const QVariant &value)
     }
 
     return result;
+}
+
+QString JQFoundation::createUuidString()
+{
+    return QUuid::createUuid().toString().mid( 1, 36 );
 }
 
 QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringList &leftKey, const QJsonObject &mix)

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/BatchReplacement">
+        <file>BatchReplacement.qml</file>
+    </qresource>
+</RCC>

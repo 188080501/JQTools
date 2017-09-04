@@ -22,36 +22,41 @@
 #   include <utime.h>
 #endif
 
+// Qt lib import
+#include <QDebug>
+#include <QFile>
+#include <QFileInfo>
+
 using namespace JQFile;
 
 void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion)
 {
-    for (const auto &now: directory.entryInfoList(QDir::Files))
+    for ( const auto &now: directory.entryInfoList( QDir::Files ) )
     {
-        each(now);
+        each( now );
     }
 
-    if (recursion)
+    if ( recursion )
     {
-        for (const auto &now: directory.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot))
+        for ( const auto &now: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
         {
-            JQFile::foreachFileFromDirectory(now.filePath(), each, recursion);
+            JQFile::foreachFileFromDirectory( now.filePath(), each, recursion );
         }
     }
 }
 
 void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::function<void (const QDir &)> &each, const bool &recursion)
 {
-    for (const auto &now: directory.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot))
+    for ( const auto &now: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
     {
-        each(now.filePath());
+        each( now.filePath() );
     }
 
-    if (recursion)
+    if ( recursion )
     {
-        for (const auto &now: directory.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot))
+        for ( const auto &now: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
         {
-            JQFile::foreachDirectoryFromDirectory(now.filePath(), each, recursion);
+            JQFile::foreachDirectoryFromDirectory( now.filePath(), each, recursion );
         }
     }
 }
@@ -83,61 +88,61 @@ bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, 
     return true;
 }
 
-QPair<bool, QByteArray> JQFile::readFile(const QFileInfo &filePath)
+QPair< bool, QByteArray > JQFile::readFile(const QFileInfo &filePath)
 {
     QFile file(filePath.filePath());
 
-    if (!file.open(QIODevice::ReadOnly)) { return { false, "Open file error" }; }
+    if ( !file.open( QIODevice::ReadOnly ) ) { return { false, "Open file error" }; }
 
     return { true, file.readAll() };
 }
 
 bool JQFile::copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, const bool &cover)
 {
-    if (sourcePath.filePath()[sourcePath.filePath().size() - 1] == '/')
+    if ( sourcePath.filePath()[ sourcePath.filePath().size() - 1 ] == '/' )
     {
         return false;
     }
 
-    if (targetPath.filePath()[targetPath.filePath().size() - 1] == '/')
+    if ( targetPath.filePath()[ targetPath.filePath().size() - 1 ] == '/' )
     {
         return false;
     }
 
-    if (!targetPath.dir().isReadable())
+    if ( !targetPath.dir().isReadable() )
     {
-        if (!QDir().mkpath(targetPath.path()))
+        if ( !QDir().mkpath( targetPath.path() ) )
         {
             return false;
         }
     }
 
-    if (targetPath.isFile())
+    if ( targetPath.isFile() )
     {
-        if (!cover)
+        if ( !cover )
         {
             return false;
         }
         else
         {
-            if (!QFile(targetPath.filePath()).remove())
+            if ( !QFile( targetPath.filePath() ).remove() )
             {
                 return false;
             }
         }
     }
 
-    return QFile::copy(sourcePath.filePath(), targetPath.filePath());
+    return QFile::copy( sourcePath.filePath(), targetPath.filePath() );
 }
 
 bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover)
 {
     try
     {
-        JQFile::foreachFileFromDirectory(sourceDirectory, [&](const QFileInfo &info)
+        JQFile::foreachFileFromDirectory( sourceDirectory, [&](const QFileInfo &info)
         {
-            const auto &&path = info.path().mid(sourceDirectory.path().size());
-            if (!JQFile::copyFile(info, targetDirectory.path() + "/" + ((path.isEmpty()) ? ("") : (path + "/")) + info.fileName(), cover))
+            const auto &&path = info.path().mid( sourceDirectory.path().size() );
+            if ( !JQFile::copyFile( info, targetDirectory.path() + "/" + ( ( path.isEmpty() ) ? ( "" ) : ( path + "/" ) ) + info.fileName(), cover ) )
             {
                 throw false;
             }
@@ -153,13 +158,13 @@ bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirect
 
 bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &cover)
 {
-    if (source.isFile())
+    if ( source.isFile() )
     {
-        return JQFile::copyFile(source, target, cover);
+        return JQFile::copyFile( source, target, cover );
     }
-    else if (source.isDir())
+    else if ( source.isDir() )
     {
-        return JQFile::copyDirectory(QDir(source.filePath()), QDir(target.filePath()), cover);
+        return JQFile::copyDirectory( QDir( source.filePath() ), QDir( target.filePath() ), cover );
     }
 
     return false;
@@ -168,7 +173,7 @@ bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
 bool JQFile::setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified)
 {
-    utimbuf buf( { (time_t)lastRead, (time_t)lastModified } );
+    utimbuf buf( { static_cast< time_t >( lastRead ), static_cast< time_t >( lastModified ) } );
     return !utime(fileName, &buf);
 }
 #endif
