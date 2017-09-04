@@ -38,38 +38,38 @@ Item {
 
         MaterialLabel {
             x: 64
-            y: 136
+            y: 86
             text: "搜索的文件后缀"
         }
 
         MaterialCheckBox {
             id: checkBoxForCpp
             x: 64
-            y: 162
+            y: 112
             text: "h/c/cc/cp/cpp/hpp/inc/i/ii/m"
-            checked: true
-        }
-
-        MaterialCheckBox {
-            id: checkBoxForQml
-            x: 64
-            y: 282
-            text: "qml"
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForQmake
             x: 64
-            y: 222
+            y: 172
             text: "pro/pri/prf/prl/qrc"
+            checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForQml
+            x: 64
+            y: 232
+            text: "qml"
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForNoSuffixFile
             x: 64
-            y: 342
+            y: 292
             text: "无后缀文件"
             checked: true
         }
@@ -77,8 +77,16 @@ Item {
         MaterialCheckBox {
             id: checkBoxForFileAndDir
             x: 64
-            y: 402
+            y: 352
             text: "文件名/文件夹名"
+            checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForMultiCase
+            x: 64
+            y: 412
+            text: "匹配英文大小写"
             checked: true
         }
 
@@ -165,7 +173,8 @@ Item {
                 var reply = batchReplacementManage.startBatchReplacement(
                             suffixs,
                             textFieldForSourceKey.text,
-                            textFieldForTargetKey.text
+                            textFieldForTargetKey.text,
+                            checkBoxForMultiCase.checked
                         );
 
                 if ( "cancel" in reply )

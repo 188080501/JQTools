@@ -51,18 +51,18 @@ Item {
         }
 
         MaterialCheckBox {
-            id: checkBoxForQml
-            x: 64
-            y: 282
-            text: "qml"
-            checked: true
-        }
-
-        MaterialCheckBox {
             id: checkBoxForQmake
             x: 64
             y: 222
             text: "pro/pri/prf/prl"
+            checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForQml
+            x: 64
+            y: 282
+            text: "qml"
             checked: true
         }
 
