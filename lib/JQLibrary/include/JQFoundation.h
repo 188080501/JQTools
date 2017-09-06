@@ -208,9 +208,9 @@ bool singleApplicationExist(const QString &flag);
 
 QString byteArrayToHexString(const QByteArray &data);
 
-QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format);
+QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality = -1);
 
-QByteArray imageToByteArray(const QImage &image, const QString &format);
+QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
 
 QPixmap byteArrayToPixmap(const QByteArray &byteArray);
 

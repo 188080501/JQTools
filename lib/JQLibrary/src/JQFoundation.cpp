@@ -386,36 +386,44 @@ bool JQFoundation::singleApplicationExist(const QString &)
 
 QString JQFoundation::byteArrayToHexString(const QByteArray &data)
 {
-    QString buf(data.toHex());
-    for (int c = 1; c < data.size(); c++)
+    QString buf( data.toHex() );
+
+    for ( auto c = 1; c < data.size(); ++c )
     {
-        buf.insert(c * 2 + c - 1, ' ');
+        buf.insert( c * 2 + c - 1, ' ' );
     }
+
     return buf;
 }
 
-QByteArray JQFoundation::pixmapToByteArray(const QPixmap &pixmap, const QString &format)
+QByteArray JQFoundation::pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality)
 {
     QByteArray bytes;
     QBuffer buffer( &bytes );
+
     buffer.open( QIODevice::WriteOnly );
-    pixmap.save( &buffer, format.toLatin1().data() );
+    pixmap.save( &buffer, format.toLatin1().data(), quality );
+
     return bytes;
 }
 
-QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &format)
+QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &format, int quality)
 {
     QByteArray bytes;
     QBuffer buffer( &bytes );
+
     buffer.open( QIODevice::WriteOnly );
-    image.save( &buffer, format.toLatin1().data() );
+    image.save( &buffer, format.toLatin1().data(), quality );
+
     return bytes;
 }
 
 QPixmap JQFoundation::byteArrayToPixmap(const QByteArray &byteArray)
 {
     QPixmap Pixmap;
+
     Pixmap.loadFromData(byteArray);
+
     return Pixmap;
 }
 
