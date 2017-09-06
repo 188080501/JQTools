@@ -16,6 +16,14 @@
 // JQNetwork lib import
 #include <JQNetworkFoundation>
 
+#define JQNP_PRINTFUNCTION()                                                            \
+    {                                                                                   \
+        const auto &&buffer = QString( Q_FUNC_INFO );                                   \
+        const auto &&indexForEnd = buffer.indexOf( '(' );                               \
+        const auto functionName = buffer.mid( 0, indexForEnd ).remove( "bool " );       \
+        qDebug() << functionName.toLocal8Bit().data();                                  \
+    }
+
 #define JQNP_PRINTRECEIVED()                                                            \
     {                                                                                   \
         const auto &&buffer = QString( Q_FUNC_INFO );                                   \
