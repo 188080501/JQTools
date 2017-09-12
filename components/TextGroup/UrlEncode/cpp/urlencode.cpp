@@ -13,6 +13,7 @@
 #include "urlencode.h"
 
 // Qt lib import
+#include <QDebug>
 #include <QColor>
 #include <QUrl>
 
@@ -20,10 +21,10 @@ using namespace UrlEncode;
 
 QString Manage::encode(const QString &string)
 {
-    return QUrl( string ).toEncoded();
+    return QUrl::toPercentEncoding( string );
 }
 
 QString Manage::decode(const QString &string)
 {
-    return QUrl::fromEncoded( string.toUtf8() ).toString();
+    return QUrl::fromPercentEncoding( string.toUtf8() );
 }
