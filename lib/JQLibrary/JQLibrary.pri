@@ -73,6 +73,12 @@ exists( $$PWD/src/JQFoundation.cpp ) {
     HEADERS *= $$PWD/include/JQFoundation.h
 }
 
+exists( $$PWD/src/jqgpio.cpp ) {
+
+    SOURCES *= $$PWD/src/jqgpio.cpp
+    HEADERS *= $$PWD/include/jqgpio.h
+}
+
 contains( QT, network ) {
 
     contains( QT, concurrent ) {

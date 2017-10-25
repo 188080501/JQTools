@@ -142,7 +142,7 @@ for (RforeachContainer<__typeof__((container))> _container_((container));       
         RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ )();                       \
         delete data;                                                                    \
     } );                                                                                \
-    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr ) { return; }
+    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr ) { exit( -1 ); }
 
 template < typename T >
 class RforeachContainer {
