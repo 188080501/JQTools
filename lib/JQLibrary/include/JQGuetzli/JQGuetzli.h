@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef __JQGuetzli_h__
-#define __JQGuetzli_h__
+#ifndef JQGUETZLI_H_
+#define JQGUETZLI_H_
 
 // Qt lib import
 #include <QString>
@@ -39,4 +39,4 @@ ProcessResult process(const QString &inputImageFilePath, const QString &outputIm
 
 }
 
-#endif//__JQGuetzli_h__
+#endif//JQGUETZLI_H_

@@ -12,7 +12,7 @@
 
 include( $$PWD/lib/JQLibrary/JQLibrary.pri )
 
-mac : exists( /usr/local/opt/gflags/lib/libgflags.2.2.dylib ) {
+mac {
     include( $$PWD/lib/JQLibrary/JQGuetzli.pri )
 }
 
