@@ -21,7 +21,7 @@ using namespace UrlEncode;
 
 QString Manage::encode(const QString &string)
 {
-    return QUrl::toPercentEncoding( string );
+    return QUrl::toPercentEncoding( string, "/:?=" );
 }
 
 QString Manage::decode(const QString &string)
