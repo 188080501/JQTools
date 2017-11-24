@@ -24,7 +24,7 @@
 #endif
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 // Project lib import
 #include <JQToolsManage>

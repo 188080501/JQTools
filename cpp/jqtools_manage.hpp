@@ -18,7 +18,7 @@
 #include <QEventLoop>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 class JQToolsManage: public AbstractTool
 {

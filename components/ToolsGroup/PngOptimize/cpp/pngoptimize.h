@@ -22,7 +22,7 @@
 #include <QMap>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define PNGOPTIMIZE_INITIALIZA                                                      \
 {                                                                                   \

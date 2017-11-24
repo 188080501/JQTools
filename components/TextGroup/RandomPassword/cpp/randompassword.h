@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define RANDOMPASSWORD_INITIALIZA                                                     \
 {                                                                               \

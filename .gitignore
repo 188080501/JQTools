@@ -1,8 +1,8 @@
 ### JQNetworkLib ###
-lib/JQNetwork/bin
+library/JQNetwork/bin
 
 ### JQQRCode bin ###
-lib/JQLibrary/bin/JQQRCode*
+library/JQLibrary/bin/JQQRCode*
 
 ### C++ ###
 # Prerequisites

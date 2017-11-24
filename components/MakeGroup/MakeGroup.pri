@@ -15,8 +15,8 @@ include( $$PWD/FontToPng/FontToPng.pri )
 include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
 include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/makegroup.h

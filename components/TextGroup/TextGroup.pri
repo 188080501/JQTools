@@ -17,8 +17,8 @@ include( $$PWD/RandomPassword/RandomPassword.pri )
 include( $$PWD/CaseTransform/CaseTransform.pri )
 include( $$PWD/JsonFormat/JsonFormat.pri )
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/textgroup.h

@@ -18,27 +18,27 @@ CONFIG += c++11
 CONFIG += c++14
 
 include( $$PWD/JQLibraryImport.pri )
-include( $$PWD/lib/MaterialUI/MaterialUI.pri )
-include( $$PWD/lib/JQToolsLibrary/JQToolsLibrary.pri )
-include( $$PWD/lib/JQNetwork/JQNetwork.pri )
+include( $$PWD/library/JQToolsLibrary/JQToolsLibrary.pri )
+include( $$PWD/library/JQNetwork/JQNetwork.pri )
+include( $$PWD/library/MaterialUI/MaterialUI.pri )
 include( $$PWD/components/components.pri )
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/jqtools_manage.hpp
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/main.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/qml.qrc
 
 macx {
-    ICON = $$PWD/resources/Icon/Icon.icns
+    ICON = $$PWD/icon/icon.icns
 }
 
 win32 {
-    RC_FILE = $$PWD/resources/Icon/Icon.rc
+    RC_FILE = $$PWD/icon/icon.rc
 }

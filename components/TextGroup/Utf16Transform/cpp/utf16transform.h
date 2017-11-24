@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_UTF16TRANSFORM_CPP_UTF16TRANSFORM_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define UTF16TRANSFORM_INITIALIZA                                                               \
 {                                                                                               \

@@ -20,7 +20,7 @@
 #include <QMap>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define CPPFILEMAKER_INITIALIZA                                                         \
 {                                                                                       \

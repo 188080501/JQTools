@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/barcodemaker.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/barcodemaker.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/BarcodeMakerQml.qrc

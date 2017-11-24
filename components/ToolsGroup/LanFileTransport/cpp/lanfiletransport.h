@@ -14,7 +14,7 @@
 #define GROUP_TOOLSGROUP_LANFILETRANSPORT_CPP_LANFILETRANSPORT_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 // JQNetwork lib import
 #include <JQNetworkFoundation>

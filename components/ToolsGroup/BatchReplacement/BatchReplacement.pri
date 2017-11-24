@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/batchreplacement.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/batchreplacement.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/BatchReplacement.qrc

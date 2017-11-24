@@ -2,7 +2,7 @@
 #define GROUP_WELCOMEGROUP_CPP_WELCOME_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define WELCOME_INITIALIZA                                               \
 {                                                                       \

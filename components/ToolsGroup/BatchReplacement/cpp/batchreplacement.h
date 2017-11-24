@@ -17,7 +17,7 @@
 #include <QJsonObject>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define BATCHREPLACEMENT_INITIALIZA                                                              \
 {                                                                                               \

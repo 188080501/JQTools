@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/timestamptransform.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/timestamptransform.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/TimestampTransform.qrc

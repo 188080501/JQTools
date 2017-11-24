@@ -13,8 +13,8 @@
 include( $$PWD/HashCalculate/HashCalculate.pri )
 include( $$PWD/TimestampTransform/TimestampTransform.pri )
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/calculategroup.h

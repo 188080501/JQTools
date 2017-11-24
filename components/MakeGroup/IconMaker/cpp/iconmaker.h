@@ -17,7 +17,7 @@
 #include <QImage>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define ICONMAKER_INITIALIZA                                                     \
 {                                                                               \

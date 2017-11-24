@@ -10,13 +10,12 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include( $$PWD/lib/JQLibrary/JQLibrary.pri )
+include( $$PWD/library/JQLibrary/JQLibrary.pri )
+include( $$PWD/library/JQLibrary/JQQmlLib.pri )
+include( $$PWD/library/JQLibrary/JQQRCodeReader.pri )
+include( $$PWD/library/JQLibrary/JQQRCodeWriter.pri )
+include( $$PWD/library/JQLibrary/JQZopfli.pri )
 
 mac {
-    include( $$PWD/lib/JQLibrary/JQGuetzli.pri )
+    include( $$PWD/library/JQLibrary/JQGuetzli.pri )
 }
-
-include( $$PWD/lib/JQLibrary/JQQmlLib.pri )
-include( $$PWD/lib/JQLibrary/JQQRCodeReader.pri )
-include( $$PWD/lib/JQLibrary/JQQRCodeWriter.pri )
-include( $$PWD/lib/JQLibrary/JQZopfli.pri )

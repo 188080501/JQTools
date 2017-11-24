@@ -25,7 +25,7 @@
 #include <QMutex>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define FONTTOPNG_INITIALIZA                                                        \
 {                                                                                   \

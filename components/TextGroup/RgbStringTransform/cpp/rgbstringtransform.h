@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_RGBSTRINGTRANSFORM_CPP_RGBSTRINGTRANSFORM_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define RGBSTRINGTRANSFORM_INITIALIZA                                                                    \
 {                                                                                                       \

@@ -14,7 +14,7 @@
 #define GROUP_CALCULATEGROUP_HASHCALCULATE_CPP_HASHCALCULATE_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define HASHCALCULATE_INITIALIZA                                                            \
 {                                                                                           \

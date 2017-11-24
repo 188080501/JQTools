@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_JSONFORMAT_CPP_JSONFORMAT_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define JSONFORMAT_INITIALIZA                                                       \
 {                                                                                   \

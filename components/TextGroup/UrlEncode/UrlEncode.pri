@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/urlencode.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/urlencode.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/UrlEncode.qrc

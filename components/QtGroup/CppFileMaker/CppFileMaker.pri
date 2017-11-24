@@ -10,15 +10,15 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/cppfilemaker.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/cppfilemaker.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/CppFileMaker.qrc \
     $$PWD/resources/files/CppFileMakerFiles.qrc

@@ -10,11 +10,11 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/include/
 
-HEADERS += \
-    $$PWD/include/JQToolsLibrary.h
+HEADERS *= \
+    $$PWD/include/jqtoolslibrary.h
 
-SOURCES += \
-    $$PWD/src/JQToolsLibrary.cpp
+SOURCES *= \
+    $$PWD/src/jqtoolslibrary.cpp

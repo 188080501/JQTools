@@ -10,15 +10,15 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/iconmaker.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/iconmaker.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/IconMaker.qrc \
     $$PWD/Image/IconMakerImage.qrc

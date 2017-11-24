@@ -10,15 +10,15 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/fonttopng.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/fonttopng.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/FontToPng.qrc \
     $$PWD/Resource/Font/FontToPngFont.qrc

@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/pngwarningremover.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/pngwarningremover.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/PngWarningRemover.qrc

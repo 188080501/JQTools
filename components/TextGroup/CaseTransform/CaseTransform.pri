@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/casetransform.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/casetransform.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/CaseTransform.qrc

@@ -13,14 +13,14 @@
 DEFINES += \
     TOOLSGROUP_JPGOPTIMIZE_ENABLE
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/jpgoptimize.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/jpgoptimize.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/JpgOptimize.qrc

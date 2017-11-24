@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_CASETRANSFORM_CPP_CASETRANSFORM_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define CASETRANSFORM_INITIALIZA                                                             \
 {                                                                                           \

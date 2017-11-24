@@ -10,7 +10,7 @@
     GitHub: https://github.com/188080501/
 */
 
-#include "JQToolsLibrary.h"
+#include "jqtoolslibrary.h"
 
 // Qt lib import
 #include <QApplication>

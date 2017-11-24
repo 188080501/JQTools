@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/pngoptimize.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/pngoptimize.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/PngOptimize.qrc

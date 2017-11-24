@@ -19,8 +19,8 @@ mac {
 include( $$PWD/QRCodeReader/QRCodeReader.pri )
 include( $$PWD/BatchReplacement/BatchReplacement.pri )
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/toolsgroup.h

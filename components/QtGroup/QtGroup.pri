@@ -14,8 +14,8 @@ include( $$PWD/PngWarningRemover/PngWarningRemover.pri )
 include( $$PWD/PropertyMaker/PropertyMaker.pri )
 include( $$PWD/CppFileMaker/CppFileMaker.pri )
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/qtgroup.h

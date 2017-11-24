@@ -10,16 +10,16 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/ \
     $$PWD/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/welcome.h \
     $$PWD/welcomegroup.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/welcome.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/Welcome.qrc

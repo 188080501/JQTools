@@ -10,15 +10,15 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/qrcodereader.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/qrcodereader_.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/QRCodeReaderQml.qrc \
     $$PWD/resources/images/QRCodeReaderImages.qrc

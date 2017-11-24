@@ -18,7 +18,7 @@
 #include <QQuickImageProvider>
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define BARCODEMAKER_INITIALIZA                                                          \
 {                                                                                       \

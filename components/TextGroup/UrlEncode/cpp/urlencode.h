@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_URLENCODE_CPP_URLENCODE_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define URLENCODE_INITIALIZA                                                    \
 {                                                                               \

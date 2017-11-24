@@ -14,7 +14,7 @@
 #define GROUP_CALCULATEGROUP_TIMESTAMPTRANSFORM_CPP_TIMESTAMPTRANSFORM_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define TTIMESTAMPTRANSFORM_INITIALIZA                                                                       \
 {                                                                                                           \

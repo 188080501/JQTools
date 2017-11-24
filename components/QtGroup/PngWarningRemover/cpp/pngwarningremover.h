@@ -14,7 +14,7 @@
 #define GROUP_QTGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
 
 // JQToolsLibrary import
-#include "JQToolsLibrary.h"
+#include <JQToolsLibrary>
 
 #define PNGWARNINGREMOVER_INITIALIZA                                                                     \
 {                                                                                                       \

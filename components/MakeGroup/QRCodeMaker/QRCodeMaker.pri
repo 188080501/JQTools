@@ -10,14 +10,14 @@
 #   GitHub: https://github.com/188080501/
 #
 
-INCLUDEPATH += \
+INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS += \
+HEADERS *= \
     $$PWD/cpp/qrcodemaker.h
 
-SOURCES += \
+SOURCES *= \
     $$PWD/cpp/qrcodemaker.cpp
 
-RESOURCES += \
+RESOURCES *= \
     $$PWD/qml/QRCodeMakerQml.qrc
