@@ -43,6 +43,7 @@ ApplicationWindow {
                                 { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
                                 { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "qrc:/CaseTransform/CaseTransform.qml" },
                                 { bookmarkName: "密码随机器", titleName: "密码随机器", qrcLocation: "qrc:/RandomPassword/RandomPassword.qml" },
+                                { bookmarkName: "UUID随机器", titleName: "UUID随机器", qrcLocation: "qrc:/RandomUuid/RandomUuid.qml" },
                                 { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" },
                                 { bookmarkName: "JSON格式化", titleName: "JSON格式化", qrcLocation: "qrc:/JsonFormat/JsonFormat.qml" }
                             ]
@@ -81,10 +82,7 @@ ApplicationWindow {
                                 { bookmarkName: "二维码识别器", titleName: "二维码识别器 ", qrcLocation: "qrc:/QRCodeReader/QRCodeReader.qml" },
                                 { bookmarkName: "批量替换", titleName: "批量替换 ", qrcLocation: "qrc:/BatchReplacement/BatchReplacement.qml" },
                                 { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "notSupport" },
-                                { bookmarkName: "局域网文件传输", titleName: "局域网文件传输", qrcLocation: "qrc:/LanFileTransport/LanFileTransport.qml" },
-                                { bookmarkName: "局域网远程构建", titleName: "局域网远程构建", qrcLocation: "notSupport" },
-                                { bookmarkName: "TCP服务端模拟", titleName: "TCP服务端模拟", qrcLocation: "notSupport" },
-                                { bookmarkName: "TCP客户端模拟", titleName: "TCP客户端模拟", qrcLocation: "notSupport" }
+                                { bookmarkName: "局域网文件传输", titleName: "局域网文件传输", qrcLocation: "qrc:/LanFileTransport/LanFileTransport.qml" }
                             ]
                         },
                         {

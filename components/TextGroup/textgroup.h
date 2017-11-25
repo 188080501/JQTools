@@ -18,6 +18,7 @@
 #include <RgbStringTransform>
 #include <CaseTransform>
 #include <RandomPassword>
+#include <RandomUuid>
 #include <UrlEncode>
 #include <JsonFormat>
 
@@ -26,6 +27,7 @@
     RGBSTRINGTRANSFORM_INITIALIZA; \
     CASETRANSFORM_INITIALIZA; \
     RANDOMPASSWORD_INITIALIZA; \
+    RANDOMUUID_INITIALIZA; \
     URLENCODE_INITIALIZA; \
     JSONFORMAT_INITIALIZA;
 
