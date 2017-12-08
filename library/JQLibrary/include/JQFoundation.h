@@ -154,13 +154,11 @@ QMap< Key, T > mapFilter(const QMap< Key, T > &source, const char *leftKey, cons
 template< class Key, class T >
 QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix);
 
-QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(const QPointer< QTimer > &) > &callback, const bool &callbackOnStart = false);
+QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(bool &continueFlag) > &callback, const bool &callbackOnStart = false);
 
 void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
 
-#ifdef Q_OS_WIN
 void openDebugConsole();
-#endif
 
 bool singleApplication(const QString &flag);
 

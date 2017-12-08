@@ -181,14 +181,18 @@ QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const char *left
     return JQFoundation::jsonFilter( source, QStringList( { leftKey } ), mix );
 }
 
-QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, const std::function<void (const QPointer< QTimer > &)> &callback, const bool &callbackOnStart)
+QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, const std::function<void (bool &continueFlag)> &callback, const bool &callbackOnStart)
 {
     QSharedPointer< QTimer > timer( new QTimer );
 
     QObject::connect( timer.data(), &QTimer::timeout, [ timer, callback ]()
     {
-        callback( { timer.data() } );
-        timer->start();
+        bool continueFlag = true;
+        callback( continueFlag );
+        if ( continueFlag )
+        {
+            timer->start();
+        }
     } );
 
     timer->setInterval( interval );
@@ -196,10 +200,17 @@ QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, con
 
     if ( callbackOnStart )
     {
-        callback( { timer.data() } );
+        bool continueFlag = true;
+        callback( continueFlag );
+        if ( continueFlag )
+        {
+            timer->start();
+        }
     }
-
-    timer->start();
+    else
+    {
+        timer->start();
+    }
 
     return timer;
 }
@@ -274,9 +285,9 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
     qInstallMessageHandler( HelperClass::messageHandler );
 }
 
-#ifdef Q_OS_WIN
 void JQFoundation::openDebugConsole()
 {
+#ifdef Q_OS_WIN
     class HelperClass
     {
     public:
@@ -320,8 +331,8 @@ void JQFoundation::openDebugConsole()
     qInstallMessageHandler( HelperClass::messageHandler );
 
     AllocConsole();
-}
 #endif
+}
 
 #if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
 bool JQFoundation::singleApplication(const QString &flag)
