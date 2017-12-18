@@ -62,11 +62,6 @@ void JQFoundation::setRenderLoop()
 #endif
 }
 
-QString JQFoundation::hashString(const QString &key, const QCryptographicHash::Algorithm &algorithm)
-{
-    return hashString(key.toLatin1(), algorithm);
-}
-
 QString JQFoundation::hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm)
 {
     return QCryptographicHash::hash( key, algorithm ).toHex();
@@ -84,11 +79,11 @@ QString JQFoundation::hashStringWithSalt(const QString &key)
         arg( key).
         arg( key.size() ).
         arg( QString().append( key.at( 0 ) ) ) );
-    const auto &&buf2( JQFoundation::hashString( buf1 + "Sha1", QCryptographicHash::Sha1) );
-    const auto &&buf3( JQFoundation::hashString( buf1 + "Md5", QCryptographicHash::Md5) );
-    const auto &&buf4( JQFoundation::hashString( buf3 + "Sha1", QCryptographicHash::Sha1) );
-    const auto &&buf5( JQFoundation::hashString( buf2 + "Md5", QCryptographicHash::Md5) );
-    const auto &&buf6( JQFoundation::hashString( buf4 + "+" + buf5, QCryptographicHash::Sha1) );
+    const auto &&buf2( JQFoundation::hashString( ( buf1 + "Sha1" ).toUtf8(), QCryptographicHash::Sha1) );
+    const auto &&buf3( JQFoundation::hashString( ( buf1 + "Md5" ).toUtf8(), QCryptographicHash::Md5) );
+    const auto &&buf4( JQFoundation::hashString( ( buf3 + "Sha1" ).toUtf8(), QCryptographicHash::Sha1) );
+    const auto &&buf5( JQFoundation::hashString( ( buf2 + "Md5" ).toUtf8(), QCryptographicHash::Md5) );
+    const auto &&buf6( JQFoundation::hashString( ( buf4 + "+" + buf5 ).toUtf8(), QCryptographicHash::Sha1) );
 
     return buf6;
 }
