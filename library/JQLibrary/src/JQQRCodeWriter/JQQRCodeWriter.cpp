@@ -40,7 +40,7 @@ QImage JQQRCodeWriter::makeQRcode(const QString &data, const QSize &size)
         return image;
     }
 
-    QRcode *qrCode = QRcode_encodeString( data.toLatin1().data(), 1, QR_ECLEVEL_H, QR_MODE_8, true );
+    QRcode *qrCode = QRcode_encodeString( data.toUtf8().data(), 1, QR_ECLEVEL_H, QR_MODE_8, true );
     if ( !qrCode )
     {
         qDebug() << "JQQRCodeWriter::makeQRcode: empty qrcode";
