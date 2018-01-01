@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef JQFOUNDATION_H_
-#define JQFOUNDATION_H_
+#ifndef JQLIBRARY_INCLUDE_JQFOUNDATION_H_
+#define JQLIBRARY_INCLUDE_JQFOUNDATION_H_
 
 #if ((__cplusplus < 201103) && !(defined _MSC_VER)) || ((defined _MSC_VER) && (_MSC_VER < 1800))
 #   error("Please add c++11 config on pro file")
@@ -168,23 +168,11 @@ QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int q
 
 QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
 
-QPixmap byteArrayToPixmap(const QByteArray &byteArray);
-
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
 #endif
 
 #ifdef QT_WIDGETS_LIB
-void tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList);
-
-void tableWidgetSetColumnWidth(QTableWidget *tableWidget, const QVector<int> &columnWidth);
-
-void tableWidgetAddString(QTableWidget *tablwWidget, const QStringList &string);
-
-void treeWidgetSetHorizontalHeaderLabels(QTreeWidget *treeWidget, const QStringList &ttringList);
-
-void treeWidgetSetColumnWidth(QTreeWidget *treeWidget, const QVector<int> &columnWidth);
-
 void setWidgetColor(QWidget *label, const QColor &color);
 
 void texetEditMoveCursorToEnd(QTextEdit *textEdit);
@@ -250,4 +238,4 @@ QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix)
 
 }
 
-#endif//JQFOUNDATION_H_
+#endif//JQLIBRARY_INCLUDE_JQFOUNDATION_H_

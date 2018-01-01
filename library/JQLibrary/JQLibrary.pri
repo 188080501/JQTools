@@ -149,10 +149,10 @@ contains( QT, network ) {
     }
 }
 
-exists( $$PWD/src/JQTranslation.cpp ) {
+exists( $$PWD/src/jqthread.cpp ) {
 
-    SOURCES *= $$PWD/src/JQTranslation.cpp
-    HEADERS *= $$PWD/include/JQTranslation.h
+    SOURCES *= $$PWD/src/jqthread.cpp
+    HEADERS *= $$PWD/include/jqthread.h
 }
 
 contains( QT, multimedia | concurrent ) {

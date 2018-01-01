@@ -424,15 +424,6 @@ QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &fo
     return bytes;
 }
 
-QPixmap JQFoundation::byteArrayToPixmap(const QByteArray &byteArray)
-{
-    QPixmap Pixmap;
-
-    Pixmap.loadFromData(byteArray);
-
-    return Pixmap;
-}
-
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
 {
@@ -459,63 +450,6 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
 #endif
 
 #ifdef QT_WIDGETS_LIB
-void JQFoundation::tableWidgetSetHorizontalHeaderLabels(QTableWidget *tableWidget, const QStringList &stringList)
-{
-    tableWidget->setColumnCount(stringList.size());
-    tableWidget->setHorizontalHeaderLabels(stringList);
-}
-
-void JQFoundation::tableWidgetSetColumnWidth(QTableWidget *tableWidget, const QVector<int> &columnWidth)
-{
-    int column = -1;
-    foreach (auto &&now, columnWidth)
-    {
-        tableWidget->setColumnWidth(++column, now);
-    }
-}
-
-void JQFoundation::tableWidgetAddString(QTableWidget *tableWidget, const QStringList &stringList)
-{
-    int x = 0, y = tableWidget->rowCount();
-    tableWidget->setRowCount(y + 1);
-    QTableWidgetItem *item;
-
-    foreach (QString Now, stringList)
-    {
-        item = new QTableWidgetItem(Now);
-        item->setSelected(false);
-        item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-        tableWidget->setItem(y, x++, item);
-    }
-}
-
-void JQFoundation::treeWidgetSetHorizontalHeaderLabels(QTreeWidget *treeWidget, const QStringList &stringList)
-{
-    treeWidget->setColumnCount(stringList.size());
-    treeWidget->setHeaderLabels(stringList);
-}
-
-void JQFoundation::treeWidgetSetColumnWidth(QTreeWidget *treeWidget, const QVector<int> &columnWidth)
-{
-    int column = -1;
-    foreach (auto &&now, columnWidth)
-    {
-        ++column;
-        if (now > 0)
-        {
-            treeWidget->setColumnWidth(column, now);
-        }
-        else if (!now)
-        {
-            continue;
-        }
-        else
-        {
-            treeWidget->setColumnWidth(column, treeWidget->headerItem()->text(column).size() * abs(now));
-        }
-    }
-}
-
 void JQFoundation::setWidgetColor(QWidget *label, const QColor &color)
 {
     QPalette palette;
