@@ -22,6 +22,7 @@
 #include <iostream>
 
 // Qt lib import
+#include <QDebug>
 #include <QSharedMemory>
 #include <QHash>
 #include <QBuffer>
@@ -33,20 +34,10 @@
 #include <QDir>
 #include <QProcess>
 #include <QUuid>
-
-#ifdef QT_WIDGETS_LIB
-#   include <QWidget>
-#   include <QLineEdit>
-#   include <QTextEdit>
-#   include <QLabel>
-#   include <QDesktopWidget>
-#   include <QAbstractButton>
-#   include <QTabWidget>
-#   include <QTabBar>
-#   include <QTableWidget>
-#   include <QTreeWidget>
-#   include <QMessageBox>
-#endif
+#include <QTimer>
+#include <QTime>
+#include <QDateTime>
+#include <QTextStream>
 
 // Windows lib import
 #ifdef Q_OS_WIN
@@ -55,37 +46,9 @@
 
 using namespace JQFoundation;
 
-void JQFoundation::setRenderLoop()
-{
-#ifdef Q_OS_WIN
-    qputenv( "QSG_RENDER_LOOP", "basic" );
-#endif
-}
-
 QString JQFoundation::hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm)
 {
     return QCryptographicHash::hash( key, algorithm ).toHex();
-}
-
-QString JQFoundation::hashStringWithSalt(const QString &key)
-{
-    if ( key.isEmpty() )
-    {
-        return "1234567890123456789012345678901234567890";
-    }
-
-    const auto &&buf1( QString( "%1(%2)%3.%4" ).
-        arg( key.size() ).
-        arg( key).
-        arg( key.size() ).
-        arg( QString().append( key.at( 0 ) ) ) );
-    const auto &&buf2( JQFoundation::hashString( ( buf1 + "Sha1" ).toUtf8(), QCryptographicHash::Sha1) );
-    const auto &&buf3( JQFoundation::hashString( ( buf1 + "Md5" ).toUtf8(), QCryptographicHash::Md5) );
-    const auto &&buf4( JQFoundation::hashString( ( buf3 + "Sha1" ).toUtf8(), QCryptographicHash::Sha1) );
-    const auto &&buf5( JQFoundation::hashString( ( buf2 + "Md5" ).toUtf8(), QCryptographicHash::Md5) );
-    const auto &&buf6( JQFoundation::hashString( ( buf4 + "+" + buf5 ).toUtf8(), QCryptographicHash::Sha1) );
-
-    return buf6;
 }
 
 QString JQFoundation::variantToString(const QVariant &value)
@@ -133,8 +96,58 @@ QString JQFoundation::variantToString(const QVariant &value)
         }
         default:
         {
-            qDebug() << "JQFoundation::variantToString: unexpected type:" << value;
-            result = value.toString();
+            if ( value.type() == QVariant::nameToType( "QJsonValue" ) )
+            {
+                const auto &&jsonValue = value.value< QJsonValue >();
+
+                switch ( jsonValue.type() )
+                {
+                    case QJsonValue::Null:
+                    {
+                        result = "NULL";
+                        break;
+                    }
+                    case QJsonValue::Bool:
+                    {
+                        result = ( ( jsonValue.toBool() ) ? ( "1" ) : ( "0" ) );
+                        break;
+                    }
+                    case QJsonValue::String:
+                    {
+                        result = jsonValue.toString();
+                        break;
+                    }
+                    case QJsonValue::Double:
+                    {
+                        result = QString::number( jsonValue.toDouble(), 'f', 8 );
+                        while ( result.endsWith( '0' ) )
+                        {
+                            result = result.mid( 0, result.size() - 1 );
+                        }
+                        if ( result.endsWith( '.' ) )
+                        {
+                            result = result.mid( 0, result.size() - 1 );
+                        }
+                        if ( result == "" )
+                        {
+                            result = "0";
+                        }
+
+                        break;
+                    }
+                    default:
+                    {
+                        qDebug() << "JQFoundation::variantToString: unexpected json type:" << jsonValue;
+                        result = jsonValue.toString();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                qDebug() << "JQFoundation::variantToString: unexpected type:" << value;
+                result = value.toString();
+            }
             break;
         }
     }
@@ -174,6 +187,33 @@ QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const QStringLis
 QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const char *leftKey, const QJsonObject &mix)
 {
     return JQFoundation::jsonFilter( source, QStringList( { leftKey } ), mix );
+}
+
+QVariantMap JQFoundation::mapKeyTranslate(const QVariantMap &source, const QMap< QString, QString > &keyMap)
+{
+   QVariantMap result;
+
+    for ( auto sourceIt = source.begin(); sourceIt != source.end(); ++sourceIt )
+    {
+        const auto &&keyMapIt = keyMap.find( sourceIt.key() );
+        if ( keyMapIt == keyMap.end() ) { continue; }
+
+        result[ keyMapIt.value() ] = sourceIt.value();
+    }
+
+    return result;
+}
+
+QVariantList JQFoundation::listKeyTranslate(const QVariantList &source, const QMap< QString, QString > &keyMap)
+{
+    QVariantList result;
+
+    for ( const auto &data: source )
+    {
+        result.push_back( mapKeyTranslate( data.toMap(), keyMap ) );
+    }
+
+    return result;
 }
 
 QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, const std::function<void (bool &continueFlag)> &callback, const bool &callbackOnStart)
@@ -390,18 +430,6 @@ bool JQFoundation::singleApplicationExist(const QString &)
 }
 #endif
 
-QString JQFoundation::byteArrayToHexString(const QByteArray &data)
-{
-    QString buf( data.toHex() );
-
-    for ( auto c = 1; c < data.size(); ++c )
-    {
-        buf.insert( c * 2 + c - 1, ' ' );
-    }
-
-    return buf;
-}
-
 QByteArray JQFoundation::pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality)
 {
     QByteArray bytes;
@@ -424,6 +452,27 @@ QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &fo
     return bytes;
 }
 
+QString JQFoundation::snakeCaseToCamelCase(const QString &source)
+{
+    const auto &&splitList = source.split( '_', QString::SkipEmptyParts );
+    QString result;
+
+    for ( const auto &splitTag: splitList )
+    {
+        if ( result.isEmpty() || ( splitTag.size() == 1 ) )
+        {
+            result += splitTag;
+        }
+        else
+        {
+            result += splitTag[ 0 ].toUpper();
+            result += splitTag.mid( 1 );
+        }
+    }
+
+    return result;
+}
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
 {
@@ -434,7 +483,7 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
     process.setArguments( arguments );
     process.start();
 
-    QObject::connect( &process, (void(QProcess::*)(int))&QProcess::finished, [ &reply ](const int &exitCode)
+    QObject::connect( &process, static_cast< void(QProcess::*)(int) >( &QProcess::finished ), [ &reply ](const int &exitCode)
     {
         reply.first = exitCode;
     } );
@@ -446,75 +495,5 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
     process.waitForFinished( maximumTime );
 
     return reply;
-}
-#endif
-
-#ifdef QT_WIDGETS_LIB
-void JQFoundation::setWidgetColor(QWidget *label, const QColor &color)
-{
-    QPalette palette;
-    palette.setColor(QPalette::WindowText, color);
-    label->setPalette(palette);
-}
-
-void JQFoundation::texetEditMoveCursorToEnd(QTextEdit *textEdit)
-{
-    QTextCursor cursor = textEdit->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    textEdit->setTextCursor(cursor);
-}
-
-void JQFoundation::textEditAppendTextToEnd(QTextEdit *textEdit, const QString &string)
-{
-    textEdit->append(string);
-    JQFoundation::texetEditMoveCursorToEnd(textEdit);
-}
-
-QWidget *JQFoundation::topParentWidget(QWidget *widget)
-{
-    QWidget *parent = widget;
-
-    while ( parent->parentWidget() )
-    {
-        parent = parent->parentWidget();
-    }
-
-    return parent;
-}
-
-const QWidget *JQFoundation::topParentWidget(const QWidget *widget)
-{
-    QWidget const *parent = widget;
-
-    while (parent->parentWidget())
-    {
-        parent = parent->parentWidget();
-    }
-
-    return parent;
-}
-
-void JQFoundation::lineEditSetToIPLineEdit(QLineEdit *lineEdit)
-{
-    lineEdit->setValidator( new QRegExpValidator( QRegExp( "^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])[.](\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$" ) ) );
-}
-
-void JQFoundation::lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit)
-{
-    lineEdit->setValidator( new QRegExpValidator( QRegExp( "[0-9a-zA-Z]+" ) ) );
-}
-
-void JQFoundation::lineEditSetTo09LineEdit(QLineEdit *lineEdit)
-{
-    lineEdit->setValidator( new QRegExpValidator( QRegExp( "[0-9]+" ) ) );
-}
-
-void JQFoundation::widgetSetToTransparent(QWidget *target)
-{
-    target->setAttribute( Qt::WA_TranslucentBackground, true );
-    target->setAttribute( Qt::WA_NoSystemBackground, false );
-    target->setWindowFlags( Qt::FramelessWindowHint );
-    target->setStyleSheet( target->styleSheet() + QString( "\nQWidget#%1 { background-color: transparent; }" ).arg( target->objectName() ) );
-    target->setUpdatesEnabled( true );
 }
 #endif

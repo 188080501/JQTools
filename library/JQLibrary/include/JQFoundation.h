@@ -36,27 +36,17 @@
 // Qt lib import
 #include <QCoreApplication>
 #include <QSharedPointer>
-#include <QMutex>
 #include <QCryptographicHash>
-#include <QSettings>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QEventLoop>
-#include <QTimer>
-#include <QThread>
-#include <QDateTime>
-#include <QTime>
-#include <QVariant>
-#include <QPointer>
-#include <QFile>
 #include <QMap>
-#include <QDebug>
 
 class QTableWidget;
 class QTreeWidget;
 class QTextEdit;
 class QLineEdit;
+class QTimer;
 
 // Macro define
 #define PropertyDeclare(Type, name, setName, ...)                                           \
@@ -129,11 +119,7 @@ memcpy( T*, int, size_t )
 namespace JQFoundation
 {
 
-void setRenderLoop();
-
 QString hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm = QCryptographicHash::Sha1);
-
-QString hashStringWithSalt(const QString &key);
 
 QString variantToString(const QVariant &value);
 
@@ -152,6 +138,10 @@ QMap< Key, T > mapFilter(const QMap< Key, T > &source, const char *leftKey, cons
 template< class Key, class T >
 QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix);
 
+QVariantMap mapKeyTranslate(const QVariantMap &source, const QMap< QString, QString > &keyMap);
+
+QVariantList listKeyTranslate(const QVariantList &source, const QMap< QString, QString > &keyMap);
+
 QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(bool &continueFlag) > &callback, const bool &callbackOnStart = false);
 
 void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
@@ -162,34 +152,14 @@ bool singleApplication(const QString &flag);
 
 bool singleApplicationExist(const QString &flag);
 
-QString byteArrayToHexString(const QByteArray &data);
-
 QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality = -1);
 
 QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
 
+QString snakeCaseToCamelCase(const QString &source);
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
-#endif
-
-#ifdef QT_WIDGETS_LIB
-void setWidgetColor(QWidget *label, const QColor &color);
-
-void texetEditMoveCursorToEnd(QTextEdit *textEdit);
-
-void textEditAppendTextToEnd(QTextEdit *textEdit, const QString &string);
-
-QWidget *topParentWidget(QWidget *widget);
-
-const QWidget *topParentWidget(const QWidget *widget);
-
-void lineEditSetToIPLineEdit(QLineEdit *lineEdit);
-
-void lineEditSetToazAZ09LineEdit(QLineEdit *lineEdit);
-
-void lineEditSetTo09LineEdit(QLineEdit *lineEdit);
-
-void widgetSetToTransparent(QWidget *target);
 #endif
 
 template< class Key, class T >

@@ -29,27 +29,28 @@
 class QFileInfo;
 class QDir;
 
-namespace JQFile
+class JQFile
 {
+public:
+    static void foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion = false);
 
-void foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion = false);
+    static bool foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool &recursion = false);
 
-void foreachDirectoryFromDirectory(const QDir &directory, const std::function<void(const QDir &)> &each, const bool &recursion = false);
+    static void foreachDirectoryFromDirectory(const QDir &directory, const std::function<void(const QDir &)> &each, const bool &recursion = false);
 
-bool writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover = true);
+    static bool writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover = true);
 
-QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
+    static QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
 
-bool copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, const bool &cover = true);
+    static bool copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, const bool &cover = true);
 
-bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover = true);
+    static bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover = true);
 
-bool copy(const QFileInfo &source, const QFileInfo &target, const bool &cover = true);
+    static bool copy(const QFileInfo &source, const QFileInfo &target, const bool &cover = true);
 
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
-bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified);
+    static bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified);
 #endif
-
-}
+};
 
 #endif//JQLIBRARY_INCLUDE_JQFILE_H_

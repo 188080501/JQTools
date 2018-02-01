@@ -27,36 +27,56 @@
 #include <QFile>
 #include <QFileInfo>
 
-using namespace JQFile;
-
 void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion)
 {
-    for ( const auto &now: directory.entryInfoList( QDir::Files ) )
+    for ( const auto &fileInfo: directory.entryInfoList( QDir::Files ) )
     {
-        each( now );
+        each( fileInfo );
     }
 
     if ( recursion )
     {
-        for ( const auto &now: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+        for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
         {
-            JQFile::foreachFileFromDirectory( now.filePath(), each, recursion );
+            JQFile::foreachFileFromDirectory( fileInfo.filePath(), each, recursion );
         }
     }
 }
 
-void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::function<void (const QDir &)> &each, const bool &recursion)
+bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool &recursion)
 {
-    for ( const auto &now: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+    bool continueFlag = true;
+
+    for ( const auto &fileInfo: directory.entryInfoList( QDir::Files ) )
     {
-        each( now.filePath() );
+        each( fileInfo, continueFlag );
+        if ( !continueFlag ) { return false; }
     }
 
     if ( recursion )
     {
-        for ( const auto &now: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+        for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
         {
-            JQFile::foreachDirectoryFromDirectory( now.filePath(), each, recursion );
+            continueFlag = JQFile::foreachFileFromDirectory( fileInfo.filePath(), each, recursion );
+            if ( !continueFlag ) { return false; }
+        }
+    }
+
+    return true;
+}
+
+void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::function<void (const QDir &)> &each, const bool &recursion)
+{
+    for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+    {
+        each( fileInfo.filePath() );
+    }
+
+    if ( recursion )
+    {
+        for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+        {
+            JQFile::foreachDirectoryFromDirectory( fileInfo.filePath(), each, recursion );
         }
     }
 }
@@ -137,23 +157,16 @@ bool JQFile::copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, 
 
 bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover)
 {
-    try
-    {
-        JQFile::foreachFileFromDirectory( sourceDirectory, [&](const QFileInfo &info)
-        {
-            const auto &&path = info.path().mid( sourceDirectory.path().size() );
-            if ( !JQFile::copyFile( info, targetDirectory.path() + "/" + ( ( path.isEmpty() ) ? ( "" ) : ( path + "/" ) ) + info.fileName(), cover ) )
-            {
-                throw false;
-            }
-        }, true);
-    }
-    catch(const bool &error)
-    {
-        return error;
-    }
+    bool(*fun)(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool &recursion) = foreachFileFromDirectory;
 
-    return true;
+    return fun( sourceDirectory, [ & ](const QFileInfo &info, bool &continueFlag)
+    {
+        const auto &&path = info.path().mid( sourceDirectory.path().size() );
+        if ( !JQFile::copyFile( info, targetDirectory.path() + "/" + ( ( path.isEmpty() ) ? ( "" ) : ( path + "/" ) ) + info.fileName(), cover ) )
+        {
+            continueFlag = false;
+        }
+    }, true );
 }
 
 bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &cover)
