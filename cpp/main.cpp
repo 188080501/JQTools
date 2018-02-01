@@ -41,7 +41,10 @@ void checkVersion();
 
 int main(int argc, char *argv[])
 {
-    JQFoundation::setRenderLoop();
+#ifdef Q_OS_WIN
+    qputenv( "QSG_RENDER_LOOP", "basic" );
+#endif
+
     QApplication app(argc, argv);
 
     if ( !JQFoundation::singleApplication( "JQTools" ) )
