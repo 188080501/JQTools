@@ -48,6 +48,8 @@ public:
 
     static bool copy(const QFileInfo &source, const QFileInfo &target, const bool &cover = true);
 
+    static QString md5(const QFileInfo &fileInfo);
+
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
     static bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified);
 #endif

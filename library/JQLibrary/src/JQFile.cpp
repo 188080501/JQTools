@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QCryptographicHash>
 
 void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion)
 {
@@ -181,6 +182,14 @@ bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &
     }
 
     return false;
+}
+
+QString JQFile::md5(const QFileInfo &fileInfo)
+{
+    QFile file( fileInfo.filePath() );
+    if ( !file.open( QIODevice::ReadOnly ) ) { return "00000000000000000000000000000000"; }
+
+    return QCryptographicHash::hash( file.readAll(), QCryptographicHash::Md5 ).toHex();
 }
 
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
