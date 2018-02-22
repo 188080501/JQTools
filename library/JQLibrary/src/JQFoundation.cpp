@@ -189,6 +189,18 @@ QJsonObject JQFoundation::jsonFilter(const QJsonObject &source, const char *left
     return JQFoundation::jsonFilter( source, QStringList( { leftKey } ), mix );
 }
 
+QVariantList JQFoundation::listVariantMapToVariantList(const QList< QVariantMap > &source)
+{
+    QVariantList result;
+
+    for ( const auto &data: source )
+    {
+        result.push_back( data );
+    }
+
+    return result;
+}
+
 QVariantMap JQFoundation::mapKeyTranslate(const QVariantMap &source, const QMap< QString, QString > &keyMap)
 {
    QVariantMap result;

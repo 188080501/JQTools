@@ -138,6 +138,8 @@ QMap< Key, T > mapFilter(const QMap< Key, T > &source, const char *leftKey, cons
 template< class Key, class T >
 QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix);
 
+QVariantList listVariantMapToVariantList(const QList< QVariantMap > &source);
+
 QVariantMap mapKeyTranslate(const QVariantMap &source, const QMap< QString, QString > &keyMap);
 
 QVariantList listKeyTranslate(const QVariantList &source, const QMap< QString, QString > &keyMap);
