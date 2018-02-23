@@ -228,6 +228,18 @@ QVariantList JQFoundation::listKeyTranslate(const QVariantList &source, const QM
     return result;
 }
 
+QList< QVariantMap > JQFoundation::listKeyTranslate(const QList< QVariantMap > &source, const QMap<QString, QString> &keyMap)
+{
+    QList< QVariantMap > result;
+
+    for ( const auto &data: source )
+    {
+        result.push_back( mapKeyTranslate( data, keyMap ) );
+    }
+
+    return result;
+}
+
 QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, const std::function<void (bool &continueFlag)> &callback, const bool &callbackOnStart)
 {
     QSharedPointer< QTimer > timer( new QTimer );

@@ -144,6 +144,8 @@ QVariantMap mapKeyTranslate(const QVariantMap &source, const QMap< QString, QStr
 
 QVariantList listKeyTranslate(const QVariantList &source, const QMap< QString, QString > &keyMap);
 
+QList< QVariantMap > listKeyTranslate(const QList< QVariantMap > &source, const QMap< QString, QString > &keyMap);
+
 QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(bool &continueFlag) > &callback, const bool &callbackOnStart = false);
 
 void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
