@@ -37,6 +37,7 @@ struct JQNetworkLanSettings
 struct JQNetworkLanNode
 {
     QString nodeMarkSummary;
+    QString dutyMark;
     int dataPackageIndex = 0;
     qint64 lastActiveTime = 0;
     QList< QHostAddress > ipList;

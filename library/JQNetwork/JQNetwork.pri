@@ -19,7 +19,7 @@ INCLUDEPATH *= \
     $$PWD/include/
 
 # 定义JQNetwork的版本
-JQNETWORK_VERSIONSTRING = 0.6.5
+JQNETWORK_VERSIONSTRING = 0.6.6
 
 # 判断Qt版本，小于5.7就报错
 lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {

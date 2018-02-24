@@ -305,6 +305,7 @@ QByteArray JQNetworkLan::makeData(const bool &requestOffline, const bool &reques
     }
 
     data[ "nodeMarkSummary" ] = nodeMarkSummary_;
+    data[ "dutyMark" ] = lanSettings_->dutyMark;
     data[ "dataPackageIndex" ] = ++nextDataPackageIndex_;
     data[ "ipList" ] = ipList;
     data[ "requestOffline" ] = requestOffline;
@@ -328,6 +329,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
         const auto &&data = QJsonDocument::fromJson( datagram ).object().toVariantMap();
 
         const auto &&nodeMarkSummary = data[ "nodeMarkSummary" ].toString();
+        const auto &&dutyMark = data[ "dutyMark" ].toString();
         const auto &&dataPackageIndex = data[ "dataPackageIndex" ].toInt();
         const auto &&requestOffline = data[ "requestOffline" ].toBool();
         const auto &&requestFeedback = data[ "requestFeedback" ].toBool();
@@ -367,6 +369,7 @@ void JQNetworkLan::onUdpSocketReadyRead()
             if ( !availableLanNodes_.contains( nodeMarkSummary ) )
             {
                 lanNode.nodeMarkSummary = nodeMarkSummary;
+                lanNode.dutyMark = dutyMark;
                 lanNode.lastActiveTime = QDateTime::currentMSecsSinceEpoch();
                 lanNode.dataPackageIndex = dataPackageIndex;
                 lanNode.ipList = ipList;
