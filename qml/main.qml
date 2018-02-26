@@ -29,11 +29,11 @@ ApplicationWindow {
     minimumHeight: 600
 
     Component.onCompleted: {
-        itemForMainPage.showPage( "首页", "qrc:/Welcome/Welcome.qml" );
+        mainPageContains.showPage( "首页", "qrc:/Welcome/Welcome.qml" );
 
-        animationForOpacity.start();
+        opacityAnimation.start();
 
-        listViewForBookmark.refresh(
+        bookmarkListView.refresh(
                     [
                         { bookmarkName: "首页", titleName: "首页", qrcLocation: "qrc:/Welcome/Welcome.qml", children: [ ] },
                         {
@@ -101,7 +101,7 @@ ApplicationWindow {
     }
 
     NumberAnimation {
-        id: animationForOpacity
+        id: opacityAnimation
         target: applicationWindow
         property: "opacity"
         easing.type: Easing.OutCubic
@@ -136,7 +136,7 @@ ApplicationWindow {
         color: "#2196F3"
 
         MaterialLabel {
-            id: labelForCurrentItemTitleName
+            id: currentItemTitleNameLabel
             x: 60
             z: 1
             height: 64
@@ -151,16 +151,16 @@ ApplicationWindow {
             hoverEnabled: true
 
             onEntered: {
-                labelForVersionString.opacity = 1;
+                versionStringLabel.opacity = 1;
             }
 
             onExited: {
-                labelForVersionString.opacity = 0;
+                versionStringLabel.opacity = 0;
             }
         }
 
         MaterialLabel {
-            id: labelForVersionString
+            id: versionStringLabel
             anchors.right: parent.right
             anchors.rightMargin: 5
             anchors.bottom: parent.bottom
@@ -201,72 +201,72 @@ ApplicationWindow {
     }
 
     ListView {
-        id: listViewForBookmark
+        id: bookmarkListView
         y: 64
         width: 180
         height: parent.height - 64
         cacheBuffer: 9999
 
         model: ListModel {
-            id: listModelForBookmark
+            id: bookmarkListModel
         }
 
         delegate: Item {
-            id: itemForBookmark
-            width: listViewForBookmark.width
+            id: bookmarkItem
+            width: bookmarkListView.width
             height: 42
             clip: true
 
             Behavior on height { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
 
             Component.onCompleted: {
-                for (var index = 0; index < bookmarkChildrenItem.count; index++)
+                for ( var index = 0; index < bookmarkChildrenItem.count; ++index )
                 {
                     var buf = bookmarkChildrenItem.get(index);
 
-                    listModelForSecondBookmark.append( {
-                                                          bookmarkName: buf["bookmarkName"],
-                                                          titleName: buf["titleName"],
-                                                          itemQrcLocation: buf["qrcLocation"],
+                    secondBookmarkListModel.append( {
+                                                          bookmarkName: buf[ "bookmarkName" ],
+                                                          titleName: buf[ "titleName" ],
+                                                          itemQrcLocation: buf["qrcLocation" ],
                                                       } );
                 }
 
-                listViewForSecondBookmark.height = bookmarkChildrenItem.count * 42;
-                listViewForSecondBookmark.y = -1 * listViewForSecondBookmark.height;
+                secondBookmarkListView.height = bookmarkChildrenItem.count * 42;
+                secondBookmarkListView.y = -1 * secondBookmarkListView.height;
             }
 
             Item {
                 x: 0
                 y: 42
                 width: parent.width
-                height: listViewForSecondBookmark.height
+                height: secondBookmarkListView.height
                 clip: true
 
                 ListView {
-                    id: listViewForSecondBookmark
+                    id: secondBookmarkListView
                     x: 0
                     y: 0
                     width: parent.width
                     height: 0
-                    visible: y !== (-1 * listViewForSecondBookmark.height)
+                    visible: y !== (-1 * secondBookmarkListView.height)
                     boundsBehavior: Flickable.StopAtBounds
 
                     Behavior on y { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
 
                     model: ListModel {
-                        id: listModelForSecondBookmark
+                        id: secondBookmarkListModel
                     }
 
                     delegate: Item {
-                        id: itemForSecondBookmark
-                        width: listViewForBookmark.width
+                        id: secondBookmarkContains
+                        width: bookmarkListView.width
                         height: 42
 
                         MaterialButton {
                             anchors.fill: parent
                             elevation: 0
                             text: ""
-                            visible: listViewForSecondBookmark.y === 0
+                            visible: secondBookmarkListView.y === 0
 
                             MaterialLabel {
                                 x: 36
@@ -274,20 +274,20 @@ ApplicationWindow {
                                 text: bookmarkName
                                 font.pixelSize: 16
                                 verticalAlignment: Text.AlignVCenter
-                                color: ( labelForCurrentItemTitleName.text === titleName ) ? ( "#1e88e5" ) : ( "#0000000" )
+                                color: ( currentItemTitleNameLabel.text === titleName ) ? ( "#1e88e5" ) : ( "#0000000" )
 
                                 Behavior on color { ColorAnimation { duration: 200 } }
                             }
 
                             onClicked: {
-                                itemForMainPage.showPage( titleName, itemQrcLocation );
+                                mainPageContains.showPage( titleName, itemQrcLocation );
                             }
                         }
 
                         Rectangle {
                             anchors.fill: parent
                             color: "#ffffff"
-                            visible: listViewForSecondBookmark.y !== 0
+                            visible: secondBookmarkListView.y !== 0
 
                             MaterialLabel {
                                 x: 36
@@ -308,19 +308,19 @@ ApplicationWindow {
                 textHorizontalAlignment: Text.AlignLeft
 
                 onClicked: {
-                    itemForMainPage.showPage( titleName, itemQrcLocation );
+                    mainPageContains.showPage( titleName, itemQrcLocation );
 
-                    if (listModelForSecondBookmark.count)
+                    if ( secondBookmarkListModel.count )
                     {
-                        if (listViewForSecondBookmark.visible)
+                        if (secondBookmarkListView.visible)
                         {
-                            listViewForSecondBookmark.y = -1 * listViewForSecondBookmark.height;
-                            itemForBookmark.height = 42;
+                            secondBookmarkListView.y = -1 * secondBookmarkListView.height;
+                            bookmarkItem.height = 42;
                         }
                         else
                         {
-                            listViewForSecondBookmark.y = 0;
-                            itemForBookmark.height = 42 + listViewForSecondBookmark.height;
+                            secondBookmarkListView.y = 0;
+                            bookmarkItem.height = 42 + secondBookmarkListView.height;
                         }
                     }
                 }
@@ -332,7 +332,7 @@ ApplicationWindow {
                     font.bold: true
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: 16
-                    color: ( labelForCurrentItemTitleName.text === titleName ) ? ( "#1e88e5" ) : ( "#0000000" )
+                    color: ( currentItemTitleNameLabel.text === titleName ) ? ( "#1e88e5" ) : ( "#0000000" )
 
                     Behavior on color { ColorAnimation { duration: 200 } }
                 }
@@ -340,11 +340,11 @@ ApplicationWindow {
         }
 
         function refresh( items ) {
-            listModelForBookmark.clear();
+            bookmarkListModel.clear();
 
             for (var index = 0; index < items.length; index++)
             {
-                listModelForBookmark.append( {
+                bookmarkListModel.append( {
                                                 bookmarkName: items[index]["bookmarkName"],
                                                 titleName: items[index]["titleName"],
                                                 itemQrcLocation: items[index]["qrcLocation"],
@@ -358,26 +358,26 @@ ApplicationWindow {
             acceptedButtons: Qt.MidButton
 
             onWheel: {
-                listViewForBookmark.contentY -= wheel.angleDelta.y;
+                bookmarkListView.contentY -= wheel.angleDelta.y;
 
-                if ( listViewForBookmark.contentY < 0 )
+                if ( bookmarkListView.contentY < 0 )
                 {
-                    listViewForBookmark.contentY = 0;
+                    bookmarkListView.contentY = 0;
                 }
                 else
                 {
-                    var buf = listViewForBookmark.contentHeight - listViewForBookmark.height;
+                    var buf = bookmarkListView.contentHeight - bookmarkListView.height;
 
                     if ( buf > 0 )
                     {
-                        if ( listViewForBookmark.contentY > buf )
+                        if ( bookmarkListView.contentY > buf )
                         {
-                            listViewForBookmark.contentY = buf;
+                            bookmarkListView.contentY = buf;
                         }
                     }
                     else
                     {
-                        listViewForBookmark.contentY = 0;
+                        bookmarkListView.contentY = 0;
                     }
                 }
             }
@@ -394,7 +394,7 @@ ApplicationWindow {
     }
 
     Item {
-        id: itemForMainPage
+        id: mainPageContains
         x: 180
         y: 64
         z: -2
@@ -404,13 +404,13 @@ ApplicationWindow {
         property var pages: new Object
 
         function showPage( titleName, itemQrcLocation ) {
-            timerForShowPage.titleName = titleName;
-            timerForShowPage.itemQrcLocation = itemQrcLocation;
-            timerForShowPage.start();
+            showPageTimer.titleName = titleName;
+            showPageTimer.itemQrcLocation = itemQrcLocation;
+            showPageTimer.start();
         }
 
         Timer {
-            id: timerForShowPage
+            id: showPageTimer
             interval: 5
             repeat: false
             running: false
@@ -424,24 +424,24 @@ ApplicationWindow {
                     case "": break;
                     case "notSupport": materialUI.showSnackbarMessage( "此功能暂未开放" ); break;
                     default:
-                        if ( !( itemQrcLocation in itemForMainPage.pages ) )
+                        if ( !( itemQrcLocation in mainPageContains.pages ) )
                         {
                             var component = Qt.createComponent( itemQrcLocation );
 
                             if (component.status === Component.Ready) {
-                                var page = component.createObject( itemForMainPage );
-                                page.anchors.fill = itemForMainPage;
-                                itemForMainPage.pages[ itemQrcLocation ] = page;
+                                var page = component.createObject( mainPageContains );
+                                page.anchors.fill = mainPageContains;
+                                mainPageContains.pages[ itemQrcLocation ] = page;
                             }
                         }
 
-                        for ( var key in itemForMainPage.pages )
+                        for ( var key in mainPageContains.pages )
                         {
-                            itemForMainPage.pages[ key ].visible = false;
+                            mainPageContains.pages[ key ].visible = false;
                         }
 
-                        labelForCurrentItemTitleName.text = titleName;
-                        itemForMainPage.pages[ itemQrcLocation ].visible = true;
+                        currentItemTitleNameLabel.text = titleName;
+                        mainPageContains.pages[ itemQrcLocation ].visible = true;
 
                         break;
                 }
