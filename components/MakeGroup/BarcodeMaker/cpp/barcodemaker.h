@@ -20,9 +20,9 @@
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 
-#define BARCODEMAKER_INITIALIZA                                                          \
-{                                                                                       \
-    qmlRegisterType< BarcodeMaker::Manage >( "BarcodeMaker", 1, 0, "BarcodeMakerManage" ); \
+#define BARCODEMAKER_INITIALIZA                                                             \
+{                                                                                           \
+    qmlRegisterType< BarcodeMaker::Manage >( "BarcodeMaker", 1, 0, "BarcodeMakerManage" );  \
 }
 
 namespace BarcodeMaker

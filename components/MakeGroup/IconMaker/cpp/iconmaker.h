@@ -19,7 +19,7 @@
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 
-#define ICONMAKER_INITIALIZA                                                     \
+#define ICONMAKER_INITIALIZA                                                    \
 {                                                                               \
     qmlRegisterType<IconMaker::Manage>("IconMaker", 1, 0, "IconMakerManage");   \
 }
