@@ -14,6 +14,7 @@ include( $$PWD/IconMaker/IconMaker.pri )
 include( $$PWD/FontToPng/FontToPng.pri )
 include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
 include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
+include( $$PWD/WebPMaker/WebPMaker.pri )
 
 INCLUDEPATH *= \
     $$PWD/

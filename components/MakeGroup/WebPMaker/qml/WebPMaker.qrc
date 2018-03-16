@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/WebPMaker">
+        <file>WebPMaker.qml</file>
+    </qresource>
+</RCC>
