@@ -44,7 +44,7 @@ QString Manage::optimizeJpgByOpenFiles(const bool &coverOldFile)
 
     filePaths = QFileDialog::getOpenFileNames(
                         nullptr,
-                        QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                        QStringLiteral( "\u8BF7\u9009\u62E9JPG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
                         QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
                         "*.jpg"
                     );
@@ -60,7 +60,7 @@ QString Manage::optimizeJpgByOpenDirectory(const bool &coverOldFile)
 
     const auto &&directoryPath = QFileDialog::getExistingDirectory(
                 nullptr,
-                QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BJPG\u56FE\u7247\u7684\u6587\u4EF6\u5939" ),
                 QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
             );
 
