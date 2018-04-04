@@ -38,6 +38,7 @@
 #include <QTime>
 #include <QDateTime>
 #include <QTextStream>
+#include <QMutex>
 
 // Windows lib import
 #ifdef Q_OS_WIN
@@ -521,3 +522,47 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
     return reply;
 }
 #endif
+
+JQTickPerSecondCounter::JQTickPerSecondCounter(const qint64 &timeRange):
+    timeRange_( timeRange ),
+    mutex_( new QMutex )
+{ }
+
+void JQTickPerSecondCounter::tick()
+{
+    mutex_->lock();
+
+    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+
+    while ( ( !tickRecord_.isEmpty() ) && ( qAbs( currentMSecsSinceEpoch - tickRecord_.first() ) > timeRange_ ) )
+    {
+        tickRecord_.pop_front();
+    }
+
+    tickRecord_.push_back( currentMSecsSinceEpoch );
+
+    mutex_->unlock();
+}
+
+qreal JQTickPerSecondCounter::tickPerSecond()
+{
+    qreal result = 0;
+
+    mutex_->lock();
+
+    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+
+    while ( ( !tickRecord_.isEmpty() ) && ( qAbs( currentMSecsSinceEpoch - tickRecord_.first() ) > timeRange_ ) )
+    {
+        tickRecord_.pop_front();
+    }
+
+    if ( !tickRecord_.isEmpty() )
+    {
+        result = static_cast< qreal >( tickRecord_.size() ) / ( timeRange_ / 1000.0 );
+    }
+
+    mutex_->unlock();
+
+    return result;
+}

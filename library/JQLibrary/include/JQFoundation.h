@@ -41,12 +41,14 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMap>
+#include <QVector>
 
 class QTableWidget;
 class QTreeWidget;
 class QTextEdit;
 class QLineEdit;
 class QTimer;
+class QMutex;
 
 // Macro define
 #define PropertyDeclare(Type, name, setName, ...)                                           \
@@ -211,5 +213,23 @@ QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix)
 }
 
 }
+
+class JQTickPerSecondCounter
+{
+public:
+    JQTickPerSecondCounter(const qint64 &timeRange = 3 * 1000);
+
+    ~JQTickPerSecondCounter() = default;
+
+public:
+    void tick();
+
+    qreal tickPerSecond();
+
+private:
+    qint64 timeRange_;
+    QVector< qint64 > tickRecord_;
+    QSharedPointer< QMutex > mutex_;
+};
 
 #endif//JQLIBRARY_INCLUDE_JQFOUNDATION_H_
