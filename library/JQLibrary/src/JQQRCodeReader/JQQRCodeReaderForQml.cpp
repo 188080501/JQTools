@@ -86,15 +86,21 @@ void JQQRCodeReaderForQmlManage::analysisItem(
     if ( !semaphore_->tryAcquire( 1 ) ) { return; }
 
     const auto &&result = item->grabToImage();
-    const auto &&itemSize = QSizeF( item->width(), item->height() );
     const auto &&geometry = QRect( apertureX, apertureY, apertureWidth, apertureHeight );
 
     QSharedPointer< QMetaObject::Connection > connection( new QMetaObject::Connection );
-    *connection = connect( result.data(), &QQuickItemGrabResult::ready, [ this, result, itemSize, connection, geometry ]()
+    *connection = connect( result.data(), &QQuickItemGrabResult::ready, [ this, result, connection, geometry ]()
     {
         const auto image = result->image();
+        if ( image.isNull() )
+        {
+            qDebug( "JQQRCodeReaderForQmlManage::analysisItem: image is null" );
+            return;
+        }
 
-        QtConcurrent::run( [ this, image, itemSize, geometry ]()
+        qDebug() << QByteArray( (const char *)image.bits(), 10 ).toHex();
+
+        QtConcurrent::run( [ this, image, geometry ]()
         {
 //            QTime time;
 //            time.start();

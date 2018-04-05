@@ -42,7 +42,7 @@ public:
 
     static QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
 
-    static bool copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, const bool &cover = true);
+    static bool copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool &cover = true);
 
     static bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover = true);
 

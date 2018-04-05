@@ -45,8 +45,6 @@
 #   include <windows.h>
 #endif
 
-using namespace JQFoundation;
-
 QString JQFoundation::hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm)
 {
     return QCryptographicHash::hash( key, algorithm ).toHex();
@@ -99,7 +97,7 @@ QString JQFoundation::variantToString(const QVariant &value)
         {
             if ( value.type() == QVariant::nameToType( "QJsonValue" ) )
             {
-                const auto &&jsonValue = value.value< QJsonValue >();
+                const auto &&jsonValue = value.toJsonValue();
 
                 switch ( jsonValue.type() )
                 {
@@ -491,7 +489,7 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source)
         else
         {
             result += splitTag[ 0 ].toUpper();
-            result += splitTag.mid( 1 );
+            result += splitTag.midRef( 1 );
         }
     }
 

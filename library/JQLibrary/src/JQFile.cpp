@@ -28,16 +28,19 @@
 #include <QFileInfo>
 #include <QCryptographicHash>
 
+// JQLibrary lib import
+#include "JQFoundation.h"
+
 void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion)
 {
-    for ( const auto &fileInfo: directory.entryInfoList( QDir::Files ) )
+    for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::Files ) ) )
     {
         each( fileInfo );
     }
 
     if ( recursion )
     {
-        for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+        for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) ) )
         {
             JQFile::foreachFileFromDirectory( fileInfo.filePath(), each, recursion );
         }
@@ -48,7 +51,7 @@ bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function
 {
     bool continueFlag = true;
 
-    for ( const auto &fileInfo: directory.entryInfoList( QDir::Files ) )
+    for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::Files ) ) )
     {
         each( fileInfo, continueFlag );
         if ( !continueFlag ) { return false; }
@@ -56,7 +59,7 @@ bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function
 
     if ( recursion )
     {
-        for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+        for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) ) )
         {
             continueFlag = JQFile::foreachFileFromDirectory( fileInfo.filePath(), each, recursion );
             if ( !continueFlag ) { return false; }
@@ -68,14 +71,14 @@ bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function
 
 void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::function<void (const QDir &)> &each, const bool &recursion)
 {
-    for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+    for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) ) )
     {
         each( fileInfo.filePath() );
     }
 
     if ( recursion )
     {
-        for ( const auto &fileInfo: directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) )
+        for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) ) )
         {
             JQFile::foreachDirectoryFromDirectory( fileInfo.filePath(), each, recursion );
         }
@@ -118,27 +121,30 @@ QPair< bool, QByteArray > JQFile::readFile(const QFileInfo &filePath)
     return { true, file.readAll() };
 }
 
-bool JQFile::copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, const bool &cover)
+bool JQFile::copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool &cover)
 {
-    if ( sourcePath.filePath()[ sourcePath.filePath().size() - 1 ] == '/' )
+    const auto &&sourceFilePath = sourceFileInfo.filePath();
+    const auto &&targetFilePath = targetFileInfo.filePath();
+
+    if ( sourceFilePath.isEmpty() || ( sourceFilePath[ sourceFileInfo.filePath().size() - 1 ] == '/' ) )
     {
         return false;
     }
 
-    if ( targetPath.filePath()[ targetPath.filePath().size() - 1 ] == '/' )
+    if ( targetFilePath.isEmpty() || ( targetFilePath[ targetFileInfo.filePath().size() - 1 ] == '/' ) )
     {
         return false;
     }
 
-    if ( !targetPath.dir().isReadable() )
+    if ( !targetFileInfo.dir().isReadable() )
     {
-        if ( !QDir().mkpath( targetPath.path() ) )
+        if ( !QDir().mkpath( targetFileInfo.path() ) )
         {
             return false;
         }
     }
 
-    if ( targetPath.isFile() )
+    if ( targetFileInfo.isFile() )
     {
         if ( !cover )
         {
@@ -146,14 +152,14 @@ bool JQFile::copyFile(const QFileInfo &sourcePath, const QFileInfo &targetPath, 
         }
         else
         {
-            if ( !QFile( targetPath.filePath() ).remove() )
+            if ( !QFile( targetFilePath ).remove() )
             {
                 return false;
             }
         }
     }
 
-    return QFile::copy( sourcePath.filePath(), targetPath.filePath() );
+    return QFile::copy( sourceFilePath, targetFilePath );
 }
 
 bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover)
