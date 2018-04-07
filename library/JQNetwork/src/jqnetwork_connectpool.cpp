@@ -84,8 +84,7 @@ void JQNetworkConnectPool::createConnect(
                 [
                     this,
                     connectKey,
-                    hostName,
-                    port
+                    hostName
                 ](const auto &connect)
                 {
                     this->mutex_.lock();

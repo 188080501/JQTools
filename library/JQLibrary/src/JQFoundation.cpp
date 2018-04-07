@@ -496,6 +496,21 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source)
     return result;
 }
 
+QRect JQFoundation::scaleRect(const QRect &rect, const qreal &scale)
+{
+    return scaleRect( rect, scale, scale );
+}
+
+QRect JQFoundation::scaleRect(const QRect &rect, const qreal &horizontalScale, const qreal &verticalScale)
+{
+    return {
+        static_cast< int >( rect.x() * horizontalScale ),
+        static_cast< int >( rect.y() * verticalScale ),
+        static_cast< int >( rect.width() * horizontalScale ),
+        static_cast< int >( rect.height() * verticalScale )
+    };
+}
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
 {
