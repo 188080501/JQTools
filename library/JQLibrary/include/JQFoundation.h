@@ -42,6 +42,7 @@
 #include <QJsonArray>
 #include <QMap>
 #include <QVector>
+#include <QSize>
 
 class QTableWidget;
 class QTreeWidget;
@@ -221,12 +222,18 @@ QMap< Key, T > mapMix(const QMap< Key, T > &source, const QMap< Key, T > &mix)
 
 }
 
-class JQTickPerSecondCounter
+inline bool operator <(const QSize &a, const QSize &b)
+{
+    if ( a.width() != b.width() ) { return a.width() < b.width(); }
+    return a.height() < b.height();
+}
+
+class JQTickCounter
 {
 public:
-    JQTickPerSecondCounter(const qint64 &timeRange = 3 * 1000);
+    explicit JQTickCounter(const qint64 &timeRange = 3 * 1000);
 
-    ~JQTickPerSecondCounter() = default;
+    ~JQTickCounter() = default;
 
 public:
     void tick();

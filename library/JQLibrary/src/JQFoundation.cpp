@@ -42,7 +42,7 @@
 
 // Windows lib import
 #ifdef Q_OS_WIN
-#   include <windows.h>
+#   include <Windows.h>
 #endif
 
 QString JQFoundation::hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm)
@@ -536,12 +536,12 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
 }
 #endif
 
-JQTickPerSecondCounter::JQTickPerSecondCounter(const qint64 &timeRange):
+JQTickCounter::JQTickCounter(const qint64 &timeRange):
     timeRange_( timeRange ),
     mutex_( new QMutex )
 { }
 
-void JQTickPerSecondCounter::tick()
+void JQTickCounter::tick()
 {
     mutex_->lock();
 
@@ -557,7 +557,7 @@ void JQTickPerSecondCounter::tick()
     mutex_->unlock();
 }
 
-qreal JQTickPerSecondCounter::tickPerSecond()
+qreal JQTickCounter::tickPerSecond()
 {
     qreal result = 0;
 
