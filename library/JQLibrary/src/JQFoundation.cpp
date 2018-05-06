@@ -475,7 +475,7 @@ QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &fo
     return bytes;
 }
 
-QString JQFoundation::snakeCaseToCamelCase(const QString &source)
+QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper)
 {
     const auto &&splitList = source.split( '_', QString::SkipEmptyParts );
     QString result;
@@ -484,7 +484,15 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source)
     {
         if ( result.isEmpty() || ( splitTag.size() == 1 ) )
         {
-            result += splitTag;
+            if ( firstCharUpper )
+            {
+                result += splitTag[ 0 ].toUpper();
+                result += splitTag.midRef( 1 );
+            }
+            else
+            {
+                result += splitTag;
+            }
         }
         else
         {

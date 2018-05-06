@@ -166,7 +166,7 @@ QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int q
 
 QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
 
-QString snakeCaseToCamelCase(const QString &source);
+QString snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper = false);
 
 QRect scaleRect(const QRect &rect, const qreal &scale);
 
