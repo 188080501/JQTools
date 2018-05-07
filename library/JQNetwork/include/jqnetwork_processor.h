@@ -20,7 +20,7 @@
     {                                                                                   \
         const auto &&buffer = QString( Q_FUNC_INFO );                                   \
         const auto &&indexForEnd = buffer.indexOf( '(' );                               \
-        const auto functionName = buffer.mid( 0, indexForEnd ).remove( "bool " );       \
+        const auto functionName = buffer.mid( 0, indexForEnd ).remove( QStringLiteral( "bool " ) ); \
         qDebug() << functionName.toLocal8Bit().data();                                  \
     }
 
@@ -28,26 +28,26 @@
     {                                                                                   \
         const auto &&buffer = QString( Q_FUNC_INFO );                                   \
         const auto &&indexForEnd = buffer.indexOf( '(' );                               \
-        const auto functionName = buffer.mid( 0, indexForEnd ).remove( "bool " );       \
+        const auto functionName = buffer.mid( 0, indexForEnd ).remove( QStringLiteral( "bool " ) ); \
         qDebug() << ( functionName + ": received:" ).toLocal8Bit().data() << received;  \
     }
 
 #define JQNP_SUCCEED()                                                                  \
-    send[ "succeed" ] = true;                                                           \
-    send[ "message" ] = "";                                                             \
+    send[ QStringLiteral( "succeed" ) ] = true;                                         \
+    send[ QStringLiteral( "message" ) ] = "";                                           \
     return true;
 
 #define JQNP_FAIL( errorMessage )                                                       \
-    send[ "succeed" ] = false;                                                          \
-    send[ "message" ] = errorMessage;                                                   \
+    send[ QStringLiteral( "succeed" ) ] = false;                                        \
+    send[ QStringLiteral( "message" ) ] = errorMessage;                                 \
     return false;
 
 #define JQNP_SERVERFAIL( errorMessage )                                                 \
-    const auto &&message = QString( ": Server error: " ) + errorMessage;                \
+    const auto &&message = QStringLiteral( ": Server error: " ) + errorMessage;         \
     qDebug() << QString( Q_FUNC_INFO ).remove( "bool " ).toLocal8Bit().data()           \
              << message.toLocal8Bit().data();                                           \
-    send[ "succeed" ] = false;                                                          \
-    send[ "message" ] = errorMessage;                                                   \
+    send[ QStringLiteral( "succeed" ) ] = false;                                        \
+    send[ QStringLiteral( "message" ) ] = errorMessage;                                 \
     return false;
 
 #define JQNP_CHECKRECEIVEDDATACONTAINS( ... )                                           \
