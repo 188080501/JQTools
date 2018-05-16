@@ -114,9 +114,9 @@ bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, 
 
 QPair< bool, QByteArray > JQFile::readFile(const QFileInfo &filePath)
 {
-    QFile file(filePath.filePath());
+    QFile file( filePath.filePath() );
 
-    if ( !file.open( QIODevice::ReadOnly ) ) { return { false, "Open file error" }; }
+    if ( !file.open( QIODevice::ReadOnly ) ) { return { false, { } }; }
 
     return { true, file.readAll() };
 }
