@@ -482,22 +482,43 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool &fi
 
     for ( const auto &splitTag: splitList )
     {
-        if ( result.isEmpty() || ( splitTag.size() == 1 ) )
+        if ( splitTag.size() == 1 )
         {
-            if ( firstCharUpper )
+            if ( result.isEmpty() )
             {
-                result += splitTag[ 0 ].toUpper();
-                result += splitTag.midRef( 1 );
+                if ( firstCharUpper )
+                {
+                    result += splitTag[ 0 ].toUpper();
+                }
+                else
+                {
+                    result += splitTag;
+                }
             }
             else
             {
-                result += splitTag;
+                result += splitTag[ 0 ].toUpper();
             }
         }
         else
         {
-            result += splitTag[ 0 ].toUpper();
-            result += splitTag.midRef( 1 );
+            if ( result.isEmpty() )
+            {
+                if ( firstCharUpper )
+                {
+                    result += splitTag[ 0 ].toUpper();
+                    result += splitTag.midRef( 1 );
+                }
+                else
+                {
+                    result += splitTag;
+                }
+            }
+            else
+            {
+                result += splitTag[ 0 ].toUpper();
+                result += splitTag.midRef( 1 );
+            }
         }
     }
 
