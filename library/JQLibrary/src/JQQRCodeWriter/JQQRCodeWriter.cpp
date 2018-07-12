@@ -26,7 +26,11 @@
 
 using namespace JQQRCodeWriter;
 
-QImage JQQRCodeWriter::makeQRcode(const QString &data, const QSize &size)
+QImage JQQRCodeWriter::makeQRcode(
+        const QString &data,
+        const QSize &size,
+        const QColor &colorForPoint
+    )
 {
     QImage image( size, QImage::Format_RGB32 );
     image.fill( QColor( "#000000" ) );
@@ -54,7 +58,6 @@ QImage JQQRCodeWriter::makeQRcode(const QString &data, const QSize &size)
         return image;
     }
 
-    QColor colorForPoint( "#000000" );
     QColor colorForBackground( "#ffffff" );
 
     painter.setBrush( colorForBackground );

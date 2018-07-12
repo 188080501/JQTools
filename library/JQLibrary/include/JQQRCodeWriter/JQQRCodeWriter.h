@@ -25,7 +25,11 @@
 namespace JQQRCodeWriter
 {
 
-QImage makeQRcode(const QString &data, const QSize &size = QSize( 512, 512 ));
+QImage makeQRcode(
+        const QString &data,
+        const QSize &size = QSize( 512, 512 ),
+        const QColor &colorForPoint = QColor( "#000000" )
+    );
 
 }
 

@@ -200,6 +200,18 @@ QVariantList JQFoundation::listVariantMapToVariantList(const QList< QVariantMap 
     return result;
 }
 
+QList< QVariantMap > JQFoundation::variantListToListVariantMap(const QVariantList &source)
+{
+    QList< QVariantMap > result;
+
+    for ( const auto &item: source )
+    {
+        result.push_back( item.toMap() );
+    }
+
+    return result;
+}
+
 QVariantMap JQFoundation::mapKeyTranslate(const QVariantMap &source, const QMap< QString, QString > &keyMap)
 {
    QVariantMap result;
