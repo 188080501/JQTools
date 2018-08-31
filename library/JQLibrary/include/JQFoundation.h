@@ -233,7 +233,7 @@ inline bool operator <(const QSize &a, const QSize &b)
 class JQTickCounter
 {
 public:
-    explicit JQTickCounter(const qint64 &timeRange = 3 * 1000);
+    explicit JQTickCounter(const qint64 &timeRange = 2 * 1000);
 
     ~JQTickCounter() = default;
 
