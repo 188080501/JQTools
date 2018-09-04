@@ -39,6 +39,7 @@
 #include <QDateTime>
 #include <QTextStream>
 #include <QMutex>
+#include <QThread>
 
 // Windows lib import
 #ifdef Q_OS_WIN
@@ -619,4 +620,58 @@ qreal JQTickCounter::tickPerSecond()
     mutex_->unlock();
 
     return result;
+}
+
+// JQMemoryPool
+QMutex JQMemoryPool::mutex_;
+QMap< size_t, QVector< JQMemoryPool::JQMemoryPoolNodeHead > > JQMemoryPool::nodeMap_;
+
+void *JQMemoryPool::requestMemory(const size_t &requestSize)
+{
+    mutex_.lock();
+    auto it = nodeMap_.find( requestSize );
+
+    if ( ( it == nodeMap_.end() ) || it->isEmpty() )
+    {
+        mutex_.unlock();
+
+        return makeNode( requestSize ).memory;
+    }
+    else
+    {
+        auto node = it->takeLast();
+        it = { };
+        mutex_.unlock();
+
+        return node.memory;
+    }
+}
+
+void JQMemoryPool::recoverMemory(void *memory)
+{
+    auto node = reinterpret_cast< JQMemoryPoolNodeHead * >( reinterpret_cast< qint8 * >( memory ) - sizeof( JQMemoryPoolNodeHead ) );
+
+    if ( node->flag != 0x3519 )
+    {
+        qDebug() << "JQMemoryPool::recoverMemory: error: flag not match:" << memory << node->flag;
+        return;
+    }
+
+    mutex_.lock();
+    nodeMap_[ node->requestSize ].push_back( *node );
+    mutex_.unlock();
+}
+
+JQMemoryPool::JQMemoryPoolNodeHead JQMemoryPool::makeNode(const size_t &requestSize)
+{
+    auto buffer = malloc( sizeof( JQMemoryPoolNodeHead ) + requestSize + 128 );
+    auto node = reinterpret_cast< JQMemoryPoolNodeHead * >( buffer );
+
+    node->flag = 0x3519;
+    node->mallocThread = QThread::currentThread();
+    node->mallocTime = QDateTime::currentMSecsSinceEpoch();
+    node->requestSize = requestSize;
+    node->memory = reinterpret_cast< qint8 * >( buffer ) + sizeof( JQMemoryPoolNodeHead );
+
+    return *node;
 }

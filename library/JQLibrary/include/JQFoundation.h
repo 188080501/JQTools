@@ -43,13 +43,13 @@
 #include <QMap>
 #include <QVector>
 #include <QSize>
+#include <QMutex>
 
 class QTableWidget;
 class QTreeWidget;
 class QTextEdit;
 class QLineEdit;
 class QTimer;
-class QMutex;
 
 // Macro define
 #define PropertyDeclare(Type, name, setName, ...)                                           \
@@ -246,6 +246,36 @@ private:
     qint64 timeRange_;
     QVector< qint64 > tickRecord_;
     QSharedPointer< QMutex > mutex_;
+};
+
+class JQMemoryPool
+{
+private:
+    struct JQMemoryPoolNodeHead
+    {
+        qint32 flag = 0x3519;
+        QThread *mallocThread = nullptr;
+        qint64 mallocTime = 0;
+        size_t requestSize = 0;
+        void *memory = nullptr;
+    };
+
+private:
+    JQMemoryPool() = default;
+
+public:
+    ~JQMemoryPool() = default;
+
+    static void *requestMemory(const size_t &requestSize);
+
+    static void recoverMemory(void *memory);
+
+private:
+    static JQMemoryPoolNodeHead makeNode(const size_t &requestSize);
+
+private:
+    static QMutex mutex_;
+    static QMap< size_t, QVector< JQMemoryPoolNodeHead > > nodeMap_;
 };
 
 #endif//JQLIBRARY_INCLUDE_JQFOUNDATION_H_
