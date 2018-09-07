@@ -553,6 +553,48 @@ QRect JQFoundation::scaleRect(const QRect &rect, const qreal &horizontalScale, c
     };
 }
 
+QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
+{
+    const auto &&unitedRect = QRect( 0, 0, image.width(), image.height() ).united( rect );
+
+    if ( ( unitedRect.width() > image.width() ) || ( unitedRect.height() > image.height() ) )
+    {
+        qDebug() << "JQFoundation::imageCopy: error:" << image.size() << rect << unitedRect;
+        return { };
+    }
+
+    if ( image.format() != QImage::Format_RGB888 )
+    {
+        qDebug() << "JQFoundation::format: error:" <<image.format();
+        return { };
+    }
+
+    auto rgbData = JQMemoryPool::requestMemory( rect.width() * rect.height() * 3 );
+    QImage result(
+                reinterpret_cast< unsigned char * >( rgbData ),
+                rect.width(),
+                rect.height(),
+                rect.width() * 3,
+                QImage::Format_RGB888,
+                JQMemoryPool::recoverMemory,
+                rgbData
+           );
+
+    for ( auto y = rect.y(); y < ( rect.y() + rect.height() ); ++y )
+    {
+        auto source = image.bits() + image.bytesPerLine() * y + rect.x() * 3 - 1;
+        auto target = result.bits() + result.bytesPerLine() * ( y - rect.y() ) - 1;
+        auto sourceEnd = source + rect.width() * 3 + 1;
+
+        while ( source < sourceEnd )
+        {
+            *( ++target ) = *( ++source );
+        }
+    }
+
+    return result;
+}
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
 {
@@ -664,7 +706,7 @@ void JQMemoryPool::recoverMemory(void *memory)
 
 JQMemoryPool::JQMemoryPoolNodeHead JQMemoryPool::makeNode(const size_t &requestSize)
 {
-    auto buffer = malloc( sizeof( JQMemoryPoolNodeHead ) + requestSize + 128 );
+    auto buffer = malloc( sizeof( JQMemoryPoolNodeHead ) + requestSize + 200 );
     auto node = reinterpret_cast< JQMemoryPoolNodeHead * >( buffer );
 
     node->flag = 0x3519;

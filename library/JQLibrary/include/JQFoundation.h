@@ -174,6 +174,8 @@ QRect scaleRect(const QRect &rect, const qreal &scale);
 
 QRect scaleRect(const QRect &rect, const qreal &horizontalScale, const qreal &verticalScale);
 
+QImage imageCopy(const QImage &image, const QRect &rect);
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
 #endif
