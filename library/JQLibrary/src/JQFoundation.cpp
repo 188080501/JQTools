@@ -479,13 +479,43 @@ QByteArray JQFoundation::pixmapToByteArray(const QPixmap &pixmap, const QString 
 
 QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &format, int quality)
 {
-    QByteArray bytes;
-    QBuffer buffer( &bytes );
+    static QMap< QThread *, QByteArray * > cacheMap; // thread -> QByteArray
+    static QMutex cacheMutex;
+
+    QByteArray *bytes = nullptr;
+
+    cacheMutex.lock();
+
+    {
+        auto it = cacheMap.find( QThread::currentThread() );
+        if ( ( it == cacheMap.end() ) || !*it )
+        {
+            bytes = new QByteArray;
+            cacheMap[ QThread::currentThread() ] = bytes;
+        }
+        else
+        {
+            bytes = *it;
+        }
+    }
+
+    cacheMutex.unlock();
+
+    if ( bytes->capacity() <= 0 )
+    {
+        bytes->reserve( 512 * 1024 );
+    }
+
+//    qDebug() << reinterpret_cast< const void * >( bytes->constData() ) << bytes->size() << bytes->capacity();
+
+    QBuffer buffer( bytes );
 
     buffer.open( QIODevice::WriteOnly );
     image.save( &buffer, format.toLatin1().data(), quality );
 
-    return bytes;
+//    qDebug() << reinterpret_cast< const void * >( bytes->constData() ) << bytes->size() << bytes->capacity();
+
+    return *bytes;
 }
 
 QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper)
