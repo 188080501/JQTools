@@ -583,6 +583,22 @@ QRect JQFoundation::scaleRect(const QRect &rect, const qreal &horizontalScale, c
     };
 }
 
+QPoint JQFoundation::scalePoint(const QPoint &point, const qreal &horizontalScale, const qreal &verticalScale)
+{
+    return {
+        static_cast< int >( point.x() * horizontalScale ),
+        static_cast< int >( point.y() * verticalScale )
+    };
+}
+
+QPointF JQFoundation::scalePoint(const QPointF &point, const qreal &horizontalScale, const qreal &verticalScale)
+{
+    return {
+        static_cast< qreal >( point.x() * horizontalScale ),
+        static_cast< qreal >( point.y() * verticalScale )
+    };
+}
+
 QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
 {
     const auto &&unitedRect = QRect( 0, 0, image.width(), image.height() ).united( rect );
@@ -599,7 +615,7 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
         return { };
     }
 
-    auto rgbData = JQMemoryPool::requestMemory( rect.width() * rect.height() * 3 );
+    auto rgbData = JQMemoryPool::requestMemory( static_cast< size_t >( rect.width() * rect.height() * 3 ) );
     QImage result(
                 reinterpret_cast< unsigned char * >( rgbData ),
                 rect.width(),
@@ -698,6 +714,14 @@ qreal JQTickCounter::tickPerSecond()
 QMutex JQMemoryPool::mutex_;
 QMap< size_t, QVector< JQMemoryPool::JQMemoryPoolNodeHead > > JQMemoryPool::nodeMap_;
 
+QAtomicInteger< qint64 > JQMemoryPool::totalMallocSize_ = 0;
+qint64 JQMemoryPool::releaseThreshold_ = static_cast< qint64 >( 9 ) * 1024 * 1024 * 1024;
+
+qint64 JQMemoryPool::totalMallocSize()
+{
+    return totalMallocSize_;
+}
+
 void *JQMemoryPool::requestMemory(const size_t &requestSize)
 {
     mutex_.lock();
@@ -729,14 +753,37 @@ void JQMemoryPool::recoverMemory(void *memory)
         return;
     }
 
-    mutex_.lock();
-    nodeMap_[ node->requestSize ].push_back( *node );
-    mutex_.unlock();
+    if ( ( totalMallocSize_ > releaseThreshold_ ) ||
+         ( node->requestSize < 128 ) )
+    {
+        totalMallocSize_ -= node->requestSize;
+        if ( totalMallocSize_ < 0 )
+        {
+            qDebug() << "JQMemoryPool::recoverMemory: error:" << totalMallocSize_ << node->requestSize;
+        }
+
+        free( reinterpret_cast< qint8 * >( memory ) - sizeof( JQMemoryPoolNodeHead ) );
+    }
+    else
+    {
+        mutex_.lock();
+        nodeMap_[ node->requestSize ].push_back( *node );
+        mutex_.unlock();
+    }
 }
 
 JQMemoryPool::JQMemoryPoolNodeHead JQMemoryPool::makeNode(const size_t &requestSize)
 {
-    auto buffer = malloc( sizeof( JQMemoryPoolNodeHead ) + requestSize + 200 );
+    static qint64 lastPrintSize = 0;
+
+    totalMallocSize_ += static_cast< qint64 >( requestSize );
+    if ( ( totalMallocSize_ - lastPrintSize ) > ( 256 * 1024 * 1024 ) )
+    {
+        lastPrintSize = totalMallocSize_;
+        qDebug() << "JQMemoryPool::makeNode: totalMallocSize:" << ( totalMallocSize_ / 1024 / 1024 ) << "MB";
+    }
+
+    auto buffer = malloc( sizeof( JQMemoryPoolNodeHead ) + requestSize + 100 );
     auto node = reinterpret_cast< JQMemoryPoolNodeHead * >( buffer );
 
     node->flag = 0x3519;

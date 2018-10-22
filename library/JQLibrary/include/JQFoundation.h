@@ -100,6 +100,12 @@ for (RforeachContainer<__typeof__((container))> _container_((container));       
 #define JQCONST( property ) \
     static_cast< const decltype( property ) >( property )
 
+#define JQBUILDDATETIMESTRING                                                                               \
+    ( QDateTime(                                                                                            \
+        QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy"),      \
+        QTime::fromString( __TIME__, "hh:mm:ss" )                                                           \
+    ).toString( "yyyy-MM-dd hh:mm:ss" ).toLatin1().data() )
+
 template < typename T >
 class RforeachContainer {
 public:
@@ -173,6 +179,10 @@ QString snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper =
 QRect scaleRect(const QRect &rect, const qreal &scale);
 
 QRect scaleRect(const QRect &rect, const qreal &horizontalScale, const qreal &verticalScale);
+
+QPoint scalePoint(const QPoint &point, const qreal &horizontalScale, const qreal &verticalScale);
+
+QPointF scalePoint(const QPointF &point, const qreal &horizontalScale, const qreal &verticalScale);
 
 QImage imageCopy(const QImage &image, const QRect &rect);
 
@@ -268,6 +278,8 @@ private:
 public:
     ~JQMemoryPool() = default;
 
+    static qint64 totalMallocSize();
+
     static void *requestMemory(const size_t &requestSize);
 
     static void recoverMemory(void *memory);
@@ -278,6 +290,9 @@ private:
 private:
     static QMutex mutex_;
     static QMap< size_t, QVector< JQMemoryPoolNodeHead > > nodeMap_;
+
+    static QAtomicInteger< qint64 > totalMallocSize_;
+    static qint64 releaseThreshold_;
 };
 
 #endif//JQLIBRARY_INCLUDE_JQFOUNDATION_H_
