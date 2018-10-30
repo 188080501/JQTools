@@ -715,7 +715,21 @@ QMutex JQMemoryPool::mutex_;
 QMap< size_t, QVector< JQMemoryPool::JQMemoryPoolNodeHead > > JQMemoryPool::nodeMap_;
 
 QAtomicInteger< qint64 > JQMemoryPool::totalMallocSize_ = 0;
-qint64 JQMemoryPool::releaseThreshold_ = static_cast< qint64 >( 9 ) * 1024 * 1024 * 1024;
+qint64 JQMemoryPool::releaseThreshold_ = -1;
+
+void JQMemoryPool::initReleaseThreshold()
+{
+#ifdef Q_OS_WIN
+    MEMORYSTATUSEX statex;
+    statex.dwLength = sizeof( statex );
+    GlobalMemoryStatusEx( &statex );
+    releaseThreshold_ = statex.ullAvailPhys / 2;
+#else
+    releaseThreshold_ = static_cast< qint64 >( 8 ) * 1024 * 1024 * 1024;
+#endif
+
+    qDebug() << "JQMemoryPool: Release threshold set to:" << ( releaseThreshold_ / 1024 / 1024 ) << "MB";
+}
 
 qint64 JQMemoryPool::totalMallocSize()
 {
@@ -725,6 +739,12 @@ qint64 JQMemoryPool::totalMallocSize()
 void *JQMemoryPool::requestMemory(const size_t &requestSize)
 {
     mutex_.lock();
+
+    if ( releaseThreshold_ <= 0 )
+    {
+        initReleaseThreshold();
+    }
+
     auto it = nodeMap_.find( requestSize );
 
     if ( ( it == nodeMap_.end() ) || it->isEmpty() )

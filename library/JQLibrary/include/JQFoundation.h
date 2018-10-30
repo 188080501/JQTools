@@ -278,6 +278,8 @@ private:
 public:
     ~JQMemoryPool() = default;
 
+    static void initReleaseThreshold();
+
     static qint64 totalMallocSize();
 
     static void *requestMemory(const size_t &requestSize);

@@ -69,6 +69,8 @@ unix | linux | mingw {
 
 exists( $$PWD/src/JQFoundation.cpp ) {
 
+    DEFINES += JQFOUNDATION_LIB
+
     SOURCES *= $$PWD/src/JQFoundation.cpp
     HEADERS *= $$PWD/include/JQFoundation.h
 }
