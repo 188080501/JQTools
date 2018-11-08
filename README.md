@@ -22,8 +22,6 @@ https://github.com/188080501/JQTools/releases/latest
 
 若你遇到问题、有了更好的建议或者想要一些新功能，都可以直接在GitHub上提交Issues：https://github.com/188080501/JQTools/issues
 
-或者直接邮件我，我的邮箱是：Jason@JasonServer.com
-
 注：局域网相关功能，依赖JQNetwork，这也是我基于Qt开发的一个网络库，GitHub链接如下：
 https://github.com/188080501/JQNetwork
 
