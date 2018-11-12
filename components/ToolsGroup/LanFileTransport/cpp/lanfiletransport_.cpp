@@ -51,7 +51,7 @@ Manage::Manage():
 
         return this->savePath_ + path;
     };
-    jqNetworkServer_->serverSettings()->packageReceivedCallback = [ this ](const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)
+    jqNetworkServer_->serverSettings()->packageReceivedCallback = [ ](const JQNetworkConnectPointer &connect, const JQNetworkPackageSharedPointer &package)
     {
 //        qDebug() << "packageReceivedCallback:" << package->appendData();
 
