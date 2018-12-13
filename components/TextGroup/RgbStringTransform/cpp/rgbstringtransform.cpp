@@ -28,6 +28,11 @@ QString Manage::getHexString(const QString &red, const QString &green, const QSt
     return color.name();
 }
 
+QString Manage::getHexString(QColor color)
+{
+    return color.name();
+}
+
 QString Manage::getRed(const QString &hexString)
 {
     QColor color( hexString );
