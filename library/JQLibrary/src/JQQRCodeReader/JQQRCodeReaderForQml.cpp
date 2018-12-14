@@ -100,7 +100,7 @@ void JQQRCodeReaderForQmlManage::analysisItem(
 
         qDebug() << QByteArray( (const char *)image.bits(), 10 ).toHex();
 
-        QtConcurrent::run( [ this, image, geometry ]()
+        QtConcurrent::run( threadPool_.data(), [ this, image, geometry ]()
         {
 //            QTime time;
 //            time.start();
