@@ -198,6 +198,8 @@ equals(JQQRCODEREADER_COMPILE_MODE,SRC) {
 
         SOURCES *= \
             $$PWD/src/JQQRCodeReader/zxing/win32/zxing/win_iconv.c
+
+        DEFINES*=__STDC_LIMIT_MACROS
     }
 }
 else : equals(JQQRCODEREADER_COMPILE_MODE,LIB) {

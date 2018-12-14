@@ -13,8 +13,10 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
+import QtQuick.Dialogs 1.3
 import "qrc:/MaterialUI/Interface/"
 import RgbStringTransform 1.0
+
 
 Item {
     id: rgbStringTransform
@@ -137,6 +139,26 @@ Item {
                 textFieldForHexString.text = rgbStringTransformManage.getHexString( textFiedForRed.text, textFiedForGreen.text, textFiedForBlue.text );
 
                 rgbStringTransform.changingFlag = false;
+            }
+        }
+
+        MaterialButton {
+            x: 387
+            y: 130
+            width: 120
+            text: "颜色对话框获取"
+
+            onClicked: {
+                colorDialog.open();
+            }
+        }
+
+        ColorDialog {
+            id: colorDialog
+            title: "选择一个颜色"
+            onAccepted: {
+                textFieldForHexString.text = rgbStringTransformManage.getHexString(colorDialog.color);
+                materialUI.showSnackbarMessage( "已从颜色对话框获取颜色" );
             }
         }
 
