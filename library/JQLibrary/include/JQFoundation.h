@@ -184,6 +184,14 @@ QPoint scalePoint(const QPoint &point, const qreal &horizontalScale, const qreal
 
 QPointF scalePoint(const QPointF &point, const qreal &horizontalScale, const qreal &verticalScale);
 
+QPoint pointFToPoint(const QPointF &point, const QSize &size);
+
+QLine pointFToLine(const QPointF &point1, const QPointF &point2, const QSize &size);
+
+QRect rectFToRect(const QRectF &rect, const QSize &size);
+
+QRectF rectToRectF(const QRect &rect, const QSize &size);
+
 QImage imageCopy(const QImage &image, const QRect &rect);
 
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )

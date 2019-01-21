@@ -599,6 +599,42 @@ QPointF JQFoundation::scalePoint(const QPointF &point, const qreal &horizontalSc
     };
 }
 
+QPoint JQFoundation::pointFToPoint(const QPointF &point, const QSize &size)
+{
+    return {
+        static_cast< int >( point.x() * size.width() ),
+        static_cast< int >( point.y() * size.height() )
+    };
+}
+
+QLine JQFoundation::pointFToLine(const QPointF &point1, const QPointF &point2, const QSize &size)
+{
+    return {
+        JQFoundation::pointFToPoint( point1, size ),
+        JQFoundation::pointFToPoint( point2, size )
+    };
+}
+
+QRect JQFoundation::rectFToRect(const QRectF &rect, const QSize &size)
+{
+    return {
+        static_cast< int >( rect.x() * size.width() ),
+        static_cast< int >( rect.y() * size.height() ),
+        static_cast< int >( rect.width() * size.width() ),
+        static_cast< int >( rect.height() * size.height() )
+    };
+}
+
+QRectF JQFoundation::rectToRectF(const QRect &rect, const QSize &size)
+{
+    return {
+        static_cast< qreal >( rect.x() ) / size.width(),
+        static_cast< qreal >( rect.y() ) / size.height(),
+        static_cast< qreal >( rect.width() ) / size.width(),
+        static_cast< qreal >( rect.height() ) / size.height()
+    };
+}
+
 QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
 {
     const auto &&unitedRect = QRect( 0, 0, image.width(), image.height() ).united( rect );
