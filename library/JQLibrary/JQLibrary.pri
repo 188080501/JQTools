@@ -73,6 +73,7 @@ exists( $$PWD/src/JQFoundation.cpp ) {
 
     SOURCES *= $$PWD/src/JQFoundation.cpp
     HEADERS *= $$PWD/include/JQFoundation.h
+    HEADERS *= $$PWD/include/jqdeclare.hpp
 }
 
 exists( $$PWD/src/jqgpio.cpp ) {
