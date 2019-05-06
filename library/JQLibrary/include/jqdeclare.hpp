@@ -76,11 +76,6 @@
     } );                                                                                    \
     if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr ) { exit( -1 ); }
 
-#define rforeach (variable, container)                                                      \
-for (RforeachContainer<__typeof__((container))> _container_((container));                   \
-    _container_.__howMuch__; _container_.__howMuch__--)                                     \
-    for (variable = *(--_container_.__now__); ; __extension__ ({ break;}))
-
 #define JQCONST( property ) \
     static_cast< const decltype( property ) >( property )
 

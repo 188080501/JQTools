@@ -54,28 +54,6 @@ class QTextEdit;
 class QLineEdit;
 class QTimer;
 
-template < typename T >
-class RforeachContainer {
-public:
-    inline RforeachContainer(const T& t) : __now__(t.end()), __howMuch__(t.size()) { }
-    typename T::const_iterator __now__;
-    int __howMuch__;
-};
-
-template < typename T >
-inline typename std::enable_if< !std::is_pod< T >::value >::type
-memset( T*, int, size_t )
-{
-    static_assert( std::is_pod< T >::value, "memset error: target not pod" );
-}
-
-template < typename T >
-inline typename std::enable_if< !std::is_pod< T >::value >::type
-memcpy( T*, int, size_t )
-{
-    static_assert( std::is_pod< T >::value, "memcpy error: target not pod" );
-}
-
 namespace JQFoundation
 {
 
