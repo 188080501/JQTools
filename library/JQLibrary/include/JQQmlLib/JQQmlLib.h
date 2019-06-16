@@ -15,13 +15,21 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef JQQMLLIB_H_
-#define JQQMLLIB_H_
+#ifndef JQLIBRARY_INCLUDE_JQQMLLIB_JQQMLLIB_H_
+#define JQLIBRARY_INCLUDE_JQQMLLIB_JQQMLLIB_H_
 
-#define JQQmlLibAddToEngine(engine)                             \
+#ifdef JQQMLLIB_LIB
+
+#   define JQQMLLIB_INITIALIZE(engine)                          \
 {                                                               \
     Q_INIT_RESOURCE(JQQmlLib);                                  \
-    (engine).addImportPath( ":/JQQmlLib/qml/" );                \
+    ( engine ).addImportPath( ":/JQQmlLib/qml/" );              \
 }
 
-#endif//JQQMLLIB_H_
+#else
+
+#   define JQQMLLIB_INITIALIZE(engine)
+
+#endif
+
+#endif//JQLIBRARY_INCLUDE_JQQMLLIB_JQQMLLIB_H_

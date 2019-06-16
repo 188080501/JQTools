@@ -607,6 +607,14 @@ QPoint JQFoundation::pointFToPoint(const QPointF &point, const QSize &size)
     };
 }
 
+QPointF JQFoundation::pointToPointF(const QPoint &point, const QSize &size)
+{
+    return {
+        static_cast< qreal >( point.x() ) / size.width(),
+        static_cast< qreal >( point.y() ) / size.height()
+    };
+}
+
 QLine JQFoundation::pointFToLine(const QPointF &point1, const QPointF &point2, const QSize &size)
 {
     return {

@@ -40,6 +40,8 @@ public:
 
     static bool writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover = true);
 
+    static bool appendFile(const QFileInfo &targetFilePath, const QByteArray &data);
+
     static QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
 
     static bool copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool &cover = true);

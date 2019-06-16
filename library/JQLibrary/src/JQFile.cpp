@@ -112,6 +112,28 @@ bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, 
     return true;
 }
 
+bool JQFile::appendFile(const QFileInfo &targetFilePath, const QByteArray &data)
+{
+    if ( !targetFilePath.dir().isReadable() )
+    {
+        if ( !QDir().mkpath( targetFilePath.path() ))
+        {
+            return false;
+        }
+    }
+
+    QFile file( targetFilePath.filePath() );
+    if ( !file.open( QIODevice::Append ) )
+    {
+        return false;
+    }
+
+    file.write( data );
+    file.waitForBytesWritten( 15 * 1000 );
+
+    return true;
+}
+
 QPair< bool, QByteArray > JQFile::readFile(const QFileInfo &filePath)
 {
     QFile file( filePath.filePath() );

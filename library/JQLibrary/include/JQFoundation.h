@@ -112,6 +112,8 @@ QPointF scalePoint(const QPointF &point, const qreal &horizontalScale, const qre
 
 QPoint pointFToPoint(const QPointF &point, const QSize &size);
 
+QPointF pointToPointF(const QPoint &point, const QSize &size);
+
 QLine pointFToLine(const QPointF &point1, const QPointF &point2, const QSize &size);
 
 QRect rectFToRect(const QRectF &rect, const QSize &size);
