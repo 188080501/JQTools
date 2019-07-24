@@ -643,6 +643,20 @@ QRectF JQFoundation::rectToRectF(const QRect &rect, const QSize &size)
     };
 }
 
+QRect JQFoundation::cropRect(const QRect &rect, const QRect &bigRect)
+{
+    return {
+                QPoint(
+                    ( ( rect.x() < bigRect.x() ) ? ( bigRect.x() ) : ( rect.x() ) ),
+                    ( ( rect.y() < bigRect.y() ) ? ( bigRect.y() ) : ( rect.y() ) )
+                ),
+                QPoint(
+                    ( ( rect.bottomRight().x() > bigRect.bottomRight().x() ) ? ( bigRect.bottomRight().x() ) : ( rect.bottomRight().x() ) ),
+                    ( ( rect.bottomRight().y() > bigRect.bottomRight().y() ) ? ( bigRect.bottomRight().y() ) : ( rect.bottomRight().y() ) )
+                )
+    };
+}
+
 QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
 {
     const auto &&unitedRect = QRect( 0, 0, image.width(), image.height() ).united( rect );
@@ -754,6 +768,11 @@ qreal JQTickCounter::tickPerSecond()
     return result;
 }
 
+QString JQTickCounter::tickPerSecondDisplayString()
+{
+    return QString::number( tickPerSecond(), 'f', 1 );
+}
+
 // JQMemoryPool
 QMutex JQMemoryPool::mutex_;
 QMap< size_t, QVector< JQMemoryPool::JQMemoryPoolNodeHead > > JQMemoryPool::nodeMap_;
@@ -820,7 +839,7 @@ void JQMemoryPool::recoverMemory(void *memory)
     if ( ( totalMallocSize_ > releaseThreshold_ ) ||
          ( node->requestSize < 128 ) )
     {
-        totalMallocSize_ -= node->requestSize;
+        totalMallocSize_ -= static_cast< long long >( node->requestSize );
         if ( totalMallocSize_ < 0 )
         {
             qDebug() << "JQMemoryPool::recoverMemory: error:" << totalMallocSize_ << node->requestSize;

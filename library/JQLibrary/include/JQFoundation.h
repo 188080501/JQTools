@@ -44,15 +44,10 @@
 #include <QVector>
 #include <QSize>
 #include <QMutex>
+#include <QTimer>
 
 // JQLibrary lib import
 #include <JQDeclare>
-
-class QTableWidget;
-class QTreeWidget;
-class QTextEdit;
-class QLineEdit;
-class QTimer;
 
 namespace JQFoundation
 {
@@ -119,6 +114,8 @@ QLine pointFToLine(const QPointF &point1, const QPointF &point2, const QSize &si
 QRect rectFToRect(const QRectF &rect, const QSize &size);
 
 QRectF rectToRectF(const QRect &rect, const QSize &size);
+
+QRect cropRect(const QRect &rect, const QRect &bigRect);
 
 QImage imageCopy(const QImage &image, const QRect &rect);
 
@@ -189,6 +186,8 @@ public:
     void tick();
 
     qreal tickPerSecond();
+
+    QString tickPerSecondDisplayString();
 
 private:
     qint64 timeRange_;
