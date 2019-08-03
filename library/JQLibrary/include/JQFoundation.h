@@ -195,6 +195,24 @@ private:
     QSharedPointer< QMutex > mutex_;
 };
 
+class JQFpsControl
+{
+public:
+    JQFpsControl(const qreal &fps = 15);
+
+    ~JQFpsControl() = default;
+
+    void setFps(const qreal &fps);
+
+    void waitNextFrame();
+
+    bool readyNextFrame();
+
+private:
+    qreal fps_;
+    qint64 lastTriggeredTime_ = 0;
+};
+
 class JQMemoryPool
 {
 private:

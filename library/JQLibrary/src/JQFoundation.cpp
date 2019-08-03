@@ -773,6 +773,62 @@ QString JQTickCounter::tickPerSecondDisplayString()
     return QString::number( tickPerSecond(), 'f', 1 );
 }
 
+// AtcityFpsControl
+JQFpsControl::JQFpsControl(const qreal &fps):
+    fps_( fps )
+{ }
+
+void JQFpsControl::setFps(const qreal &fps)
+{
+    fps_ = fps;
+}
+
+void JQFpsControl::waitNextFrame()
+{
+    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    const int timeInterval = qMax( 1, static_cast< int >( 1000.0 / fps_ ) );
+    qint64 nextFrameTime = 0;
+
+    if ( currentMSecsSinceEpoch % timeInterval )
+    {
+        nextFrameTime = ( currentMSecsSinceEpoch / timeInterval + 1 ) * timeInterval;
+    }
+    else
+    {
+        nextFrameTime = currentMSecsSinceEpoch;
+    }
+
+    if ( nextFrameTime == lastTriggeredTime_ )
+    {
+        nextFrameTime += timeInterval;
+    }
+
+    const auto readyToMSleep = qBound( 0, static_cast< int >( nextFrameTime - currentMSecsSinceEpoch ), 1000 );
+    if ( readyToMSleep > 0 )
+    {
+        QThread::msleep( static_cast< unsigned long >( readyToMSleep ) );
+    }
+
+    lastTriggeredTime_ = QDateTime::currentMSecsSinceEpoch();
+}
+
+bool JQFpsControl::readyNextFrame()
+{
+    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    const int timeInterval = qMax( 1, static_cast< int >( 1000.0 / fps_ ) );
+
+    if ( ( currentMSecsSinceEpoch - lastTriggeredTime_ ) >= timeInterval )
+    {
+        lastTriggeredTime_ = ( currentMSecsSinceEpoch / timeInterval ) * timeInterval;
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 // JQMemoryPool
 QMutex JQMemoryPool::mutex_;
 QMap< size_t, QVector< JQMemoryPool::JQMemoryPoolNodeHead > > JQMemoryPool::nodeMap_;
