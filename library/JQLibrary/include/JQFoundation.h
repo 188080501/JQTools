@@ -119,6 +119,8 @@ QRect cropRect(const QRect &rect, const QRect &bigRect);
 
 QImage imageCopy(const QImage &image, const QRect &rect);
 
+void waitFor(const std::function< bool() > &predicate, const int &timeout);
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
 #endif

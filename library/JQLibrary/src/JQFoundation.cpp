@@ -699,6 +699,15 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
     return result;
 }
 
+void JQFoundation::waitFor(const std::function< bool() > &predicate, const int &timeout)
+{
+    for ( auto current = 0; current < timeout; current += 25 )
+    {
+        if ( !predicate() ) { break; }
+        QThread::msleep( 25 );
+    }
+}
+
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
 {
