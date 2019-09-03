@@ -688,7 +688,7 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
     {
         auto source = image.bits() + image.bytesPerLine() * y + rect.x() * 3 - 1;
         auto target = result.bits() + result.bytesPerLine() * ( y - rect.y() ) - 1;
-        auto sourceEnd = source + rect.width() * 3;
+        auto sourceEnd = source + rect.width() * 3 + 1;
 
         while ( source < sourceEnd )
         {

@@ -19,7 +19,7 @@
 #define JQLIBRARY_INCLUDE_JQDECLARE_H_
 
 // Macro define
-#define PropertyDeclare(Type, name, setName, ...)                                           \
+#define JQPROPERTYDECLARE(Type, name, setName, ...)                                         \
     private:                                                                                \
     Type name ## _ __VA_ARGS__;                                                             \
     public:                                                                                 \
@@ -27,7 +27,7 @@
     inline void setName(const Type &name) { name ## _ = name; }                             \
     private:
 
-#define PropertyDeclareWithSlot(Type, name, setName, ...)                                   \
+#define JQPROPERTYDECLAREWITHSLOT(Type, name, setName, ...)                                 \
     private:                                                                                \
     Type name ## _ __VA_ARGS__;                                                             \
     public Q_SLOTS:                                                                         \
@@ -35,7 +35,7 @@
     void setName(const Type &name) { name ## _ = name; }                                    \
     private:
 
-#define PtrPropertyDeclare(Type, name, setName, ...)                                        \
+#define JQPTRPROPERTYDECLARE(Type, name, setName, ...)                                      \
     private:                                                                                \
     Type *name ## _ __VA_ARGS__;                                                            \
     public:                                                                                 \
