@@ -35,11 +35,13 @@ Controls.RadioButton {
 
     style: ControlStyles.RadioButtonStyle {
         label: MaterialLabel {
+            height: radioButton.height
             text: control.text
             color: control.enabled ? radioButton.darkBackground ? "#ffffff"
                                                                 : "#d8000000"
                                    : radioButton.darkBackground ? "#4cffffff"
                                                                 : "#42000000"
+            verticalAlignment: Text.AlignVCenter
         }
 
         background: Rectangle {
