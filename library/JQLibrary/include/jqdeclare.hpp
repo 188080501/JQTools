@@ -85,4 +85,15 @@
         QTime::fromString( __TIME__, "hh:mm:ss" )                                                           \
     ).toString( "yyyy-MM-dd hh:mm:ss" ).toLatin1().data() )
 
+// Export
+#ifdef JQLIBRARY_EXPORT_ENABLE
+#   ifdef JQLIBRARY_EXPORT_MODE
+#       define JQLIBRARY_EXPORT Q_DECL_EXPORT
+#   else
+#       define JQLIBRARY_EXPORT Q_DECL_IMPORT
+#   endif
+#else
+#   define JQLIBRARY_EXPORT
+#endif
+
 #endif//JQLIBRARY_INCLUDE_JQDECLARE_H_

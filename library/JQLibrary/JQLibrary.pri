@@ -24,46 +24,62 @@ INCLUDEPATH *= \
 
 exists( $$PWD/src/JQBarcode.cpp ) {
 
-    SOURCES *= $$PWD/src/JQBarcode.cpp
-    HEADERS *= $$PWD/include/JQBarcode.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQBarcode.h
+        SOURCES *= $$PWD/src/JQBarcode.cpp
+    }
 }
 
-contains( QT, bluetooth ) {
-
-    exists( $$PWD/src/JQBluetooth.cpp ) {
-        SOURCES *= $$PWD/src/JQBluetooth.cpp
-        HEADERS *= $$PWD/include/JQBluetooth.h
-    }
+contains( QT, bluetooth ) : exists( $$PWD/src/JQBluetooth.cpp ) {
 
     mac | ios {
         DEFINES += JQBLUETOOTH_UUIDMODE
+    }
+
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQBluetooth.h
+        SOURCES *= $$PWD/src/JQBluetooth.cpp
     }
 }
 
 exists( $$PWD/src/JQChecksum.cpp ) {
 
-    SOURCES *= $$PWD/src/JQChecksum.cpp
-    HEADERS *= $$PWD/include/JQChecksum.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQChecksum.h
+        SOURCES *= $$PWD/src/JQChecksum.cpp
+    }
 }
 
 exists( $$PWD/src/JQExcel.cpp ) {
 
-    SOURCES *= $$PWD/src/JQExcel.cpp
-    HEADERS *= $$PWD/include/JQExcel.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQExcel.h
+        SOURCES *= $$PWD/src/JQExcel.cpp
+    }
 }
 
 exists( $$PWD/src/JQFile.cpp ) {
 
-    SOURCES *= $$PWD/src/JQFile.cpp
-    HEADERS *= $$PWD/include/JQFile.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQFile.h
+        SOURCES *= $$PWD/src/JQFile.cpp
+    }
 }
 
 unix | linux | mingw {
 
     exists( $$PWD/src/JQFilePack.cpp ) {
 
-        SOURCES *= $$PWD/src/JQFilePack.cpp
-        HEADERS *= $$PWD/include/JQFilePack.h
+        !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+            HEADERS *= $$PWD/include/JQFilePack.h
+            SOURCES *= $$PWD/src/JQFilePack.cpp
+        }
     }
 }
 
@@ -71,113 +87,123 @@ exists( $$PWD/src/JQFoundation.cpp ) {
 
     DEFINES += JQFOUNDATION_LIB
 
-    SOURCES *= $$PWD/src/JQFoundation.cpp
-    HEADERS *= $$PWD/include/JQFoundation.h
-    HEADERS *= $$PWD/include/jqdeclare.hpp
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQFoundation.h
+        HEADERS *= $$PWD/include/jqdeclare.hpp
+
+        SOURCES *= $$PWD/src/JQFoundation.cpp
+    }
 }
 
 exists( $$PWD/src/jqgpio.cpp ) {
 
-    SOURCES *= $$PWD/src/jqgpio.cpp
-    HEADERS *= $$PWD/include/jqgpio.h
-}
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
-contains( QT, network ) {
-
-    contains( QT, concurrent ) {
-
-        exists( $$PWD/src/JQHttpServer.cpp ) {
-
-            SOURCES *= $$PWD/src/JQHttpServer.cpp
-            HEADERS *= $$PWD/include/JQHttpServer.h
-        }
+        HEADERS *= $$PWD/include/jqgpio.h
+        SOURCES *= $$PWD/src/jqgpio.cpp
     }
 }
 
-ios {
+contains( QT, network ) : contains( QT, concurrent ) : exists( $$PWD/src/JQHttpServer.cpp ) {
 
-    exists( $$PWD/src/JQiOS.cpp ) {
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
-        LIBS *= -framework Foundation -framework UIKit
-        OBJECTIVE_SOURCES *= $$PWD/src/JQiOS.mm
+        HEADERS *= $$PWD/include/JQHttpServer.h
+
+        SOURCES *= $$PWD/src/JQHttpServer.cpp
+    }
+}
+
+ios : exists( $$PWD/src/JQiOS.cpp ) {
+
+
+    LIBS *= -framework Foundation -framework UIKit
+
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
         HEADERS *= $$PWD/include/JQiOS.h
+
+        OBJECTIVE_SOURCES *= $$PWD/src/JQiOS.mm
     }
 }
 
 exists( $$PWD/src/JQLanguage.cpp ) {
 
-    SOURCES *= $$PWD/src/JQLanguage.cpp
-    HEADERS *= $$PWD/include/JQLanguage.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQLanguage.h
+
+        SOURCES *= $$PWD/src/JQLanguage.cpp
+    }
 }
 
 exists( $$PWD/src/JQNet.cpp ) {
 
-    SOURCES *= $$PWD/src/JQNet.cpp
-    HEADERS *= $$PWD/include/JQNet.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQNet.h
+
+        SOURCES *= $$PWD/src/JQNet.cpp
+    }
 }
 
-exists( $$PWD/src/JQPropertyAnimation.cpp ) {
+contains( QT, serialport ) : exists( $$PWD/src/JQSerialPort.cpp ) {
 
-    SOURCES *= $$PWD/src/JQPropertyAnimation.cpp
-    HEADERS *= $$PWD/include/JQPropertyAnimation.h
-}
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
-contains( QT, serialport ) {
-
-    exists( $$PWD/src/JQSerialPort.cpp ) {
+        HEADERS *= $$PWD/include/JQSerialPort.h
 
         SOURCES *= $$PWD/src/JQSerialPort.cpp
-        HEADERS *= $$PWD/include/JQSerialPort.h
     }
 }
 
 exists( $$PWD/src/JQSettings.cpp ) {
 
-    SOURCES *= $$PWD/src/JQSettings.cpp
-    HEADERS *= $$PWD/include/JQSettings.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQSettings.h
+
+        SOURCES *= $$PWD/src/JQSettings.cpp
+    }
 }
 
 exists( $$PWD/src/JQSms.cpp ) {
 
-    SOURCES *= $$PWD/src/JQSms.cpp
-    HEADERS *= $$PWD/include/JQSms.h
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQSms.h
+
+        SOURCES *= $$PWD/src/JQSms.cpp
+    }
 }
 
-contains( QT, network ) {
+contains( QT, network ) : exists( $$PWD/src/JQSystemFlag.cpp ) {
 
-    exists( $$PWD/src/JQSystemFlag.cpp ) {
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/JQSystemFlag.h
 
         SOURCES *= $$PWD/src/JQSystemFlag.cpp
-        HEADERS *= $$PWD/include/JQSystemFlag.h
     }
 }
 
 exists( $$PWD/src/jqthread.cpp ) {
 
-    SOURCES *= $$PWD/src/jqthread.cpp
-    HEADERS *= $$PWD/include/jqthread.h
-}
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
-contains( QT, multimedia | concurrent ) {
+        HEADERS *= $$PWD/include/jqthread.h
 
-    exists( $$PWD/src/JQVop.cpp ) {
-
-        SOURCES *= $$PWD/src/JQVop.cpp
-        HEADERS *= $$PWD/include/JQVop.h
+        SOURCES *= $$PWD/src/jqthread.cpp
     }
 }
 
-exists( $$PWD/src/JQWeather.cpp ) {
+contains( QT, webenginewidgets ) : exists( $$PWD/src/JQWebEngine.cpp ) {
 
-    SOURCES *= $$PWD/src/JQWeather.cpp
-    HEADERS *= $$PWD/include/JQWeather.h
-}
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
-contains( QT, webenginewidgets ) {
-
-    exists( $$PWD/src/JQWebEngine.cpp ) {
+        HEADERS *= $$PWD/include/JQWebEngine.h
 
         SOURCES *= $$PWD/src/JQWebEngine.cpp
-        HEADERS *= $$PWD/include/JQWebEngine.h
     }
 }

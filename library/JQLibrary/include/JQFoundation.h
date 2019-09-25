@@ -177,7 +177,7 @@ inline bool operator <(const QSize &a, const QSize &b)
     return a.height() < b.height();
 }
 
-class JQTickCounter
+class JQLIBRARY_EXPORT JQTickCounter
 {
 public:
     explicit JQTickCounter(const qint64 &timeRange = 2 * 1000);
@@ -197,7 +197,7 @@ private:
     QSharedPointer< QMutex > mutex_;
 };
 
-class JQFpsControl
+class JQLIBRARY_EXPORT JQFpsControl
 {
 public:
     JQFpsControl(const qreal &fps = 15);
@@ -215,7 +215,7 @@ private:
     qint64 lastTriggeredTime_ = 0;
 };
 
-class JQMemoryPool
+class JQLIBRARY_EXPORT JQMemoryPool
 {
 private:
     struct JQMemoryPoolNodeHead
