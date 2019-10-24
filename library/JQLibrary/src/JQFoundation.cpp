@@ -46,6 +46,16 @@
 #   include <Windows.h>
 #endif
 
+QDebug operator<<(QDebug dbg, const QPair< QDateTime, QDateTime > &data)
+{
+    return ( dbg <<
+             "(" <<
+             data.first.toString( "yyyy-MM-dd hh:mm:ss.zzz" ).toLatin1().data() <<
+             "~" <<
+             data.second.toString( "yyyy-MM-dd hh:mm:ss.zzz" ).toLatin1().data() ) <<
+             ")";
+}
+
 QString JQFoundation::hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm)
 {
     return QCryptographicHash::hash( key, algorithm ).toHex();
@@ -252,7 +262,11 @@ QList< QVariantMap > JQFoundation::listKeyTranslate(const QList< QVariantMap > &
     return result;
 }
 
-QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, const std::function<void (bool &continueFlag)> &callback, const bool &callbackOnStart)
+QSharedPointer< QTimer > JQFoundation::setTimerCallback(
+        const int &interval,
+        const std::function<void (bool &continueFlag)> &callback,
+        const bool &callbackOnStart
+    )
 {
     QSharedPointer< QTimer > timer( new QTimer );
 
@@ -286,10 +300,16 @@ QSharedPointer< QTimer > JQFoundation::setTimerCallback(const int &interval, con
     return timer;
 }
 
-void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool &argDateFlag_)
+void JQFoundation::setDebugOutput(
+        const QString &rawTargetFilePath_,
+        const bool &argDateFlag_,
+        const std::function< void(const QMessageLogContext &context, const QString &) > &warningMessageCallback_
+    )
 {
     static QString rawTargetFilePath;
     static bool argDateFlag;
+    static const QtMessageHandler QT_DEFAULT_MESSAGE_HANDLER = qInstallMessageHandler( nullptr );
+    static std::function< void(const QMessageLogContext &, const QString &) > warningMessageCallback = warningMessageCallback_;
 
     rawTargetFilePath = rawTargetFilePath_;
     argDateFlag = argDateFlag_;
@@ -297,7 +317,7 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
     class HelperClass
     {
     public:
-        static void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &message_)
+        static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &rawMessage)
         {
             QString message;
 
@@ -305,25 +325,25 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
             {
                 case QtDebugMsg:
                 {
-                    message = message_;
+                    message = rawMessage;
                     break;
                 }
                 case QtWarningMsg:
                 {
                     message.append( "Warning: " );
-                    message.append( message_ );
+                    message.append( rawMessage );
                     break;
                 }
                 case QtCriticalMsg:
                 {
                     message.append( "Critical: " );
-                    message.append( message_ );
+                    message.append( rawMessage );
                     break;
                 }
                 case QtFatalMsg:
                 {
                     message.append( "Fatal: " );
-                    message.append( message_ );
+                    message.append( rawMessage );
                     break;
                 }
                 default: { break; }
@@ -345,11 +365,18 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
                 QDir().mkpath( QFileInfo( currentTargetFilePath ).path() );
             }
 
+            ( *QT_DEFAULT_MESSAGE_HANDLER )( type, context, rawMessage );
+
             QFile file( currentTargetFilePath );
             file.open( QIODevice::WriteOnly | QIODevice::Append );
 
             QTextStream textStream( &file );
             textStream << QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss" ) << ": " << message << endl;
+
+            if ( warningMessageCallback && ( type == QtWarningMsg ) )
+            {
+                warningMessageCallback( context, rawMessage );
+            }
         }
     };
 
@@ -640,6 +667,16 @@ QRectF JQFoundation::rectToRectF(const QRect &rect, const QSize &size)
         static_cast< qreal >( rect.y() ) / size.height(),
         static_cast< qreal >( rect.width() ) / size.width(),
         static_cast< qreal >( rect.height() ) / size.height()
+    };
+}
+
+QLine JQFoundation::lineFToLine(const QLineF &line, const QSize &size)
+{
+    return {
+        static_cast< int >( line.x1() * size.width() ),
+        static_cast< int >( line.y1() * size.height() ),
+        static_cast< int >( line.x2() * size.width() ),
+        static_cast< int >( line.y2() * size.height() )
     };
 }
 

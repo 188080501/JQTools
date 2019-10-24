@@ -27,6 +27,7 @@ exists( $$PWD/src/JQBarcode.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/JQBarcode.h
+
         SOURCES *= $$PWD/src/JQBarcode.cpp
     }
 }
@@ -40,6 +41,7 @@ contains( QT, bluetooth ) : exists( $$PWD/src/JQBluetooth.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/JQBluetooth.h
+
         SOURCES *= $$PWD/src/JQBluetooth.cpp
     }
 }
@@ -49,6 +51,7 @@ exists( $$PWD/src/JQChecksum.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/JQChecksum.h
+
         SOURCES *= $$PWD/src/JQChecksum.cpp
     }
 }
@@ -58,6 +61,7 @@ exists( $$PWD/src/JQExcel.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/JQExcel.h
+
         SOURCES *= $$PWD/src/JQExcel.cpp
     }
 }
@@ -67,6 +71,7 @@ exists( $$PWD/src/JQFile.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/JQFile.h
+
         SOURCES *= $$PWD/src/JQFile.cpp
     }
 }
@@ -78,6 +83,7 @@ unix | linux | mingw {
         !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
             HEADERS *= $$PWD/include/JQFilePack.h
+
             SOURCES *= $$PWD/src/JQFilePack.cpp
         }
     }
@@ -90,6 +96,7 @@ exists( $$PWD/src/JQFoundation.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/JQFoundation.h
+
         HEADERS *= $$PWD/include/jqdeclare.hpp
 
         SOURCES *= $$PWD/src/JQFoundation.cpp
@@ -101,6 +108,7 @@ exists( $$PWD/src/jqgpio.cpp ) {
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/jqgpio.h
+
         SOURCES *= $$PWD/src/jqgpio.cpp
     }
 }
@@ -116,7 +124,6 @@ contains( QT, network ) : contains( QT, concurrent ) : exists( $$PWD/src/JQHttpS
 }
 
 ios : exists( $$PWD/src/JQiOS.cpp ) {
-
 
     LIBS *= -framework Foundation -framework UIKit
 

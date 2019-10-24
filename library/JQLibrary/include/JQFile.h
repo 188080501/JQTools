@@ -26,10 +26,13 @@
 #include <QPair>
 #include <QDir>
 
+// JQLibrary lib import
+#include <JQDeclare>
+
 class QFileInfo;
 class QDir;
 
-class JQFile
+class JQLIBRARY_EXPORT JQFile
 {
 public:
     static void foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion = false);

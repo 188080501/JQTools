@@ -40,14 +40,19 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMessageLogContext>
 #include <QMap>
 #include <QVector>
 #include <QSize>
 #include <QMutex>
 #include <QTimer>
+#include <QDateTime>
+#include <QDebug>
 
 // JQLibrary lib import
 #include <JQDeclare>
+
+QDebug operator<<(QDebug dbg, const QPair< QDateTime, QDateTime > &data);
 
 namespace JQFoundation
 {
@@ -81,9 +86,17 @@ QVariantList listKeyTranslate(const QVariantList &source, const QMap< QString, Q
 
 QList< QVariantMap > listKeyTranslate(const QList< QVariantMap > &source, const QMap< QString, QString > &keyMap);
 
-QSharedPointer< QTimer > setTimerCallback(const int &interval, const std::function< void(bool &continueFlag) > &callback, const bool &callbackOnStart = false);
+QSharedPointer< QTimer > setTimerCallback(
+        const int &interval,
+        const std::function< void(bool &continueFlag) > &callback,
+        const bool &callbackOnStart = false
+    );
 
-void setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
+void JQLIBRARY_EXPORT setDebugOutput(
+        const QString &targetFilePath,
+        const bool &argDateFlag = false,
+        const std::function< void(const QMessageLogContext &context, const QString &) > &warningMessageCallback = nullptr
+    );
 
 void openDebugConsole();
 
@@ -114,6 +127,8 @@ QLine pointFToLine(const QPointF &point1, const QPointF &point2, const QSize &si
 QRect rectFToRect(const QRectF &rect, const QSize &size);
 
 QRectF rectToRectF(const QRect &rect, const QSize &size);
+
+QLine lineFToLine(const QLineF &line, const QSize &size);
 
 QRect cropRect(const QRect &rect, const QRect &bigRect);
 

@@ -15,8 +15,8 @@
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 */
 
-#ifndef JQLIBRARY_INCLUDE_JQDECLARE_H_
-#define JQLIBRARY_INCLUDE_JQDECLARE_H_
+#ifndef JQLIBRARY_INCLUDE_JQDECLARE_HPP_
+#define JQLIBRARY_INCLUDE_JQDECLARE_HPP_
 
 // Macro define
 #define JQPROPERTYDECLARE(Type, name, setName, ...)                                         \
@@ -96,4 +96,4 @@
 #   define JQLIBRARY_EXPORT
 #endif
 
-#endif//JQLIBRARY_INCLUDE_JQDECLARE_H_
+#endif//JQLIBRARY_INCLUDE_JQDECLARE_HPP_
