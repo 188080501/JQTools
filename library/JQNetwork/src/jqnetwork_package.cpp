@@ -271,7 +271,11 @@ JQNetworkPackageSharedPointer JQNetworkPackage::createFileTransportPackage(
             metaDataInVariantMap[ "fileName" ] = fileInfo.fileName();
             metaDataInVariantMap[ "fileSize" ] = fileInfo.size();
             metaDataInVariantMap[ "filePermissions" ] = static_cast< qint32 >( fileInfo.permissions() );
+#if QT_VERSION_MINOR >= 10
+            metaDataInVariantMap[ "fileCreatedTime" ] = fileInfo.birthTime().toMSecsSinceEpoch();
+#else
             metaDataInVariantMap[ "fileCreatedTime" ] = fileInfo.created().toMSecsSinceEpoch();
+#endif
             metaDataInVariantMap[ "fileLastReadTime" ] = fileInfo.lastRead().toMSecsSinceEpoch();
             metaDataInVariantMap[ "fileLastModifiedTime" ] = fileInfo.lastModified().toMSecsSinceEpoch();
         }
@@ -348,21 +352,21 @@ QDateTime JQNetworkPackage::fileLastModifiedTime() const
 
 bool JQNetworkPackage::mixPackage(const JQNetworkPackageSharedPointer &mixPackage)
 {
-    BOOL_CHECK( !this->isCompletePackage(), "current package is complete" );
-    BOOL_CHECK( !mixPackage->isCompletePackage(), "mix package is complete" );
-    BOOL_CHECK( !this->isAbandonPackage(), "current package is abandon package" );
-    BOOL_CHECK( !mixPackage->isAbandonPackage(), "mix package is abandon package" );
-    BOOL_CHECK( this->randomFlag() == mixPackage->randomFlag(), "randomFlag not same" );
+    BOOL_CHECK( !this->isCompletePackage(), "current package is complete" )
+    BOOL_CHECK( !mixPackage->isCompletePackage(), "mix package is complete" )
+    BOOL_CHECK( !this->isAbandonPackage(), "current package is abandon package" )
+    BOOL_CHECK( !mixPackage->isAbandonPackage(), "mix package is abandon package" )
+    BOOL_CHECK( this->randomFlag() == mixPackage->randomFlag(), "randomFlag not same" )
 
-    BOOL_CHECK( this->metaDataTotalSize() == mixPackage->metaDataTotalSize(), "metaDataTotalSize not same" );
+    BOOL_CHECK( this->metaDataTotalSize() == mixPackage->metaDataTotalSize(), "metaDataTotalSize not same" )
     BOOL_CHECK( ( this->metaDataCurrentSize() + mixPackage->metaDataCurrentSize() ) <= this->metaDataTotalSize(),
-                "metaDataCurrentSize overmuch" );
+                "metaDataCurrentSize overmuch" )
 
     BOOL_CHECK( this->payloadDataTotalSize() == mixPackage->payloadDataTotalSize(), "payloadDataTotalSize not same" );
     BOOL_CHECK( ( this->payloadDataCurrentSize() + mixPackage->payloadDataCurrentSize() ) <= this->payloadDataTotalSize(),
-                "payloadDataCurrentSize overmuch" );
+                "payloadDataCurrentSize overmuch" )
 
-    BOOL_CHECK( ( ( this->metaDataTotalSize() > 0 ) || ( this->payloadDataTotalSize() > 0 ) ), "data error" );
+    BOOL_CHECK( ( ( this->metaDataTotalSize() > 0 ) || ( this->payloadDataTotalSize() > 0 ) ), "data error" )
 
     if ( this->metaDataTotalSize() > 0 )
     {
