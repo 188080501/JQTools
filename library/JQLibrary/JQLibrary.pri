@@ -145,7 +145,7 @@ exists( $$PWD/src/JQLanguage.cpp ) {
     }
 }
 
-exists( $$PWD/src/JQNet.cpp ) {
+contains( QT, network ) : exists( $$PWD/src/JQNet.cpp ) {
 
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 

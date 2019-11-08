@@ -755,7 +755,7 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
     process.setArguments( arguments );
     process.start();
 
-    QObject::connect( &process, static_cast< void(QProcess::*)(int) >( &QProcess::finished ), [ &reply ](const int &exitCode)
+    QObject::connect( &process, static_cast< void(QProcess::*)(int, QProcess::ExitStatus exitStatus) >( &QProcess::finished ), [ &reply ](const int &exitCode)
     {
         reply.first = exitCode;
     } );
