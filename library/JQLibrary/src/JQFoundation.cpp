@@ -736,6 +736,22 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
     return result;
 }
 
+QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval)
+{
+    const auto &&dayStartTime = QDateTime( startTime.date(), QTime( 0, 0, 0 ) );
+    auto currentTime = startTime.addMSecs( -1 * ( ( startTime.toMSecsSinceEpoch() - dayStartTime.toMSecsSinceEpoch() ) % interval ) );
+
+    QList< QPair< QDateTime, QDateTime > > result;
+
+    while ( currentTime < endTime )
+    {
+        result.push_back( { currentTime, currentTime.addMSecs( interval ) } );
+        currentTime = currentTime.addMSecs( interval );
+    }
+
+    return result;
+}
+
 void JQFoundation::waitFor(const std::function< bool() > &predicate, const int &timeout)
 {
     for ( auto current = 0; current < timeout; current += 25 )

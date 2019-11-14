@@ -134,6 +134,8 @@ QRect cropRect(const QRect &rect, const QRect &bigRect);
 
 QImage imageCopy(const QImage &image, const QRect &rect);
 
+QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval);
+
 void waitFor(const std::function< bool() > &predicate, const int &timeout);
 
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
