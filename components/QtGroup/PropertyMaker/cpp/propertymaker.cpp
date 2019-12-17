@@ -32,14 +32,28 @@ Manage::Manage()
 
     propertyMaker_[ "WRITE" ] = []( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline )->QString
     {
-        return QString( "%1%2void %3(const %4 &newValue)\n{ if ( newValue == %5_ ) { return; } %6_ = newValue;%7 }\n" ).
-                arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
-                arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
-                arg( value ).
-                arg( type ).
-                arg( name ).
-                arg( name ).
-                arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
+        if ( type == "qreal" )
+        {
+            return QString( "%1%2void %3(const %4 &newValue)\n{ if ( qAbs( newValue - %5_ ) < 0.00001 ) { return; } %6_ = newValue;%7 }\n" ).
+                    arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
+                    arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
+                    arg( value ).
+                    arg( type ).
+                    arg( name ).
+                    arg( name ).
+                    arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
+        }
+        else
+        {
+            return QString( "%1%2void %3(const %4 &newValue)\n{ if ( newValue == %5_ ) { return; } %6_ = newValue;%7 }\n" ).
+                    arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
+                    arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
+                    arg( value ).
+                    arg( type ).
+                    arg( name ).
+                    arg( name ).
+                    arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
+        }
     };
 
     propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &name, const QString &value, const QString &, const bool &, const bool & )->QString
@@ -124,7 +138,18 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
             flag = true;
         }
 
-        reply += QString( "private: %1 %2_;\n" ).arg( type ).arg( name );
+        if ( type == "qreal" )
+        {
+            reply += QString( "private: %1 %2_ = 0.0;\n" ).arg( type ).arg( name );
+        }
+        else if ( type == "int" )
+        {
+            reply += QString( "private: %1 %2_ = 0;\n" ).arg( type ).arg( name );
+        }
+        else
+        {
+            reply += QString( "private: %1 %2_;\n" ).arg( type ).arg( name );
+        }
 
         for ( const auto &data: datas )
         {
