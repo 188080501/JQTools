@@ -27,6 +27,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QCryptographicHash>
+#include <QStandardPaths>
+#include <QCoreApplication>
 
 // JQLibrary lib import
 #include "JQFoundation.h"
@@ -85,6 +87,18 @@ void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::fun
     }
 }
 
+QString JQFile::tempFilePath(const QString &fileName)
+{
+    if ( qApp->applicationName().isEmpty() )
+    {
+        return QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::TempLocation ), fileName );
+    }
+    else
+    {
+        return QString( "%1/%2/%3" ).arg( QStandardPaths::writableLocation( QStandardPaths::TempLocation ), qApp->applicationName(), fileName );
+    }
+}
+
 bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover)
 {
     if ( !targetFilePath.dir().isReadable() )
@@ -110,6 +124,27 @@ bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, 
     file.waitForBytesWritten( 15 * 1000 );
 
     return true;
+}
+
+bool JQFile::writeFileToDesktop(const QString &fileName, const QByteArray &data, const bool &cover)
+{
+    return writeFile(
+                { QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) },
+                data,
+                cover
+                );
+}
+
+bool JQFile::writeFileToTemp(const QString &fileName, const QByteArray &data, const bool &cover)
+{
+    const QFileInfo fileInfo( tempFilePath( fileName ) );
+
+    if ( !QDir().exists( fileInfo.path() ) && !QDir().mkpath( fileInfo.path() ) )
+    {
+        return false;
+    }
+
+    return writeFile( fileInfo, data, cover );
 }
 
 bool JQFile::appendFile(const QFileInfo &targetFilePath, const QByteArray &data)
@@ -141,6 +176,18 @@ QPair< bool, QByteArray > JQFile::readFile(const QFileInfo &filePath)
     if ( !file.open( QIODevice::ReadOnly ) ) { return { false, { } }; }
 
     return { true, file.readAll() };
+}
+
+QPair< bool, QByteArray > JQFile::readFileFromDesktop(const QString &fileName)
+{
+    return readFile(
+                { QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) }
+            );
+}
+
+QPair< bool, QByteArray > JQFile::readFileFromTemp(const QString &fileName)
+{
+    return readFile( tempFilePath( fileName ) );
 }
 
 bool JQFile::copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool &cover)
@@ -182,6 +229,34 @@ bool JQFile::copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFi
     }
 
     return QFile::copy( sourceFilePath, targetFilePath );
+}
+
+bool JQFile::copyFileToTemp(const QFileInfo &sourceFileInfo, const QString &fileName)
+{
+    if ( !sourceFileInfo.exists() ) { return false; }
+
+    const QFileInfo tempFileInfo( tempFilePath( fileName ) );
+
+    if ( !QDir().exists( tempFileInfo.path() ) && !QDir().mkpath( tempFileInfo.path() ) )
+    {
+        return false;
+    }
+
+    return QFile::copy( sourceFileInfo.filePath(), tempFileInfo.filePath() );
+}
+
+QPair< bool, QString > JQFile::copyFileToTemp(const QFileInfo &sourceFileInfo, const QCryptographicHash::Algorithm &fileNameHashAlgorithm)
+{
+    if ( !sourceFileInfo.exists() ) { return { false, { } }; }
+
+    const QFileInfo tempFileInfo( tempFilePath( JQFoundation::hashString( sourceFileInfo.filePath().toUtf8(), fileNameHashAlgorithm ) ) );
+
+    if ( !QDir().exists( tempFileInfo.path() ) && !QDir().mkpath( tempFileInfo.path() ) )
+    {
+        return { false, { } };
+    }
+
+    return { QFile::copy( sourceFileInfo.filePath(), tempFileInfo.filePath() ), tempFileInfo.filePath() };
 }
 
 bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover)

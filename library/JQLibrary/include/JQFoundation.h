@@ -86,7 +86,7 @@ QVariantList listKeyTranslate(const QVariantList &source, const QMap< QString, Q
 
 QList< QVariantMap > listKeyTranslate(const QList< QVariantMap > &source, const QMap< QString, QString > &keyMap);
 
-QSharedPointer< QTimer > setTimerCallback(
+QSharedPointer< QTimer > JQLIBRARY_EXPORT setTimerCallback(
         const int &interval,
         const std::function< void(bool &continueFlag) > &callback,
         const bool &callbackOnStart = false
@@ -109,6 +109,8 @@ QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int q
 QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
 
 QString snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper = false);
+
+int rectOverflow(const QSize &frameSize, const QRect &rect, const int &redundancy = 0);
 
 QRect scaleRect(const QRect &rect, const qreal &scale);
 
@@ -139,7 +141,7 @@ QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTi
 void waitFor(const std::function< bool() > &predicate, const int &timeout);
 
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
-QPair< int, QByteArray > startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
+QPair< int, QByteArray > JQLIBRARY_EXPORT startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
 #endif
 
 template< class Key, class T >

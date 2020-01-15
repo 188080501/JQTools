@@ -595,6 +595,30 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool &fi
     return result;
 }
 
+int JQFoundation::rectOverflow(const QSize &frameSize, const QRect &rect, const int &redundancy)
+{
+    if ( redundancy != 0 )
+    {
+        return rectOverflow(
+                    {
+                        frameSize.width() + redundancy,
+                        frameSize.height() + redundancy
+                    },
+                    {
+                        rect.x() + redundancy,
+                        rect.y() + redundancy,
+                        rect.width(),
+                        rect.height()
+                    },
+                    0
+                );
+    }
+
+    const auto &&unitedRect = QRect( QPoint( 0, 0 ), frameSize ).united( rect );
+
+    return qMax( unitedRect.width() - frameSize.width(), unitedRect.height() - frameSize.height() );
+}
+
 QRect JQFoundation::scaleRect(const QRect &rect, const qreal &scale)
 {
     return scaleRect( rect, scale, scale );
@@ -738,6 +762,11 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
 
 QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval)
 {
+    if ( interval <= 0 )
+    {
+        return { { startTime, endTime } };
+    }
+
     const auto &&dayStartTime = QDateTime( startTime.date(), QTime( 0, 0, 0 ) );
     auto currentTime = startTime.addMSecs( -1 * ( ( startTime.toMSecsSinceEpoch() - dayStartTime.toMSecsSinceEpoch() ) % interval ) );
 
