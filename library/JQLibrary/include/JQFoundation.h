@@ -199,7 +199,7 @@ inline bool operator <(const QSize &a, const QSize &b)
 class JQLIBRARY_EXPORT JQTickCounter
 {
 public:
-    explicit JQTickCounter(const qint64 &timeRange = 2 * 1000);
+    explicit JQTickCounter(const qint64 &timeRange = 1 * 1000);
 
     ~JQTickCounter() = default;
 
@@ -212,7 +212,7 @@ public:
 
 private:
     qint64 timeRange_;
-    QVector< qint64 > tickRecord_;
+    QList< qint64 > tickRecord_;
     QSharedPointer< QMutex > mutex_;
 };
 
