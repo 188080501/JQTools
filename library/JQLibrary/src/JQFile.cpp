@@ -245,11 +245,11 @@ bool JQFile::copyFileToTemp(const QFileInfo &sourceFileInfo, const QString &file
     return QFile::copy( sourceFileInfo.filePath(), tempFileInfo.filePath() );
 }
 
-QPair< bool, QString > JQFile::copyFileToTemp(const QFileInfo &sourceFileInfo, const QCryptographicHash::Algorithm &fileNameHashAlgorithm)
+QPair< bool, QString > JQFile::copyFileToTemp(const QFileInfo &sourceFileInfo, const QCryptographicHash::Algorithm &fileNameHashAlgorithm, const QString &salt)
 {
     if ( !sourceFileInfo.exists() ) { return { false, { } }; }
 
-    const QFileInfo tempFileInfo( tempFilePath( JQFoundation::hashString( sourceFileInfo.filePath().toUtf8(), fileNameHashAlgorithm ) ) );
+    const QFileInfo tempFileInfo( tempFilePath( JQFoundation::hashString( ( sourceFileInfo.filePath() + salt ).toUtf8(), fileNameHashAlgorithm ) ) );
 
     if ( !QDir().exists( tempFileInfo.path() ) && !QDir().mkpath( tempFileInfo.path() ) )
     {

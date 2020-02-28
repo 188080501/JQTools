@@ -62,7 +62,7 @@ public:
 
     static bool copyFileToTemp(const QFileInfo &sourceFileInfo, const QString &fileName);
 
-    static QPair< bool, QString > copyFileToTemp(const QFileInfo &sourceFileInfo, const QCryptographicHash::Algorithm &fileNameHashAlgorithm = QCryptographicHash::Sha1);
+    static QPair< bool, QString > copyFileToTemp(const QFileInfo &sourceFileInfo, const QCryptographicHash::Algorithm &fileNameHashAlgorithm = QCryptographicHash::Sha1, const QString &salt = "");
 
     static bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover = true);
 

@@ -56,6 +56,100 @@ QDebug operator<<(QDebug dbg, const QPair< QDateTime, QDateTime > &data)
              ")";
 }
 
+QDebug operator<<(QDebug dbg, const JQDebugEnum &debugConfig)
+{
+#ifdef Q_OS_WIN
+    static bool runOnWindowsConsole = QProcess::systemEnvironment().contains( "SESSIONNAME=Console" );
+
+    if ( debugConfig == JQDebugForceConsoleMode )
+    {
+        runOnWindowsConsole = true;
+    }
+
+    if ( runOnWindowsConsole )
+    {
+        switch ( debugConfig )
+        {
+            case JQDebugReset: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 7 ); break; }
+            case JQDebugBlue: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FOREGROUND_BLUE ); break; }
+            case JQDebugGreen: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FOREGROUND_GREEN ); break; }
+            case JQDebugRed: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FOREGROUND_RED ); break; }
+            case JQDebugYellow: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 14 ); break; }
+            case JQDebugPurple: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 5 ); break; }
+            case JQDebugCyan: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 3 ); break; }
+            case JQDebugBlack: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 0 ); break; }
+            case JQDebugWhite: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 15 ); break; }
+            default: { break; }
+        }
+
+        return dbg;
+    }
+    else
+#endif
+    {
+        switch ( debugConfig )
+        {
+            case JQDebugReset: { return dbg << "\033[0m"; }
+            case JQDebugBlue: { return dbg << "\033[34m"; }
+            case JQDebugGreen: { return dbg << "\033[32m"; }
+            case JQDebugRed: { return dbg << "\033[31m"; }
+            case JQDebugYellow: { return dbg << "\033[33m"; }
+            case JQDebugPurple: { return dbg << "\033[35m"; }
+            case JQDebugCyan: { return dbg << "\033[36m"; }
+            case JQDebugBlack: { return dbg << "\033[30m"; }
+            case JQDebugWhite: { return dbg << "\033[37m"; }
+            default: { return dbg; }
+        }
+    }
+}
+
+std::ostream &operator<<(std::ostream &dbg, const JQDebugEnum &debugConfig)
+{
+#ifdef Q_OS_WIN
+    static bool runOnWindowsConsole = QProcess::systemEnvironment().contains( "SESSIONNAME=Console" );
+
+    if ( debugConfig == JQDebugForceConsoleMode )
+    {
+        runOnWindowsConsole = true;
+    }
+
+    if ( runOnWindowsConsole )
+    {
+        switch ( debugConfig )
+        {
+            case JQDebugReset: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 7 ); break; }
+            case JQDebugBlue: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FOREGROUND_BLUE ); break; }
+            case JQDebugGreen: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FOREGROUND_GREEN ); break; }
+            case JQDebugRed: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), FOREGROUND_RED ); break; }
+            case JQDebugYellow: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 14 ); break; }
+            case JQDebugPurple: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 5 ); break; }
+            case JQDebugCyan: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 3 ); break; }
+            case JQDebugBlack: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 0 ); break; }
+            case JQDebugWhite: { SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 15 ); break; }
+            default: { break; }
+        }
+
+        return dbg;
+    }
+    else
+#endif
+    {
+        switch ( debugConfig )
+        {
+            case JQDebugReset: { return dbg << "\033[0m"; }
+            case JQDebugBlue: { return dbg << "\033[34m"; }
+            case JQDebugGreen: { return dbg << "\033[32m"; }
+            case JQDebugRed: { return dbg << "\033[31m"; }
+            case JQDebugYellow: { return dbg << "\033[33m"; }
+            case JQDebugPurple: { return dbg << "\033[35m"; }
+            case JQDebugCyan: { return dbg << "\033[36m"; }
+            case JQDebugBlack: { return dbg << "\033[30m"; }
+            case JQDebugWhite: { return dbg << "\033[37m"; }
+            default: { return dbg; }
+        }
+    }
+}
+
 QString JQFoundation::hashString(const QByteArray &key, const QCryptographicHash::Algorithm &algorithm)
 {
     return QCryptographicHash::hash( key, algorithm ).toHex();
@@ -724,7 +818,7 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
 
     if ( ( unitedRect.width() > image.width() ) || ( unitedRect.height() > image.height() ) )
     {
-        qDebug() << "JQFoundation::imageCopy: error:" << image.size() << rect << unitedRect;
+        qDebug() << "JQFoundation::imageCopy: error: input:" << image.size() << ", rect:" << rect << ", unitedRect:" << unitedRect;
         return { };
     }
 
@@ -820,7 +914,7 @@ JQTickCounter::JQTickCounter(const qint64 &timeRange):
     mutex_( new QMutex )
 { }
 
-void JQTickCounter::tick()
+void JQTickCounter::tick(const int &count)
 {
     mutex_->lock();
 
@@ -831,7 +925,10 @@ void JQTickCounter::tick()
         tickRecord_.pop_front();
     }
 
-    tickRecord_.push_back( currentMSecsSinceEpoch );
+    for ( auto index = 0; index < count; ++index )
+    {
+        tickRecord_.push_back( currentMSecsSinceEpoch );
+    }
 
     mutex_->unlock();
 }
@@ -924,21 +1021,30 @@ bool JQFpsControl::readyNextFrame()
 QMutex JQMemoryPool::mutex_;
 QMap< size_t, QVector< JQMemoryPool::JQMemoryPoolNodeHead > > JQMemoryPool::nodeMap_;
 
+QAtomicInteger< qint64 > JQMemoryPool::realTotalMallocSize_ = 0;
 QAtomicInteger< qint64 > JQMemoryPool::totalMallocSize_ = 0;
+QAtomicInteger< qint64 > JQMemoryPool::totalMallocCount_ = 0;
 qint64 JQMemoryPool::releaseThreshold_ = -1;
 
-void JQMemoryPool::initReleaseThreshold()
+void JQMemoryPool::initReleaseThreshold(const qreal &percentage)
 {
 #ifdef Q_OS_WIN
     MEMORYSTATUSEX statex;
     statex.dwLength = sizeof( statex );
     GlobalMemoryStatusEx( &statex );
-    releaseThreshold_ = statex.ullAvailPhys / 2;
+    releaseThreshold_ = static_cast< qint64 >( statex.ullTotalPhys * percentage );
 #else
+    Q_UNUSED( percentage )
+
     releaseThreshold_ = static_cast< qint64 >( 8 ) * 1024 * 1024 * 1024;
 #endif
 
     qDebug() << "JQMemoryPool: Release threshold set to:" << ( releaseThreshold_ / 1024 / 1024 ) << "MB";
+}
+
+qint64 JQMemoryPool::realTotalMallocSize()
+{
+    return realTotalMallocSize_;
 }
 
 qint64 JQMemoryPool::totalMallocSize()
@@ -946,8 +1052,16 @@ qint64 JQMemoryPool::totalMallocSize()
     return totalMallocSize_;
 }
 
+qint64 JQMemoryPool::totalMallocCount()
+{
+    return totalMallocCount_;
+}
+
 void *JQMemoryPool::requestMemory(const size_t &requestSize)
 {
+    totalMallocSize_ += static_cast< qint64 >( requestSize );
+    ++totalMallocCount_;
+
     mutex_.lock();
 
     if ( releaseThreshold_ <= 0 )
@@ -983,13 +1097,13 @@ void JQMemoryPool::recoverMemory(void *memory)
         return;
     }
 
-    if ( ( totalMallocSize_ > releaseThreshold_ ) ||
+    if ( ( realTotalMallocSize_ > releaseThreshold_ ) ||
          ( node->requestSize < 128 ) )
     {
-        totalMallocSize_ -= static_cast< long long >( node->requestSize );
-        if ( totalMallocSize_ < 0 )
+        realTotalMallocSize_ -= static_cast< long long >( node->requestSize );
+        if ( realTotalMallocSize_ < 0 )
         {
-            qDebug() << "JQMemoryPool::recoverMemory: error:" << totalMallocSize_ << node->requestSize;
+            qDebug() << "JQMemoryPool::recoverMemory: error:" << realTotalMallocSize_ << node->requestSize;
         }
 
         free( reinterpret_cast< qint8 * >( memory ) - sizeof( JQMemoryPoolNodeHead ) );
@@ -1006,11 +1120,11 @@ JQMemoryPool::JQMemoryPoolNodeHead JQMemoryPool::makeNode(const size_t &requestS
 {
     static qint64 lastPrintSize = 0;
 
-    totalMallocSize_ += static_cast< qint64 >( requestSize );
-    if ( ( totalMallocSize_ - lastPrintSize ) > ( 256 * 1024 * 1024 ) )
+    realTotalMallocSize_ += static_cast< qint64 >( requestSize );
+    if ( ( realTotalMallocSize_ - lastPrintSize ) > ( 256 * 1024 * 1024 ) )
     {
-        lastPrintSize = totalMallocSize_;
-        qDebug() << "JQMemoryPool::makeNode: totalMallocSize:" << ( totalMallocSize_ / 1024 / 1024 ) << "MB";
+        lastPrintSize = realTotalMallocSize_;
+        qDebug() << "JQMemoryPool::makeNode: totalMallocSize:" << ( realTotalMallocSize_ / 1024 / 1024 ) << "MB";
     }
 
     auto buffer = malloc( sizeof( JQMemoryPoolNodeHead ) + requestSize + 100 );

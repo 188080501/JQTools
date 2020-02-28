@@ -52,7 +52,28 @@
 // JQLibrary lib import
 #include <JQDeclare>
 
+enum JQDebugEnum
+{
+    JQDebugUnknown,
+
+    JQDebugForceConsoleMode,
+    JQDebugReset,
+
+    JQDebugBlue,
+    JQDebugGreen,
+    JQDebugRed,
+    JQDebugYellow,
+    JQDebugPurple,
+    JQDebugCyan,
+    JQDebugBlack,
+    JQDebugWhite,
+};
+
 QDebug operator<<(QDebug dbg, const QPair< QDateTime, QDateTime > &data);
+
+QDebug operator<<(QDebug dbg, const JQDebugEnum &debugConfig);
+
+std::ostream &operator<<(std::ostream &dbg, const JQDebugEnum &debugConfig);
 
 namespace JQFoundation
 {
@@ -199,12 +220,12 @@ inline bool operator <(const QSize &a, const QSize &b)
 class JQLIBRARY_EXPORT JQTickCounter
 {
 public:
-    explicit JQTickCounter(const qint64 &timeRange = 1 * 1000);
+    explicit JQTickCounter(const qint64 &timeRange = 5 * 1000); // 此变量影响tick计算精准度，可能会导致tick值不可靠，若非必要请勿修改
 
     ~JQTickCounter() = default;
 
 public:
-    void tick();
+    void tick(const int &count = 1);
 
     qreal tickPerSecond();
 
@@ -252,9 +273,13 @@ private:
 public:
     ~JQMemoryPool() = default;
 
-    static void initReleaseThreshold();
+    static void initReleaseThreshold(const qreal &percentage = 0.2);
+
+    static qint64 realTotalMallocSize();
 
     static qint64 totalMallocSize();
+
+    static qint64 totalMallocCount();
 
     static void *requestMemory(const size_t &requestSize);
 
@@ -267,7 +292,9 @@ private:
     static QMutex mutex_;
     static QMap< size_t, QVector< JQMemoryPoolNodeHead > > nodeMap_;
 
+    static QAtomicInteger< qint64 > realTotalMallocSize_;
     static QAtomicInteger< qint64 > totalMallocSize_;
+    static QAtomicInteger< qint64 > totalMallocCount_;
     static qint64 releaseThreshold_;
 };
 

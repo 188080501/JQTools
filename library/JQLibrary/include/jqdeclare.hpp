@@ -76,14 +76,34 @@
     } );                                                                                    \
     if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr ) { exit( -1 ); }
 
+#define RUNONOUTRANGETIMER( message )                                                       \
+    const auto &&runOnOutRangeTimerTime = QDateTime::currentMSecsSinceEpoch();              \
+    RUNONOUTRANGE( [ = ]()                                                                  \
+    {                                                                                       \
+        qDebug() << message << ( QDateTime::currentMSecsSinceEpoch() - runOnOutRangeTimerTime ); \
+    } )
+
 #define JQCONST( property ) \
     static_cast< const decltype( property ) >( property )
+
+#define JQTICKCOUNTERMESSAGE( message )                                                     \
+    {                                                                                       \
+        static JQTickCounter tickCounter;                                                   \
+        tickCounter.tick();                                                                 \
+        qDebug() << message << tickCounter.tickPerSecond();                                 \
+    }
 
 #define JQBUILDDATETIMESTRING                                                                               \
     ( QDateTime(                                                                                            \
         QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy"),      \
         QTime::fromString( __TIME__, "hh:mm:ss" )                                                           \
     ).toString( "yyyy-MM-dd hh:mm:ss" ).toLatin1().data() )
+
+#define JQONLYONCE \
+    if ( [](){ static auto flag = true; if ( flag ) { flag = false; return true; } return false; }() )
+
+#define JQOSKIPFIRST \
+    if ( [](){ static auto flag = true; if ( flag ) { flag = false; return false; } return true; }() )
 
 // Export
 #ifdef JQLIBRARY_EXPORT_ENABLE
