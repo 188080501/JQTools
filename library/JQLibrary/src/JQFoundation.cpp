@@ -40,6 +40,11 @@
 #include <QTextStream>
 #include <QMutex>
 #include <QThread>
+#include <QThreadPool>
+
+#ifdef QT_CONCURRENT_LIB
+#   include <QtConcurrent>
+#endif
 
 // Windows lib import
 #ifdef Q_OS_WIN
@@ -394,6 +399,70 @@ QSharedPointer< QTimer > JQFoundation::setTimerCallback(
     return timer;
 }
 
+#ifdef QT_CONCURRENT_LIB
+void JQFoundation::setTimerCallback(
+        const QDateTime &dateTime,
+        const std::function<void ()> &callback,
+        const QSharedPointer< QThreadPool > &threadPool
+    )
+{
+    const auto &&currentDateTime = QDateTime::currentDateTime();
+    auto workThread = [ = ]()
+    {
+        QSharedPointer< QThreadPool > targetThreadPool;
+        if ( threadPool )
+        {
+            targetThreadPool = threadPool;
+        }
+        else
+        {
+            targetThreadPool.reset( new QThreadPool );
+        }
+
+        QtConcurrent::run( targetThreadPool.data(), [ = ]()
+        {
+            const auto &&timeDiff = QDateTime::currentDateTime().msecsTo( dateTime );
+            if ( timeDiff > 0 )
+            {
+                QThread::msleep( static_cast< unsigned long >( timeDiff ) );
+            }
+
+            while ( QDateTime::currentDateTime() < dateTime )
+            {
+                QThread::msleep( 10 );
+            }
+
+            callback();
+        } );
+    };
+
+    if ( currentDateTime.secsTo( dateTime ) < 3 )
+    {
+        workThread();
+    }
+    else
+    {
+        QMetaObject::invokeMethod( qApp, [ = ]()
+        {
+            QTimer::singleShot( ( currentDateTime.secsTo( dateTime ) - 3 ) * 1000, workThread );
+        } );
+    }
+}
+
+void JQFoundation::setTimerCallback(
+        const std::function< QDateTime() > &nextTime,
+        const std::function<void ()> &callback,
+        const QSharedPointer< QThreadPool > &threadPool
+    )
+{
+    setTimerCallback( nextTime(), [ = ]()
+    {
+        callback();
+
+        setTimerCallback( nextTime, callback, threadPool );
+    }, threadPool );
+}
+
 void JQFoundation::setDebugOutput(
         const QString &rawTargetFilePath_,
         const bool &argDateFlag_,
@@ -476,6 +545,7 @@ void JQFoundation::setDebugOutput(
 
     qInstallMessageHandler( HelperClass::messageHandler );
 }
+#endif
 
 void JQFoundation::openDebugConsole()
 {

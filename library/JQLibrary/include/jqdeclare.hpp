@@ -102,8 +102,21 @@
 #define JQONLYONCE \
     if ( [](){ static auto flag = true; if ( flag ) { flag = false; return true; } return false; }() )
 
-#define JQOSKIPFIRST \
+#define JQSKIPFIRST \
     if ( [](){ static auto flag = true; if ( flag ) { flag = false; return false; } return true; }() )
+
+#define JQINTERVAL( timeInterval ) \
+    if ( []()                                                                               \
+    {                                                                                       \
+        static qint64 lastTime = 0;                                                         \
+        const auto &&currentTime = QDateTime::currentMSecsSinceEpoch();                     \
+        if ( qAbs( currentTime - lastTime ) > timeInterval )                                \
+        {                                                                                   \
+            lastTime = currentTime;                                                         \
+            return true;                                                                    \
+        }                                                                                   \
+        return false;                                                                       \
+    }() )
 
 // Export
 #ifdef JQLIBRARY_EXPORT_ENABLE
