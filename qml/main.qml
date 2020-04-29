@@ -37,7 +37,10 @@ ApplicationWindow {
                     [
                         { bookmarkName: "首页", titleName: "首页", qrcLocation: "qrc:/Welcome/Welcome.qml", children: [ ] },
                         {
-                            bookmarkName: "文本类", titleName: "文本类", children:
+                            bookmarkName: "文本类",
+                            titleName: "文本类",
+                            qrcLocation: "",
+                            children:
                             [
                                 { bookmarkName: "UTF-16转换", titleName: "UTF-16转换", qrcLocation: "qrc:/Utf16Transform/Utf16Transform.qml" },
                                 { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
@@ -166,7 +169,7 @@ ApplicationWindow {
             anchors.rightMargin: 5
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 5
-            text: "V" + JQToolsManage.jqToolsVersionString()
+            text: "V" + ( ( JQToolsManage ) ? ( JQToolsManage.jqToolsVersionString() ) : ( "" ) )
             color: "#88ffffff"
             opacity: 0
 
