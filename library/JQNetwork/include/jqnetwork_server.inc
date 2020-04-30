@@ -38,7 +38,13 @@ inline QString JQNetworkServer::nodeMarkSummary() const
 
 inline QSet< QString > JQNetworkServer::availableProcessorMethodNames() const
 {
-    return QSet< QString >::fromList( processorCallbacks_.keys() );
+#if ( QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 ) )
+    const auto keys = processorCallbacks_.keys();
+
+    return QSet< QString >( keys.begin(), keys.end() );
+#else
+    return processorCallbacks_.keys().toSet();
+#endif
 }
 
 inline void JQNetworkServer::onConnectToHostError(const JQNetworkConnectPointer &connect, const JQNetworkConnectPoolPointer &)

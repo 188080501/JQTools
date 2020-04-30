@@ -114,25 +114,25 @@ QSharedPointer< QTimer > JQLIBRARY_EXPORT setTimerCallback(
         const bool &callbackOnStart = false
     );
 
+#if ( defined QT_CONCURRENT_LIB ) && ( QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 ) )
 void JQLIBRARY_EXPORT setTimerCallback(
         const QDateTime &dateTime,
         const std::function< void() > &callback,
         const QSharedPointer< QThreadPool > &threadPool = nullptr
     );
 
-#ifdef QT_CONCURRENT_LIB
 void JQLIBRARY_EXPORT setTimerCallback(
         const std::function< QDateTime() > &nextTime,
         const std::function< void() > &callback,
         const QSharedPointer< QThreadPool > &threadPool = nullptr
     );
+#endif
 
 void JQLIBRARY_EXPORT setDebugOutput(
         const QString &targetFilePath,
         const bool &argDateFlag = false,
         const std::function< void(const QMessageLogContext &context, const QString &) > &warningMessageCallback = nullptr
     );
-#endif
 
 void openDebugConsole();
 

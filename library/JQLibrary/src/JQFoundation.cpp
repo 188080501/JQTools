@@ -399,7 +399,7 @@ QSharedPointer< QTimer > JQFoundation::setTimerCallback(
     return timer;
 }
 
-#ifdef QT_CONCURRENT_LIB
+#if ( defined QT_CONCURRENT_LIB ) && ( QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 ) )
 void JQFoundation::setTimerCallback(
         const QDateTime &dateTime,
         const std::function<void ()> &callback,
@@ -462,6 +462,7 @@ void JQFoundation::setTimerCallback(
         setTimerCallback( nextTime, callback, threadPool );
     }, threadPool );
 }
+#endif
 
 void JQFoundation::setDebugOutput(
         const QString &rawTargetFilePath_,
@@ -545,7 +546,6 @@ void JQFoundation::setDebugOutput(
 
     qInstallMessageHandler( HelperClass::messageHandler );
 }
-#endif
 
 void JQFoundation::openDebugConsole()
 {

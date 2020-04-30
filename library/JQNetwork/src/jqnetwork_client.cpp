@@ -73,7 +73,7 @@ JQNetworkClientSharedPointer JQNetworkClient::createClient(
 
 bool JQNetworkClient::begin()
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::begin", false );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::begin", false )
 
     nodeMarkSummary_ = JQNetworkNodeMark::calculateNodeMarkSummary( clientSettings_->dutyMark );
 
@@ -152,7 +152,7 @@ bool JQNetworkClient::begin()
 
 void JQNetworkClient::registerProcessor(const JQNetworkProcessorPointer &processor)
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::registerProcessor" );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::registerProcessor" )
 
     if ( !connectPools_.isEmpty() )
     {
@@ -196,7 +196,7 @@ void JQNetworkClient::registerProcessor(const JQNetworkProcessorPointer &process
 
 void JQNetworkClient::createConnect(const QString &hostName, const quint16 &port)
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::createConnect" );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::createConnect" )
 
     if ( !socketThreadPool_ )
     {
@@ -239,7 +239,7 @@ bool JQNetworkClient::waitForCreateConnect(
         const int &maximumConnectToHostWaitTime
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForCreateConnect", false );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForCreateConnect", false )
 
     if ( !socketThreadPool_ )
     {
@@ -292,7 +292,7 @@ qint32 JQNetworkClient::sendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendPayloadData", 0 );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendPayloadData", 0 )
 
     if ( !socketThreadPool_ )
     {
@@ -335,7 +335,7 @@ qint32 JQNetworkClient::sendVariantMapData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendVariantMapData", 0 );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendVariantMapData", 0 )
 
     if ( !socketThreadPool_ )
     {
@@ -369,7 +369,7 @@ qint32 JQNetworkClient::sendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendFileData", 0 );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::sendFileData", 0 )
 
     if ( !socketThreadPool_ )
     {
@@ -412,7 +412,7 @@ qint32 JQNetworkClient::waitForSendPayloadData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendPayloadData", 0 );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendPayloadData", 0 )
 
     if ( !socketThreadPool_ )
     {
@@ -474,7 +474,7 @@ qint32 JQNetworkClient::waitForSendVariantMapData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendVariantMapData", 0 );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendVariantMapData", 0 )
 
     return this->waitForSendPayloadData(
                 hostName,
@@ -497,7 +497,7 @@ qint32 JQNetworkClient::waitForSendFileData(
         const JQNetworkConnectPointerFunction &failCallback
     )
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendFileData", 0 );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::waitForSendFileData", 0 )
 
     if ( !socketThreadPool_ )
     {
@@ -551,7 +551,7 @@ qint32 JQNetworkClient::waitForSendFileData(
 
 JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, const quint16 &port)
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::getConnect", nullptr );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::getConnect", nullptr )
 
     if ( !socketThreadPool_ )
     {
@@ -588,7 +588,7 @@ JQNetworkConnectPointer JQNetworkClient::getConnect(const QString &hostName, con
 
 bool JQNetworkClient::containsConnect(const QString &hostName, const quint16 &port)
 {
-    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::containsConnect", false );
+    JQNETWORK_THISNULL_CHECK( "JQNetworkClient::containsConnect", false )
 
     if ( !socketThreadPool_ )
     {
@@ -935,9 +935,11 @@ void JQNetworkClient::releaseWaitConnectSucceedSemaphore(const QString &hostName
         auto it = this->waitConnectSucceedSemaphore_.find( hostKey );
         if ( it != this->waitConnectSucceedSemaphore_.end() )
         {
-            if ( it->data() )
+            auto semaphore = it->toStrongRef();
+
+            if ( semaphore )
             {
-                it->data()->release( ( succeed ) ? ( 2 ) : ( 1 ) );
+                semaphore->release( ( succeed ) ? ( 2 ) : ( 1 ) );
             }
             else
             {

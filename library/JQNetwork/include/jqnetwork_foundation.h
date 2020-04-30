@@ -24,6 +24,7 @@
 #include <QWeakPointer>
 #include <QPointer>
 #include <QMutex>
+#include <QSet>
 #include <QVariant>
 #include <QHostAddress>
 
