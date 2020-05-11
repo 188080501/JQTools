@@ -38,7 +38,7 @@ inline QString JQNetworkServer::nodeMarkSummary() const
 
 inline QSet< QString > JQNetworkServer::availableProcessorMethodNames() const
 {
-#if ( QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 ) )
+#if ( QT_VERSION >= QT_VERSION_CHECK( 5, 14, 0 ) )
     const auto keys = processorCallbacks_.keys();
 
     return QSet< QString >( keys.begin(), keys.end() );
