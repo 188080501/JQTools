@@ -940,6 +940,12 @@ QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDat
     {
         result.push_back( { currentTime, currentTime.addMSecs( interval ) } );
         currentTime = currentTime.addMSecs( interval );
+
+        if ( result.size() >= 1000 )
+        {
+            qDebug() << "extractTimeRange: result size limit: 1000";
+            break;
+        }
     }
 
     return result;
