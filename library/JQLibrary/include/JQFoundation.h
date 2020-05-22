@@ -172,6 +172,8 @@ QRect cropRect(const QRect &rect, const QRect &bigRect);
 
 QImage imageCopy(const QImage &image, const QRect &rect);
 
+QImage removeImageColor(const QImage &image, const QColor &color);
+
 QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval);
 
 void waitFor(const std::function< bool() > &predicate, const int &timeout);

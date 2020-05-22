@@ -924,6 +924,51 @@ QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
     return result;
 }
 
+QImage JQFoundation::removeImageColor(const QImage &image, const QColor &color)
+{
+    if ( image.format() != QImage::Format_RGB888 )
+    {
+        qDebug() << "JQFoundation::removeImageColor: not support formath:" << image;
+        return { };
+    }
+
+    auto rgbData = JQMemoryPool::requestMemory( static_cast< size_t >( image.width() * image.height() * 4 ) );
+    QImage result(
+                reinterpret_cast< unsigned char * >( rgbData ),
+                image.width(),
+                image.height(),
+                image.width() * 4,
+                QImage::Format_ARGB32,
+                JQMemoryPool::recoverMemory,
+                rgbData
+                );
+
+    auto current = reinterpret_cast< const quint8 * >( image.bits() );
+    auto end = reinterpret_cast< const quint8 * >( current + image.width() * image.height() * 3 );
+    auto target = reinterpret_cast< quint8 * >( rgbData );
+    const auto alphaKey = static_cast< quint32 >( color.red() << 16 | color.green() << 8 | color.blue() );
+
+    for ( ; current < end; current += 3, target += 4 )
+    {
+        if ( ( *reinterpret_cast< const quint32 * >( current ) & 0xffffff ) == alphaKey )
+        {
+            *( target + 0 ) = 0x00;
+            *( target + 1 ) = 0x00;
+            *( target + 2 ) = 0x00;
+            *( target + 3 ) = 0x00;
+        }
+        else
+        {
+            *( target + 3 ) = 0xff;
+            *( target + 2 ) = *( current + 0 );
+            *( target + 1 ) = *( current + 1 );
+            *( target + 0 ) = *( current + 2 );
+        }
+    }
+
+    return result;
+}
+
 QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval)
 {
     if ( interval <= 0 )
