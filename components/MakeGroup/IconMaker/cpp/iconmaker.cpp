@@ -68,7 +68,7 @@ QString Manage::makeAll()
         {
             this->realMakeOSX();
             this->realMakeIOS();
-//            this->realMakeWindows();
+            this->realMakeWindows();
             this->realMakeWP();
             this->realMakeAndroid();
         }
@@ -148,7 +148,7 @@ QString Manage::makeWindows()
     {
         try
         {
-//            this->realMakeWindows();
+            this->realMakeWindows();
         }
         catch(const bool &)
         {
@@ -276,12 +276,17 @@ void Manage::realMakeIOS()
 
 void Manage::realMakeWindows() // TODO
 {
-//    if ( !QDir().mkpath( targetSavePath_ + "/Windows" ) )
-//    {
-//        throw false;
-//    }
+    if ( !QDir().mkpath( targetSavePath_ + "/Windows" ) )
+    {
+        throw false;
+    }
 
-//    this->saveToIco( targetSavePath_ + "/Windows/Icon.ico", { 0, 0 } );
+    this->saveToPng( targetSavePath_ + "/Windows/Icon_16.png",  { 16, 16 } );
+    this->saveToPng( targetSavePath_ + "/Windows/Icon_24.png",  { 24, 24 } );
+    this->saveToPng( targetSavePath_ + "/Windows/Icon_32.png",  { 32, 32 } );
+    this->saveToPng( targetSavePath_ + "/Windows/Icon_48.png",  { 48, 48 } );
+    this->saveToPng( targetSavePath_ + "/Windows/Icon_64.png",  { 64, 64 } );
+    this->saveToPng( targetSavePath_ + "/Windows/Icon_256.png",  { 256, 256 } );
 }
 
 void Manage::realMakeWP()
