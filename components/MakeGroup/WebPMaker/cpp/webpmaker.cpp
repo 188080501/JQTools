@@ -158,8 +158,9 @@ QString Manage::makeWebP(const bool &coverOldFile, const QStringList &filePaths)
         {
             emit this->makeWebPStart( filePath );
 
-            QTime time;
-            time.start();
+            QElapsedTimer timer;
+            timer.start();
+
             const auto &&saveSucceed = QImage( filePath ).save( resultFilePath, "WEBP", 100 );
             const auto &&targetFileInfo = QFileInfo( resultFilePath );
             const auto &&compressionRatio = static_cast< qreal >( targetFileInfo.size() ) / static_cast< qreal >( QFile( filePath ).size() );
@@ -174,7 +175,7 @@ QString Manage::makeWebP(const bool &coverOldFile, const QStringList &filePaths)
                                 arg( 100 - (int)(compressionRatio * 100) ) },
                               { "compressionRatioColor", QString( "%1" ).
                                 arg( ( compressionRatio < 1 ) ? ( "#64dd17" ) : ( "#f44336" )  ) },
-                              { "timeConsuming", QString( "%1ms" ).arg( time.elapsed() ) }
+                              { "timeConsuming", QString( "%1ms" ).arg( timer.elapsed() ) }
                           } }
                     );
 

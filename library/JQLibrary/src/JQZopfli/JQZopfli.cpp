@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QTime>
 #include <QDebug>
+#include <QElapsedTimer>
 
 // zopfli lib import
 #include "lodepng.h"
@@ -519,8 +520,8 @@ int CZopfliPNGOptimize(const unsigned char* origpng,
 
 OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString &resultFilePath)
 {
-    QTime time;
-    time.start();
+    QElapsedTimer timer;
+    timer.start();
 
     OptimizeResult result;
 
@@ -552,7 +553,7 @@ OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString
     result.optimizeSucceed = true;
     result.resultSize = resultPng.size();
     result.compressionRatio = (double)resultPng.size() / (double)originalPng.size();
-    result.timeConsuming = time.elapsed();
+    result.timeConsuming = timer.elapsed();
 
     QFile file( resultFilePath );
     if ( !file.open( QIODevice::WriteOnly ) )

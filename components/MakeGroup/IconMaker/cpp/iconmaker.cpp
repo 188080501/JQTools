@@ -334,7 +334,7 @@ void Manage::saveToPng(const QString &targetFilePath, const QSize &size)
 void Manage::saveToEmptyPng(const QString &targetFilePath, const QSize &size)
 {
     QImage image( size, QImage::Format_ARGB32 );
-    memset( image.bits(), 0xff, static_cast< size_t >( image.byteCount() ) );
+    memset( image.bits(), 0xff, static_cast< size_t >( image.sizeInBytes() ) );
 
     if ( !image.save( targetFilePath, "PNG" ) )
     {

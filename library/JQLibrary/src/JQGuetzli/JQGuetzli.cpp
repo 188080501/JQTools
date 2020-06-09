@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QTime>
+#include <QElapsedTimer>
 
 // guetzli lib import
 #include <cstdio>
@@ -174,8 +175,8 @@ bool JQGuetzli_WriteFile(FILE* f, const std::string& contents) {
 
 JQGuetzli::ProcessResult JQGuetzli::process(const QString &inputImageFilePath, const QString &outputImageFilePath)
 {
-    QTime time;
-    time.start();
+    QElapsedTimer timer;
+    timer.start();
 
     ProcessResult result;
 
@@ -243,7 +244,7 @@ JQGuetzli::ProcessResult JQGuetzli::process(const QString &inputImageFilePath, c
     result.processSucceed = true;
     result.resultSize = QFileInfo( outputImageFilePath ).size();
     result.compressionRatio = (double)result.resultSize / (double)result.originalSize;
-    result.timeConsuming = time.elapsed();
+    result.timeConsuming = timer.elapsed();
 
     return result;
 }
