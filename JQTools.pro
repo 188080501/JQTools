@@ -43,5 +43,5 @@ macx {
 }
 
 win32 {
-    RC_ICONS = $$PWD/icon.ico
+    RC_ICONS = $$PWD/icon/icon.ico
 }
