@@ -19,9 +19,6 @@
 
 // JQLibrary import
 #include "JQFoundation.h"
-#ifdef JQQMLLIB_LIB
-#   include "JQQmlLib.h"
-#endif
 
 // JQToolsLibrary import
 #include <JQToolsLibrary>
@@ -70,16 +67,12 @@ int main(int argc, char *argv[])
     jqToolsManage.setQmlApplicationEngine( &engine );
 
     // Group initializa
-    WELCOMEGROUP_INITIALIZA;
-    TEXTGROUP_INITIALIZA;
-    CALCULATEGROUP_INITIALIZA;
+    WELCOMEGROUP_INITIALIZA
+    TEXTGROUP_INITIALIZA
+    CALCULATEGROUP_INITIALIZA
     MAKEGROUP_INITIALIZA
-    TOOLSGROUP_INITIALIZA;
-    QTGROUP_INITIALIZA;
-
-#ifdef JQQMLLIB_LIB
-    JQQmlLibAddToEngine(engine)
-#endif
+    TOOLSGROUP_INITIALIZA
+    QTGROUP_INITIALIZA
 
     engine.rootContext()->setContextProperty( "JQToolsManage", &jqToolsManage );
 

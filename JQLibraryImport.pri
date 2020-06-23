@@ -11,7 +11,6 @@
 #
 
 include( $$PWD/library/JQLibrary/JQLibrary.pri )
-include( $$PWD/library/JQLibrary/JQQmlLib.pri )
 include( $$PWD/library/JQLibrary/JQQRCodeReader.pri )
 include( $$PWD/library/JQLibrary/JQQRCodeWriter.pri )
 include( $$PWD/library/JQLibrary/JQZopfli.pri )
