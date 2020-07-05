@@ -19,38 +19,48 @@
 #define JQLIBRARY_INCLUDE_JQDECLARE_HPP_
 
 // Macro define
-#define JQPROPERTYDECLARE(Type, name, setName, ...)                                         \
-    private:                                                                                \
-    Type name ## _ __VA_ARGS__;                                                             \
-    public:                                                                                 \
-    inline const Type &name() const { return name ## _; }                                   \
-    inline void setName(const Type &name) { name ## _ = name; }                             \
-    private:
+#define JQPROPERTYDECLARE( Type, name, setName, ... )                  \
+private:                                                               \
+    Type name##_ __VA_ARGS__;                                          \
+                                                                       \
+public:                                                                \
+    inline const Type &name() const { return name##_; }                \
+    inline void        setName( const Type &name ) { name##_ = name; } \
+                                                                       \
+private:
 
-#define JQPROPERTYDECLAREWITHSLOT(Type, name, setName, ...)                                 \
-    private:                                                                                \
-    Type name ## _ __VA_ARGS__;                                                             \
-    public Q_SLOTS:                                                                         \
-    Type name() const { return name ## _; }                                                 \
-    void setName(const Type &name) { name ## _ = name; }                                    \
-    private:
+#define JQPROPERTYDECLAREWITHSLOT( Type, name, setName, ... ) \
+private:                                                      \
+    Type name##_ __VA_ARGS__;                                 \
+public Q_SLOTS:                                               \
+    Type name() const { return name##_; }                     \
+    void setName( const Type &name ) { name##_ = name; }      \
+                                                              \
+private:
 
-#define JQPTRPROPERTYDECLARE(Type, name, setName, ...)                                      \
-    private:                                                                                \
-    Type *name ## _ __VA_ARGS__;                                                            \
-    public:                                                                                 \
-    inline const Type *name() const                                                         \
-        { return name ## _; }                                                               \
-    inline void setName(const Type &name)                                                   \
-        { if ( name ## _ ) { delete name ## _; }                                            \
-        name ## _ = new Type( name ); }                                                     \
-    private:
+#define JQPTRPROPERTYDECLARE( Type, name, setName, ... ) \
+private:                                                 \
+    Type *name##_ __VA_ARGS__;                           \
+                                                         \
+public:                                                  \
+    inline const Type *name() const { return name##_; }  \
+    inline void        setName( const Type &name )       \
+    {                                                    \
+        if ( name##_ )                                   \
+        {                                                \
+            delete name##_;                              \
+        }                                                \
+        name##_ = new Type( name );                      \
+    }                                                    \
+                                                         \
+private:
 
-#define JQ_READ_AND_SET_PROPERTY( Type, name, setName )                                     \
-    public:                                                                                 \
-    inline const Type &name() const { return name ## _; }                                   \
-    inline void setName(const Type &name) { name ## _ = name; }                             \
-    private:
+#define JQ_READ_AND_SET_PROPERTY( Type, name, setName )                \
+public:                                                                \
+    inline const Type &name() const { return name##_; }                \
+    inline void        setName( const Type &name ) { name##_ = name; } \
+                                                                       \
+private:
 
 #define JQ_STATIC_READ_AND_SET_PROPERTY( Type, name, setName )                              \
     public:                                                                                 \
@@ -58,28 +68,32 @@
     static inline void setName(const Type &name) { name ## _ = name; }                      \
     private:
 
-#define JQ_STATIC_SET_PROPERTY( Type, name, setName )                                       \
-    public:                                                                                 \
-    static inline void setName(const Type &name) { name ## _ = name; }                      \
-    private:
+#define JQ_STATIC_SET_PROPERTY( Type, name, setName )                  \
+public:                                                                \
+    static inline void setName( const Type &name ) { name##_ = name; } \
+                                                                       \
+private:
 
 #define RUNONOUTRANGEHELPER2( x, y ) x ## y
 #define RUNONOUTRANGEHELPER( x, y ) RUNONOUTRANGEHELPER2( x, y )
-#define RUNONOUTRANGE( ... )                                                                \
-    auto RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) = __VA_ARGS__;              \
-    QSharedPointer< int > RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ )(                   \
-        new int,                                                                            \
-        [ RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) ](int *data)               \
-    {                                                                                       \
-        RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ )();                           \
-        delete data;                                                                        \
-    } );                                                                                    \
-    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr ) { exit( -1 ); }
+#define RUNONOUTRANGE( ... )                                                                                           \
+    auto                  RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) = __VA_ARGS__;                        \
+    QSharedPointer< int > RUNONOUTRANGEHELPER( runOnOutRange,                                                          \
+                                               __LINE__ )( new int,                                                    \
+                                                           [ RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) ]( \
+                                                               int *data ) {                                           \
+                                                               RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ )  \
+                                                               ();                                                     \
+                                                               delete data;                                            \
+                                                           } );                                                        \
+    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr )                                            \
+    {                                                                                                                  \
+        exit( -1 );                                                                                                    \
+    }
 
-#define RUNONOUTRANGETIMER( message )                                                       \
-    const auto &&runOnOutRangeTimerTime = QDateTime::currentMSecsSinceEpoch();              \
-    RUNONOUTRANGE( [ = ]()                                                                  \
-    {                                                                                       \
+#define RUNONOUTRANGETIMER( message )                                                            \
+    const auto &&runOnOutRangeTimerTime = QDateTime::currentMSecsSinceEpoch();                   \
+    RUNONOUTRANGE( [ = ]() {                                                                     \
         qDebug() << message << ( QDateTime::currentMSecsSinceEpoch() - runOnOutRangeTimerTime ); \
     } )
 
@@ -93,30 +107,46 @@
         qDebug() << message << tickCounter.tickPerSecond();                                 \
     }
 
-#define JQBUILDDATETIMESTRING                                                                               \
-    ( QDateTime(                                                                                            \
-        QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy"),      \
-        QTime::fromString( __TIME__, "hh:mm:ss" )                                                           \
-    ).toString( "yyyy-MM-dd hh:mm:ss" ).toLatin1().data() )
+#define JQBUILDDATETIMESTRING                                                                                    \
+    ( QDateTime( QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy" ), \
+                 QTime::fromString( __TIME__, "hh:mm:ss" ) )                                                     \
+          .toString( "yyyy-MM-dd hh:mm:ss" )                                                                     \
+          .toLatin1()                                                                                            \
+          .data() )
 
-#define JQONLYONCE \
-    if ( [](){ static auto flag = true; if ( flag ) { flag = false; return true; } return false; }() )
+#define JQONLYONCE                    \
+    if ( []() {                       \
+             static auto flag = true; \
+             if ( flag )              \
+             {                        \
+                 flag = false;        \
+                 return true;         \
+             }                        \
+             return false;            \
+         }() )
 
-#define JQSKIPFIRST \
-    if ( [](){ static auto flag = true; if ( flag ) { flag = false; return false; } return true; }() )
+#define JQSKIPFIRST                   \
+    if ( []() {                       \
+             static auto flag = true; \
+             if ( flag )              \
+             {                        \
+                 flag = false;        \
+                 return false;        \
+             }                        \
+             return true;             \
+         }() )
 
-#define JQINTERVAL( timeInterval ) \
-    if ( []()                                                                               \
-    {                                                                                       \
-        static qint64 lastTime = 0;                                                         \
-        const auto &&currentTime = QDateTime::currentMSecsSinceEpoch();                     \
-        if ( qAbs( currentTime - lastTime ) > timeInterval )                                \
-        {                                                                                   \
-            lastTime = currentTime;                                                         \
-            return true;                                                                    \
-        }                                                                                   \
-        return false;                                                                       \
-    }() )
+#define JQINTERVAL( timeInterval )                                            \
+    if ( []() {                                                               \
+             static qint64 lastTime    = 0;                                   \
+             const auto && currentTime = QDateTime::currentMSecsSinceEpoch(); \
+             if ( qAbs( currentTime - lastTime ) > timeInterval )             \
+             {                                                                \
+                 lastTime = currentTime;                                      \
+                 return true;                                                 \
+             }                                                                \
+             return false;                                                    \
+         }() )
 
 // Export
 #ifdef JQLIBRARY_EXPORT_ENABLE
