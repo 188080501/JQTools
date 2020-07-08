@@ -62,11 +62,12 @@ public:                                                                \
                                                                        \
 private:
 
-#define JQ_STATIC_READ_AND_SET_PROPERTY( Type, name, setName )                              \
-    public:                                                                                 \
-    static inline const Type &name() { return name ## _; }                                  \
-    static inline void setName(const Type &name) { name ## _ = name; }                      \
-    private:
+#define JQ_STATIC_READ_AND_SET_PROPERTY( Type, name, setName )                \
+public:                                                                       \
+    static inline const Type &name() { return name##_; }                      \
+    static inline void        setName( const Type &name ) { name##_ = name; } \
+                                                                              \
+private:
 
 #define JQ_STATIC_SET_PROPERTY( Type, name, setName )                  \
 public:                                                                \
@@ -74,21 +75,20 @@ public:                                                                \
                                                                        \
 private:
 
-#define RUNONOUTRANGEHELPER2( x, y ) x ## y
-#define RUNONOUTRANGEHELPER( x, y ) RUNONOUTRANGEHELPER2( x, y )
-#define RUNONOUTRANGE( ... )                                                                                           \
-    auto                  RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) = __VA_ARGS__;                        \
-    QSharedPointer< int > RUNONOUTRANGEHELPER( runOnOutRange,                                                          \
-                                               __LINE__ )( new int,                                                    \
-                                                           [ RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) ]( \
-                                                               int *data ) {                                           \
-                                                               RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ )  \
-                                                               ();                                                     \
-                                                               delete data;                                            \
-                                                           } );                                                        \
-    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr )                                            \
-    {                                                                                                                  \
-        exit( -1 );                                                                                                    \
+#define RUNONOUTRANGEHELPER2( x, y ) x##y
+#define RUNONOUTRANGEHELPER( x, y )  RUNONOUTRANGEHELPER2( x, y )
+#define RUNONOUTRANGE( ... )                                                                    \
+    auto                  RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) = __VA_ARGS__; \
+    QSharedPointer< int > RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ )(                       \
+        new int,                                                                                \
+        [ RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ ) ]( int *data ) {               \
+            RUNONOUTRANGEHELPER( runOnOutRangeCallback, __LINE__ )                              \
+            ();                                                                                 \
+            delete data;                                                                        \
+        } );                                                                                    \
+    if ( RUNONOUTRANGEHELPER( runOnOutRange, __LINE__ ).data() == nullptr )                     \
+    {                                                                                           \
+        exit( -1 );                                                                             \
     }
 
 #define RUNONOUTRANGETIMER( message )                                                            \
@@ -97,21 +97,21 @@ private:
         qDebug() << message << ( QDateTime::currentMSecsSinceEpoch() - runOnOutRangeTimerTime ); \
     } )
 
-#define JQCONST( property ) \
-    static_cast< const decltype( property ) >( property )
+#define JQCONST( property ) static_cast< const decltype( property ) >( property )
 
-#define JQTICKCOUNTERMESSAGE( message )                                                     \
-    {                                                                                       \
-        static JQTickCounter tickCounter;                                                   \
-        tickCounter.tick();                                                                 \
-        qDebug() << message << tickCounter.tickPerSecond();                                 \
+#define JQTICKCOUNTERMESSAGE( message )                     \
+    {                                                       \
+        static JQTickCounter tickCounter;                   \
+        tickCounter.tick();                                 \
+        qDebug() << message << tickCounter.tickPerSecond(); \
     }
 
-#define JQBUILDDATETIMESTRING                                                                                    \
-    ( QDateTime( QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy" ), \
-                 QTime::fromString( __TIME__, "hh:mm:ss" ) )                                                     \
-          .toString( "yyyy-MM-dd hh:mm:ss" )                                                                     \
-          .toLatin1()                                                                                            \
+#define JQBUILDDATETIMESTRING                                                                             \
+    ( QDateTime(                                                                                          \
+          QLocale( QLocale::English ).toDate( QString( __DATE__ ).replace( "  ", " 0" ), "MMM dd yyyy" ), \
+          QTime::fromString( __TIME__, "hh:mm:ss" ) )                                                     \
+          .toString( "yyyy-MM-dd hh:mm:ss" )                                                              \
+          .toLatin1()                                                                                     \
           .data() )
 
 #define JQONLYONCE                    \
@@ -150,13 +150,13 @@ private:
 
 // Export
 #ifdef JQLIBRARY_EXPORT_ENABLE
-#   ifdef JQLIBRARY_EXPORT_MODE
-#       define JQLIBRARY_EXPORT Q_DECL_EXPORT
-#   else
-#       define JQLIBRARY_EXPORT Q_DECL_IMPORT
-#   endif
+#    ifdef JQLIBRARY_EXPORT_MODE
+#        define JQLIBRARY_EXPORT Q_DECL_EXPORT
+#    else
+#        define JQLIBRARY_EXPORT Q_DECL_IMPORT
+#    endif
 #else
-#   define JQLIBRARY_EXPORT
+#    define JQLIBRARY_EXPORT
 #endif
 
-#endif//JQLIBRARY_INCLUDE_JQDECLARE_HPP_
+#endif    // JQLIBRARY_INCLUDE_JQDECLARE_HPP_
