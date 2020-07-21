@@ -41,13 +41,17 @@ QString Manage::chooseTargetSavePath()
 
 QString Manage::choostSourceIconFilePath()
 {
-    const auto &&sourceIconFilePath = QFileDialog::getOpenFileName( nullptr, "\u8BF7\u9009\u62E9\u56FE\u6807\u6587\u4EF6", QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), "*.png" );
+    const auto &&sourceIconFilePath = QFileDialog::getOpenFileName(
+        nullptr,
+        "\u8BF7\u9009\u62E9\u56FE\u6807\u6587\u4EF6",
+        QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
+        "*.png *.jpg *.jpeg *.bmp" );
 
     if ( sourceIconFilePath.isEmpty() ) { return "cancel"; }
 
     QImage sourceIconImage;
 
-    if ( !sourceIconImage.load( sourceIconFilePath, "PNG" ) ) { return "openFail"; }
+    if ( !sourceIconImage.load( sourceIconFilePath ) ) { return "openFail"; }
 
     sourceIconFilePath_ = sourceIconFilePath;
     sourceIconImage_ = sourceIconImage;
@@ -217,6 +221,32 @@ QString Manage::makeAndroid()
     return reply;
 }
 
+QString Manage::makePWA()
+{
+    QEventLoop eventLoop;
+    QString reply;
+
+    QtConcurrent::run( [ this, &eventLoop, &reply ]()
+    {
+        try
+        {
+            this->realMakePWA();
+        }
+        catch(const bool &)
+        {
+            reply = "saveToFileError";
+            eventLoop.quit();
+        }
+
+        reply = "OK";
+        eventLoop.quit();
+    } );
+
+    eventLoop.exec();
+
+    return reply;
+}
+
 void Manage::realMakeOSX()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/OSX/icon.iconset" ) )
@@ -247,24 +277,24 @@ void Manage::realMakeIOS()
         throw false;
     }
 
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_29x29.png",     { 29, 29 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_29x29@2x.png",  { 58, 58 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_29x29@3x.png",  { 87, 87 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_40x40.png",     { 40, 40 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_40x40@2x.png",  { 80, 80 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_40x40@3x.png",  { 120, 120 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_50x50.png",     { 50, 50 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_50x50@2x.png",  { 100, 100 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_57x57.png",     { 57, 57 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_57x57@2x.png",  { 114, 114 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_60x60@2x.png",  { 120, 120 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_60x60@3x.png",  { 180, 180 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_72x72.png",     { 72, 72 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_72x72@2x.png",  { 144, 144 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_76x76.png",     { 76, 76 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_76x76@2x.png",  { 152, 152 } );
-    this->saveToPng( targetSavePath_ + "/iOS/Icon_83.5x83.5@2x.png",{ 167, 167 } );
-    this->saveToJpg( targetSavePath_ + "/iOS/Icon_1024x1024.jpg", { 1024, 1024 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_29x29.png",     { 29, 29 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_29x29@2x.png",  { 58, 58 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_29x29@3x.png",  { 87, 87 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_40x40.png",     { 40, 40 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_40x40@2x.png",  { 80, 80 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_40x40@3x.png",  { 120, 120 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_50x50.png",     { 50, 50 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_50x50@2x.png",  { 100, 100 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_57x57.png",     { 57, 57 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_57x57@2x.png",  { 114, 114 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_60x60@2x.png",  { 120, 120 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_60x60@3x.png",  { 180, 180 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_72x72.png",     { 72, 72 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_72x72@2x.png",  { 144, 144 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_76x76.png",     { 76, 76 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_76x76@2x.png",  { 152, 152 } );
+    this->saveToPng( targetSavePath_ + "/iOS/icon_83.5x83.5@2x.png",{ 167, 167 } );
+    this->saveToJpg( targetSavePath_ + "/iOS/icon_1024x1024.jpg", { 1024, 1024 } );
 
     this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_2x_640x960.png", { 640, 960 } );
     this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_R4_640x1136.png", { 640, 1136 } );
@@ -281,12 +311,12 @@ void Manage::realMakeWindows() // TODO
         throw false;
     }
 
-    this->saveToPng( targetSavePath_ + "/Windows/Icon_16.png",  { 16, 16 } );
-    this->saveToPng( targetSavePath_ + "/Windows/Icon_24.png",  { 24, 24 } );
-    this->saveToPng( targetSavePath_ + "/Windows/Icon_32.png",  { 32, 32 } );
-    this->saveToPng( targetSavePath_ + "/Windows/Icon_48.png",  { 48, 48 } );
-    this->saveToPng( targetSavePath_ + "/Windows/Icon_64.png",  { 64, 64 } );
-    this->saveToPng( targetSavePath_ + "/Windows/Icon_256.png",  { 256, 256 } );
+    this->saveToPng( targetSavePath_ + "/Windows/icon_16.png",  { 16, 16 } );
+    this->saveToPng( targetSavePath_ + "/Windows/icon_24.png",  { 24, 24 } );
+    this->saveToPng( targetSavePath_ + "/Windows/icon_32.png",  { 32, 32 } );
+    this->saveToPng( targetSavePath_ + "/Windows/icon_48.png",  { 48, 48 } );
+    this->saveToPng( targetSavePath_ + "/Windows/icon_64.png",  { 64, 64 } );
+    this->saveToPng( targetSavePath_ + "/Windows/icon_256.png",  { 256, 256 } );
 }
 
 void Manage::realMakeWP()
@@ -310,9 +340,26 @@ void Manage::realMakeAndroid()
         throw false;
     }
 
-    this->saveToPng( targetSavePath_ + "/Android/Icon_36.png", { 36, 36 } );
-    this->saveToPng( targetSavePath_ + "/Android/Icon_72.png", { 72, 72 } );
-    this->saveToPng( targetSavePath_ + "/Android/Icon_96.png", { 96, 96 } );
+    this->saveToPng( targetSavePath_ + "/Android/icon_36.png", { 36, 36 } );
+    this->saveToPng( targetSavePath_ + "/Android/icon_72.png", { 72, 72 } );
+    this->saveToPng( targetSavePath_ + "/Android/icon_96.png", { 96, 96 } );
+}
+
+void Manage::realMakePWA()
+{
+    if ( !QDir().mkpath( targetSavePath_ + "/PWA" ) )
+    {
+        throw false;
+    }
+
+    this->saveToPng( targetSavePath_ + "/PWA/icon_16.png", { 16, 16 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_48.png", { 48, 48 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_72.png", { 72, 72 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_96.png", { 96, 96 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_128.png", { 128, 128 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_144.png", { 144, 144 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_168.png", { 168, 168 } );
+    this->saveToPng( targetSavePath_ + "/PWA/icon_192.png", { 192, 192 } );
 }
 
 void Manage::saveToIco(const QString &targetFilePath, const QSize &size)

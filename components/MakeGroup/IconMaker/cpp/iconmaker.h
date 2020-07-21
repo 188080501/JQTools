@@ -62,6 +62,8 @@ public slots:
 
     QString makeAndroid();
 
+    QString makePWA();
+
 private:
     void realMakeOSX();
 
@@ -72,6 +74,8 @@ private:
     void realMakeWP();
 
     void realMakeAndroid();
+
+    void realMakePWA();
 
     void saveToIco(const QString &targetFilePath, const QSize &size);
 

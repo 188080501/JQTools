@@ -244,6 +244,24 @@ Item {
             }
         }
 
+        MaterialButton {
+            x: 476
+            y: 382
+            width: 120
+            height: 40
+            text: "PWA(png)"
+
+            onClicked: {
+                materialUI.showLoading();
+
+                var reply = iconMakerManage.makePWA();
+
+                iconMaker.makeReplyProcessor( reply );
+
+                materialUI.hideLoading();
+            }
+        }
+
         MaterialLabel {
             x: 98
             y: 182
