@@ -599,18 +599,16 @@ void JQFoundation::openDebugConsole()
 #if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
 bool JQFoundation::singleApplication(const QString &flag)
 {
-    static QSharedMemory *shareMem = nullptr;
+    static QMap< QString, QSharedMemory * > shareMemSet;
 
-    if (shareMem)
-    {
-        return true;
-    }
+    auto &shareMem = shareMemSet[ flag ];
+    if ( shareMem ) { return true; }
 
-    shareMem = new QSharedMemory( "JQFoundationSingleApplication_" + flag );
+    shareMem = new QSharedMemory( flag );
 
     for ( auto count = 0; count < 2; ++count )
     {
-        if (shareMem->attach( QSharedMemory::ReadOnly ))
+        if ( shareMem->attach( QSharedMemory::ReadOnly ) )
         {
             shareMem->detach();
         }
@@ -620,6 +618,9 @@ bool JQFoundation::singleApplication(const QString &flag)
     {
         return true;
     }
+
+    delete shareMem;
+    shareMem = nullptr;
 
     return false;
 }
@@ -633,7 +634,7 @@ bool JQFoundation::singleApplication(const QString &)
 #if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE)
 bool JQFoundation::singleApplicationExist(const QString &flag)
 {
-    QSharedMemory shareMem( "JQFoundationSingleApplication_" + flag );
+    QSharedMemory shareMem( flag );
 
     for ( auto count = 0; count < 2; ++count )
     {

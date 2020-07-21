@@ -136,9 +136,9 @@ void JQLIBRARY_EXPORT setDebugOutput(
 
 void openDebugConsole();
 
-bool singleApplication(const QString &flag);
+bool JQLIBRARY_EXPORT singleApplication(const QString &flag);
 
-bool singleApplicationExist(const QString &flag);
+bool JQLIBRARY_EXPORT singleApplicationExist(const QString &flag);
 
 QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality = -1);
 
