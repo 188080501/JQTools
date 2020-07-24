@@ -149,6 +149,10 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
         {
             reply += QString( "private: %1 %2_ = 0;\n" ).arg( type ).arg( name );
         }
+        else if ( type == "bool" )
+        {
+            reply += QString( "private: %1 %2_ = false;\n" ).arg( type ).arg( name );
+        }
         else
         {
             reply += QString( "private: %1 %2_;\n" ).arg( type ).arg( name );
