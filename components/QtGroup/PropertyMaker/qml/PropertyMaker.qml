@@ -142,8 +142,8 @@ Item {
                 selectByMouse: true
                 selectionColor: "#2799f3"
                 text:
-"Q_PROPERTY(QString name READ name WRITE setName RESET resetName NOTIFY nameChanged)
-Q_PROPERTY(int age READ age WRITE setAge)"
+"Q_PROPERTY( QString name READ name WRITE setName RESET resetName NOTIFY nameChanged )
+Q_PROPERTY( int age READ age WRITE setAge )"
             }
         }
 

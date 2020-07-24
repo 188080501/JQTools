@@ -86,12 +86,15 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
 
     reply += "// Property code start\n";
 
-    for ( const auto &line_: lines )
+    for ( const auto &rawLine: lines )
     {
-        auto line = line_;
+        auto line = rawLine;
 
         while ( line.startsWith( " " ) ) { line.remove( 0, 1 ); }
         if ( !line.startsWith( "Q_PROPERTY(" ) || !line.endsWith( ")" ) ) { continue; }
+
+        while ( line.startsWith( "Q_PROPERTY( " ) ) { line.remove( 11, 1 ); }
+        while ( line.endsWith( " )" ) ) { line.remove( line.size() - 2, 1 ); }
 
         line.remove( 0, 11 );
         line.remove( line.size() - 1, 1 );
