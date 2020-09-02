@@ -48,7 +48,11 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QDebug>
-#include <QThreadPool>
+
+#ifdef QT_CONCURRENT_LIB
+#   include <QThread>
+#   include <QThreadPool>
+#endif
 
 // JQLibrary lib import
 #include <JQDeclare>
@@ -128,21 +132,13 @@ void JQLIBRARY_EXPORT setTimerCallback(
     );
 #endif
 
-void JQLIBRARY_EXPORT setDebugOutput(
-        const QString &targetFilePath,
-        const bool &argDateFlag = false,
-        const std::function< void(const QMessageLogContext &context, const QString &) > &warningMessageCallback = nullptr
-    );
+void JQLIBRARY_EXPORT setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
 
 void openDebugConsole();
 
 bool JQLIBRARY_EXPORT singleApplication(const QString &flag);
 
 bool JQLIBRARY_EXPORT singleApplicationExist(const QString &flag);
-
-QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality = -1);
-
-QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
 
 QString snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper = false);
 
@@ -170,13 +166,19 @@ QLine lineFToLine(const QLineF &line, const QSize &size);
 
 QRect cropRect(const QRect &rect, const QRect &bigRect);
 
+#ifdef QT_CONCURRENT_LIB
+QByteArray pixmapToByteArray(const QPixmap &pixmap, const QString &format, int quality = -1);
+
+QByteArray imageToByteArray(const QImage &image, const QString &format, int quality = -1);
+
 QImage imageCopy(const QImage &image, const QRect &rect);
 
 QImage removeImageColor(const QImage &image, const QColor &color);
 
-QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval);
-
 void waitFor(const std::function< bool() > &predicate, const int &timeout);
+#endif
+
+QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval);
 
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
 QPair< int, QByteArray > JQLIBRARY_EXPORT startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
@@ -254,6 +256,7 @@ private:
     QSharedPointer< QMutex > mutex_;
 };
 
+#ifdef QT_CONCURRENT_LIB
 class JQLIBRARY_EXPORT JQFpsControl
 {
 public:
@@ -314,5 +317,6 @@ private:
     static QAtomicInteger< qint64 > totalMallocCount_;
     static qint64 releaseThreshold_;
 };
+#endif
 
 #endif//JQLIBRARY_INCLUDE_JQFOUNDATION_H_

@@ -46,13 +46,11 @@ contains( QT, bluetooth ) : exists( $$PWD/src/JQBluetooth.cpp ) {
     }
 }
 
-exists( $$PWD/src/JQChecksum.cpp ) {
+exists( $$PWD/src/jqchecksum.hpp ) {
 
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
-        HEADERS *= $$PWD/include/JQChecksum.h
-
-        SOURCES *= $$PWD/src/JQChecksum.cpp
+        HEADERS *= $$PWD/include/jqchecksum.hpp
     }
 }
 
@@ -145,7 +143,7 @@ exists( $$PWD/src/JQLanguage.cpp ) {
     }
 }
 
-contains( QT, network ) : exists( $$PWD/src/JQNet.cpp ) {
+contains( QT, network ) : exists( $$PWD/src/JQNet.cpp ) : !wasm {
 
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
@@ -195,7 +193,7 @@ contains( QT, network ) : exists( $$PWD/src/JQSystemFlag.cpp ) {
     }
 }
 
-exists( $$PWD/src/jqthread.cpp ) {
+exists( $$PWD/src/jqthread.cpp ) : !wasm {
 
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
