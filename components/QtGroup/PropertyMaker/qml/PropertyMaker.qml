@@ -25,7 +25,8 @@ Item {
         textFieldForTarget.text = propertyMakerManage.make(
                     textFieldForSource.text,
                     checkBoxForWithSlot.checked,
-                    checkBoxForWithInline.checked
+                    checkBoxForWithInline.checked,
+                    checkBoxForWithThreadSafe.checked
                 );
         return true;
     }
@@ -37,10 +38,19 @@ Item {
     }
 
     MaterialCheckBox {
+        id: checkBoxForWithThreadSafe
+        text: "线程安全"
+        anchors.horizontalCenterOffset: -245
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 11
+        checked: true
+    }
+
+    MaterialCheckBox {
         id: checkBoxForWithSlot
-        x: 188
         text: "槽函数"
-        anchors.horizontalCenterOffset: -217
+        anchors.horizontalCenterOffset: -133
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 11
@@ -49,9 +59,8 @@ Item {
 
     MaterialCheckBox {
         id: checkBoxForWithInline
-        x: 42
         text: "内联函数"
-        anchors.horizontalCenterOffset: -79
+        anchors.horizontalCenterOffset: -26
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 11
@@ -61,7 +70,7 @@ Item {
     MaterialButton {
         x: 386
         text: "生成代码"
-        anchors.horizontalCenterOffset: 67
+        anchors.horizontalCenterOffset: 94
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 20

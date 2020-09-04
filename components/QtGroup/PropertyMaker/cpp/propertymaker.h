@@ -41,10 +41,10 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString make(const QString &source, const bool &withSlot, const bool &withInline);
+    QString make(const QString &source, const bool &withSlot, const bool &withInline, const bool &withThreadSafe);
 
 private:
-    QMap< QString, std::function< QString( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline ) > > propertyMaker_;
+    QMap< QString, std::function< QString( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline, const bool &withThreadSafe ) > > propertyMaker_;
 };
 
 }

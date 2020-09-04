@@ -20,7 +20,7 @@ using namespace PropertyMaker;
 
 Manage::Manage()
 {
-    propertyMaker_[ "READ" ] = []( const QString &type, const QString &name, const QString &value, const QString &, const bool &withSlot, const bool &withInline )->QString
+    propertyMaker_[ "READ" ] = [](const QString &type, const QString &name, const QString &value, const QString &, const bool &withSlot, const bool &withInline, const bool &)->QString
     {
         return QString( "%1%2%3 %4() const\n{ return %5_; }\n" ).
                 arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
@@ -30,33 +30,20 @@ Manage::Manage()
                 arg( name );
     };
 
-    propertyMaker_[ "WRITE" ] = []( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline )->QString
+    propertyMaker_[ "WRITE" ] = [](const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline, const bool &withThreadSafe)->QString
     {
-        if ( type == "qreal" )
-        {
-            return QString( "%1%2void %3(const %4 &newValue)\n{ if ( qAbs( newValue - %5_ ) < 0.00001 ) { return; } %6_ = newValue;%7 }\n" ).
-                    arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
-                    arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
-                    arg( value ).
-                    arg( type ).
-                    arg( name ).
-                    arg( name ).
-                    arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
-        }
-        else
-        {
-            return QString( "%1%2void %3(const %4 &newValue)\n{ if ( newValue == %5_ ) { return; } %6_ = newValue;%7 }\n" ).
-                    arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
-                    arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
-                    arg( value ).
-                    arg( type ).
-                    arg( name ).
-                    arg( name ).
-                    arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
-        }
+        return QString( "%1%2void %3(const %4 &newValue)\n{ %5%6 %7_ = newValue;%8 }\n" ).
+                arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
+                arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
+                arg( value ).
+                arg( type ).
+                arg( ( withThreadSafe ) ? ( QString( "if ( QThread::currentThread() != this->thread() ) { QMetaObject::invokeMethod( this, \"%1\", Q_ARG( %2, newValue ) ); return; }\n  " ).arg( value, type ) ) : ( QString( "" ) ) ).
+                arg( ( type == "qreal" ) ? ( QString( "if ( qAbs( newValue - %1_ ) < 0.00001 ) { return; }" ).arg( name ) ) : ( QString( "if ( newValue == %1_ ) { return; }" ).arg( name ) ) ).
+                arg( name ).
+                arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
     };
 
-    propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &name, const QString &value, const QString &, const bool &, const bool & )->QString
+    propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &name, const QString &value, const QString &, const bool &, const bool &, const bool & )->QString
     {
         return QString( "Q_SIGNAL void %1(const %2 %3);\n" ).
                 arg( value ).
@@ -64,21 +51,21 @@ Manage::Manage()
                 arg( name );
     };
 
-    propertyMaker_[ "RESET" ] = []( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline )->QString
+    propertyMaker_[ "RESET" ] = []( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline, const bool &withThreadSafe )->QString
     {
-        return QString( "%1%2void %3() \n{ if ( %4_ == %5() ) { return; } %6_ = %7();%8 }\n" ).
+        return QString( "%1%2void %3() \n{ %4%5 %6_ = %7();%8 }\n" ).
                 arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
                 arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
                 arg( value ).
-                arg( name ).
-                arg( type ).
+                arg( ( withThreadSafe ) ? ( QString( "if ( QThread::currentThread() != this->thread() ) { QMetaObject::invokeMethod( this, \"%1\", Q_ARG( %2, newValue ) ); return; }\n  " ).arg( value, type ) ) : ( QString( "" ) ) ).
+                arg( ( type == "qreal" ) ? ( QString( "if ( qAbs( newValue - %1_ ) < 0.00001 ) { return; }" ).arg( name ) ) : ( QString( "if ( newValue == %1_ ) { return; }" ).arg( name ) ) ).
                 arg( name ).
                 arg( type ).
                 arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
     };
 }
 
-QString Manage::make(const QString &source, const bool &withSlot, const bool &withInline)
+QString Manage::make(const QString &source, const bool &withSlot, const bool &withInline, const bool &withThreadSafe)
 {
     QString reply;
     bool flag = false;
@@ -160,7 +147,7 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
 
         for ( const auto &data: datas )
         {
-            reply += propertyMaker_[ data.first ]( type, name, data.second, notifyValue, withSlot, withInline );
+            reply += propertyMaker_[ data.first ]( type, name, data.second, notifyValue, withSlot, withInline, withThreadSafe );
         }
     }
 
