@@ -20,58 +20,88 @@ using namespace PropertyMaker;
 
 Manage::Manage()
 {
-    propertyMaker_[ "READ" ] = [](const QString &type, const QString &name, const QString &value, const QString &, const bool &withSlot, const bool &withInline, const bool &)->QString
+    propertyMaker_[ "READ" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
     {
-        return QString( "%1%2%3 %4() const\n{ return %5_; }\n" ).
-                arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
-                arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
-                arg( type ).
-                arg( value ).
-                arg( name );
+        QString statementTemplate =
+                "public: Q_SLOT inline %TYPE% %FUNCTION_NAME%();\n";
+
+        QString accomplishCode =
+                "inline %TYPE% %CLASS_NAME%::%FUNCTION_NAME%()\n"
+                "{ %MUTEX_LOCK%%COPY_BUFFER%%MUTEX_UNLOCK%return %BUFFER_NAME%; }\n";
+
+        statementTemplate.replace( "%TYPE%", type );
+        statementTemplate.replace( "%FUNCTION_NAME%", functionName );
+        statementTemplate.replace( "%VALUE_NAME%", valueName );
+        statementTemplate.replace( "%CLASS_NAME%", className );
+
+        accomplishCode.replace( "%COPY_BUFFER%", ( withThreadSafe ) ? ( "const auto result = %VALUE_NAME%_; " ) : ( "" ) );
+        accomplishCode.replace( "%BUFFER_NAME%", ( withThreadSafe ) ? ( "result" ) : ( "%VALUE_NAME%_" ) );
+
+        accomplishCode.replace( "%TYPE%", type );
+        accomplishCode.replace( "%FUNCTION_NAME%", functionName );
+        accomplishCode.replace( "%VALUE_NAME%", valueName );
+        accomplishCode.replace( "%CLASS_NAME%", className );
+
+        accomplishCode.replace( "%MUTEX_LOCK%", ( withThreadSafe ) ? ( "mutex_.lock(); " ) : ( "" ) );
+        accomplishCode.replace( "%MUTEX_UNLOCK%", ( withThreadSafe ) ? ( "mutex_.unlock(); " ) : ( "" ) );
+
+        return { statementTemplate, accomplishCode };
     };
 
-    propertyMaker_[ "WRITE" ] = [](const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline, const bool &withThreadSafe)->QString
+    propertyMaker_[ "WRITE" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &notifyFunctionName, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
     {
-        return QString( "%1%2void %3(const %4 &newValue)\n{ %5%6 %7_ = newValue;%8 }\n" ).
-                arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
-                arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
-                arg( value ).
-                arg( type ).
-                arg( ( withThreadSafe ) ? ( QString( "if ( QThread::currentThread() != this->thread() ) { QMetaObject::invokeMethod( this, \"%1\", Q_ARG( %2, newValue ) ); return; }\n  " ).arg( value, type ) ) : ( QString( "" ) ) ).
-                arg( ( type == "qreal" ) ? ( QString( "if ( qAbs( newValue - %1_ ) < 0.00001 ) { return; }" ).arg( name ) ) : ( QString( "if ( newValue == %1_ ) { return; }" ).arg( name ) ) ).
-                arg( name ).
-                arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
+        QString statementTemplate =
+                "public: Q_SLOT inline void %FUNCTION_NAME%(const %TYPE% &newValue);\n";
+
+        QString accomplishCode =
+                "inline void %CLASS_NAME%::%FUNCTION_NAME%(const %TYPE% &newValue)\n"
+                "{ %MUTEX_LOCK%if ( %EQUALITY_JUDGMENT% ) { %MUTEX_UNLOCK%return; } %VALUE_NAME%_ = newValue; %COPY_BUFFER%%MUTEX_UNLOCK%emit %NOTIFY_FUNCTION_NAME%( %BUFFER_NAME% ); }\n";
+
+        statementTemplate.replace( "%TYPE%", type );
+        statementTemplate.replace( "%FUNCTION_NAME%", functionName );
+        statementTemplate.replace( "%VALUE_NAME%", valueName );
+        statementTemplate.replace( "%CLASS_NAME%", className );
+
+        accomplishCode.replace( "%EQUALITY_JUDGMENT%", ( type == "qreal" ) ? ( "qAbs( newValue - %VALUE_NAME%_ ) < 0.000001" ) : ( "newValue == %VALUE_NAME%_" ) );
+        accomplishCode.replace( "%COPY_BUFFER%", ( withThreadSafe ) ? ( "const auto result = %VALUE_NAME%_; " ) : ( "" ) );
+        accomplishCode.replace( "%BUFFER_NAME%", ( withThreadSafe ) ? ( "result" ) : ( "%VALUE_NAME%_" ) );
+
+        accomplishCode.replace( "%TYPE%", type );
+        accomplishCode.replace( "%FUNCTION_NAME%", functionName );
+        accomplishCode.replace( "%VALUE_NAME%", valueName );
+        accomplishCode.replace( "%CLASS_NAME%", className );
+        accomplishCode.replace( "%NOTIFY_FUNCTION_NAME%", notifyFunctionName );
+
+        accomplishCode.replace( "%MUTEX_LOCK%", ( withThreadSafe ) ? ( "mutex_.lock(); " ) : ( "" ) );
+        accomplishCode.replace( "%MUTEX_UNLOCK%", ( withThreadSafe ) ? ( "mutex_.unlock(); " ) : ( "" ) );
+
+        return { statementTemplate, accomplishCode };
     };
 
-    propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &name, const QString &value, const QString &, const bool &, const bool &, const bool & )->QString
+    propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool &, const QString &className)->QPair< QString, QString >
     {
-        return QString( "Q_SIGNAL void %1(const %2 %3);\n" ).
-                arg( value ).
-                arg( type ).
-                arg( name );
-    };
+        QString statementTemplate =
+                "Q_SIGNAL void %FUNCTION_NAME%(const %TYPE% %VALUE_NAME%);\n";
 
-    propertyMaker_[ "RESET" ] = []( const QString &type, const QString &name, const QString &value, const QString &notifyValue, const bool &withSlot, const bool &withInline, const bool &withThreadSafe )->QString
-    {
-        return QString( "%1%2void %3() \n{ %4%5 %6_ = %7();%8 }\n" ).
-                arg( ( withSlot ) ? ( "public: Q_SLOT " ) : ( "" ) ).
-                arg( ( withInline ) ? ( "inline " ) : ( "" ) ).
-                arg( value ).
-                arg( ( withThreadSafe ) ? ( QString( "if ( QThread::currentThread() != this->thread() ) { QMetaObject::invokeMethod( this, \"%1\", Q_ARG( %2, newValue ) ); return; }\n  " ).arg( value, type ) ) : ( QString( "" ) ) ).
-                arg( ( type == "qreal" ) ? ( QString( "if ( qAbs( newValue - %1_ ) < 0.00001 ) { return; }" ).arg( name ) ) : ( QString( "if ( newValue == %1_ ) { return; }" ).arg( name ) ) ).
-                arg( name ).
-                arg( type ).
-                arg( ( notifyValue.isEmpty() ) ? ( "" ) : ( QString( " emit %1( %2_ );" ).arg( notifyValue ).arg( name ) ) );
+        statementTemplate.replace( "%TYPE%", type );
+        statementTemplate.replace( "%FUNCTION_NAME%", functionName );
+        statementTemplate.replace( "%VALUE_NAME%", valueName );
+        statementTemplate.replace( "%CLASS_NAME%", className );
+
+        return { statementTemplate, { } };
     };
 }
 
-QString Manage::make(const QString &source, const bool &withSlot, const bool &withInline, const bool &withThreadSafe)
+QVariantMap Manage::make(const QString &source, const bool &withThreadSafe, const QString &className)
 {
-    QString reply;
+    QString statementCode;
+    QString accomplishCode;
+
     bool flag = false;
     const auto &&lines = source.split( "\n" );
 
-    reply += "// Property code start\n";
+    statementCode += "// Property statement code start\n";
+    accomplishCode += "// Property accomplish code start\n";
 
     for ( const auto &rawLine: lines )
     {
@@ -90,8 +120,8 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
         if ( elements.size() % 2 ) { continue; }
 
         QString type;
-        QString name;
-        QString notifyValue;
+        QString valueName;
+        QString notifyFunctionName;
         QList< QPair< QString, QString > > datas;
 
         for ( auto index = 0; index < elements.size(); index += 2 )
@@ -105,7 +135,7 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
 
                 if ( key == "NOTIFY" )
                 {
-                    notifyValue = value;
+                    notifyFunctionName = value;
                 }
 
                 datas.push_back( { key, value } );
@@ -113,15 +143,16 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
             else
             {
                 type = elements[ 0 ];
-                name = elements[ 1 ];
+                valueName = elements[ 1 ];
             }
         }
 
-        if ( type.isEmpty() || name.isEmpty() ) { continue; }
+        if ( type.isEmpty() || valueName.isEmpty() ) { continue; }
 
         if ( flag )
         {
-            reply += "\n";
+            statementCode += "\n";
+            accomplishCode += "\n";
         }
         else
         {
@@ -130,28 +161,45 @@ QString Manage::make(const QString &source, const bool &withSlot, const bool &wi
 
         if ( type == "qreal" )
         {
-            reply += QString( "private: %1 %2_ = 0.0;\n" ).arg( type ).arg( name );
+            statementCode += QString( "private: %1 %2_ = 0.0;\n" ).arg( type ).arg( valueName );
         }
         else if ( type == "int" )
         {
-            reply += QString( "private: %1 %2_ = 0;\n" ).arg( type ).arg( name );
+            statementCode += QString( "private: %1 %2_ = 0;\n" ).arg( type ).arg( valueName );
         }
         else if ( type == "bool" )
         {
-            reply += QString( "private: %1 %2_ = false;\n" ).arg( type ).arg( name );
+            statementCode += QString( "private: %1 %2_ = false;\n" ).arg( type ).arg( valueName );
         }
         else
         {
-            reply += QString( "private: %1 %2_;\n" ).arg( type ).arg( name );
+            statementCode += QString( "private: %1 %2_;\n" ).arg( type ).arg( valueName );
         }
 
         for ( const auto &data: datas )
         {
-            reply += propertyMaker_[ data.first ]( type, name, data.second, notifyValue, withSlot, withInline, withThreadSafe );
+            auto pair = propertyMaker_[ data.first ]( type, data.second, valueName, notifyFunctionName, withThreadSafe, className );
+
+            statementCode += pair.first;
+            accomplishCode += pair.second;
         }
     }
 
-    reply += "private:\n// Property code end";
+    while ( statementCode.contains( "\n\n\n" ) )
+    {
+        statementCode.replace( "\n\n\n", "\n\n" );
+    }
 
-    return reply;
+    while ( accomplishCode.contains( "\n\n\n" ) )
+    {
+        accomplishCode.replace( "\n\n\n", "\n\n" );
+    }
+
+    statementCode += "private:\n// Property statement code end";
+    accomplishCode += "// Property accomplish code end";
+
+    return {
+        { "statementCode", statementCode },
+        { "accomplishCode", accomplishCode },
+    };
 }

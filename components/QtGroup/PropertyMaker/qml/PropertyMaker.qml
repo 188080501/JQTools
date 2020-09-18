@@ -22,12 +22,13 @@ Item {
     height: 540
 
     function make() {
-        textFieldForTarget.text = propertyMakerManage.make(
-                    textFieldForSource.text,
-                    checkBoxForWithSlot.checked,
-                    checkBoxForWithInline.checked,
-                    checkBoxForWithThreadSafe.checked
+        var result = propertyMakerManage.make(
+                    sourceCodeTextField.text,
+                    withThreadSafeCheckBox.checked,
+                    classNameTextField.text
                 );
+        statementCodeTextField.text = result[ "statementCode" ];
+        accomplishCodeTextField.text = result[ "accomplishCode" ];
         return true;
     }
 
@@ -37,191 +38,178 @@ Item {
         Component.onCompleted: propertyMaker.make();
     }
 
-    MaterialCheckBox {
-        id: checkBoxForWithThreadSafe
-        text: "线程安全"
-        anchors.horizontalCenterOffset: -245
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 11
-        checked: true
-    }
+    Column {
+        anchors.fill: parent
+        anchors.margins: 10
+        topPadding: 10
+        spacing: 10
 
-    MaterialCheckBox {
-        id: checkBoxForWithSlot
-        text: "槽函数"
-        anchors.horizontalCenterOffset: -133
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 11
-        checked: true
-    }
+        Row {
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 20
 
-    MaterialCheckBox {
-        id: checkBoxForWithInline
-        text: "内联函数"
-        anchors.horizontalCenterOffset: -26
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 11
-        checked: true
-    }
-
-    MaterialButton {
-        x: 386
-        text: "生成代码"
-        anchors.horizontalCenterOffset: 94
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 20
-
-        onClicked: {
-            if ( !propertyMaker.make() )
-            {
-                materialUI.showSnackbarMessage( "生成失败" );
-                return;
+            MaterialCheckBox {
+                id: withThreadSafeCheckBox
+                anchors.verticalCenter: parent.verticalCenter
+                text: "线程安全"
+                checked: false
             }
 
-            materialUI.showSnackbarMessage( "生成成功" );
-        }
-    }
+            MaterialTextField {
+                id: classNameTextField
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: -22
+                width: 200
+                placeholderText: "类名"
+                text: "MyClass"
+            }
 
-    MaterialButton {
-        x: 420
-        width: 120
-        text: "处理剪切板内容"
-        anchors.horizontalCenterOffset: 221
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 20
+            MaterialButton {
+                anchors.verticalCenter: parent.verticalCenter
+                text: "生成代码"
 
-        onClicked: {
-            textFieldForSource.text = propertyMakerManage.clipboardText();
-            if ( !propertyMaker.make() ) { return; }
-            propertyMakerManage.setClipboardText( textFieldForTarget.text );
-            materialUI.showSnackbarMessage( "生成的代码已经复制到了剪切板" );
-        }
-    }
+                onClicked: {
+                    if ( !propertyMaker.make() )
+                    {
+                        materialUI.showSnackbarMessage( "生成失败" );
+                        return;
+                    }
 
-    MaterialLabel {
-        text: "Q_PROPERTY代码"
-        anchors.horizontalCenterOffset: 0
-        anchors.bottom: itemForSource.top
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: itemForSource.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-    }
-
-    RectangularGlow {
-        z: -1
-        anchors.fill: itemForSource
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
-    }
-
-    Item {
-        id: itemForSource
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        width: (propertyMaker.width - 40) / 2
-        height: propertyMaker.height - 110
-        clip: true
-
-        Rectangle {
-            anchors.fill: parent
-            color: "#ffffff"
+                    materialUI.showSnackbarMessage( "生成成功" );
+                }
+            }
         }
 
-        Flickable {
-            x: 5
-            y: 5
-            width: parent.width - 10
-            height: parent.height - 10
-            contentWidth: textFieldForSource.paintedWidth
-            contentHeight: textFieldForSource.paintedHeight
-            clip: true
+        MaterialLabel {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Q_PROPERTY代码"
+        }
 
-            TextEdit {
-                id: textFieldForSource
-                width: parent.width
-                height: parent.height
-                selectByMouse: true
-                selectionColor: "#2799f3"
-                text:
-"Q_PROPERTY( QString name READ name WRITE setName RESET resetName NOTIFY nameChanged )
+        RectangularGlow {
+            width: parent.width
+            height: ( propertyMaker.height - 150 ) / 3 - 5
+            glowRadius: 6
+            spread: 0.22
+            color: "#20000000"
+
+            Rectangle {
+                anchors.fill: parent
+                color: "#ffffff"
+            }
+
+            Flickable {
+                x: 5
+                y: 5
+                width: parent.width - 10
+                height: parent.height - 10
+                contentWidth: sourceCodeTextField.paintedWidth
+                contentHeight: sourceCodeTextField.paintedHeight
+                clip: true
+
+                TextEdit {
+                    id: sourceCodeTextField
+                    width: parent.width
+                    height: parent.height
+                    selectByMouse: true
+                    selectionColor: "#2799f3"
+                    text:
+"Q_PROPERTY( QString name READ name WRITE setName NOTIFY nameChanged )
 Q_PROPERTY( int age READ age WRITE setAge )"
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                visible: !sourceCodeTextField.focus
+
+                onClicked: {
+                    sourceCodeTextField.focus = true;
+                }
             }
         }
 
-        MouseArea {
-            anchors.fill: parent
-            visible: !textFieldForSource.focus
+        MaterialLabel {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "生成的代码"
+        }
 
-            onClicked: {
-                textFieldForSource.focus = true;
+        RectangularGlow {
+            width: parent.width
+            height: ( propertyMaker.height - 150 ) / 3 - 5
+            glowRadius: 6
+            spread: 0.22
+            color: "#20000000"
+
+            Rectangle {
+                anchors.fill: parent
+                color: "#ffffff"
             }
-        }
-    }
 
-    MaterialLabel {
-        text: "生成的代码"
-        anchors.horizontalCenterOffset: 0
-        anchors.bottom: itemForTarget.top
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: itemForTarget.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-    }
+            Flickable {
+                x: 5
+                y: 5
+                width: parent.width - 10
+                height: parent.height - 10
+                contentWidth: statementCodeTextField.paintedWidth
+                contentHeight: statementCodeTextField.paintedHeight
+                clip: true
 
-    RectangularGlow {
-        z: -1
-        anchors.fill: itemForTarget
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
-    }
+                TextEdit {
+                    id: statementCodeTextField
+                    width: parent.width
+                    height: parent.height
+                    selectByMouse: true
+                    selectionColor: "#2799f3"
+                }
+            }
 
-    Item {
-        id: itemForTarget
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        width: (propertyMaker.width - 40) / 2
-        height: propertyMaker.height - 110
-        clip: true
+            MouseArea {
+                anchors.fill: parent
+                visible: !statementCodeTextField.focus
 
-        Rectangle {
-            anchors.fill: parent
-            color: "#ffffff"
-        }
-
-        Flickable {
-            x: 5
-            y: 5
-            width: parent.width - 10
-            height: parent.height - 10
-            contentWidth: textFieldForTarget.paintedWidth
-            contentHeight: textFieldForTarget.paintedHeight
-            clip: true
-
-            TextEdit {
-                id: textFieldForTarget
-                width: parent.width
-                height: parent.height
-                selectByMouse: true
-                selectionColor: "#2799f3"
+                onClicked: {
+                    statementCodeTextField.focus = true;
+                }
             }
         }
 
-        MouseArea {
-            anchors.fill: parent
-            visible: !textFieldForTarget.focus
+        RectangularGlow {
+            width: parent.width
+            height: ( propertyMaker.height - 150 ) / 3 - 5
+            glowRadius: 6
+            spread: 0.22
+            color: "#20000000"
 
-            onClicked: {
-                textFieldForTarget.focus = true;
+            Rectangle {
+                anchors.fill: parent
+                color: "#ffffff"
+            }
+
+            Flickable {
+                x: 5
+                y: 5
+                width: parent.width - 10
+                height: parent.height - 10
+                contentWidth: accomplishCodeTextField.paintedWidth
+                contentHeight: accomplishCodeTextField.paintedHeight
+                clip: true
+
+                TextEdit {
+                    id: accomplishCodeTextField
+                    width: parent.width
+                    height: parent.height
+                    selectByMouse: true
+                    selectionColor: "#2799f3"
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                visible: !accomplishCodeTextField.focus
+
+                onClicked: {
+                    accomplishCodeTextField.focus = true;
+                }
             }
         }
     }
