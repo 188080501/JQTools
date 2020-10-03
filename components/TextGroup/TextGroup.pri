@@ -17,6 +17,7 @@ include( $$PWD/RandomPassword/RandomPassword.pri )
 include( $$PWD/RandomUuid/RandomUuid.pri )
 include( $$PWD/CaseTransform/CaseTransform.pri )
 include( $$PWD/JsonFormat/JsonFormat.pri )
+include( $$PWD/StringSort/StringSort.pri )
 
 INCLUDEPATH *= \
     $$PWD/

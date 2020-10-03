@@ -48,7 +48,8 @@ ApplicationWindow {
                                 { bookmarkName: "密码随机器", titleName: "密码随机器", qrcLocation: "qrc:/RandomPassword/RandomPassword.qml" },
                                 { bookmarkName: "UUID随机器", titleName: "UUID随机器", qrcLocation: "qrc:/RandomUuid/RandomUuid.qml" },
                                 { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" },
-                                { bookmarkName: "JSON格式化", titleName: "JSON格式化", qrcLocation: "qrc:/JsonFormat/JsonFormat.qml" }
+                                { bookmarkName: "JSON格式化", titleName: "JSON格式化", qrcLocation: "qrc:/JsonFormat/JsonFormat.qml" },
+                                { bookmarkName: "字符串排序", titleName: "字符串排序", qrcLocation: "qrc:/StringSort/StringSort.qml" }
                             ]
                         },
                         {
