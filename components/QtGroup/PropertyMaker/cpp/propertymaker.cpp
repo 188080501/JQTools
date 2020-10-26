@@ -23,10 +23,10 @@ Manage::Manage()
     propertyMaker_[ "READ" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
     {
         QString statementTemplate =
-                "public: Q_SLOT inline %TYPE% %FUNCTION_NAME%();\n";
+                "public: Q_SLOT inline %TYPE% %FUNCTION_NAME%() const;\n";
 
         QString accomplishCode =
-                "inline %TYPE% %CLASS_NAME%::%FUNCTION_NAME%()\n"
+                "inline %TYPE% %CLASS_NAME%::%FUNCTION_NAME%() const\n"
                 "{ %MUTEX_LOCK%%COPY_BUFFER%%MUTEX_UNLOCK%return %BUFFER_NAME%; }\n";
 
         statementTemplate.replace( "%TYPE%", type );
