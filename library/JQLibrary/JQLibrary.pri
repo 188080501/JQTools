@@ -46,11 +46,19 @@ contains( QT, bluetooth ) : exists( $$PWD/src/JQBluetooth.cpp ) {
     }
 }
 
-exists( $$PWD/src/jqchecksum.hpp ) {
+exists( $$PWD/include/jqchecksum.hpp ) {
 
     !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
 
         HEADERS *= $$PWD/include/jqchecksum.hpp
+    }
+}
+
+exists( $$PWD/include/jqdeclare.hpp ) {
+
+    !contains( DEFINES, JQLIBRARY_EXPORT_ENABLE ) | contains( DEFINES, JQLIBRARY_EXPORT_MODE ) {
+
+        HEADERS *= $$PWD/include/jqdeclare.hpp
     }
 }
 
