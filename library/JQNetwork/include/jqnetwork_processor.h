@@ -44,7 +44,7 @@
 
 #define JQNP_SERVERFAIL( errorMessage )                                                 \
     const auto &&message = QStringLiteral( ": Server error: " ) + errorMessage;         \
-    qDebug() << QString( Q_FUNC_INFO ).remove( "bool " ).toLocal8Bit().data()           \
+    qWarning() << QString( Q_FUNC_INFO ).remove( "bool " ).toLocal8Bit().data()         \
              << message.toLocal8Bit().data();                                           \
     send[ QStringLiteral( "succeed" ) ] = false;                                        \
     send[ QStringLiteral( "message" ) ] = errorMessage;                                 \
