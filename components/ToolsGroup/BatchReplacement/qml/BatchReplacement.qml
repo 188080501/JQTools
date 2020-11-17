@@ -53,7 +53,7 @@ Item {
         MaterialCheckBox {
             id: checkBoxForQmake
             x: 64
-            y: 172
+            y: 162
             text: "pro/pri/prf/prl/qrc"
             checked: true
         }
@@ -61,15 +61,23 @@ Item {
         MaterialCheckBox {
             id: checkBoxForQml
             x: 64
-            y: 232
+            y: 212
             text: "qml"
+            checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForUi
+            x: 64
+            y: 262
+            text: "ui"
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForNoSuffixFile
             x: 64
-            y: 292
+            y: 312
             text: "无后缀文件"
             checked: true
         }
@@ -77,7 +85,7 @@ Item {
         MaterialCheckBox {
             id: checkBoxForFileAndDir
             x: 64
-            y: 352
+            y: 362
             text: "文件名/文件夹名"
             checked: true
         }
@@ -149,6 +157,11 @@ Item {
                 if ( checkBoxForQml.checked )
                 {
                     suffixs.push( "qml" );
+                }
+
+                if ( checkBoxForUi.checked )
+                {
+                    suffixs.push( "ui" );
                 }
 
                 if ( checkBoxForQmake.checked )
