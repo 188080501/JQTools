@@ -109,6 +109,11 @@ Item {
                     suffixs.push( "qml" );
                 }
 
+                if ( checkBoxForUi.checked )
+                {
+                    suffixs.push( "ui" );
+                }
+
                 if ( checkBoxForQmake.checked )
                 {
                     suffixs.push( "pro" );
