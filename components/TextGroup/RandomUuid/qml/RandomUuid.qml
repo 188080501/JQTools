@@ -74,7 +74,7 @@ Item {
 
             onClicked: {
                 randomUuidManage.setClipboardText( textFieldForPassword.text );
-                materialUI.showSnackbarMessage( "密码已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "UUID已经复制到了剪切板" );
             }
         }
     }
