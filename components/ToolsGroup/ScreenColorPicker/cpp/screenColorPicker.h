@@ -18,7 +18,6 @@
 
 // JQToolsLibrary import
 #include <JQToolsLibrary>
-
 #include "colorpicker.h"
 
 
@@ -42,8 +41,11 @@ signals:
     void colorSelect(const QColor & c);
 public slots:
     void openPicker();
+    void onColorSelect(const QColor & c);
+    void copyColorToClipboard();
 
 private:
+    QColor currentColor;
     ColorPicker *colorPicker;
 };
 

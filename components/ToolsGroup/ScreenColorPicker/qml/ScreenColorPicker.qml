@@ -45,7 +45,7 @@ Item {
 
         Rectangle{
             id: colorlabel
-            width: 50
+            width: 70
             height: pickerButton.height
             x: 150
             y: 220
@@ -53,18 +53,25 @@ Item {
             color: "blue"
         }
 
+        MaterialTextField{
+            x: 150
+            y: 260
+            text: colorlabel.color
+            width: colorlabel.width
+        }
+
         MaterialButton {
             x: 230
-            y: 220
-            text: "复制"
+            y: 290
+            text: "复制代码"
             onClicked: {
-                screenColorPickerManage.openPicker();
+                screenColorPickerManage.copyColorToClipboard();
             }
         }
 
         MaterialButton {
             id: pickerButton
-            x: 350
+            x: 230
             y: 220
             text: "打开拾色器"
             onClicked: {
