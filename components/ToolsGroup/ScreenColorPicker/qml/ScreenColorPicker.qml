@@ -12,9 +12,10 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
+
 import "qrc:/MaterialUI/Interface/"
 import ScreenColorPicker 1.0
+
 
 Item {
     id: screenColorPicker
@@ -29,16 +30,46 @@ Item {
         id: screenColorPickerManage
     }
 
-    MaterialButton {
-       width: 120
-       height: 40
-       text: "打开取色器"
-       //anchors.horizontalCenterOffset: 134
-       //anchors.verticalCenterOffset: 32
-       anchors.horizontalCenter: parent.horizontalCenter
-       anchors.verticalCenter: parent.verticalCenter
-       onClicked: {
-           screenColorPickerManage.openPicker();
-       }
+
+    Item{
+        anchors.centerIn: parent
+        width: 620
+        height: 540
+
+        Connections{
+            target: screenColorPickerManage
+            function onColorSelect(c){
+                colorlabel.color = c;
+            }
+        }
+
+        Rectangle{
+            id: colorlabel
+            width: 50
+            height: pickerButton.height
+            x: 150
+            y: 220
+            border.color: "black"
+            color: "blue"
+        }
+
+        MaterialButton {
+            x: 230
+            y: 220
+            text: "复制"
+            onClicked: {
+                screenColorPickerManage.openPicker();
+            }
+        }
+
+        MaterialButton {
+            id: pickerButton
+            x: 350
+            y: 220
+            text: "打开拾色器"
+            onClicked: {
+                screenColorPickerManage.openPicker();
+            }
+        }
     }
 }

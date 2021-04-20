@@ -18,7 +18,7 @@ using namespace ScreenColorPicker;
 
 Manage::Manage(): colorPicker(new ColorPicker)
 {
-
+  connect(colorPicker, &ColorPicker::colorSelect, this,  &Manage::colorSelect);
 }
 
 

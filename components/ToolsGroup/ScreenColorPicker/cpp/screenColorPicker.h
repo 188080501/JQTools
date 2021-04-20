@@ -38,7 +38,8 @@ class Manage: public AbstractTool
 public:
     Manage();
     ~Manage() = default;
-
+signals:
+    void colorSelect(const QColor & c);
 public slots:
     void openPicker();
 
