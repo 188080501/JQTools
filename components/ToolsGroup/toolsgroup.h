@@ -15,6 +15,7 @@
 
 // ToolsGroup lib import
 #include <LinesStatistics>
+#include <ScreenColorPicker>
 #include <PngOptimize>
 #ifdef TOOLSGROUP_JPGOPTIMIZE_ENABLE
 #   include <JpgOptimize>
@@ -37,7 +38,8 @@
     PNGOPTIMIZE_INITIALIZA; \
     LANFILETRANSPORT_INITIALIZA; \
     QRCODEREADER_INITIALIZA; \
-    BATCHREPLACEMENT_INITIALIZA;
+    BATCHREPLACEMENT_INITIALIZA;\
+    SCREENCOLORPICKER_INITIALIZA;
 #endif
 
 #endif//TOOLSGROUP_TOOLSGROUP_H_
