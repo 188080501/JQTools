@@ -57,7 +57,7 @@ Item {
         }
 
         MaterialButton {
-            x: 230
+            x: 300
             y: 290
             text: "复制代码"
             onClicked: {
@@ -67,7 +67,7 @@ Item {
 
         MaterialButton {
             id: pickerButton
-            x: 230
+            x: 300
             y: 220
             text: "打开拾色器"
             onClicked: {
