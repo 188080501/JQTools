@@ -22,10 +22,6 @@ Item {
     width: 620
     height: 540
 
-    Component.onCompleted: {
-        changingFlag = false;
-    }
-
     ScreenColorPickerManage {
         id: screenColorPickerManage
     }

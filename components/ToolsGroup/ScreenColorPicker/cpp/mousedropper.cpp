@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QPainter>
+#include <QScreen>
 #include <QCursor>
 const QSize winSize(100,100);       //窗口尺寸
 const int grabInterval=50;          //刷新频率
@@ -37,7 +38,7 @@ QColor MouseDropper::getColor() const
 void MouseDropper::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
-    QPixmap grab=QPixmap::grabWindow(QApplication::desktop()->winId()).copy(QCursor::pos().x()-winSize.width()/magnificationTimes/2,QCursor::pos().y()-winSize.height()*split/magnificationTimes/2,winSize.width()/magnificationTimes,winSize.height()*split/magnificationTimes);
+    QPixmap grab=QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).copy(QCursor::pos().x()-winSize.width()/magnificationTimes/2,QCursor::pos().y()-winSize.height()*split/magnificationTimes/2,winSize.width()/magnificationTimes,winSize.height()*split/magnificationTimes);
     painter.drawPixmap(0,0,winSize.width(),winSize.height()*split,grab);
 
     QPixmap pixmap = grab.copy(winSize.width()/magnificationTimes/2,winSize.height()*split/magnificationTimes/2,1,1);//截图1个像素
