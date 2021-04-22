@@ -18,6 +18,7 @@ mac {
 }
 include( $$PWD/QRCodeReader/QRCodeReader.pri )
 include( $$PWD/BatchReplacement/BatchReplacement.pri )
+include( $$PWD/ScreenColorPicker/ScreenColorPicker.pri )
 
 INCLUDEPATH *= \
     $$PWD/
