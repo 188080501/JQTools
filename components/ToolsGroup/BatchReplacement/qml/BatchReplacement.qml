@@ -42,68 +42,64 @@ Item {
             text: "搜索的文件后缀"
         }
 
-        MaterialCheckBox {
-            id: checkBoxForCpp
+        Column {
             x: 64
             y: 92
-            text: "h/c/cc/cp/cpp/hpp/inc/i/ii/m"
-            checked: true
-        }
+            spacing: -10
 
-        MaterialCheckBox {
-            id: checkBoxForQmake
-            x: 64
-            y: 142
-            text: "pro/pri/prf/prl/qrc"
-            checked: true
-        }
+            MaterialCheckBox {
+                id: checkBoxForCpp
+                text: "h/c/cc/cp/cpp/hpp/inc/i/ii/m"
+                checked: true
+            }
 
-        MaterialCheckBox {
-            id: checkBoxForQml
-            x: 64
-            y: 192
-            text: "qml"
-            checked: true
-        }
+            MaterialCheckBox {
+                id: checkBoxForQmake
+                text: "pro/pri/prf/prl/qrc"
+                checked: true
+            }
 
-        MaterialCheckBox {
-            id: checkBoxForUi
-            x: 64
-            y: 242
-            text: "ui"
-            checked: true
-        }
+            MaterialCheckBox {
+                id: checkBoxForQml
+                text: "qml"
+                checked: true
+            }
 
-        MaterialCheckBox {
-            id: checkBoxForJsonAndXml
-            x: 64
-            y: 292
-            text: "json/xml"
-            checked: true
-        }
+            MaterialCheckBox {
+                id: checkBoxForUi
+                text: "ui"
+                checked: true
+            }
 
-        MaterialCheckBox {
-            id: checkBoxForNoSuffixFile
-            x: 64
-            y: 342
-            text: "无后缀文件"
-            checked: true
-        }
+            MaterialCheckBox {
+                id: checkBoxForJsonAndXml
+                text: "json/xml"
+                checked: true
+            }
 
-        MaterialCheckBox {
-            id: checkBoxForFileAndDir
-            x: 64
-            y: 392
-            text: "文件名/文件夹名"
-            checked: true
-        }
+            MaterialCheckBox {
+                id: checkBoxForBatAndSh
+                text: "bat/sh"
+                checked: true
+            }
 
-        MaterialCheckBox {
-            id: checkBoxForMultiCase
-            x: 64
-            y: 442
-            text: "匹配英文大小写"
-            checked: true
+            MaterialCheckBox {
+                id: checkBoxForNoSuffixFile
+                text: "无后缀文件"
+                checked: true
+            }
+
+            MaterialCheckBox {
+                id: checkBoxForFileAndDir
+                text: "文件名/文件夹名"
+                checked: true
+            }
+
+            MaterialCheckBox {
+                id: checkBoxForMultiCase
+                text: "匹配英文大小写"
+                checked: true
+            }
         }
 
         MaterialTextField {
@@ -176,6 +172,12 @@ Item {
                 {
                     suffixs.push( "json" );
                     suffixs.push( "xml" );
+                }
+
+                if ( checkBoxForBatAndSh.checked )
+                {
+                    suffixs.push( "bat" );
+                    suffixs.push( "sh" );
                 }
 
                 if ( checkBoxForQmake.checked )
