@@ -23,7 +23,7 @@ Manage::Manage()
     propertyMaker_[ "READ" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
     {
         QString statementTemplate =
-                "public: Q_SLOT inline %TYPE% %FUNCTION_NAME%() const;\n";
+                "public: inline %TYPE% %FUNCTION_NAME%() const;\n";
 
         QString accomplishCode =
                 "inline %TYPE% %CLASS_NAME%::%FUNCTION_NAME%() const\n"
@@ -51,7 +51,7 @@ Manage::Manage()
     propertyMaker_[ "WRITE" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &notifyFunctionName, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
     {
         QString statementTemplate =
-                "public: Q_SLOT inline void %FUNCTION_NAME%(const %TYPE% &newValue);\n";
+                "public: inline void %FUNCTION_NAME%(const %TYPE% &newValue);\n";
 
         QString accomplishCode =
                 "inline void %CLASS_NAME%::%FUNCTION_NAME%(const %TYPE% &newValue)\n"
@@ -62,7 +62,7 @@ Manage::Manage()
         statementTemplate.replace( "%VALUE_NAME%", valueName );
         statementTemplate.replace( "%CLASS_NAME%", className );
 
-        accomplishCode.replace( "%EQUALITY_JUDGMENT%", ( type == "qreal" ) ? ( "qAbs( newValue - %VALUE_NAME%_ ) < 0.000001" ) : ( "newValue == %VALUE_NAME%_" ) );
+        accomplishCode.replace( "%EQUALITY_JUDGMENT%", ( ( type == "float" ) || ( type == "double" ) || ( type == "qreal" ) ) ? ( "qAbs( newValue - %VALUE_NAME%_ ) < 0.000001" ) : ( "newValue == %VALUE_NAME%_" ) );
         accomplishCode.replace( "%COPY_BUFFER%", ( withThreadSafe ) ? ( "const auto result = %VALUE_NAME%_; " ) : ( "" ) );
         accomplishCode.replace( "%BUFFER_NAME%", ( withThreadSafe ) ? ( "result" ) : ( "%VALUE_NAME%_" ) );
 
@@ -159,7 +159,11 @@ QVariantMap Manage::make(const QString &source, const bool &withThreadSafe, cons
             flag = true;
         }
 
-        if ( type == "qreal" )
+        if ( type == "float" )
+        {
+            statementCode += QString( "private: %1 %2_ = 0.0f;\n" ).arg( type ).arg( valueName );
+        }
+        else if ( ( type == "double" ) || ( type == "qreal" ) )
         {
             statementCode += QString( "private: %1 %2_ = 0.0;\n" ).arg( type ).arg( valueName );
         }
