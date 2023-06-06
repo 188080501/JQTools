@@ -11,7 +11,7 @@ ColorPicker::ColorPicker(QWidget *parent)
      resize(QGuiApplication::primaryScreen()->size());
      this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);      //设置为无边框窗口
      this->setAttribute(Qt::WA_TranslucentBackground);
-     this->setCursor(QCursor(QPixmap("qrc:/取色笔.png"),0,19));
+     this->setCursor(QCursor(QPixmap("qrc:/ColorPickerPen.png"),0,19));
 }
 
 void ColorPicker::paintEvent(QPaintEvent *e)

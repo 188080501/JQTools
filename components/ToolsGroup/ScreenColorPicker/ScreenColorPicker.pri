@@ -30,4 +30,4 @@ RESOURCES *= \
     $$PWD/qml/ScreenColorPicker.qrc
 
 DISTFILES += \
-    $$PWD/res/ico/取色笔.png
+    $$PWD/res/ico/ColorPickerPen.png
