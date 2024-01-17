@@ -4728,14 +4728,18 @@ unsigned lodepng_decode(unsigned char** out, unsigned* w, unsigned* h,
       return 56; /*unsupported color mode conversion*/
     }
 
-    outsize = lodepng_get_raw_size(*w, *h, &state->info_raw);
+    *outsize = lodepng_get_raw_size(*w, *h, &state->info_raw);
     *out = (unsigned char*)lodepng_malloc(outsize);
     if(!(*out))
     {
       state->error = 83; /*alloc fail*/
+      return state->error; 
     }
-    else state->error = lodepng_convert(*out, data, &state->info_raw,
-                                        &state->info_png.color, *w, *h);
+    else
+    {
+      data = *out; 
+      state->error = lodepng_convert(*out, data, &state->info_raw, &state->info_png.color, *w, *h);
+    }
     lodepng_free(data);
   }
   return state->error;
