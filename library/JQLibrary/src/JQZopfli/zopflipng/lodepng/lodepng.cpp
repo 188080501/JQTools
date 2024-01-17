@@ -4733,9 +4733,13 @@ unsigned lodepng_decode(unsigned char** out, unsigned* w, unsigned* h,
     if(!(*out))
     {
       state->error = 83; /*alloc fail*/
+      return state->error; 
     }
-    else state->error = lodepng_convert(*out, data, &state->info_raw,
-                                        &state->info_png.color, *w, *h);
+    else
+    {
+      data = *out; 
+      state->error = lodepng_convert(*out, data, &state->info_raw, &state->info_png.color, *w, *h);
+    }
     lodepng_free(data);
   }
   return state->error;
