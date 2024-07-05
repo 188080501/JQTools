@@ -59,7 +59,8 @@ ApplicationWindow {
                             children:
                             [
                                 { bookmarkName: "HASH计算器", titleName: "HASH计算器", qrcLocation: "qrc:/HashCalculate/HashCalculate.qml" },
-                                { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" }
+                                { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" },
+                                { bookmarkName: "二分法助手", titleName: "二分法助手", qrcLocation: "qrc:/BinarySearchAssistant/BinarySearchAssistant.qml" }
                             ]
                         },
                         {

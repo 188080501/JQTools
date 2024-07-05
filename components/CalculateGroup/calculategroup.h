@@ -16,9 +16,11 @@
 // CalculateGroup lib import
 #include <HashCalculate>
 #include <TimestampTransform>
+#include <BinarySearchAssistant>
 
 #define CALCULATEGROUP_INITIALIZA \
     HASHCALCULATE_INITIALIZA; \
-    TTIMESTAMPTRANSFORM_INITIALIZA;
+    TTIMESTAMPTRANSFORM_INITIALIZA;\
+    BINARYSEARCHASSISTANT_INITIALIZA;
 
 #endif//CALCULATEGROUP_CALCULATEGROUP_H_
