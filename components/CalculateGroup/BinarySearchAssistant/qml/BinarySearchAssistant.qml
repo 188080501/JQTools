@@ -22,6 +22,7 @@ Item {
 
     Column {
         anchors.centerIn: parent
+        spacing: 10
 
         MaterialTextField {
             id: minField
@@ -50,6 +51,11 @@ Item {
                     startRecord = false;
                 }
             }
+        }
+
+        Item {
+            width: 1
+            height: 10
         }
 
         MaterialButton {
