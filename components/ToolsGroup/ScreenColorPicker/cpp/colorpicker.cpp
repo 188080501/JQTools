@@ -16,12 +16,16 @@ ColorPicker::ColorPicker(QWidget *parent)
 
 void ColorPicker::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED( e );
+
     QPainter painter(this);
     painter.fillRect(rect(),QColor(255,255,255,1));
 }
 
 void ColorPicker::mousePressEvent(QMouseEvent *e)
 {
+    Q_UNUSED( e );
+
     emit colorSelect(mousedropper->getColor());
     close();
 }

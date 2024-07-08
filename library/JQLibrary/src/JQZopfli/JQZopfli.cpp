@@ -540,7 +540,7 @@ OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString
         return result;
     }
 
-    result.originalSize = originalPng.size();
+    result.originalSize = (int)originalPng.size();
 
     ZopfliPNGOptions pngOptions;
 
@@ -551,7 +551,7 @@ OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString
     }
 
     result.optimizeSucceed = true;
-    result.resultSize = resultPng.size();
+    result.resultSize = (int)resultPng.size();
     result.compressionRatio = (double)resultPng.size() / (double)originalPng.size();
     result.timeConsuming = timer.elapsed();
 
@@ -562,7 +562,7 @@ OptimizeResult JQZopfli::optimize(const QString &originalFilePath, const QString
         return result;
     }
 
-    file.write( QByteArray( (const char *)resultPng.data(), resultPng.size() ) );
+    file.write( QByteArray( (const char *)resultPng.data(), (int)resultPng.size() ) );
     file.waitForBytesWritten( 30 * 1000 );
 
     return result;
