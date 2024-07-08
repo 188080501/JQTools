@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/BinarySearchAssistant">
+        <file>BinarySearchAssistant.qml</file>
+    </qresource>
+</RCC>

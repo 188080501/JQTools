@@ -12,6 +12,7 @@
 
 include( $$PWD/HashCalculate/HashCalculate.pri )
 include( $$PWD/TimestampTransform/TimestampTransform.pri )
+include( $$PWD/BinarySearchAssistant/BinarySearchAssistant.pri )
 
 INCLUDEPATH *= \
     $$PWD/
