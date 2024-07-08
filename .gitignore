@@ -43,6 +43,7 @@ Makefile*
 # QtCreator
 
 *.autosave
+*.TMP
 
 # QtCtreator Qml
 *.qmlproject.user
