@@ -41,7 +41,6 @@ Makefile*
 *build-*
 
 # QtCreator
-
 *.autosave
 *.TMP
 
@@ -57,3 +56,6 @@ CMakeLists.txt.user*
 
 ### Visual Studio Code ###
 .vscode/
+
+### build ###
+/build
