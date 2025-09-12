@@ -35,7 +35,7 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString encode(const QString &string);
+    QString encode(const QString &string, const QString &exclude);
 
     QString decode(const QString &string);
 };
