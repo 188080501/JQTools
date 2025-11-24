@@ -80,6 +80,10 @@ public slots:
 
     void calculateSha3_512();
 
+    void calculateToZipAndBase64();
+
+    void calculateFromBase64AndZip();
+
 signals:
     void sourceChanged();
 

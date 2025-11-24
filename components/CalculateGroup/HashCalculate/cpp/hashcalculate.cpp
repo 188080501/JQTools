@@ -141,3 +141,15 @@ void Manage::calculateSha3_512()
     target_ = QCryptographicHash::hash( source_.toUtf8(), QCryptographicHash::Sha3_512 ).toHex();
     emit targetChanged();
 }
+
+void Manage::calculateToZipAndBase64()
+{
+    target_ = qCompress( source_.toUtf8() ).toBase64();
+    emit targetChanged();
+}
+
+void Manage::calculateFromBase64AndZip()
+{
+    target_ = qUncompress( QByteArray::fromBase64( source_.toUtf8() ) );
+    emit targetChanged();
+}

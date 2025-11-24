@@ -186,7 +186,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 11
+            y: 1
             width: 110
             height: 40
             text: "黏贴内容"
@@ -198,7 +198,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 57
+            y: 47
             width: 110
             height: 40
             text: "清空所有"
@@ -210,7 +210,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 11
+            y: 1
             width: 110
             height: 40
             text: "复制结果"
@@ -223,7 +223,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 57
+            y: 47
             width: 110
             height: 40
             text: "剪切到源"
@@ -235,7 +235,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 103
+            y: 93
             width: 110
             height: 40
             text: "To Base64"
@@ -247,7 +247,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 103
+            y: 93
             width: 110
             height: 40
             text: "From Base64"
@@ -259,7 +259,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 149
+            y: 139
             width: 110
             height: 40
             text: "MD4"
@@ -271,7 +271,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 149
+            y: 139
             width: 110
             height: 40
             text: "MD5"
@@ -283,7 +283,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 195
+            y: 185
             width: 110
             height: 40
             text: "Sha1"
@@ -295,7 +295,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 195
+            y: 185
             width: 110
             height: 40
             text: "Sha224"
@@ -307,7 +307,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 241
+            y: 231
             width: 110
             height: 40
             text: "Sha256"
@@ -319,7 +319,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 241
+            y: 231
             width: 110
             height: 40
             text: "Sha384"
@@ -331,7 +331,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 287
+            y: 277
             width: 110
             height: 40
             text: "Sha512"
@@ -343,7 +343,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 287
+            y: 277
             width: 110
             height: 40
             text: "Sha3_224"
@@ -355,7 +355,7 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 333
+            y: 323
             width: 110
             height: 40
             text: "Sha3_256"
@@ -367,7 +367,7 @@ Item {
 
         MaterialButton {
             x: 124
-            y: 333
+            y: 323
             width: 110
             height: 40
             text: "Sha3_384"
@@ -379,13 +379,39 @@ Item {
 
         MaterialButton {
             x: 8
-            y: 379
+            y: 369
             width: 110
             height: 40
             text: "Sha3_512"
 
             onClicked: {
                 hashCalculateManage.calculateSha3_512();
+            }
+        }
+
+        MaterialButton {
+            x: 8
+            y: 415
+            width: 110
+            height: 40
+            textSize: 14
+            text: "压缩 & Base64"
+
+            onClicked: {
+                hashCalculateManage.calculateToZipAndBase64();
+            }
+        }
+
+        MaterialButton {
+            x: 124
+            y: 415
+            width: 110
+            height: 40
+            textSize: 14
+            text: "解压 & Base64"
+
+            onClicked: {
+                hashCalculateManage.calculateFromBase64AndZip();
             }
         }
     }
