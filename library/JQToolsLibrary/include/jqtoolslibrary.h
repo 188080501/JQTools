@@ -17,8 +17,6 @@
 #include <QObject>
 #include <QPointer>
 
-#define JQTOOLS_VERSIONSTRING "24.8.28"
-
 class QQmlApplicationEngine;
 
 class AbstractTool: public QObject
