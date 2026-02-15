@@ -14,7 +14,4 @@ include( $$PWD/JQLibrary/JQLibrary.pri )
 include( $$PWD/JQLibrary/JQQRCodeReader.pri )
 include( $$PWD/JQLibrary/JQQRCodeWriter.pri )
 include( $$PWD/JQLibrary/JQZopfli.pri )
-
-mac {
-    include( $$PWD/JQLibrary/JQGuetzli.pri )
-}
+include( $$PWD/JQLibrary/JQGuetzli.pri )

@@ -33,13 +33,41 @@ INCLUDEPATH *= \
     $$PWD/include/JQGuetzli/
 
 HEADERS *= \
-    $$PWD/include/JQGuetzli/*.h
+    $$PWD/include/JQGuetzli/JQGuetzli.h
 
 SOURCES *= \
-    $$PWD/src/JQGuetzli/*.cpp \
-    $$PWD/src/JQGuetzli/guetzli/*.cc \
-    $$PWD/src/JQGuetzli/butteraugli/*.cc
+    $$PWD/src/JQGuetzli/JQGuetzli.cpp \
+    $$PWD/src/JQGuetzli/guetzli/butteraugli_comparator.cc \
+    $$PWD/src/JQGuetzli/guetzli/dct_double.cc \
+    $$PWD/src/JQGuetzli/guetzli/debug_print.cc \
+    $$PWD/src/JQGuetzli/guetzli/entropy_encode.cc \
+    $$PWD/src/JQGuetzli/guetzli/fdct.cc \
+    $$PWD/src/JQGuetzli/guetzli/gamma_correct.cc \
+    $$PWD/src/JQGuetzli/guetzli/idct.cc \
+    $$PWD/src/JQGuetzli/guetzli/jpeg_data.cc \
+    $$PWD/src/JQGuetzli/guetzli/jpeg_data_decoder.cc \
+    $$PWD/src/JQGuetzli/guetzli/jpeg_data_encoder.cc \
+    $$PWD/src/JQGuetzli/guetzli/jpeg_data_reader.cc \
+    $$PWD/src/JQGuetzli/guetzli/jpeg_data_writer.cc \
+    $$PWD/src/JQGuetzli/guetzli/jpeg_huffman_decode.cc \
+    $$PWD/src/JQGuetzli/guetzli/output_image.cc \
+    $$PWD/src/JQGuetzli/guetzli/preprocess_downsample.cc \
+    $$PWD/src/JQGuetzli/guetzli/processor.cc \
+    $$PWD/src/JQGuetzli/guetzli/quality.cc \
+    $$PWD/src/JQGuetzli/guetzli/quantize.cc \
+    $$PWD/src/JQGuetzli/guetzli/score.cc \
+    $$PWD/src/JQGuetzli/butteraugli/butteraugli.cc
 
-LIBS *= \
-    $$PWD/bin/JQGuetzli/x86_64/macx-clang/gflags/libgflags.2.2.0.dylib \
-    $$PWD/bin/JQGuetzli/x86_64/macx-clang/png/libpng16.16.dylib
+win32 {
+    DEFINES *= GFLAGS_IS_A_DLL=0
+
+    LIBS *= \
+        $$PWD/bin/JQGuetzli/x86_64/win32/gflags_nothreads_static.lib \
+        $$PWD/bin/JQGuetzli/x86_64/win32/libpng16.lib
+}
+
+mac {
+    LIBS *= \
+        $$PWD/bin/JQGuetzli/x86_64/macx-clang/libgflags.2.2.0.dylib \
+        $$PWD/bin/JQGuetzli/x86_64/macx-clang/libpng16.16.dylib
+}

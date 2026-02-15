@@ -15,9 +15,7 @@ include( $$PWD/FontToPng/FontToPng.pri )
 include( $$PWD/WebPMaker/WebPMaker.pri )
 include( $$PWD/PngWarningRemover/PngWarningRemover.pri )
 include( $$PWD/PngOptimize/PngOptimize.pri )
-mac {
-    include( $$PWD/JpgOptimize/JpgOptimize.pri )
-}
+include( $$PWD/JpgOptimize/JpgOptimize.pri )
 
 INCLUDEPATH *= \
     $$PWD/
