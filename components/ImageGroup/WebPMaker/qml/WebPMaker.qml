@@ -295,11 +295,11 @@ Item {
 
             for( var index = 0; index < drop.urls.length; ++index )
             {
-                var pngFilePath = webPMakerManage.urlToLocalPngFilePath( drop.urls[ index ] );
+                var pngOrJpgFilePath = webPMakerManage.urlToLocalPngOrJpgFilePath( drop.urls[ index ] );
 
-                if ( pngFilePath.length === 0 ) { continue; }
+                if ( pngOrJpgFilePath.length === 0 ) { continue; }
 
-                filePaths.push( pngFilePath);
+                filePaths.push( pngOrJpgFilePath);
             }
 
             if ( filePaths.length === 0 ) { return; }

@@ -57,7 +57,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 22
-        text: "基于Zopfli开发，仅支持PNG图片\n大图片压缩非常慢，请耐心等待\n（可以将文件拖拽拖拽到此处）"
+        text: "基于Zopfli开发，仅支持PNG图片\n大图片压缩非常慢，请耐心等待\n（可以将文件拖拽到此处）"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
     }

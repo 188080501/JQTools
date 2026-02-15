@@ -57,7 +57,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 22
-        text: "基于Guetzli开发，支持JPG有损压缩\n大图片压缩非常慢，请耐心等待\n（可以将文件拖拽拖拽到此处）"
+        text: "基于Guetzli开发，支持JPG有损压缩\n大图片压缩非常慢，请耐心等待\n（可以将文件拖拽到此处）"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
     }
@@ -295,11 +295,11 @@ Item {
 
             for( var index = 0; index < drop.urls.length; ++index )
             {
-                var pngOrJpgFilePath = jpgOptimizeManage.urlToLocalPngOrJpgFilePath( drop.urls[ index ] );
+                var jpgFilePath = jpgOptimizeManage.urlToLocalJpgFilePath( drop.urls[ index ] );
 
-                if ( pngOrJpgFilePath.length === 0 ) { continue; }
+                if ( jpgFilePath.length === 0 ) { continue; }
 
-                filePaths.push( pngOrJpgFilePath);
+                filePaths.push( jpgFilePath);
             }
 
             if ( filePaths.length === 0 ) { return; }

@@ -92,7 +92,7 @@ void Manage::startMake(const QString &currentFilePath)
     waitMakeQueue_.remove( currentFilePath );
 }
 
-QString Manage::urlToLocalPngFilePath(const QVariant &url)
+QString Manage::urlToLocalPngOrJpgFilePath(const QVariant &url)
 {
     QFileInfo fileInfo( url.toUrl().toLocalFile() );
     if ( !fileInfo.isFile() ) { return { }; }

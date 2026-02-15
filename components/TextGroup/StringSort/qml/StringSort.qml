@@ -32,7 +32,7 @@ Item {
 
     MaterialButton {
         x: 386
-        text: "格式化"
+        text: "排序"
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top

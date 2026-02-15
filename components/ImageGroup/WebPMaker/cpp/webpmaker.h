@@ -51,7 +51,7 @@ public slots:
 
     void startMake(const QString &currentFilePath);
 
-    QString urlToLocalPngFilePath(const QVariant &url);
+    QString urlToLocalPngOrJpgFilePath(const QVariant &url);
 
 private:
     QString makeWebP(const bool coverOldFile, const QStringList &filePaths);
