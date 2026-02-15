@@ -57,7 +57,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 22
-        text: "基于Qt开发，支持PNG和JPG图片的转换\n默认无损转换，大图片转换非常慢，请耐心等待\n（可以将文件拖拽拖拽到此处）"
+        text: "基于Qt开发，支持将PNG和JPG图片转换为WebP\n默认高质量转换，大图片转换可能较慢，请耐心等待\n（可以将文件拖拽到此处）"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
     }
