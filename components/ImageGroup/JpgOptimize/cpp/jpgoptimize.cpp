@@ -78,7 +78,7 @@ QString Manage::optimizeJpgByOpenDirectory(const bool coverOldFile)
                 true
             );
 
-    if ( directoryPath.isEmpty() ) { return "empty"; }
+    if ( filePaths.isEmpty() ) { return "empty"; }
 
     return this->optimizeJpg( coverOldFile, filePaths );
 }
