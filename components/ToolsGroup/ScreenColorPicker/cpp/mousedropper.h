@@ -1,5 +1,5 @@
-#ifndef MOUSEDROPPER_H
-#define MOUSEDROPPER_H
+#ifndef MOUSEDROPPER_H_
+#define MOUSEDROPPER_H_
 
 #include <QMouseEvent>
 #include <QWidget>
@@ -19,4 +19,4 @@ protected:
 
 };
 
-#endif // MOUSEDROPPER_H
+#endif//MOUSEDROPPER_H_

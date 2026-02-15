@@ -1,10 +1,11 @@
-#include "mousedropper.h"
+﻿#include "mousedropper.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QPainter>
 #include <QScreen>
 #include <QCursor>
+
 const QSize winSize(100,100);       //窗口尺寸
 const int grabInterval=50;          //刷新频率
 const int magnificationTimes=10;    //放大倍数
@@ -37,6 +38,8 @@ QColor MouseDropper::getColor() const
 
 void MouseDropper::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED( e );
+
     QPainter painter(this);
     QPixmap grab=QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).copy(QCursor::pos().x()-winSize.width()/magnificationTimes/2,QCursor::pos().y()-winSize.height()*split/magnificationTimes/2,winSize.width()/magnificationTimes,winSize.height()*split/magnificationTimes);
     painter.drawPixmap(0,0,winSize.width(),winSize.height()*split,grab);
@@ -55,5 +58,4 @@ void MouseDropper::paintEvent(QPaintEvent *e)
     painter.setPen(QColor(255,255,255));
     painter.drawText(32,82,"RGB");
     painter.drawText(32,95,QString().sprintf("%d,%d,%d",(color.red()-1)*255/254,(color.green()-1)*255/254,(color.blue()-1)*255/254));       //根据透明度算法复原原色素值
-
 }
