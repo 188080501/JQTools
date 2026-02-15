@@ -10,7 +10,6 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include( $$PWD/PngWarningRemover/PngWarningRemover.pri )
 include( $$PWD/PropertyMaker/PropertyMaker.pri )
 include( $$PWD/CppFileMaker/CppFileMaker.pri )
 

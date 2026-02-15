@@ -14,17 +14,11 @@
 #define MAKEGROUP_MAKEGROUP_H_
 
 // MakeGroup lib import
-#include <IconMaker>
-#include <FontToPng>
 #include <QRCodeMaker>
 #include <BarcodeMaker>
-#include <WebPMaker>
 
 #define MAKEGROUP_INITIALIZA \
-    ICONMAKER_INITIALIZA; \
-    FONTTOPNG_INITIALIZA; \
     QRCODEMAKER_INITIALIZA; \
-    BARCODEMAKER_INITIALIZA; \
-    WEBPMAKER_INITIALIZA;
+    BARCODEMAKER_INITIALIZA;
 
 #endif//MAKEGROUP_MAKEGROUP_H_

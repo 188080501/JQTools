@@ -17,7 +17,7 @@ QT += qml quick widgets concurrent
 CONFIG += c++11
 CONFIG += c++14
 
-include( $$PWD/JQLibraryImport.pri )
+include( $$PWD/library/JQLibraryImport.pri )
 include( $$PWD/library/JQToolsLibrary/JQToolsLibrary.pri )
 include( $$PWD/library/MaterialUI/MaterialUI.pri )
 include( $$PWD/components/components.pri )

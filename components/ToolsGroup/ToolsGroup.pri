@@ -11,10 +11,6 @@
 #
 
 include( $$PWD/LinesStatistics/LinesStatistics.pri )
-include( $$PWD/PngOptimize/PngOptimize.pri )
-mac {
-    include( $$PWD/JpgOptimize/JpgOptimize.pri )
-}
 include( $$PWD/QRCodeReader/QRCodeReader.pri )
 include( $$PWD/BatchReplacement/BatchReplacement.pri )
 include( $$PWD/ScreenColorPicker/ScreenColorPicker.pri )

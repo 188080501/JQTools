@@ -34,7 +34,7 @@ https://github.com/188080501/JQTools/releases/latest
 
 ## 界面预览
 
-![](./preview/JQToolsPreview.png)
+![](./doc/JQToolsPreview.png)
 
 ## 开发计划
 

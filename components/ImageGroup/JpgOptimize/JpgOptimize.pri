@@ -10,11 +10,17 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
-include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
+DEFINES += \
+    IMAGEGROUP_JPGOPTIMIZE_ENABLE
 
 INCLUDEPATH *= \
-    $$PWD/
+    $$PWD/cpp/
 
 HEADERS *= \
-    $$PWD/makegroup.h
+    $$PWD/cpp/jpgoptimize.h
+
+SOURCES *= \
+    $$PWD/cpp/jpgoptimize.cpp
+
+RESOURCES *= \
+    $$PWD/qml/JpgOptimize.qrc

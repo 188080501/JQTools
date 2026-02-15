@@ -31,6 +31,7 @@
 #include <TextGroup>
 #include <CalculateGroup>
 #include <MakeGroup>
+#include <ImageGroup>
 #include <ToolsGroup>
 #include <QtGroup>
 
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
     TEXTGROUP_INITIALIZA
     CALCULATEGROUP_INITIALIZA
     MAKEGROUP_INITIALIZA
+    IMAGEGROUP_INITIALIZA
     TOOLSGROUP_INITIALIZA
     QTGROUP_INITIALIZA
 
