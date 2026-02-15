@@ -17,7 +17,7 @@ INCLUDEPATH *= \
 JQQRCODEREADER_VERSIONSTRING = 1.6
 
 # 判断Qt版本，小于等于5.6就报错
-lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {
+!versionAtLeast( QT_VERSION, 5.7.0 ) {
     error( JQQRCodeReader request minimum Qt version is 5.7.0 )
 }
 
