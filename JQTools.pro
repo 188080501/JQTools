@@ -22,9 +22,6 @@ include( $$PWD/library/JQToolsLibrary/JQToolsLibrary.pri )
 include( $$PWD/library/MaterialUI/MaterialUI.pri )
 include( $$PWD/components/components.pri )
 
-PRECOMPILED_HEADER = $$PWD/cpp/stable.h
-CONFIG += precompile_header
-
 INCLUDEPATH *= \
     $$PWD/cpp/
 

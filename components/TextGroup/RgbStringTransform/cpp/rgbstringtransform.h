@@ -13,6 +13,9 @@
 #ifndef GROUP_TEXTGROUP_RGBSTRINGTRANSFORM_CPP_RGBSTRINGTRANSFORM_H_
 #define GROUP_TEXTGROUP_RGBSTRINGTRANSFORM_CPP_RGBSTRINGTRANSFORM_H_
 
+// Qt lib import
+#include <QColor>
+
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 

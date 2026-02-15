@@ -18,6 +18,7 @@
 
 // Qt lib import
 #include <QMap>
+#include <QVariant>
 
 // JQToolsLibrary import
 #include <JQToolsLibrary>

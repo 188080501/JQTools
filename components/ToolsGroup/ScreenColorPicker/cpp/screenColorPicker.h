@@ -15,11 +15,11 @@
 
 // Qt lib import
 #include <QJsonObject>
+#include <QColor>
 
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 #include "colorpicker.h"
-
 
 #define SCREENCOLORPICKER_INITIALIZA                                                              \
 {                                                                                               \

@@ -21,58 +21,8 @@ lessThan( QT_MAJOR_VERSION, 5 ) | lessThan( QT_MINOR_VERSION, 7 ) {
     error( JQQRCodeReader request minimum Qt version is 5.7.0 )
 }
 
-# 准备bin库目录
-JQQRCODEREADER_BIN_NO1_DIR = JQQRCodeReader$$JQQRCODEREADER_VERSIONSTRING/Qt$$[QT_VERSION]
-JQQRCODEREADER_BIN_NO2_DIR = $$QT_ARCH
-JQQRCODEREADER_BIN_NO3_DIR = $$[QMAKE_XSPEC]
-JQQRCODEREADER_BIN_NO3_DIR ~= s/g\+\+/gcc
-
-# 根据编译参数，追加static名称
-contains( CONFIG, static ) {
-    JQQRCODEREADER_BIN_NO3_DIR = $$JQQRCODEREADER_BIN_NO3_DIR-static
-}
-
-JQQRCODEREADER_BIN_DIR = $$PWD/bin/$$JQQRCODEREADER_BIN_NO1_DIR/$$JQQRCODEREADER_BIN_NO2_DIR/$$JQQRCODEREADER_BIN_NO3_DIR
-#message($$JQQRCODEREADER_BIN_DIR)
-
-# 若bin目录不存在则创建
-!exists( $$JQQRCODEREADER_BIN_DIR ) {
-    mkpath( $$JQQRCODEREADER_BIN_DIR )
-}
-
-# 根据不同系统，选择合适的名字
-unix | linux | mingw {
-    CONFIG( debug, debug | release ) {
-        JQQRCODEREADER_LIB_FILENAME = libJQQRCodeReaderd.a
-    }
-    CONFIG( release, debug | release ) {
-        JQQRCODEREADER_LIB_FILENAME = libJQQRCodeReader.a
-    }
-}
-else: msvc {
-    CONFIG( debug, debug | release ) {
-        JQQRCODEREADER_LIB_FILENAME = JQQRCodeReaderd.lib
-    }
-    CONFIG( release, debug | release ) {
-        JQQRCODEREADER_LIB_FILENAME = JQQRCodeReader.lib
-    }
-}
-else {
-    error( unknow platfrom )
-}
-
-# 生成bin路径
-JQQRCODEREADER_LIB_FILEPATH = $$JQQRCODEREADER_BIN_DIR/$$JQQRCODEREADER_LIB_FILENAME
-
-# 如果未指定编译模式，并且本地存在bin文件，那么使用bin文件
-!equals(JQQRCODEREADER_COMPILE_MODE, SRC) {
-    exists($$JQQRCODEREADER_LIB_FILEPATH) {
-        JQQRCODEREADER_COMPILE_MODE = LIB
-    }
-    else {
-        JQQRCODEREADER_COMPILE_MODE = SRC
-    }
-}
+# 固定使用源码编译
+JQQRCODEREADER_COMPILE_MODE = SRC
 
 equals(JQQRCODEREADER_COMPILE_MODE,SRC) {
 
@@ -199,13 +149,6 @@ equals(JQQRCODEREADER_COMPILE_MODE,SRC) {
         SOURCES *= \
             $$PWD/src/JQQRCodeReader/zxing/win32/zxing/win_iconv.c
     }
-}
-else : equals(JQQRCODEREADER_COMPILE_MODE,LIB) {
-
-    LIBS *= $$JQQRCODEREADER_LIB_FILEPATH
-}
-else {
-    error(unknow JQQRCODEREADER_COMPILE_MODE: $$JQQRCODEREADER_COMPILE_MODE)
 }
 
 # 判断是否要引入JQQRCodeReader的qml扩展部分
