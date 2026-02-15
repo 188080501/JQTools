@@ -25,9 +25,6 @@ include( $$PWD/components/components.pri )
 INCLUDEPATH *= \
     $$PWD/cpp/
 
-HEADERS *= \
-    $$PWD/cpp/jqtools_manage.hpp
-
 SOURCES *= \
     $$PWD/cpp/main.cpp
 

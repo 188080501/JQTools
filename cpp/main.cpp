@@ -23,9 +23,6 @@
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 
-// Project lib import
-#include <JQToolsManage>
-
 // Group import
 #include <WelcomeGroup>
 #include <TextGroup>
@@ -63,9 +60,6 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-    JQToolsManage jqToolsManage;
-
-    jqToolsManage.setQmlApplicationEngine( &engine );
 
     // Group initializa
     WELCOMEGROUP_INITIALIZA
@@ -75,8 +69,6 @@ int main(int argc, char *argv[])
     IMAGEGROUP_INITIALIZA
     TOOLSGROUP_INITIALIZA
     QTGROUP_INITIALIZA
-
-    engine.rootContext()->setContextProperty( "JQToolsManage", &jqToolsManage );
 
     engine.load( QUrl( "qrc:/main.qml" ) );
 
