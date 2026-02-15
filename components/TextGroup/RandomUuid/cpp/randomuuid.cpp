@@ -26,7 +26,7 @@ Manage::Manage()
     srand( QDateTime::currentDateTime().toTime_t() + qApp->applicationFilePath().size() );
 }
 
-QString Manage::randomUuid(const bool &includeParantheses)
+QString Manage::randomUuid(const bool includeParantheses)
 {
     if ( includeParantheses )
     {

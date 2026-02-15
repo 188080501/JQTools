@@ -87,20 +87,20 @@ public:
 public slots:
     void analysisItem(
             QQuickItem *item,
-            const int &apertureX,
-            const int &apertureY,
-            const int &apertureWidth,
-            const int &apertureHeight
+            const int apertureX,
+            const int apertureY,
+            const int apertureWidth,
+            const int apertureHeight
         );
 
 private:
-    static QImage binarization(const QImage &image, const qreal &correctionValue);
+    static QImage binarization(const QImage &image, const qreal correctionValue);
 
-    static int getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &correctionValue);
+    static int getReference(QImage &image, const int xStart, const int yStart, const int xEnd, const int yEnd, const qreal correctionValue);
 
-    static qreal avgReference(const qreal &referenceAvg, const qreal &currentReference);
+    static qreal avgReference(const qreal referenceAvg, const qreal currentReference);
 
-    static void processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset, const qreal &correctionValue);
+    static void processImage(QImage &image, const int xStart, const int yStart, const int xEnd, const int yEnd, const qreal offset, const qreal correctionValue);
 
 private:
     QSharedPointer< QThreadPool > threadPool_;
@@ -112,7 +112,7 @@ private:
     private: int decodeQrCodeType_ = JQQRCodeReader::DecodeQrCodeType;
     public: Q_SLOT inline int decodeQrCodeType() const
     { return decodeQrCodeType_; }
-    public: Q_SLOT inline void setDecodeQrCodeType(const int &newValue)
+    public: Q_SLOT inline void setDecodeQrCodeType(const int newValue)
     { if ( newValue == decodeQrCodeType_ ) { return; } decodeQrCodeType_ = newValue; }
     private:
     // Property code end

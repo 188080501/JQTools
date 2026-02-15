@@ -23,7 +23,7 @@ Manage::Manage()
     srand( QDateTime::currentDateTime().toTime_t() + qApp->applicationFilePath().size() );
 }
 
-QString Manage::randomPassword(const int &length, const bool &number, const bool &englishCharacters, const bool &caseSensitive, const bool &dividingLine)
+QString Manage::randomPassword(const int length, const bool number, const bool englishCharacters, const bool caseSensitive, const bool dividingLine)
 {
     QString password;
     QString table;

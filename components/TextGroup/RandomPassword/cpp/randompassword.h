@@ -35,7 +35,7 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString randomPassword(const int &length, const bool &number, const bool &englishCharacters, const bool &caseSensitive, const bool &dividingLine);
+    QString randomPassword(const int length, const bool number, const bool englishCharacters, const bool caseSensitive, const bool dividingLine);
 };
 
 }

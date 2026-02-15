@@ -31,7 +31,7 @@
 #include <QDebug>
 #include <QPainter>
 
-qint64 JQBarcode::makeNumber(const qint64 &rawNumebr)
+qint64 JQBarcode::makeNumber(const qint64 rawNumebr)
 {
     const auto &n1 = rawNumebr / 100000000000 % 10;
     const auto &n2 = rawNumebr / 10000000000 % 10;
@@ -45,10 +45,10 @@ qint64 JQBarcode::makeNumber(const qint64 &rawNumebr)
     const auto &n10 = rawNumebr / 100 % 10;
     const auto &n11 = rawNumebr / 10 % 10;
     const auto &n12 = rawNumebr / 1 % 10;
-    const auto &&c1 = n1 + n3 + n5 + n7 + n9 + n11;
-    const auto &&c2 = ( n2 + n4 + n6 + n8 + n10 + n12 ) * 3;
-    const auto &&cc = c1 + c2;
-    const auto &&c = qAbs( 10 - ( cc % 10 ) );
+    const auto c1 = n1 + n3 + n5 + n7 + n9 + n11;
+    const auto c2 = ( n2 + n4 + n6 + n8 + n10 + n12 ) * 3;
+    const auto cc = c1 + c2;
+    const auto c = qAbs( 10 - ( cc % 10 ) );
 
 //    qDebug() << n1 << n2 << n3 << n4 << n5 << n6 << n7 << n8 << n9 << n10 << n11 << n12;
 //    qDebug() << cc;
@@ -56,7 +56,7 @@ qint64 JQBarcode::makeNumber(const qint64 &rawNumebr)
     return rawNumebr * 10 + c;
 }
 
-QImage JQBarcode::makeBarcode(const qint64 &number)
+QImage JQBarcode::makeBarcode(const qint64 number)
 {
     QImage image( QSize( 190, 120 ), QImage::Format_ARGB32 );
     image.fill( qRgba( 0, 0, 0, 0 ) );
@@ -94,7 +94,7 @@ QImage JQBarcode::makeBarcode(const qint64 &number)
     return image;
 }
 
-void JQBarcode::paintByteA(QImage &image, const int &number, const int &pos)
+void JQBarcode::paintByteA(QImage &image, const int number, const int pos)
 {
     switch( number )
     {
@@ -112,7 +112,7 @@ void JQBarcode::paintByteA(QImage &image, const int &number, const int &pos)
     }
 }
 
-void JQBarcode::paintByteB(QImage &image, const int &number, const int &pos)
+void JQBarcode::paintByteB(QImage &image, const int number, const int pos)
 {
     switch( number )
     {
@@ -130,7 +130,7 @@ void JQBarcode::paintByteB(QImage &image, const int &number, const int &pos)
     }
 }
 
-void JQBarcode::paintByteC(QImage &image, const int &number, const int &pos)
+void JQBarcode::paintByteC(QImage &image, const int number, const int pos)
 {
     switch( number )
     {
@@ -148,7 +148,7 @@ void JQBarcode::paintByteC(QImage &image, const int &number, const int &pos)
     }
 }
 
-void JQBarcode::paintLines(QImage &image, const QString &key, const int &pos, const int &len)
+void JQBarcode::paintLines(QImage &image, const QString &key, const int pos, const int len)
 {
     for ( auto index = 0; index < 7; ++index )
     {
@@ -156,7 +156,7 @@ void JQBarcode::paintLines(QImage &image, const QString &key, const int &pos, co
     }
 }
 
-void JQBarcode::paintLine(QImage &image, const bool &black, const int &pos, const int &len)
+void JQBarcode::paintLine(QImage &image, const bool black, const int pos, const int len)
 {
     for ( auto index = 0; index < len; ++index )
     {

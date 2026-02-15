@@ -215,7 +215,7 @@ QString JQFoundation::variantToString(const QVariant &value)
         {
             if ( value.type() == QVariant::nameToType( "QJsonValue" ) )
             {
-                const auto &&jsonValue = value.toJsonValue();
+                const auto jsonValue = value.toJsonValue();
 
                 switch ( jsonValue.type() )
                 {
@@ -336,7 +336,7 @@ QVariantMap JQFoundation::mapKeyTranslate(const QVariantMap &source, const QMap<
 
     for ( auto sourceIt = source.begin(); sourceIt != source.end(); ++sourceIt )
     {
-        const auto &&keyMapIt = keyMap.find( sourceIt.key() );
+        const auto keyMapIt = keyMap.find( sourceIt.key() );
         if ( keyMapIt == keyMap.end() ) { continue; }
 
         result[ keyMapIt.value() ] = sourceIt.value();
@@ -370,9 +370,9 @@ QList< QVariantMap > JQFoundation::listKeyTranslate(const QList< QVariantMap > &
 }
 
 QSharedPointer< QTimer > JQFoundation::setTimerCallback(
-        const int &interval,
+        const int interval,
         const std::function<void (bool &continueFlag)> &callback,
-        const bool &callbackOnStart
+        const bool callbackOnStart
     )
 {
     QSharedPointer< QTimer > timer( new QTimer );
@@ -414,7 +414,7 @@ void JQFoundation::setTimerCallback(
         const QSharedPointer< QThreadPool > &threadPool
     )
 {
-    const auto &&currentDateTime = QDateTime::currentDateTime();
+    const auto currentDateTime = QDateTime::currentDateTime();
     auto workThread = [ = ]()
     {
         QSharedPointer< QThreadPool > targetThreadPool;
@@ -429,7 +429,7 @@ void JQFoundation::setTimerCallback(
 
         QtConcurrent::run( targetThreadPool.data(), [ = ]()
         {
-            const auto &&timeDiff = QDateTime::currentDateTime().msecsTo( dateTime );
+            const auto timeDiff = QDateTime::currentDateTime().msecsTo( dateTime );
             if ( timeDiff > 0 )
             {
                 QThread::msleep( static_cast< unsigned long >( timeDiff ) );
@@ -472,7 +472,7 @@ void JQFoundation::setTimerCallback(
 }
 #endif
 
-void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool &argDateFlag_)
+void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool argDateFlag_)
 {
     static QString rawTargetFilePath;
     static bool argDateFlag;
@@ -654,9 +654,9 @@ bool JQFoundation::singleApplicationExist(const QString &)
 }
 #endif
 
-QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper)
+QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool firstCharUpper)
 {
-    const auto &&splitList = source.split( '_', QString::SkipEmptyParts );
+    const auto splitList = source.split( '_', QString::SkipEmptyParts );
     QString result;
 
     for ( const auto &splitTag: splitList )
@@ -704,7 +704,7 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool &fi
     return result;
 }
 
-int JQFoundation::rectOverflow(const QSize &frameSize, const QRect &rect, const int &redundancy)
+int JQFoundation::rectOverflow(const QSize &frameSize, const QRect &rect, const int redundancy)
 {
     if ( redundancy != 0 )
     {
@@ -723,17 +723,17 @@ int JQFoundation::rectOverflow(const QSize &frameSize, const QRect &rect, const 
                 );
     }
 
-    const auto &&unitedRect = QRect( QPoint( 0, 0 ), frameSize ).united( rect );
+    const auto unitedRect = QRect( QPoint( 0, 0 ), frameSize ).united( rect );
 
     return qMax( unitedRect.width() - frameSize.width(), unitedRect.height() - frameSize.height() );
 }
 
-QRect JQFoundation::scaleRect(const QRect &rect, const qreal &scale)
+QRect JQFoundation::scaleRect(const QRect &rect, const qreal scale)
 {
     return scaleRect( rect, scale, scale );
 }
 
-QRect JQFoundation::scaleRect(const QRect &rect, const qreal &horizontalScale, const qreal &verticalScale)
+QRect JQFoundation::scaleRect(const QRect &rect, const qreal horizontalScale, const qreal verticalScale)
 {
     return {
         static_cast< int >( rect.x() * horizontalScale ),
@@ -743,7 +743,7 @@ QRect JQFoundation::scaleRect(const QRect &rect, const qreal &horizontalScale, c
     };
 }
 
-QPoint JQFoundation::scalePoint(const QPoint &point, const qreal &horizontalScale, const qreal &verticalScale)
+QPoint JQFoundation::scalePoint(const QPoint &point, const qreal horizontalScale, const qreal verticalScale)
 {
     return {
         static_cast< int >( point.x() * horizontalScale ),
@@ -751,7 +751,7 @@ QPoint JQFoundation::scalePoint(const QPoint &point, const qreal &horizontalScal
     };
 }
 
-QPointF JQFoundation::scalePoint(const QPointF &point, const qreal &horizontalScale, const qreal &verticalScale)
+QPointF JQFoundation::scalePoint(const QPointF &point, const qreal horizontalScale, const qreal verticalScale)
 {
     return {
         static_cast< qreal >( point.x() * horizontalScale ),
@@ -882,7 +882,7 @@ QByteArray JQFoundation::imageToByteArray(const QImage &image, const QString &fo
 
 QImage JQFoundation::imageCopy(const QImage &image, const QRect &rect)
 {
-    const auto &&unitedRect = QRect( 0, 0, image.width(), image.height() ).united( rect );
+    const auto unitedRect = QRect( 0, 0, image.width(), image.height() ).united( rect );
 
     if ( ( unitedRect.width() > image.width() ) || ( unitedRect.height() > image.height() ) )
     {
@@ -967,7 +967,7 @@ QImage JQFoundation::removeImageColor(const QImage &image, const QColor &color)
     return result;
 }
 
-void JQFoundation::waitFor(const std::function< bool() > &predicate, const int &timeout)
+void JQFoundation::waitFor(const std::function< bool() > &predicate, const int timeout)
 {
     for ( auto current = 0; current < timeout; current += 25 )
     {
@@ -977,14 +977,14 @@ void JQFoundation::waitFor(const std::function< bool() > &predicate, const int &
 }
 #endif
 
-QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval)
+QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 interval)
 {
     if ( interval <= 0 )
     {
         return { { startTime, endTime } };
     }
 
-    const auto &&dayStartTime = QDateTime( startTime.date(), QTime( 0, 0, 0 ) );
+    const auto dayStartTime = QDateTime( startTime.date(), QTime( 0, 0, 0 ) );
     auto currentTime = startTime.addMSecs( -1 * ( ( startTime.toMSecsSinceEpoch() - dayStartTime.toMSecsSinceEpoch() ) % interval ) );
 
     QList< QPair< QDateTime, QDateTime > > result;
@@ -1005,7 +1005,7 @@ QList< QPair< QDateTime, QDateTime > > JQFoundation::extractTimeRange(const QDat
 }
 
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
-QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime)
+QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int maximumTime)
 {
     QPair< int, QByteArray > reply;
 
@@ -1014,7 +1014,7 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
     process.setArguments( arguments );
     process.start();
 
-    QObject::connect( &process, static_cast< void(QProcess::*)(int, QProcess::ExitStatus exitStatus) >( &QProcess::finished ), [ &reply ](const int &exitCode)
+    QObject::connect( &process, static_cast< void(QProcess::*)(int, QProcess::ExitStatus exitStatus) >( &QProcess::finished ), [ &reply ](const int exitCode)
     {
         reply.first = exitCode;
     } );
@@ -1029,16 +1029,16 @@ QPair< int, QByteArray > JQFoundation::startProcessAndReadOutput(const QString &
 }
 #endif
 
-JQTickCounter::JQTickCounter(const qint64 &timeRange):
+JQTickCounter::JQTickCounter(const qint64 timeRange):
     timeRange_( timeRange ),
     mutex_( new QMutex )
 { }
 
-void JQTickCounter::tick(const int &count)
+void JQTickCounter::tick(const int count)
 {
     mutex_->lock();
 
-    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    const auto currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
 
     while ( ( !tickRecord_.isEmpty() ) && ( qAbs( currentMSecsSinceEpoch - tickRecord_.first() ) > timeRange_ ) )
     {
@@ -1059,7 +1059,7 @@ qreal JQTickCounter::tickPerSecond()
 
     mutex_->lock();
 
-    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    const auto currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
 
     while ( ( !tickRecord_.isEmpty() ) && ( qAbs( currentMSecsSinceEpoch - tickRecord_.first() ) > timeRange_ ) )
     {
@@ -1083,18 +1083,18 @@ QString JQTickCounter::tickPerSecondDisplayString()
 
 // AtcityFpsControl
 #ifdef QT_CONCURRENT_LIB
-JQFpsControl::JQFpsControl(const qreal &fps):
+JQFpsControl::JQFpsControl(const qreal fps):
     fps_( fps )
 { }
 
-void JQFpsControl::setFps(const qreal &fps)
+void JQFpsControl::setFps(const qreal fps)
 {
     fps_ = fps;
 }
 
 void JQFpsControl::waitNextFrame()
 {
-    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    const auto currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     const int timeInterval = qMax( 1, static_cast< int >( 1000.0 / fps_ ) );
     qint64 nextFrameTime = 0;
 
@@ -1123,7 +1123,7 @@ void JQFpsControl::waitNextFrame()
 
 bool JQFpsControl::readyNextFrame()
 {
-    const auto &&currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    const auto currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     const int timeInterval = qMax( 1, static_cast< int >( 1000.0 / fps_ ) );
 
     if ( ( currentMSecsSinceEpoch - lastTriggeredTime_ ) >= timeInterval )
@@ -1147,7 +1147,7 @@ QAtomicInteger< qint64 > JQMemoryPool::totalMallocSize_ = 0;
 QAtomicInteger< qint64 > JQMemoryPool::totalMallocCount_ = 0;
 qint64 JQMemoryPool::releaseThreshold_ = -1;
 
-void JQMemoryPool::initReleaseThreshold(const qreal &percentage)
+void JQMemoryPool::initReleaseThreshold(const qreal percentage)
 {
 #ifdef Q_OS_WIN
     MEMORYSTATUSEX statex;
@@ -1178,7 +1178,7 @@ qint64 JQMemoryPool::totalMallocCount()
     return totalMallocCount_;
 }
 
-void *JQMemoryPool::requestMemory(const size_t &requestSize)
+void *JQMemoryPool::requestMemory(const size_t requestSize)
 {
     totalMallocSize_ += static_cast< qint64 >( requestSize );
     ++totalMallocCount_;
@@ -1237,7 +1237,7 @@ void JQMemoryPool::recoverMemory(void *memory)
     }
 }
 
-JQMemoryPool::JQMemoryPoolNodeHead JQMemoryPool::makeNode(const size_t &requestSize)
+JQMemoryPool::JQMemoryPoolNodeHead JQMemoryPool::makeNode(const size_t requestSize)
 {
     static qint64 lastPrintSize = 0;
 

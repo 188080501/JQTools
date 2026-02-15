@@ -76,16 +76,16 @@ QImage JQQRCodeWriter::makeQRcode(
 
     painter.setBrush( colorForPoint );
 
-    const double &&s = ( qrCode->width > 0 ) ? ( qrCode->width ) : ( 1 );
-    const double &&aspect = image.width() / image.height();
-    const double &&scale = ( ( aspect > 1.0 ) ? image.height() : image.width() ) / s;
+    const double s = ( qrCode->width > 0 ) ? ( qrCode->width ) : ( 1 );
+    const double aspect = image.width() / image.height();
+    const double scale = ( ( aspect > 1.0 ) ? image.height() : image.width() ) / s;
 
     for ( int y = 0; y < s; ++y )
     {
-        const int &&yy = static_cast< int >( y * s );
+        const int yy = static_cast< int >( y * s );
         for( int x = 0; x < s; ++x )
         {
-            const int &&xx = yy + x;
+            const int xx = yy + x;
             const unsigned char &b = qrCode->data[xx];
 
             if( b & 0x01 )

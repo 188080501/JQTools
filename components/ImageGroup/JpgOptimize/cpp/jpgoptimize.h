@@ -43,18 +43,18 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString optimizeJpgByFilePaths(const bool &coverOldFile, const QJsonArray &filePaths);
+    QString optimizeJpgByFilePaths(const bool coverOldFile, const QJsonArray &filePaths);
 
-    QString optimizeJpgByOpenFiles(const bool &coverOldFile);
+    QString optimizeJpgByOpenFiles(const bool coverOldFile);
 
-    QString optimizeJpgByOpenDirectory(const bool &coverOldFile);
+    QString optimizeJpgByOpenDirectory(const bool coverOldFile);
 
     void startOptimize(const QString &currentFilePath);
 
     QString urlToLocalPngOrJpgFilePath(const QVariant &url);
 
 private:
-    QString optimizeJpg(const bool &coverOldFile, const QStringList &filePaths);
+    QString optimizeJpg(const bool coverOldFile, const QStringList &filePaths);
 
 signals:
     void optimizeStart(const QJsonArray fileList);

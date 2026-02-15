@@ -20,7 +20,7 @@ using namespace PropertyMaker;
 
 Manage::Manage()
 {
-    propertyMaker_[ "READ" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
+    propertyMaker_[ "READ" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool withThreadSafe, const QString &className)->QPair< QString, QString >
     {
         QString statementTemplate =
                 "public: inline %TYPE% %FUNCTION_NAME%() const;\n";
@@ -48,7 +48,7 @@ Manage::Manage()
         return { statementTemplate, accomplishCode };
     };
 
-    propertyMaker_[ "WRITE" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &notifyFunctionName, const bool &withThreadSafe, const QString &className)->QPair< QString, QString >
+    propertyMaker_[ "WRITE" ] = [](const QString &type, const QString &functionName, const QString &valueName, const QString &notifyFunctionName, const bool withThreadSafe, const QString &className)->QPair< QString, QString >
     {
         QString statementTemplate =
                 "public: inline void %FUNCTION_NAME%(const %TYPE% &newValue);\n";
@@ -78,7 +78,7 @@ Manage::Manage()
         return { statementTemplate, accomplishCode };
     };
 
-    propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool &, const QString &className)->QPair< QString, QString >
+    propertyMaker_[ "NOTIFY" ] = []( const QString &type, const QString &functionName, const QString &valueName, const QString &, const bool, const QString &className)->QPair< QString, QString >
     {
         QString statementTemplate =
                 "Q_SIGNAL void %FUNCTION_NAME%(const %TYPE% %VALUE_NAME%);\n";
@@ -92,13 +92,13 @@ Manage::Manage()
     };
 }
 
-QVariantMap Manage::make(const QString &source, const bool &withThreadSafe, const QString &className)
+QVariantMap Manage::make(const QString &source, const bool withThreadSafe, const QString &className)
 {
     QString statementCode;
     QString accomplishCode;
 
     bool flag = false;
-    const auto &&lines = source.split( "\n" );
+    const auto lines = source.split( "\n" );
 
     statementCode += "// Property statement code start\n";
     accomplishCode += "// Property accomplish code start\n";
@@ -116,7 +116,7 @@ QVariantMap Manage::make(const QString &source, const bool &withThreadSafe, cons
         line.remove( 0, 11 );
         line.remove( line.size() - 1, 1 );
 
-        const auto &&elements = line.split( " " );
+        const auto elements = line.split( " " );
         if ( elements.size() % 2 ) { continue; }
 
         QString type;
@@ -128,8 +128,8 @@ QVariantMap Manage::make(const QString &source, const bool &withThreadSafe, cons
         {
             if ( index )
             {
-                const auto &key = elements[ index ];
-                const auto &value = elements[ index + 1 ];
+                const auto key = elements[ index ];
+                const auto value = elements[ index + 1 ];
 
                 if ( !propertyMaker_.contains( key ) ) { continue; }
 

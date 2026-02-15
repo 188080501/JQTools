@@ -28,7 +28,7 @@ Manage::Manage()
 
 QString Manage::chooseTargetSavePath()
 {
-    const auto &&targetSavePath = QFileDialog::getExistingDirectory( nullptr, "\u8BF7\u9009\u62E9\u4FDD\u5B58\u8DEF\u5F84", QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) );
+    const auto targetSavePath = QFileDialog::getExistingDirectory( nullptr, "\u8BF7\u9009\u62E9\u4FDD\u5B58\u8DEF\u5F84", QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) );
 
     if ( targetSavePath.isEmpty() ) { return "cancel"; }
 
@@ -41,7 +41,7 @@ QString Manage::chooseTargetSavePath()
 
 QString Manage::choostSourceIconFilePath()
 {
-    const auto &&sourceIconFilePath = QFileDialog::getOpenFileName(
+    const auto sourceIconFilePath = QFileDialog::getOpenFileName(
         nullptr,
         "\u8BF7\u9009\u62E9\u56FE\u6807\u6587\u4EF6",
         QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
@@ -76,7 +76,7 @@ QString Manage::makeAll()
             this->realMakeWP();
             this->realMakeAndroid();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();
@@ -102,7 +102,7 @@ QString Manage::makeOSX()
         {
             this->realMakeOSX();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();
@@ -128,7 +128,7 @@ QString Manage::makeIOS()
         {
             this->realMakeIOS();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();
@@ -154,7 +154,7 @@ QString Manage::makeWindows()
         {
             this->realMakeWindows();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();
@@ -180,7 +180,7 @@ QString Manage::makeWP()
         {
             this->realMakeWP();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();
@@ -206,7 +206,7 @@ QString Manage::makeAndroid()
         {
             this->realMakeAndroid();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();
@@ -232,7 +232,7 @@ QString Manage::makePWA()
         {
             this->realMakePWA();
         }
-        catch(const bool &)
+        catch(const bool)
         {
             reply = "saveToFileError";
             eventLoop.quit();

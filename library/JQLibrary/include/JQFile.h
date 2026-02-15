@@ -46,19 +46,19 @@ class QDir;
 class JQLIBRARY_EXPORT JQFile
 {
 public:
-    static void foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion = false);
+    static void foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool recursion = false);
 
-    static bool foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool &recursion = false);
+    static bool foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool recursion = false);
 
-    static void foreachDirectoryFromDirectory(const QDir &directory, const std::function<void(const QDir &)> &each, const bool &recursion = false);
+    static void foreachDirectoryFromDirectory(const QDir &directory, const std::function<void(const QDir &)> &each, const bool recursion = false);
 
     static QString tempFilePath(const QString &fileName);
 
-    static bool writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover = true);
+    static bool writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool cover = true);
 
-    static bool writeFileToDesktop(const QString &fileName, const QByteArray &data, const bool &cover = true);
+    static bool writeFileToDesktop(const QString &fileName, const QByteArray &data, const bool cover = true);
 
-    static bool writeFileToTemp(const QString &fileName, const QByteArray &data, const bool &cover = true);
+    static bool writeFileToTemp(const QString &fileName, const QByteArray &data, const bool cover = true);
 
     static bool appendFile(const QFileInfo &targetFilePath, const QByteArray &data);
 
@@ -68,20 +68,20 @@ public:
 
     static QPair< bool, QByteArray > readFileFromTemp(const QString &fileName);
 
-    static bool copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool &cover = true);
+    static bool copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool cover = true);
 
     static bool copyFileToTemp(const QFileInfo &sourceFileInfo, const QString &fileName);
 
     static QPair< bool, QString > copyFileToTemp(const QFileInfo &sourceFileInfo, const QCryptographicHash::Algorithm &fileNameHashAlgorithm = QCryptographicHash::Sha1, const QString &salt = "");
 
-    static bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover = true);
+    static bool copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool cover = true);
 
-    static bool copy(const QFileInfo &source, const QFileInfo &target, const bool &cover = true);
+    static bool copy(const QFileInfo &source, const QFileInfo &target, const bool cover = true);
 
     static QString md5(const QFileInfo &fileInfo);
 
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
-    static bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified);
+    static bool setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 lastRead, const quint32 lastModified);
 #endif
 };
 

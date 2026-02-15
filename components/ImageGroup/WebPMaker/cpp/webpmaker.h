@@ -43,18 +43,18 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString makeWebPByFilePaths(const bool &coverOldFile, const QJsonArray &filePaths);
+    QString makeWebPByFilePaths(const bool coverOldFile, const QJsonArray &filePaths);
 
-    QString makeWebPByOpenFiles(const bool &coverOldFile);
+    QString makeWebPByOpenFiles(const bool coverOldFile);
 
-    QString makeWebPByOpenDirectory(const bool &coverOldFile);
+    QString makeWebPByOpenDirectory(const bool coverOldFile);
 
     void startMake(const QString &currentFilePath);
 
     QString urlToLocalPngFilePath(const QVariant &url);
 
 private:
-    QString makeWebP(const bool &coverOldFile, const QStringList &filePaths);
+    QString makeWebP(const bool coverOldFile, const QStringList &filePaths);
 
 signals:
     void makeStart(const QJsonArray fileList);

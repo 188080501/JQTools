@@ -23,10 +23,10 @@ using namespace CppFileMaker;
 QString Manage::make(
         const QString &macroProtectsPrefix,
         const QString &className,
-        const bool &qmlExpand
+        const bool qmlExpand
     )
 {
-    const auto &&desktopPath = QStandardPaths::writableLocation( QStandardPaths::DesktopLocation );
+    const auto desktopPath = QStandardPaths::writableLocation( QStandardPaths::DesktopLocation );
 
     QString sourceFilePath1;
     QString sourceFilePath2;

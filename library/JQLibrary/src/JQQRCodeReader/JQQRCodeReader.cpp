@@ -125,7 +125,7 @@ JQQRCodeReader::~JQQRCodeReader()
     semaphore_->acquire( 1 );
 }
 
-QString JQQRCodeReader::decodeImage(const QImage &image, const int &decodeType)
+QString JQQRCodeReader::decodeImage(const QImage &image, const int decodeType)
 {
     semaphore_->acquire( 1 );
 

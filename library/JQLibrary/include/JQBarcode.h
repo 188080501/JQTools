@@ -34,20 +34,20 @@
 class JQBarcode
 {
 public:
-    static qint64 makeNumber(const qint64 &rawNumebr);
+    static qint64 makeNumber(const qint64 rawNumebr);
 
-    static QImage makeBarcode(const qint64 &number);
+    static QImage makeBarcode(const qint64 number);
 
 private:
-    static void paintByteA(QImage &image, const int &number, const int &pos);
+    static void paintByteA(QImage &image, const int number, const int pos);
 
-    static void paintByteB(QImage &image, const int &number, const int &pos);
+    static void paintByteB(QImage &image, const int number, const int pos);
 
-    static void paintByteC(QImage &image, const int &number, const int &pos);
+    static void paintByteC(QImage &image, const int number, const int pos);
 
-    static void paintLines(QImage &image, const QString &key, const int &pos, const int &len = 100);
+    static void paintLines(QImage &image, const QString &key, const int pos, const int len = 100);
 
-    static void paintLine(QImage &image, const bool &black, const int &pos, const int &len = 100);
+    static void paintLine(QImage &image, const bool black, const int pos, const int len = 100);
 };
 
 #endif//JQLIBRARY_JQBARCODE_H_

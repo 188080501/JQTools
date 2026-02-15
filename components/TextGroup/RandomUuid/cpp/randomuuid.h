@@ -35,7 +35,7 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString randomUuid(const bool &includeParantheses);
+    QString randomUuid(const bool includeParantheses);
 };
 
 }

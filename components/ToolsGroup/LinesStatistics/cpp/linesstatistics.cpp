@@ -74,7 +74,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
 
             fileCount++;
 
-            const auto &&fileAllData = file.readAll();
+            const auto fileAllData = file.readAll();
 
             if ( fileAllData.isEmpty() ) { return; }
 

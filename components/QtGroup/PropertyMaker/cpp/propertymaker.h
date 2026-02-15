@@ -42,10 +42,10 @@ public:
     ~Manage() = default;
 
 public slots:
-    QVariantMap make(const QString &source, const bool &withThreadSafe, const QString &className);
+    QVariantMap make(const QString &source, const bool withThreadSafe, const QString &className);
 
 private:
-    QMap< QString, std::function< QPair< QString, QString >(const QString &type, const QString &functionName, const QString &valueName, const QString &notifyFunctionName, const bool &withThreadSafe, const QString &className) > > propertyMaker_;
+    QMap< QString, std::function< QPair< QString, QString >(const QString &type, const QString &functionName, const QString &valueName, const QString &notifyFunctionName, const bool withThreadSafe, const QString &className) > > propertyMaker_;
 };
 
 }

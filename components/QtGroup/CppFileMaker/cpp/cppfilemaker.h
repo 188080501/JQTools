@@ -44,7 +44,7 @@ public slots:
     QString make(
             const QString &macroProtectsPrefix,
             const QString &className,
-            const bool &qmlExpand
+            const bool qmlExpand
         );
 
     QString getTemplateData(

@@ -75,7 +75,7 @@ public:
     ~JQQRCodeReader();
 
 public slots:
-    QString decodeImage(const QImage &image, const int &decodeType = static_cast< int >( DecodeQrCodeType ) );
+    QString decodeImage(const QImage &image, const int decodeType = static_cast< int >( DecodeQrCodeType ) );
 
 signals:
     void decodingStarted();

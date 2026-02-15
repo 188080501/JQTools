@@ -87,16 +87,16 @@ JQQRCodeReaderForQmlManage::~JQQRCodeReaderForQmlManage()
 
 void JQQRCodeReaderForQmlManage::analysisItem(
         QQuickItem *item,
-        const int &apertureX,
-        const int &apertureY,
-        const int &apertureWidth,
-        const int &apertureHeight
+        const int apertureX,
+        const int apertureY,
+        const int apertureWidth,
+        const int apertureHeight
     )
 {
     if ( !semaphore_->tryAcquire( 1 ) ) { return; }
 
-    const auto &&result = item->grabToImage();
-    const auto &&geometry = QRect( apertureX, apertureY, apertureWidth, apertureHeight );
+    const auto result = item->grabToImage();
+    const auto geometry = QRect( apertureX, apertureY, apertureWidth, apertureHeight );
 
     QSharedPointer< QMetaObject::Connection > connection( new QMetaObject::Connection );
     *connection = connect( result.data(), &QQuickItemGrabResult::ready, [ this, result, connection, geometry ]()
@@ -119,15 +119,15 @@ void JQQRCodeReaderForQmlManage::analysisItem(
 
             this->decodeImage( apertureImage, this->decodeQrCodeType_ );
 
-            const auto &&binarizationImage1 = this->binarization( apertureImage, defaultCorrectionValue_ );
+            const auto binarizationImage1 = this->binarization( apertureImage, defaultCorrectionValue_ );
             this->decodeImage( binarizationImage1, this->decodeQrCodeType_ );
 //            ImagePreviewView::pushImage( binarizationResult1 );
 
-            const auto &&binarizationImage2 = this->binarization( apertureImage, defaultCorrectionValue_ + 0.3 );
+            const auto binarizationImage2 = this->binarization( apertureImage, defaultCorrectionValue_ + 0.3 );
             this->decodeImage( binarizationImage2, this->decodeQrCodeType_ );
 //            ImagePreviewView::pushImage( binarizationResult2 );
 
-            const auto &&binarizationImage3 = this->binarization( apertureImage, defaultCorrectionValue_ - 0.3 );
+            const auto binarizationImage3 = this->binarization( apertureImage, defaultCorrectionValue_ - 0.3 );
             this->decodeImage( binarizationImage3, this->decodeQrCodeType_ );
 //            ImagePreviewView::pushImage( binarizationResult3 );
 
@@ -140,7 +140,7 @@ void JQQRCodeReaderForQmlManage::analysisItem(
     } );
 }
 
-QImage JQQRCodeReaderForQmlManage::binarization(const QImage &image, const qreal &correctionValue)
+QImage JQQRCodeReaderForQmlManage::binarization(const QImage &image, const qreal correctionValue)
 {
     QImage result = image;
 
@@ -159,7 +159,7 @@ QImage JQQRCodeReaderForQmlManage::binarization(const QImage &image, const qreal
     return result;
 }
 
-int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &correctionValue)
+int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int xStart, const int yStart, const int xEnd, const int yEnd, const qreal correctionValue)
 {
     qint64 total = 0;
 
@@ -167,8 +167,8 @@ int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, c
     {
         for ( auto x = xStart; x < xEnd; ++x )
         {
-            const auto &&color = image.pixelColor( x, y );
-            const auto &&value = color.red() + color.green() + color.blue();
+            const auto color = image.pixelColor( x, y );
+            const auto value = color.red() + color.green() + color.blue();
 
             total += value;
         }
@@ -181,8 +181,8 @@ int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, c
     {
         for ( auto x = xStart; x < xEnd; ++x )
         {
-            const auto &&color = image.pixelColor( x, y );
-            const auto &&value = color.red() + color.green() + color.blue();
+            const auto color = image.pixelColor( x, y );
+            const auto value = color.red() + color.green() + color.blue();
 
             if ( value > ( avg / correctionValue ) )
             {
@@ -194,7 +194,7 @@ int JQQRCodeReaderForQmlManage::getReference(QImage &image, const int &xStart, c
     return reference;
 }
 
-qreal JQQRCodeReaderForQmlManage::avgReference(const qreal &referenceAvg, const qreal &currentReference)
+qreal JQQRCodeReaderForQmlManage::avgReference(const qreal referenceAvg, const qreal currentReference)
 {
     if ( ( currentReference / referenceAvg ) > 1.15 ) { return 0.08 * 2; }
     if ( ( currentReference / referenceAvg ) > 1.1 ) { return 0.04 * 2; }
@@ -205,7 +205,7 @@ qreal JQQRCodeReaderForQmlManage::avgReference(const qreal &referenceAvg, const 
     return 0;
 }
 
-void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, const int &yStart, const int &xEnd, const int &yEnd, const qreal &offset, const qreal &correctionValue)
+void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int xStart, const int yStart, const int xEnd, const int yEnd, const qreal offset, const qreal correctionValue)
 {
     qint64 total = 0;
 
@@ -213,8 +213,8 @@ void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, 
     {
         for ( auto x = xStart; x < xEnd; ++x )
         {
-            const auto &&color = image.pixelColor( x, y );
-            const auto &&value = color.red() + color.green() + color.blue();
+            const auto color = image.pixelColor( x, y );
+            const auto value = color.red() + color.green() + color.blue();
 
             total += value;
         }
@@ -226,8 +226,8 @@ void JQQRCodeReaderForQmlManage::processImage(QImage &image, const int &xStart, 
     {
         for ( auto x = xStart; x < xEnd; ++x )
         {
-            const auto &&color = image.pixelColor( x, y );
-            const auto &&value = color.red() + color.green() + color.blue();
+            const auto color = image.pixelColor( x, y );
+            const auto value = color.red() + color.green() + color.blue();
 
             if ( value > ( avg / ( correctionValue + offset ) ) )
             {

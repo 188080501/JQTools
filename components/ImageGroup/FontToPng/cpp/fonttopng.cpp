@@ -102,7 +102,7 @@ QJsonArray Manage::getCharList(const QString &familieName, const QString &search
     return result;
 }
 
-QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexString, const int &pixelSize, const QString &color)
+QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexString, const int pixelSize, const QString &color)
 {
     auto filePath = QFileDialog::getSaveFileName(
                 nullptr,
@@ -124,7 +124,7 @@ QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexS
     {
         if ( familieName != fontPackage.familieName ) { continue; }
 
-        const auto &&charCode = charCodeHexString.toInt( nullptr, 16 );
+        const auto charCode = charCodeHexString.toInt( nullptr, 16 );
 
         if ( !fontPackage.charPackages.contains( charCode ) ) { return "error"; }
 
@@ -133,8 +133,8 @@ QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexS
 
     if ( !charPackage.code ) { return "error"; }
 
-    const auto &&image = this->paintChar( familieName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ), true );
-    const auto &&saveSucceed = image.save( filePath, "PNG" );
+    const auto image = this->paintChar( familieName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ), true );
+    const auto saveSucceed = image.save( filePath, "PNG" );
 
     return ( saveSucceed ) ? ( "OK" ) : ( "error" );
 }
@@ -179,7 +179,7 @@ void Manage::loadFont(const QString fontName)
     mutex_.unlock();
 }
 
-QImage Manage::paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool &moreProcess)
+QImage Manage::paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess)
 {
     QPainter patiner;
     QImage image( backgroundSize.toSize(), QImage::Format_ARGB32 );

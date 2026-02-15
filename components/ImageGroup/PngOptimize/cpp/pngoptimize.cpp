@@ -26,7 +26,7 @@
 
 using namespace PngOptimize;
 
-QString Manage::optimizePngByFilePaths(const bool &coverOldFile, const QJsonArray &filePaths_)
+QString Manage::optimizePngByFilePaths(const bool coverOldFile, const QJsonArray &filePaths_)
 {
     QStringList filePaths;
 
@@ -38,7 +38,7 @@ QString Manage::optimizePngByFilePaths(const bool &coverOldFile, const QJsonArra
     return this->optimizePng( coverOldFile, filePaths );
 }
 
-QString Manage::optimizePngByOpenFiles(const bool &coverOldFile)
+QString Manage::optimizePngByOpenFiles(const bool coverOldFile)
 {
     QStringList filePaths;
 
@@ -54,11 +54,11 @@ QString Manage::optimizePngByOpenFiles(const bool &coverOldFile)
     return this->optimizePng( coverOldFile, filePaths );
 }
 
-QString Manage::optimizePngByOpenDirectory(const bool &coverOldFile)
+QString Manage::optimizePngByOpenDirectory(const bool coverOldFile)
 {
     QStringList filePaths;
 
-    const auto &&directoryPath = QFileDialog::getExistingDirectory(
+    const auto directoryPath = QFileDialog::getExistingDirectory(
                 nullptr,
                 QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BPNG\u56FE\u7247\u7684\u6587\u4EF6\u5939" ),
                 QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
@@ -100,7 +100,7 @@ QString Manage::urlToLocalPngFilePath(const QVariant &url)
     return fileInfo.filePath();
 }
 
-QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePaths)
+QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePaths)
 {
     QString targetDir;
 
@@ -116,7 +116,7 @@ QString Manage::optimizePng(const bool &coverOldFile, const QStringList &filePat
 
     QJsonArray fileList;
 
-    auto makeSizeString = [](const int &size)
+    auto makeSizeString = [](const int size)
     {
         if ( size < 1024 )
         {

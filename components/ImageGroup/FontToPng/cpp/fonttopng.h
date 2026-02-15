@@ -80,12 +80,12 @@ public slots:
 
     QJsonArray getCharList(const QString &familieName, const QString &searchKey);
 
-    QString saveIcon(const QString &familieName, const QString &charCodeHexString, const int &pixelSize, const QString &color);
+    QString saveIcon(const QString &familieName, const QString &charCodeHexString, const int pixelSize, const QString &color);
 
 private:
     void loadFont(const QString fontName);
 
-    QImage paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool &moreProcess);
+    QImage paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess);
 
     void makeAdaptation(const QString &familieName, CharPackage &charPackage);
 

@@ -123,9 +123,9 @@ QVariantList listKeyTranslate(const QVariantList &source, const QMap< QString, Q
 QList< QVariantMap > listKeyTranslate(const QList< QVariantMap > &source, const QMap< QString, QString > &keyMap);
 
 QSharedPointer< QTimer > JQLIBRARY_EXPORT setTimerCallback(
-        const int &interval,
+        const int interval,
         const std::function< void(bool &continueFlag) > &callback,
-        const bool &callbackOnStart = false
+        const bool callbackOnStart = false
     );
 
 #if ( defined QT_CONCURRENT_LIB ) && ( QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 ) )
@@ -142,7 +142,7 @@ void JQLIBRARY_EXPORT setTimerCallback(
     );
 #endif
 
-void JQLIBRARY_EXPORT setDebugOutput(const QString &targetFilePath, const bool &argDateFlag = false);
+void JQLIBRARY_EXPORT setDebugOutput(const QString &targetFilePath, const bool argDateFlag = false);
 
 void openDebugConsole();
 
@@ -150,17 +150,17 @@ bool JQLIBRARY_EXPORT singleApplication(const QString &flag);
 
 bool JQLIBRARY_EXPORT singleApplicationExist(const QString &flag);
 
-QString snakeCaseToCamelCase(const QString &source, const bool &firstCharUpper = false);
+QString snakeCaseToCamelCase(const QString &source, const bool firstCharUpper = false);
 
-int rectOverflow(const QSize &frameSize, const QRect &rect, const int &redundancy = 0);
+int rectOverflow(const QSize &frameSize, const QRect &rect, const int redundancy = 0);
 
-QRect scaleRect(const QRect &rect, const qreal &scale);
+QRect scaleRect(const QRect &rect, const qreal scale);
 
-QRect scaleRect(const QRect &rect, const qreal &horizontalScale, const qreal &verticalScale);
+QRect scaleRect(const QRect &rect, const qreal horizontalScale, const qreal verticalScale);
 
-QPoint scalePoint(const QPoint &point, const qreal &horizontalScale, const qreal &verticalScale);
+QPoint scalePoint(const QPoint &point, const qreal horizontalScale, const qreal verticalScale);
 
-QPointF scalePoint(const QPointF &point, const qreal &horizontalScale, const qreal &verticalScale);
+QPointF scalePoint(const QPointF &point, const qreal horizontalScale, const qreal verticalScale);
 
 QPoint pointFToPoint(const QPointF &point, const QSize &size);
 
@@ -185,13 +185,13 @@ QImage imageCopy(const QImage &image, const QRect &rect);
 
 QImage removeImageColor(const QImage &image, const QColor &color);
 
-void waitFor(const std::function< bool() > &predicate, const int &timeout);
+void waitFor(const std::function< bool() > &predicate, const int timeout);
 #endif
 
-QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 &interval);
+QList< QPair< QDateTime, QDateTime > > extractTimeRange(const QDateTime &startTime, const QDateTime &endTime, const qint64 interval);
 
 #if ( ( defined Q_OS_MAC ) && !( defined Q_OS_IOS ) ) || ( defined Q_OS_WIN ) || ( defined Q_OS_LINUX )
-QPair< int, QByteArray > JQLIBRARY_EXPORT startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int &maximumTime = 5 * 1000);
+QPair< int, QByteArray > JQLIBRARY_EXPORT startProcessAndReadOutput(const QString &program, const QStringList &arguments, const int maximumTime = 5 * 1000);
 #endif
 
 template< class Key, class T >
@@ -249,12 +249,12 @@ inline bool operator <(const QSize &a, const QSize &b)
 class JQLIBRARY_EXPORT JQTickCounter
 {
 public:
-    explicit JQTickCounter(const qint64 &timeRange = 5 * 1000); // 此变量影响tick计算精准度，可能会导致tick值不可靠，若非必要请勿修改
+    explicit JQTickCounter(const qint64 timeRange = 5 * 1000); // 此变量影响tick计算精准度，可能会导致tick值不可靠，若非必要请勿修改
 
     ~JQTickCounter() = default;
 
 public:
-    void tick(const int &count = 1);
+    void tick(const int count = 1);
 
     qreal tickPerSecond();
 
@@ -270,11 +270,11 @@ private:
 class JQLIBRARY_EXPORT JQFpsControl
 {
 public:
-    JQFpsControl(const qreal &fps = 15);
+    JQFpsControl(const qreal fps = 15);
 
     ~JQFpsControl() = default;
 
-    void setFps(const qreal &fps);
+    void setFps(const qreal fps);
 
     void waitNextFrame();
 
@@ -303,7 +303,7 @@ private:
 public:
     ~JQMemoryPool() = default;
 
-    static void initReleaseThreshold(const qreal &percentage = 0.2);
+    static void initReleaseThreshold(const qreal percentage = 0.2);
 
     static qint64 realTotalMallocSize();
 
@@ -311,12 +311,12 @@ public:
 
     static qint64 totalMallocCount();
 
-    static void *requestMemory(const size_t &requestSize);
+    static void *requestMemory(const size_t requestSize);
 
     static void recoverMemory(void *memory);
 
 private:
-    static JQMemoryPoolNodeHead makeNode(const size_t &requestSize);
+    static JQMemoryPoolNodeHead makeNode(const size_t requestSize);
 
 private:
     static QMutex mutex_;

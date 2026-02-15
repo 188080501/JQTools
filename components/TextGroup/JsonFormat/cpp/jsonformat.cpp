@@ -23,7 +23,7 @@ bool Manage::check(const QString &string)
     return !QJsonDocument::fromJson( string.toUtf8() ).isNull();
 }
 
-QString Manage::format(const QString &string, const bool &compact)
+QString Manage::format(const QString &string, const bool compact)
 {
     return QJsonDocument::fromJson( string.toUtf8() ).toJson( ( compact ) ? ( QJsonDocument::Compact ) : ( QJsonDocument::Indented ) );
 }

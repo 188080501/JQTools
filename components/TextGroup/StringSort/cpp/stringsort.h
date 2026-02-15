@@ -35,7 +35,7 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString sort(const QString &string, const bool &descOrder);
+    QString sort(const QString &string, const bool descOrder);
 };
 
 }

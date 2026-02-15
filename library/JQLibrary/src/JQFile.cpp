@@ -43,7 +43,7 @@
 // JQLibrary lib import
 #include "JQFoundation.h"
 
-void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool &recursion)
+void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &)> &each, const bool recursion)
 {
     for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::Files ) ) )
     {
@@ -59,7 +59,7 @@ void JQFile::foreachFileFromDirectory(const QDir &directory, const std::function
     }
 }
 
-bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool &recursion)
+bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool recursion)
 {
     bool continueFlag = true;
 
@@ -81,7 +81,7 @@ bool JQFile::foreachFileFromDirectory(const QDir &directory, const std::function
     return true;
 }
 
-void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::function<void (const QDir &)> &each, const bool &recursion)
+void JQFile::foreachDirectoryFromDirectory(const QDir &directory, const std::function<void (const QDir &)> &each, const bool recursion)
 {
     for ( const auto &fileInfo: JQCONST( directory.entryInfoList( QDir::AllDirs | QDir::NoDotAndDotDot ) ) )
     {
@@ -109,7 +109,7 @@ QString JQFile::tempFilePath(const QString &fileName)
     }
 }
 
-bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool &cover)
+bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, const bool cover)
 {
     if ( !targetFilePath.dir().isReadable() )
     {
@@ -136,7 +136,7 @@ bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, 
     return true;
 }
 
-bool JQFile::writeFileToDesktop(const QString &fileName, const QByteArray &data, const bool &cover)
+bool JQFile::writeFileToDesktop(const QString &fileName, const QByteArray &data, const bool cover)
 {
     return writeFile(
                 { QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) },
@@ -145,7 +145,7 @@ bool JQFile::writeFileToDesktop(const QString &fileName, const QByteArray &data,
                 );
 }
 
-bool JQFile::writeFileToTemp(const QString &fileName, const QByteArray &data, const bool &cover)
+bool JQFile::writeFileToTemp(const QString &fileName, const QByteArray &data, const bool cover)
 {
     const QFileInfo fileInfo( tempFilePath( fileName ) );
 
@@ -200,10 +200,10 @@ QPair< bool, QByteArray > JQFile::readFileFromTemp(const QString &fileName)
     return readFile( tempFilePath( fileName ) );
 }
 
-bool JQFile::copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool &cover)
+bool JQFile::copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool cover)
 {
-    const auto &&sourceFilePath = sourceFileInfo.filePath();
-    const auto &&targetFilePath = targetFileInfo.filePath();
+    const auto sourceFilePath = sourceFileInfo.filePath();
+    const auto targetFilePath = targetFileInfo.filePath();
 
     if ( sourceFilePath.isEmpty() || ( sourceFilePath[ sourceFileInfo.filePath().size() - 1 ] == '/' ) )
     {
@@ -269,13 +269,13 @@ QPair< bool, QString > JQFile::copyFileToTemp(const QFileInfo &sourceFileInfo, c
     return { QFile::copy( sourceFileInfo.filePath(), tempFileInfo.filePath() ), tempFileInfo.filePath() };
 }
 
-bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool &cover)
+bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirectory, const bool cover)
 {
-    bool(*fun)(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool &recursion) = foreachFileFromDirectory;
+    bool(*fun)(const QDir &directory, const std::function<void(const QFileInfo &, bool &)> &each, const bool recursion) = foreachFileFromDirectory;
 
     return fun( sourceDirectory, [ & ](const QFileInfo &info, bool &continueFlag)
     {
-        const auto &&path = info.path().mid( sourceDirectory.path().size() );
+        const auto path = info.path().mid( sourceDirectory.path().size() );
         if ( !JQFile::copyFile( info, targetDirectory.path() + "/" + ( ( path.isEmpty() ) ? ( "" ) : ( path + "/" ) ) + info.fileName(), cover ) )
         {
             continueFlag = false;
@@ -283,7 +283,7 @@ bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirect
     }, true );
 }
 
-bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool &cover)
+bool JQFile::copy(const QFileInfo &source, const QFileInfo &target, const bool cover)
 {
     if ( source.isFile() )
     {
@@ -306,7 +306,7 @@ QString JQFile::md5(const QFileInfo &fileInfo)
 }
 
 #if ( defined Q_OS_MAC ) || ( defined __MINGW32__ ) || ( defined Q_OS_LINUX )
-bool JQFile::setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 &lastRead, const quint32 &lastModified)
+bool JQFile::setFileLastReadAndLastModifiedTime(const char *fileName, const quint32 lastRead, const quint32 lastModified)
 {
     utimbuf buf( { static_cast< time_t >( lastRead ), static_cast< time_t >( lastModified ) } );
     return !utime(fileName, &buf);

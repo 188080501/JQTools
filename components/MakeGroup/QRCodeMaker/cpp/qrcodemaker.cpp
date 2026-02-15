@@ -53,7 +53,7 @@ QString Manage::savePng(const QString &string)
     QImage targetImage( QSize( 500, 500 ), QImage::Format_RGB888 );
     targetImage.fill( QColor( "#ffffff" ) );
 
-    const auto &&qrCodeImage = JQQRCodeWriter::makeQRcode( string, QSize( 475, 475 ) );
+    const auto qrCodeImage = JQQRCodeWriter::makeQRcode( string, QSize( 475, 475 ) );
 
     {
         QPainter painter;
@@ -61,7 +61,7 @@ QString Manage::savePng(const QString &string)
         painter.drawImage( 10, 10, qrCodeImage );
     }
 
-    const auto &&saveSucceed = targetImage.save( filePath );
+    const auto saveSucceed = targetImage.save( filePath );
     if ( !saveSucceed )
     {
         return "error";

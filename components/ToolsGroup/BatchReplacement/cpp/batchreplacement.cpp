@@ -30,7 +30,7 @@ QJsonObject Manage::startBatchReplacement(
         const QJsonArray &suffixs,
         const QString &sourceKey,
         const QString &targetKey,
-        const bool &multiCase
+        const bool multiCase
     )
 {
     auto fileCount = 0;
@@ -95,7 +95,7 @@ QJsonObject Manage::startBatchReplacement(
 
                 if ( fileAllData.isEmpty() ) { return; }
 
-                const auto &&matchCount = fileAllData.count( currentSourceKey.toUtf8() );
+                const auto matchCount = fileAllData.count( currentSourceKey.toUtf8() );
 
                 if ( !matchCount ) { return; }
 
@@ -129,7 +129,7 @@ QJsonObject Manage::startBatchReplacement(
                         }
                     }
 
-                    const auto &&matchCount = info.fileName().count( currentSourceKey.toUtf8() );
+                    const auto matchCount = info.fileName().count( currentSourceKey.toUtf8() );
 
                     if ( !matchCount ) { return; }
 
@@ -143,7 +143,7 @@ QJsonObject Manage::startBatchReplacement(
 
                 JQFile::foreachDirectoryFromDirectory( { currentPath }, [ & ](const QDir &dir)
                 {
-                    const auto &&matchCount = dir.dirName().count( currentSourceKey );
+                    const auto matchCount = dir.dirName().count( currentSourceKey );
 
                     if ( !matchCount ) { return; }
 

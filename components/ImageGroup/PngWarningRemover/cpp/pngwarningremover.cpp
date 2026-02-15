@@ -26,7 +26,7 @@ QString Manage::conversationPng()
     QEventLoop eventLoop;
     QString reply;
 
-    const auto &&filePaths = QFileDialog::getOpenFileNames(
+    const auto filePaths = QFileDialog::getOpenFileNames(
                     nullptr,
                     QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
                     QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),

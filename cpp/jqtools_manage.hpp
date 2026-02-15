@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef __CPP_JQTOOLS_MANAGE_HPP__
-#define __CPP_JQTOOLS_MANAGE_HPP__
+#ifndef CPP_JQTOOLS_MANAGE_HPP_
+#define CPP_JQTOOLS_MANAGE_HPP_
 
 // Qt ib import
 #include <QObject>
@@ -30,4 +30,4 @@ public:
     ~JQToolsManage() = default;
 };
 
-#endif//__CPP_JQTOOLS_MANAGE_HPP__
+#endif//CPP_JQTOOLS_MANAGE_HPP_

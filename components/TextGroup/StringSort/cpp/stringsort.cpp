@@ -17,7 +17,7 @@
 
 using namespace StringSort;
 
-QString Manage::sort(const QString &string, const bool &descOrder)
+QString Manage::sort(const QString &string, const bool descOrder)
 {
     auto list = string.split( "\n", QString::SkipEmptyParts );
 

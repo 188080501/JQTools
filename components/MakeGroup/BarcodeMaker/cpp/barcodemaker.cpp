@@ -53,7 +53,7 @@ QString Manage::savePng(const QString &string)
     QImage targetImage( QSize( 210, 140 ), QImage::Format_RGB888 );
     targetImage.fill( QColor( "#ffffff" ) );
 
-    const auto &&barcodeImage = JQBarcode::makeBarcode( string.toLongLong() );
+    const auto barcodeImage = JQBarcode::makeBarcode( string.toLongLong() );
 
     if ( ( string.size() == 13 ) && string.toLongLong() && ( string[ 0 ] == '6' ) )
     {
@@ -62,7 +62,7 @@ QString Manage::savePng(const QString &string)
         painter.drawImage( 10, 10, barcodeImage );
     }
 
-    const auto &&saveSucceed = targetImage.save( filePath );
+    const auto saveSucceed = targetImage.save( filePath );
     if ( !saveSucceed )
     {
         return "error";

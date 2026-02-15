@@ -37,7 +37,7 @@ public:
 public slots:
     bool check(const QString &string);
 
-    QString format(const QString &string, const bool &compact);
+    QString format(const QString &string, const bool compact);
 };
 
 }

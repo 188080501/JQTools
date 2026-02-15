@@ -102,7 +102,7 @@ private:
     }
 
 #define RUNONOUTRANGETIMER( message )                                                            \
-    const auto &&runOnOutRangeTimerTime = QDateTime::currentMSecsSinceEpoch();                   \
+    const auto runOnOutRangeTimerTime = QDateTime::currentMSecsSinceEpoch();                   \
     RUNONOUTRANGE( [ = ]() {                                                                     \
         qDebug() << message << ( QDateTime::currentMSecsSinceEpoch() - runOnOutRangeTimerTime ); \
     } )
@@ -149,7 +149,7 @@ private:
 #define JQINTERVAL( timeInterval )                                            \
     if ( []() {                                                               \
              static qint64 lastTime    = 0;                                   \
-             const auto && currentTime = QDateTime::currentMSecsSinceEpoch(); \
+             const auto currentTime = QDateTime::currentMSecsSinceEpoch(); \
              if ( qAbs( currentTime - lastTime ) > timeInterval )             \
              {                                                                \
                  lastTime = currentTime;                                      \
