@@ -138,7 +138,7 @@ vector<Ref<FinderPatternInfo> > MultiFinderPatternFinder::findMulti(DecodeHints 
 vector<vector<Ref<FinderPattern> > > MultiFinderPatternFinder::selectBestPatterns(){
   vector<Ref<FinderPattern> > possibleCenters = possibleCenters_;
   
-  int size = possibleCenters.size();
+  int size = static_cast< int >( possibleCenters.size() );
 
   if (size < 3) {
     // Couldn't find enough finder patterns

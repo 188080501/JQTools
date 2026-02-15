@@ -425,7 +425,7 @@ Ref<BitMatrix> Detector::sampleGrid(Ref<BitMatrix> image, int dimensionX, int di
 }
 
 void Detector::insertionSort(std::vector<Ref<ResultPointsAndTransitions> > &vector) {
-  int max = vector.size();
+  int max = static_cast< int >( vector.size() );
   bool swapped = true;
   Ref<ResultPointsAndTransitions> value;
   Ref<ResultPointsAndTransitions> valueB;

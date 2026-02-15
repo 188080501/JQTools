@@ -39,9 +39,9 @@ const std::string& String::getText() const {
 
 char String::charAt(int i) const { return text_[i]; }
 
-int String::size() const { return text_.size(); }
+int String::size() const { return static_cast< int >( text_.size() ); }
 
-int String::length() const { return text_.size(); }
+int String::length() const { return static_cast< int >( text_.size() ); }
 
 Ref<String> String::substring(int i) const {
   return Ref<String>(new String(text_.substr(i)));

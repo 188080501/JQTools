@@ -40,7 +40,7 @@ std::vector<ImageF> LinearRgb(const size_t xsize, const size_t ysize,
       ConstRestrict<const uint8_t*> row_in = &rgb[3 * xsize * y];
       ConstRestrict<float*> row_out = planes[c].Row(y);
       for (size_t x = 0; x < xsize; ++x) {
-        row_out[x] = lut[row_in[3 * x + c]];
+        row_out[x] = static_cast<float>(lut[row_in[3 * x + c]]);
       }
     }
   }
@@ -58,7 +58,7 @@ ButteraugliComparator::ButteraugliComparator(const int width, const int height,
       target_distance_(target_distance),
       comparator_(width_, height_, kButteraugliStep),
       distance_(0.0),
-      distmap_(width_, height_),
+      distmap_(static_cast<size_t>(width_) * static_cast<size_t>(height_)),
       stats_(stats) {
   rgb_linear_pregamma_ = LinearRgb(width, height, rgb);
   const int block_w = (width_ + 7) / 8;
@@ -101,7 +101,7 @@ void ButteraugliComparator::Compare(const OutputImage& img) {
                                         rgb_planes, distmap);
   distmap_.resize(width_ * height_);
   CopyToPacked(distmap, &distmap_);
-  distance_ = ::butteraugli::ButteraugliScoreFromDiffmap(distmap);
+  distance_ = static_cast<float>(::butteraugli::ButteraugliScoreFromDiffmap(distmap));
   GUETZLI_LOG(stats_, " BA[100.00%%] D[%6.4f]", distance_);
 }
 
@@ -187,7 +187,7 @@ void ButteraugliComparator::ComputeBlockErrorAdjustmentWeights(
   for (int block_y = 0; block_y < block_height; ++block_y) {
     for (int block_x = 0; block_x < block_width; ++block_x) {
       int block_ix = block_y * block_width + block_x;
-      float max_local_dist = target_distance;
+      float max_local_dist = static_cast<float>(target_distance);
       int x_min = std::max(0, block_x - max_block_dist);
       int y_min = std::max(0, block_y - max_block_dist);
       int x_max = std::min(block_width, block_x + 1 + max_block_dist);
@@ -215,7 +215,7 @@ void ButteraugliComparator::ComputeBlockErrorAdjustmentWeights(
             int d = std::max(std::abs(y - block_y), std::abs(x - block_x));
             int ix = y * block_width + x;
             (*block_weight)[ix] = std::max<float>(
-                (*block_weight)[ix], 1.0 / (d + 1.0));
+                (*block_weight)[ix], 1.0f / (static_cast<float>(d) + 1.0f));
           }
         }
       }

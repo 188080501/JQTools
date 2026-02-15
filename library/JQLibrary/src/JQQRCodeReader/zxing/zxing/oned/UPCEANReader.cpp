@@ -206,7 +206,7 @@ UPCEANReader::Range UPCEANReader::findGuardPattern(Ref<BitArray> row,
     }
     std::cerr << std::endl;
   }
-  int patternLength = pattern.size();
+  int patternLength = static_cast< int >( pattern.size() );
   int width = row->getSize();
   bool isWhite = whiteFirst;
   rowOffset = whiteFirst ? row->getNextUnset(rowOffset) : row->getNextSet(rowOffset);
@@ -249,7 +249,7 @@ int UPCEANReader::decodeDigit(Ref<BitArray> row,
   recordPattern(row, rowOffset, counters);
   float bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
   int bestMatch = -1;
-  int max = patterns.size();
+  int max = static_cast< int >( patterns.size() );
   for (int i = 0; i < max; i++) {
     int const* pattern (patterns[i]);
     float variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
@@ -281,7 +281,7 @@ bool UPCEANReader::checkChecksum(Ref<String> const& s) {
  */
 bool UPCEANReader::checkStandardUPCEANChecksum(Ref<String> const& s_) {
   std::string const& s (s_->getText());
-  int length = s.length();
+  int length = static_cast< int >( s.length() );
   if (length == 0) {
     return false;
   }
@@ -290,7 +290,7 @@ bool UPCEANReader::checkStandardUPCEANChecksum(Ref<String> const& s_) {
 }
 
 int UPCEANReader::getStandardUPCEANChecksum(const std::string &s) {
-  int length = s.length();
+  int length = static_cast< int >( s.length() );
   int sum = 0;
   for (int i = length - 1; i >= 0; i -= 2) {
     int digit = (int) s[i] - (int) '0';

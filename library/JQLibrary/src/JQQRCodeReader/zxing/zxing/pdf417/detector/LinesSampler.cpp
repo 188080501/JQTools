@@ -148,7 +148,7 @@ Ref<BitMatrix> LinesSampler::sample() {
   detectedCodeWords.resize(rowCount);
 
   // XXX
-  Ref<BitMatrix> grid(new BitMatrix(dimension_, detectedCodeWords.size()));
+  Ref<BitMatrix> grid(new BitMatrix(dimension_, static_cast< int >( detectedCodeWords.size() )));
   codewordsToBitMatrix(detectedCodeWords, grid);
 
   return grid;

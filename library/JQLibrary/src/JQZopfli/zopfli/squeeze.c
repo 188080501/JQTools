@@ -240,7 +240,7 @@ static double GetBestLengths(ZopfliBlockState *s,
     ZopfliUpdateHash(in, i, inend, h);
   }
 
-  for (i = 1; i < blocksize + 1; i++) costs[i] = ZOPFLI_LARGE_FLOAT;
+  for (i = 1; i < blocksize + 1; i++) costs[i] = (float)ZOPFLI_LARGE_FLOAT;
   costs[0] = 0;  /* Because it's the start. */
   length_array[0] = 0;
 
@@ -261,7 +261,7 @@ static double GetBestLengths(ZopfliBlockState *s,
       the cost corresponding to that length. Doing this, we skip
       ZOPFLI_MAX_MATCH values to avoid calling ZopfliFindLongestMatch. */
       for (k = 0; k < ZOPFLI_MAX_MATCH; k++) {
-        costs[j + ZOPFLI_MAX_MATCH] = costs[j] + symbolcost;
+        costs[j + ZOPFLI_MAX_MATCH] = (float)(costs[j] + symbolcost);
         length_array[j + ZOPFLI_MAX_MATCH] = ZOPFLI_MAX_MATCH;
         i++;
         j++;
@@ -278,7 +278,7 @@ static double GetBestLengths(ZopfliBlockState *s,
       double newCost = costmodel(in[i], 0, costcontext) + costs[j];
       assert(newCost >= 0);
       if (newCost < costs[j + 1]) {
-        costs[j + 1] = newCost;
+        costs[j + 1] = (float)newCost;
         length_array[j + 1] = 1;
       }
     }
@@ -292,12 +292,12 @@ static double GetBestLengths(ZopfliBlockState *s,
       the minimum possible cost that it can return. */
      if (costs[j + k] <= mincostaddcostj) continue;
 
-      newCost = costmodel(k, sublen[k], costcontext) + costs[j];
+      newCost = costmodel((unsigned)k, sublen[k], costcontext) + costs[j];
       assert(newCost >= 0);
       if (newCost < costs[j + k]) {
         assert(k <= ZOPFLI_MAX_MATCH);
-        costs[j + k] = newCost;
-        length_array[j + k] = k;
+        costs[j + k] = (float)newCost;
+        length_array[j + k] = (unsigned short)k;
       }
     }
   }

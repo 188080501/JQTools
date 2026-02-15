@@ -166,7 +166,9 @@ static void ExtractBitLengths(Node* chain, Node* leaves, unsigned* bitlengths) {
 Comparator for sorting the leaves. Has the function signature for qsort.
 */
 static int LeafComparator(const void* a, const void* b) {
-  return ((const Node*)a)->weight - ((const Node*)b)->weight;
+  if (((const Node*)a)->weight < ((const Node*)b)->weight) return -1;
+  if (((const Node*)a)->weight > ((const Node*)b)->weight) return 1;
+  return 0;
 }
 
 int ZopfliLengthLimitedCodeLengths(

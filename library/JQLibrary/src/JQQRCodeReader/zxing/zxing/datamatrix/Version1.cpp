@@ -193,7 +193,7 @@ int Version::buildVersions() {
 					              new ECBlocks(24, new ECB(1, 32)))));
   VERSIONS.push_back(Ref<Version>(new Version(30, 16, 48, 14, 22,
 					              new ECBlocks(28, new ECB(1, 49)))));
-  return VERSIONS.size();
+  return static_cast< int >( VERSIONS.size() );
 }
 }
 }

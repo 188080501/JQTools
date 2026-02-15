@@ -389,11 +389,11 @@ static size_t CalculateBlockSymbolSizeGivenCounts(const size_t* ll_counts,
     }
     for (i = 257; i < 286; i++) {
       result += ll_lengths[i] * ll_counts[i];
-      result += ZopfliGetLengthSymbolExtraBits(i) * ll_counts[i];
+      result += ZopfliGetLengthSymbolExtraBits((int)i) * ll_counts[i];
     }
     for (i = 0; i < 30; i++) {
       result += d_lengths[i] * d_counts[i];
-      result += ZopfliGetDistSymbolExtraBits(i) * d_counts[i];
+      result += ZopfliGetDistSymbolExtraBits((int)i) * d_counts[i];
     }
     result += ll_lengths[256]; /*end symbol*/
     return result;
@@ -483,7 +483,7 @@ void OptimizeHuffmanForRle(int length, size_t* counts) {
         || AbsDiff(counts[i], limit) >= 4) {
       if (stride >= 4 || (stride >= 3 && sum == 0)) {
         /* The stride must end, collapse what we have, if we have enough (4). */
-        int count = (sum + stride / 2) / stride;
+        int count = (int)((sum + stride / 2) / stride);
         if (count < 1) count = 1;
         if (sum == 0) {
           /* Don't make an all zeros stride to be upgraded to ones. */
@@ -535,8 +535,8 @@ static double TryOptimizeHuffmanForRle(
   double treesize2;
   double datasize2;
 
-  treesize = CalculateTreeSize(ll_lengths, d_lengths);
-  datasize = CalculateBlockSymbolSizeGivenCounts(ll_counts, d_counts,
+  treesize = (double)CalculateTreeSize(ll_lengths, d_lengths);
+  datasize = (double)CalculateBlockSymbolSizeGivenCounts(ll_counts, d_counts,
       ll_lengths, d_lengths, lz77, lstart, lend);
 
   memcpy(ll_counts2, ll_counts, sizeof(ll_counts2));
@@ -547,8 +547,8 @@ static double TryOptimizeHuffmanForRle(
   ZopfliCalculateBitLengths(d_counts2, ZOPFLI_NUM_D, 15, d_lengths2);
   PatchDistanceCodesForBuggyDecoders(d_lengths2);
 
-  treesize2 = CalculateTreeSize(ll_lengths2, d_lengths2);
-  datasize2 = CalculateBlockSymbolSizeGivenCounts(ll_counts, d_counts,
+  treesize2 = (double)CalculateTreeSize(ll_lengths2, d_lengths2);
+  datasize2 = (double)CalculateBlockSymbolSizeGivenCounts(ll_counts, d_counts,
       ll_lengths2, d_lengths2, lz77, lstart, lend);
 
   if (treesize2 + datasize2 < treesize + datasize) {
@@ -595,7 +595,7 @@ double ZopfliCalculateBlockSize(const ZopfliLZ77Store* lz77,
     /* An uncompressed block must actually be split into multiple blocks if it's
        larger than 65535 bytes long. Eeach block header is 5 bytes: 3 bits,
        padding, LEN and NLEN (potential less padding for first one ignored). */
-    return blocks * 5 * 8 + length * 8;
+    return (double)(blocks * 5 * 8 + length * 8);
   } if (btype == 1) {
     GetFixedTree(ll_lengths, d_lengths);
     result += CalculateBlockSymbolSize(
@@ -635,7 +635,7 @@ static void AddNonCompressedBlock(const ZopfliOptions* options, int final,
     unsigned short nlen;
     int currentfinal;
 
-    if (pos + blocksize > inend) blocksize = inend - pos;
+    if (pos + blocksize > inend) blocksize = (unsigned short)(inend - pos);
     currentfinal = pos + blocksize >= inend;
 
     nlen = ~blocksize;
@@ -716,7 +716,7 @@ static void AddLZ77Block(const ZopfliOptions* options, int btype, int final,
 
     GetDynamicLengths(lz77, lstart, lend, ll_lengths, d_lengths);
 
-    detect_tree_size = *outsize;
+    detect_tree_size = (unsigned)*outsize;
     AddDynamicTree(ll_lengths, d_lengths, bp, out, outsize);
     if (options->verbose) {
       fprintf(stderr, "treesize: %d\n", (int)(*outsize - detect_tree_size));

@@ -158,7 +158,7 @@ void ITFReader::decodeMiddle(Ref<BitArray> row,
     bestMatch = decodeDigit(counterWhite);
     resultString.append(1, (char) ('0' + bestMatch));
 
-    for (int i = 0, e = counterDigitPair.size(); i < e; i++) {
+    for (int i = 0, e = static_cast<int>(counterDigitPair.size()); i < e; i++) {
       payloadStart += counterDigitPair[i];
     }
   }
@@ -277,7 +277,7 @@ ITFReader::Range ITFReader::findGuardPattern(Ref<BitArray> row,
                                              vector<int> const& pattern) {
   // TODO: This is very similar to implementation in UPCEANReader. Consider if they can be
   // merged to a single method.
-  int patternLength = pattern.size();
+  int patternLength = static_cast<int>(pattern.size());
   vector<int> counters(patternLength);
   int width = row->getSize();
   bool isWhite = false;

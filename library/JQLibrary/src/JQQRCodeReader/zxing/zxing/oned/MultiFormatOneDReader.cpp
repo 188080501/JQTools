@@ -81,7 +81,7 @@ MultiFormatOneDReader::MultiFormatOneDReader(DecodeHints hints) : readers() {
 #include <typeinfo>
 
 Ref<Result> MultiFormatOneDReader::decodeRow(int rowNumber, Ref<BitArray> row) {
-  int size = readers.size();
+  int size = static_cast<int>(readers.size());
   for (int i = 0; i < size; i++) {
     OneDReader* reader = readers[i];
     try {

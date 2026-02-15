@@ -50,7 +50,7 @@ void ZopfliResetHash(size_t window_size, ZopfliHash* h) {
     h->head[i] = -1;  /* -1 indicates no head so far. */
   }
   for (i = 0; i < window_size; i++) {
-    h->prev[i] = i;  /* If prev[j] == j, then prev[j] is uninitialized. */
+    h->prev[i] = (unsigned short)i;  /* If prev[j] == j, then prev[j] is uninitialized. */
     h->hashval[i] = -1;
   }
 
@@ -66,7 +66,7 @@ void ZopfliResetHash(size_t window_size, ZopfliHash* h) {
     h->head2[i] = -1;
   }
   for (i = 0; i < window_size; i++) {
-    h->prev2[i] = i;
+    h->prev2[i] = (unsigned short)i;
     h->hashval2[i] = -1;
   }
 #endif
@@ -122,7 +122,7 @@ void ZopfliUpdateHash(const unsigned char* array, size_t pos, size_t end,
       array[pos] == array[pos + amount + 1] && amount < (unsigned short)(-1)) {
     amount++;
   }
-  h->same[hpos] = amount;
+  h->same[hpos] = (unsigned short)amount;
 #endif
 
 #ifdef ZOPFLI_HASH_SAME_HASH

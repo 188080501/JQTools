@@ -357,7 +357,7 @@ static int TryGetFromLongestMatchCache(ZopfliBlockState* s,
     if (!sublen || s->lmc->length[lmcpos]
         <= ZopfliMaxCachedSublen(s->lmc, lmcpos, s->lmc->length[lmcpos])) {
       *length = s->lmc->length[lmcpos];
-      if (*length > *limit) *length = *limit;
+      if (*length > *limit) *length = (unsigned short)(*limit);
       if (sublen) {
         ZopfliCacheToSublen(s->lmc, lmcpos, *length, sublen);
         *distance = sublen[*length];
@@ -483,13 +483,13 @@ void ZopfliFindLongestMatch(ZopfliBlockState* s, const ZopfliHash* h,
         if (same0 > 2 && *scan == *match) {
           unsigned short same1 = h->same[(pos - dist) & ZOPFLI_WINDOW_MASK];
           unsigned short same = same0 < same1 ? same0 : same1;
-          if (same > limit) same = limit;
+          if (same > limit) same = (unsigned short)limit;
           scan += same;
           match += same;
         }
 #endif
         scan = GetMatch(scan, match, arrayend, arrayend_safe);
-        currentlength = scan - &array[pos];  /* The found length. */
+        currentlength = (unsigned short)(scan - &array[pos]);  /* The found length. */
       }
 
       if (currentlength > bestlength) {

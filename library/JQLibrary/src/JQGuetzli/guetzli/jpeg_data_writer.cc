@@ -106,14 +106,14 @@ bool EncodeSOF(const JPEGData& jpg, JPEGOutput out) {
   size_t pos = 0;
   data[pos++] = 0xff;
   data[pos++] = 0xc1;
-  data[pos++] = marker_len >> 8;
-  data[pos++] = marker_len & 0xff;
+  data[pos++] = static_cast< uint8_t >( marker_len >> 8 );
+  data[pos++] = static_cast< uint8_t >( marker_len & 0xff );
   data[pos++] = kJpegPrecision;
   data[pos++] = jpg.height >> 8;
   data[pos++] = jpg.height & 0xff;
   data[pos++] = jpg.width >> 8;
   data[pos++] = jpg.width & 0xff;
-  data[pos++] = ncomps;
+  data[pos++] = static_cast< uint8_t >( ncomps );
   for (size_t i = 0; i < ncomps; ++i) {
     data[pos++] = jpg.components[i].id;
     data[pos++] = ((jpg.components[i].h_samp_factor << 4) |
@@ -297,7 +297,7 @@ size_t ClusterHistograms(JpegHistogram* histo, size_t* num,
   memset(depth, 0, *num * JpegHistogram::kSize);
   size_t costs[kMaxComponents];
   for (size_t i = 0; i < *num; ++i) {
-    histo_indexes[i] = i;
+    histo_indexes[i] = static_cast< int >( i );
     std::vector<HuffmanTree> tree(2 * JpegHistogram::kSize + 1);
     CreateHuffmanTree(histo[i].counts, JpegHistogram::kSize,
                       kJpegHuffmanMaxBitLength, &tree[0],
@@ -326,7 +326,7 @@ size_t ClusterHistograms(JpegHistogram* histo, size_t* num,
              sizeof(depth_combined));
       for (size_t i = 0; i < orig_num; ++i) {
         if (histo_indexes[i] == (int)last) {
-          histo_indexes[i] = second_last;
+          histo_indexes[i] = static_cast< int >( second_last );
         }
       }
       --(*num);
@@ -361,7 +361,7 @@ namespace {
 bool BuildAndEncodeHuffmanCodes(const JPEGData& jpg, JPEGOutput out,
                                 std::vector<HuffmanCodeTable>* dc_huff_tables,
                                 std::vector<HuffmanCodeTable>* ac_huff_tables) {
-  const int ncomps = jpg.components.size();
+  const int ncomps = static_cast< int >( jpg.components.size() );
   dc_huff_tables->resize(ncomps);
   ac_huff_tables->resize(ncomps);
 
@@ -388,7 +388,7 @@ bool BuildAndEncodeHuffmanCodes(const JPEGData& jpg, JPEGOutput out,
                     &depths[num_dc_histo * JpegHistogram::kSize]);
 
   // Compute DHT and SOS marker data sizes and start emitting DHT marker.
-  int num_histo = num_dc_histo + num_ac_histo;
+  int num_histo = static_cast< int >( num_dc_histo + num_ac_histo );
   histograms.resize(num_histo);
   int total_count = 0;
   for (int i = 0; i < (int)histograms.size(); ++i) {
@@ -401,13 +401,13 @@ bool BuildAndEncodeHuffmanCodes(const JPEGData& jpg, JPEGOutput out,
   size_t pos = 0;
   data[pos++] = 0xff;
   data[pos++] = 0xc4;
-  data[pos++] = dht_marker_len >> 8;
-  data[pos++] = dht_marker_len & 0xff;
+  data[pos++] = static_cast< uint8_t >( dht_marker_len >> 8 );
+  data[pos++] = static_cast< uint8_t >( dht_marker_len & 0xff );
 
   // Compute Huffman codes for each histograms.
   for (size_t i = 0; i < (size_t)num_histo; ++i) {
     const bool is_dc = i < num_dc_histo;
-    const int idx = is_dc ? i : i - num_dc_histo;
+    const int idx = static_cast< int >( is_dc ? i : i - num_dc_histo );
     int counts[kJpegHuffmanMaxBitLength + 1] = { 0 };
     int values[JpegHistogram::kSize] = { 0 };
     BuildHuffmanCode(&depths[i * JpegHistogram::kSize], counts, values);
@@ -426,24 +426,24 @@ bool BuildAndEncodeHuffmanCodes(const JPEGData& jpg, JPEGOutput out,
     --counts[max_length];
     int total_count = 0;
     for (int j = 0; j <= max_length; ++j) total_count += counts[j];
-    data[pos++] = is_dc ? i : i - num_dc_histo + 0x10;
+    data[pos++] = static_cast< uint8_t >( is_dc ? i : i - num_dc_histo + 0x10 );
     for (size_t j = 1; j <= kJpegHuffmanMaxBitLength; ++j) {
-      data[pos++] = counts[j];
+      data[pos++] = static_cast< uint8_t >( counts[j] );
     }
     for (size_t j = 0; j < (size_t)total_count; ++j) {
-      data[pos++] = values[j];
+      data[pos++] = static_cast< uint8_t >( values[j] );
     }
   }
 
   // Emit SOS marker data.
   data[pos++] = 0xff;
   data[pos++] = 0xda;
-  data[pos++] = sos_marker_len >> 8;
-  data[pos++] = sos_marker_len & 0xff;
-  data[pos++] = ncomps;
+  data[pos++] = static_cast< uint8_t >( sos_marker_len >> 8 );
+  data[pos++] = static_cast< uint8_t >( sos_marker_len & 0xff );
+  data[pos++] = static_cast< uint8_t >( ncomps );
   for (int i = 0; i < ncomps; ++i) {
     data[pos++] = jpg.components[i].id;
-    data[pos++] = (dc_histo_indexes[i] << 4) | ac_histo_indexes[i];
+    data[pos++] = static_cast< uint8_t >((dc_histo_indexes[i] << 4) | ac_histo_indexes[i]);
   }
   data[pos++] = 0;
   data[pos++] = 63;
@@ -553,7 +553,7 @@ bool WriteJpeg(const JPEGData& jpg, bool strip_metadata, JPEGOutput out) {
 }
 
 int NullOut(void* , const uint8_t* , size_t count) {
-  return count;
+  return static_cast< int >( count );
 }
 
 void BuildSequentialHuffmanCodes(

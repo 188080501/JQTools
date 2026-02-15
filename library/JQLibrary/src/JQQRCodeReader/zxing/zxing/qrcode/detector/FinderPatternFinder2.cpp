@@ -112,15 +112,15 @@ float FinderPatternFinder::crossCheckVertical(size_t startI, size_t centerJ, int
 
 
   // Start counting up from center
-  int i = startI;
-  while (i >= 0 && image_->get(centerJ, i)) {
+  int i = static_cast< int >( startI );
+  while (i >= 0 && image_->get(static_cast< int >( centerJ ), i)) {
     stateCount[2]++;
     i--;
   }
   if (i < 0) {
     return nan();
   }
-  while (i >= 0 && !image_->get(centerJ, i) && stateCount[1] <= maxCount) {
+  while (i >= 0 && !image_->get(static_cast< int >( centerJ ), i) && stateCount[1] <= maxCount) {
     stateCount[1]++;
     i--;
   }
@@ -128,7 +128,7 @@ float FinderPatternFinder::crossCheckVertical(size_t startI, size_t centerJ, int
   if (i < 0 || stateCount[1] > maxCount) {
     return nan();
   }
-  while (i >= 0 && image_->get(centerJ, i) && stateCount[0] <= maxCount) {
+  while (i >= 0 && image_->get(static_cast< int >( centerJ ), i) && stateCount[0] <= maxCount) {
     stateCount[0]++;
     i--;
   }
@@ -137,22 +137,22 @@ float FinderPatternFinder::crossCheckVertical(size_t startI, size_t centerJ, int
   }
 
   // Now also count down from center
-  i = startI + 1;
-  while (i < maxI && image_->get(centerJ, i)) {
+  i = static_cast< int >( startI ) + 1;
+  while (i < maxI && image_->get(static_cast< int >( centerJ ), i)) {
     stateCount[2]++;
     i++;
   }
   if (i == maxI) {
     return nan();
   }
-  while (i < maxI && !image_->get(centerJ, i) && stateCount[3] < maxCount) {
+  while (i < maxI && !image_->get(static_cast< int >( centerJ ), i) && stateCount[3] < maxCount) {
     stateCount[3]++;
     i++;
   }
   if (i == maxI || stateCount[3] >= maxCount) {
     return nan();
   }
-  while (i < maxI && image_->get(centerJ, i) && stateCount[4] < maxCount) {
+  while (i < maxI && image_->get(static_cast< int >( centerJ ), i) && stateCount[4] < maxCount) {
     stateCount[4]++;
     i++;
   }
@@ -178,22 +178,22 @@ float FinderPatternFinder::crossCheckHorizontal(size_t startJ, size_t centerI, i
   for (int i = 0; i < 5; i++)
     stateCount[i] = 0;
 
-  int j = startJ;
-  while (j >= 0 && image_->get(j, centerI)) {
+  int j = static_cast< int >( startJ );
+  while (j >= 0 && image_->get(j, static_cast< int >( centerI ))) {
     stateCount[2]++;
     j--;
   }
   if (j < 0) {
     return nan();
   }
-  while (j >= 0 && !image_->get(j, centerI) && stateCount[1] <= maxCount) {
+  while (j >= 0 && !image_->get(j, static_cast< int >( centerI )) && stateCount[1] <= maxCount) {
     stateCount[1]++;
     j--;
   }
   if (j < 0 || stateCount[1] > maxCount) {
     return nan();
   }
-  while (j >= 0 && image_->get(j, centerI) && stateCount[0] <= maxCount) {
+  while (j >= 0 && image_->get(j, static_cast< int >( centerI )) && stateCount[0] <= maxCount) {
     stateCount[0]++;
     j--;
   }
@@ -201,22 +201,22 @@ float FinderPatternFinder::crossCheckHorizontal(size_t startJ, size_t centerI, i
     return nan();
   }
 
-  j = startJ + 1;
-  while (j < maxJ && image_->get(j, centerI)) {
+  j = static_cast< int >( startJ ) + 1;
+  while (j < maxJ && image_->get(j, static_cast< int >( centerI ))) {
     stateCount[2]++;
     j++;
   }
   if (j == maxJ) {
     return nan();
   }
-  while (j < maxJ && !image_->get(j, centerI) && stateCount[3] < maxCount) {
+  while (j < maxJ && !image_->get(j, static_cast< int >( centerI )) && stateCount[3] < maxCount) {
     stateCount[3]++;
     j++;
   }
   if (j == maxJ || stateCount[3] >= maxCount) {
     return nan();
   }
-  while (j < maxJ && image_->get(j, centerI) && stateCount[4] < maxCount) {
+  while (j < maxJ && image_->get(j, static_cast< int >( centerI )) && stateCount[4] < maxCount) {
     stateCount[4]++;
     j++;
   }
@@ -236,7 +236,7 @@ float FinderPatternFinder::crossCheckHorizontal(size_t startJ, size_t centerI, i
 
 bool FinderPatternFinder::handlePossibleCenter(int* stateCount, size_t i, size_t j) {
   int stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4];
-  float centerJ = centerFromEnd(stateCount, j);
+  float centerJ = centerFromEnd(stateCount, static_cast< int >( j ));
   float centerI = crossCheckVertical(i, (size_t)centerJ, stateCount[2], stateCountTotal);
   if (!isnan(centerI)) {
     // Re-cross check

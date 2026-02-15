@@ -104,7 +104,7 @@ int BuildJpegHuffmanTable(const int* count_in, const int* symbols,
         total_size += table_size;
         low = 0;
         lut[key].bits = table_bits + kJpegHuffmanRootTableBits;
-        lut[key].value = (table - lut) - key;
+        lut[key].value = static_cast<uint16_t>((table - lut) - key);
         ++key;
       }
       code.bits = len - kJpegHuffmanRootTableBits;

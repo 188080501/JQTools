@@ -557,7 +557,7 @@ static inline float GammaPolynomial(float value) {
     12.262350348616792, 20.557285797683576, 12.161463238367844,
     4.711532733641639, 0.899112889751053, 0.035662329617191,
   }};
-  return r(value);
+  return static_cast<float>(r(value));
 }
 
 }  // namespace butteraugli

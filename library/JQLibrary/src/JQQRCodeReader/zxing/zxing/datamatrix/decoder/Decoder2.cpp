@@ -38,7 +38,7 @@ using zxing::BitMatrix;
 Decoder::Decoder() : rsDecoder_(GenericGF::DATA_MATRIX_FIELD_256) {}
 
 void Decoder::correctErrors(ArrayRef<char> codewordBytes, int numDataCodewords) {
-  int numCodewords = codewordBytes->size();
+  int numCodewords = static_cast< int >( codewordBytes->size() );
   ArrayRef<int> codewordInts(numCodewords);
   for (int i = 0; i < numCodewords; i++) {
     codewordInts[i] = codewordBytes[i] & 0xff;
@@ -67,7 +67,7 @@ Ref<DecoderResult> Decoder::decode(Ref<BitMatrix> bits) {
   // Separate into data blocks
   std::vector<Ref<DataBlock> > dataBlocks = DataBlock::getDataBlocks(codewords, version);
 
-  int dataBlocksCount = dataBlocks.size();
+  int dataBlocksCount = static_cast< int >( dataBlocks.size() );
 
   // Count total number of data bytes
   int totalBytes = 0;

@@ -108,7 +108,7 @@ int GuetzliStringOut(void* data, const uint8_t* buf, size_t count) {
   std::string* sink =
       reinterpret_cast<std::string*>(data);
   sink->append(reinterpret_cast<const char*>(buf), count);
-  return count;
+  return static_cast<int>(count);
 }
 
 void Processor::OutputJpeg(const JPEGData& jpg,
@@ -121,7 +121,7 @@ void Processor::OutputJpeg(const JPEGData& jpg,
 }
 
 void Processor::MaybeOutput(const std::string& encoded_jpg) {
-  double score = comparator_->ScoreOutputSize(encoded_jpg.size());
+  double score = comparator_->ScoreOutputSize(static_cast<int>(encoded_jpg.size()));
   GUETZLI_LOG(stats_, " Score[%.4f]", score);
   if (score < final_output_->score || final_output_->score < 0) {
     final_output_->jpeg_data = encoded_jpg;
@@ -305,7 +305,7 @@ QuantData Processor::TryQuantMatrix(const JPEGData& jpg_in,
   data.out.jpeg_data = encoded_jpg;
   data.out.distmap = comparator_->distmap();
   data.out.distmap_aggregate = comparator_->distmap_aggregate();
-  data.out.score = comparator_->ScoreOutputSize(encoded_jpg.size());
+  data.out.score = comparator_->ScoreOutputSize(static_cast<int>(encoded_jpg.size()));
   MaybeOutput(encoded_jpg);
   return data;
 }
@@ -317,8 +317,8 @@ bool Processor::SelectQuantMatrix(const JPEGData& jpg_in, const bool downsample,
   // Don't try to go up to exactly the target distance when selecting a
   // quantization matrix, since we will need some slack to do the frequency
   // masking later.
-  const float target_mul_high = 0.97;
-  const float target_mul_low = 0.95;
+  const float target_mul_high = 0.97f;
+  const float target_mul_low = 0.95f;
 
   QuantData best = TryQuantMatrix(jpg_in, target_mul_high, best_q);
   for (;;) {
@@ -373,10 +373,10 @@ void Processor::ComputeBlockZeroingOrder(
       if (block[idx] != 0) {
         float score;
         if (params_.new_zeroing_model) {
-          score = std::abs(orig_block[idx]) * csf[idx] + bias[idx];
+          score = static_cast<float>(std::abs(orig_block[idx]) * csf[idx] + bias[idx]);
         } else {
-          score = (std::abs(orig_block[idx]) - kJPEGZigZagOrder[k] / 64.0) *
-                  kWeight[c] / oldCsf[k];
+          score = static_cast<float>((std::abs(orig_block[idx]) - kJPEGZigZagOrder[k] / 64.0) *
+                  kWeight[c] / oldCsf[k]);
         }
         input_order.push_back(std::make_pair(idx, score));
       }
@@ -388,7 +388,7 @@ void Processor::ComputeBlockZeroingOrder(
   coeff_t processed_block[kBlockSize];
   memcpy(processed_block, block, sizeof(processed_block));
   while (!input_order.empty()) {
-    float best_err = 1e17;
+    float best_err = 1e17f;
     int best_i = 0;
     for (int i = 0; i < (int)std::min<size_t>((size_t)params_.zeroing_greedy_lookahead,
                                          input_order.size());
@@ -409,7 +409,7 @@ void Processor::ComputeBlockZeroingOrder(
           int block_xx = block_x * factor_x + ix;
           int block_yy = block_y * factor_y + iy;
           if (8 * block_xx < img->width() && 8 * block_yy < img->height()) {
-            float err = comparator_->CompareBlock(*img, block_xx, block_yy);
+            float err = static_cast<float>(comparator_->CompareBlock(*img, block_xx, block_yy));
             max_err = std::max(max_err, err);
           }
         }
@@ -432,7 +432,7 @@ void Processor::ComputeBlockZeroingOrder(
   }
   // Make the block error values monotonic.
   float min_err = 1e10;
-  for (int i = output_order->size() - 1; i >= 0; --i) {
+  for (int i = static_cast<int>(output_order->size()) - 1; i >= 0; --i) {
     min_err = std::min(min_err, (*output_order)[i].block_err);
     (*output_order)[i].block_err = min_err;
   }
@@ -562,14 +562,14 @@ void Processor::SelectFrequencyMasking(const JPEGData& jpg, OutputImage* img,
 
   JPEGData jpg_out = jpg;
   img->SaveToJpegData(&jpg_out);
-  const int jpg_header_size = JpegHeaderSize(jpg_out, params_.clear_metadata);
-  const int dc_size = EstimateDCSize(jpg_out);
+  const int jpg_header_size = static_cast<int>(JpegHeaderSize(jpg_out, params_.clear_metadata));
+  const int dc_size = static_cast<int>(EstimateDCSize(jpg_out));
   std::vector<JpegHistogram> ac_histograms(jpg_out.components.size());
   BuildACHistograms(jpg_out, &ac_histograms[0]);
   std::vector<uint8_t> ac_depths;
-  int ac_histogram_size = ComputeEntropyCodes(ac_histograms, &ac_depths);
+  int ac_histogram_size = static_cast<int>(ComputeEntropyCodes(ac_histograms, &ac_depths));
   int base_size = jpg_header_size + dc_size + ac_histogram_size +
-      EntropyCodedDataSize(ac_histograms, ac_depths);
+      static_cast<int>(EntropyCodedDataSize(ac_histograms, ac_depths));
   int prev_size = base_size;
 
   std::vector<float> max_block_error(num_blocks);
@@ -643,19 +643,19 @@ void Processor::SelectFrequencyMasking(const JPEGData& jpg, OutputImage* img,
       if (direction > 0 && comparator_->DistanceOK(1.0)) {
         rel_size_delta = 0.05;
       }
-      size_t min_size_delta = base_size * rel_size_delta;
+      int min_size_delta = static_cast<int>(base_size * rel_size_delta);
 
       float coeffs_to_change_per_block =
-          direction > 0 ? 2.0 : factor_x * factor_y * 0.2;
-      int min_coeffs_to_change = coeffs_to_change_per_block * blocks_to_change;
+          direction > 0 ? 2.0f : static_cast<float>(factor_x * factor_y) * 0.2f;
+      int min_coeffs_to_change = static_cast<int>(coeffs_to_change_per_block * blocks_to_change);
 
       if (first_up_iter) {
-        const float limit = 0.75 * comparator_->BlockErrorLimit();
+        const float limit = 0.75f * comparator_->BlockErrorLimit();
         auto it = std::partition_point(global_order.begin(), global_order.end(),
                                        [=](const std::pair<int, float>& a) {
                                          return a.second < limit; });
         min_coeffs_to_change = std::max<int>(min_coeffs_to_change,
-                                             it - global_order.begin());
+                                             static_cast<int>(it - global_order.begin()));
         first_up_iter = false;
       }
 
@@ -689,12 +689,12 @@ void Processor::SelectFrequencyMasking(const JPEGData& jpg, OutputImage* img,
         ++changed_coeffs;
         static const int kEntropyCodeUpdateFreq = 10;
         if (i % kEntropyCodeUpdateFreq == 0) {
-          ac_histogram_size = ComputeEntropyCodes(ac_histograms, &ac_depths);
+          ac_histogram_size = static_cast<int>(ComputeEntropyCodes(ac_histograms, &ac_depths));
         }
         est_jpg_size = jpg_header_size + dc_size + ac_histogram_size +
-            EntropyCodedDataSize(ac_histograms, ac_depths);
+            static_cast<int>(EntropyCodedDataSize(ac_histograms, ac_depths));
         if (changed_coeffs > min_coeffs_to_change &&
-            std::abs(est_jpg_size - prev_size) > (int)min_size_delta) {
+            std::abs(est_jpg_size - prev_size) > min_size_delta) {
           break;
         }
       }
@@ -782,7 +782,7 @@ bool Processor::ProcessJpegData(const Params& params, const JPEGData& jpg_in,
     final_output_->jpeg_data = encoded_jpg;
     final_output_->distmap = std::vector<float>(jpg.width * jpg.height, 0.0);
     final_output_->distmap_aggregate = 0;
-    final_output_->score = encoded_jpg.size();
+    final_output_->score = static_cast<double>(encoded_jpg.size());
     // Butteraugli doesn't work with images this small.
     return true;
   }
@@ -819,7 +819,7 @@ bool Processor::ProcessJpegData(const Params& params, const JPEGData& jpg_in,
     if (!downsample) {
       SelectFrequencyMasking(tmp_jpg, &img, 7, 1.0, false);
     } else {
-      const float ymul = tmp_jpg.components.size() == 1 ? 1.0 : 0.97;
+      const float ymul = tmp_jpg.components.size() == 1 ? 1.0f : 0.97f;
       SelectFrequencyMasking(tmp_jpg, &img, 1, ymul, false);
       SelectFrequencyMasking(tmp_jpg, &img, 6, 1.0, true);
     }

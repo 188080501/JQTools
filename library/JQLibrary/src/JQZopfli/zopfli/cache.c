@@ -67,10 +67,10 @@ void ZopfliSublenToCache(const unsigned short* sublen,
   if (length < 3) return;
   for (i = 3; i <= length; i++) {
     if (i == length || sublen[i] != sublen[i + 1]) {
-      cache[j * 3] = i - 3;
+      cache[j * 3] = (unsigned char)(i - 3);
       cache[j * 3 + 1] = sublen[i] % 256;
       cache[j * 3 + 2] = (sublen[i] >> 8) % 256;
-      bestlength = i;
+      bestlength = (unsigned)i;
       j++;
       if (j >= ZOPFLI_CACHE_LENGTH) break;
     }

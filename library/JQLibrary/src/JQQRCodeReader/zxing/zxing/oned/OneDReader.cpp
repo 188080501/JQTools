@@ -160,7 +160,7 @@ float OneDReader::patternMatchVariance(vector<int>& counters,
 float OneDReader::patternMatchVariance(vector<int>& counters,
                                      int const pattern[],
                                      float maxIndividualVariance) {
-  int numCounters = counters.size();
+  int numCounters = static_cast< int >( counters.size() );
   unsigned int total = 0;
   unsigned int patternLength = 0;
   for (int i = 0; i < numCounters; i++) {
@@ -192,7 +192,7 @@ float OneDReader::patternMatchVariance(vector<int>& counters,
 void OneDReader::recordPattern(Ref<BitArray> row,
                                int start,
                                vector<int>& counters) {
-  int numCounters = counters.size();
+  int numCounters = static_cast< int >( counters.size() );
   for (int i = 0; i < numCounters; i++) {
     counters[i] = 0;
   }
