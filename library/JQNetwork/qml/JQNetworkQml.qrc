@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/JQNetwork">
-        <file>JQNetwork/JQNetworkClient.qml</file>
-        <file>JQNetwork/qmldir</file>
-    </qresource>
-</RCC>

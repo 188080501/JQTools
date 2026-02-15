@@ -19,7 +19,6 @@ CONFIG += c++14
 
 include( $$PWD/JQLibraryImport.pri )
 include( $$PWD/library/JQToolsLibrary/JQToolsLibrary.pri )
-include( $$PWD/library/JQNetwork/JQNetwork.pri )
 include( $$PWD/library/MaterialUI/MaterialUI.pri )
 include( $$PWD/components/components.pri )
 

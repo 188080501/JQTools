@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/LanFileTransport">
-        <file>LanFileTransport.qml</file>
-    </qresource>
-</RCC>

@@ -11,7 +11,6 @@
 #
 
 include( $$PWD/LinesStatistics/LinesStatistics.pri )
-include( $$PWD/LanFileTransport/LanFileTransport.pri )
 include( $$PWD/PngOptimize/PngOptimize.pri )
 mac {
     include( $$PWD/JpgOptimize/JpgOptimize.pri )

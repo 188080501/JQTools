@@ -32,9 +32,6 @@ https://github.com/188080501/JQTools/releases/latest
 
 若你遇到问题、有了更好的建议或者想要一些新功能，都可以直接在GitHub上提交Issues：https://github.com/188080501/JQTools/issues
 
-注：局域网相关功能，依赖JQNetwork，这也是我基于Qt开发的一个网络库，GitHub链接如下：
-https://github.com/188080501/JQNetwork
-
 ## 界面预览
 
 ![](./preview/JQToolsPreview.png)
@@ -68,7 +65,6 @@ https://github.com/188080501/JQNetwork
 工具类|二维码识别器|已完成
 工具类|批量替换|已完成
 工具类|屏幕拾色器|已完成
-工具类|局域网文件传输|已完成
  | |
 Qt相关|PNG警告消除|已完成
 Qt相关|Q_PROPERTY生成|已完成
@@ -163,10 +159,6 @@ Qt相关|CPP文件生成|已完成
 * 屏幕拾色器
 
 	可以拾取屏幕中，某个点的颜色
-
-* 局域网文件传输
-
-	可以在局域网中传输文件
 
 ### Qt相关
 * PNG警告消除
