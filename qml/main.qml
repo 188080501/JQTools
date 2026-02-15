@@ -157,32 +157,6 @@ ApplicationWindow {
             horizontalAlignment: Text.Left
             color: "#ffffff"
         }
-
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-
-            onEntered: {
-                versionStringLabel.opacity = 1;
-            }
-
-            onExited: {
-                versionStringLabel.opacity = 0;
-            }
-        }
-
-        MaterialLabel {
-            id: versionStringLabel
-            anchors.right: parent.right
-            anchors.rightMargin: 5
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 5
-            text: "V" + ( ( JQToolsManage ) ? ( JQToolsManage.jqToolsVersionString() ) : ( "" ) )
-            color: "#88ffffff"
-            opacity: 0
-
-            Behavior on opacity { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
-        }
     }
 
     Rectangle {
