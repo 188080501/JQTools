@@ -96,6 +96,13 @@ void JQQRCodeReaderForQmlManage::analysisItem(
     if ( !semaphore_->tryAcquire( 1 ) ) { return; }
 
     const auto result = item->grabToImage();
+    if ( result.isNull() )
+    {
+        qDebug( "JQQRCodeReaderForQmlManage::analysisItem: grabToImage result is null" );
+        semaphore_->release( 1 );
+        return;
+    }
+
     const auto geometry = QRect( apertureX, apertureY, apertureWidth, apertureHeight );
 
     QSharedPointer< QMetaObject::Connection > connection( new QMetaObject::Connection );
@@ -105,6 +112,8 @@ void JQQRCodeReaderForQmlManage::analysisItem(
         if ( image.isNull() )
         {
             qDebug( "JQQRCodeReaderForQmlManage::analysisItem: image is null" );
+            semaphore_->release( 1 );
+            disconnect( *connection );
             return;
         }
 
