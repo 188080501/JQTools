@@ -124,11 +124,11 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
         }
         else if ( size < ( 1024 * 1024 ) )
         {
-            return QString( "%1 kb" ).arg( size / 1024 );
+            return QString( "%1 KB" ).arg( size / 1024 );
         }
         else
         {
-            return QString( "%1.%2 mb" ).arg( size / 1024 / 1024 ).arg( size / 1024 % 1024 );
+            return QString( "%1.%2 MB" ).arg( size / 1024 / 1024 ).arg( size / 1024 % 1024 );
         }
     };
 
