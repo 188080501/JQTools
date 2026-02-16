@@ -58,16 +58,3 @@ SOURCES *= \
     $$PWD/src/JQGuetzli/guetzli/score.cc \
     $$PWD/src/JQGuetzli/butteraugli/butteraugli.cc
 
-win32 {
-    DEFINES *= GFLAGS_IS_A_DLL=0
-
-    LIBS *= \
-        $$PWD/bin/JQGuetzli/x86_64/win32/gflags_nothreads_static.lib \
-        $$PWD/bin/JQGuetzli/x86_64/win32/libpng16.lib
-}
-
-mac {
-    LIBS *= \
-        $$PWD/bin/JQGuetzli/x86_64/macx-clang/libgflags.2.2.0.dylib \
-        $$PWD/bin/JQGuetzli/x86_64/macx-clang/libpng16.16.dylib
-}
