@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QPainter>
+#include <QCoreApplication>
 
 // JQLibrary lib import
 #include "JQBarcode.h"
@@ -26,12 +27,12 @@ using namespace BarcodeMaker;
 
 Manage::Manage()
 {
-    this->qmlApplicationEngine().data()->addImageProvider( "BarcodeMaker", new ImageProvider );
+    qApp->property( "qmlEngine" ).value< QQmlApplicationEngine * >()->addImageProvider( "BarcodeMaker", new ImageProvider );
 }
 
 Manage::~Manage()
 {
-    this->qmlApplicationEngine().data()->removeImageProvider( "BarcodeMaker" );
+    qApp->property( "qmlEngine" ).value< QQmlApplicationEngine * >()->removeImageProvider( "BarcodeMaker" );
 }
 
 QString Manage::savePng(const QString &string)

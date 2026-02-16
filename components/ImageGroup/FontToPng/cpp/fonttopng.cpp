@@ -192,8 +192,8 @@ void Manage::loadFont(const QString fontName)
 
 QImage Manage::paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess)
 {
-    QPainter patiner;
     QImage image( backgroundSize.toSize(), QImage::Format_ARGB32 );
+    QPainter patiner;
 
     memset( image.bits(), 0x0, image.width() * image.height() * 4 );
 
@@ -237,6 +237,8 @@ QImage Manage::paintChar(const QString &familieName, const CharPackage &charPack
             }
         }
     }
+
+    patiner.end();
 
     return image;
 }

@@ -29,13 +29,6 @@ public slots:
     QString clipboardText();
 
     void setClipboardText(const QString &string);
-
-    static void setQmlApplicationEngine(QQmlApplicationEngine *qmlApplicationEngine);
-
-    static QPointer< QQmlApplicationEngine > qmlApplicationEngine();
-
-private:
-    static QPointer< QQmlApplicationEngine > qmlApplicationEngine_;
 };
 
 #endif//JQTOOLSLIBRARY_H_

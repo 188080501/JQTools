@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    app.setProperty( "qmlEngine", QVariant::fromValue( &engine ) );
+
     // Group initializa
     WELCOMEGROUP_INITIALIZA
     TEXTGROUP_INITIALIZA

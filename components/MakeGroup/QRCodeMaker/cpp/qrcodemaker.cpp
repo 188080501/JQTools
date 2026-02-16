@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QPainter>
+#include <QCoreApplication>
 
 // JQLibrary lib import
 #include "JQQRCodeWriter.h"
@@ -26,12 +27,12 @@ using namespace QRCodeMaker;
 
 Manage::Manage()
 {
-    this->qmlApplicationEngine().data()->addImageProvider( "QRCodeMaker", new ImageProvider );
+    qApp->property( "qmlEngine" ).value< QQmlApplicationEngine * >()->addImageProvider( "QRCodeMaker", new ImageProvider );
 }
 
 Manage::~Manage()
 {
-    this->qmlApplicationEngine().data()->removeImageProvider( "QRCodeMaker" );
+    qApp->property( "qmlEngine" ).value< QQmlApplicationEngine * >()->removeImageProvider( "QRCodeMaker" );
 }
 
 QString Manage::savePng(const QString &string)
