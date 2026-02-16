@@ -39,23 +39,23 @@ var items = [
         ]
     },
     {
-        bookmarkName: "制作类",
-        titleName: "制作类",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "qrc:/QRCodeMaker/QRCodeMaker.qml" },
-            { bookmarkName: "条形码生成器", titleName: "条形码生成器", qrcLocation: "qrc:/BarcodeMaker/BarcodeMaker.qml" }
-        ]
-    },
-    {
         bookmarkName: "工具类",
         titleName: "工具类",
         qrcLocation: "",
         children: [
             { bookmarkName: "代码行数统计", titleName: "代码行数统计", qrcLocation: "qrc:/LinesStatistics/LinesStatistics.qml" },
-            { bookmarkName: "二维码识别器", titleName: "二维码识别器 ", qrcLocation: "qrc:/QRCodeReader/QRCodeReader.qml" },
             { bookmarkName: "批量替换", titleName: "批量替换 ", qrcLocation: "qrc:/BatchReplacement/BatchReplacement.qml" },
             { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "qrc:/ScreenColorPicker/ScreenColorPicker.qml" }
+        ]
+    },
+    {
+        bookmarkName: "二维码类",
+        titleName: "二维码类",
+        qrcLocation: "",
+        children: [
+            { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "qrc:/QRCodeMaker/QRCodeMaker.qml" },
+            { bookmarkName: "条形码生成器", titleName: "条形码生成器", qrcLocation: "qrc:/BarcodeMaker/BarcodeMaker.qml" },
+            { bookmarkName: "二维码识别器", titleName: "二维码识别器 ", qrcLocation: "qrc:/QRCodeReader/QRCodeReader.qml" }
         ]
     },
     {

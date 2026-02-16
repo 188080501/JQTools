@@ -16,12 +16,10 @@
 // ToolsGroup lib import
 #include <LinesStatistics>
 #include <ScreenColorPicker>
-#include <QRCodeReader>
 #include <BatchReplacement>
 
 #define TOOLSGROUP_INITIALIZA \
     LINESSTATISTICS_INITIALIZA; \
-    QRCODEREADER_INITIALIZA; \
     BATCHREPLACEMENT_INITIALIZA;\
     SCREENCOLORPICKER_INITIALIZA;
 

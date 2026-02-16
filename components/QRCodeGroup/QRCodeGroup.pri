@@ -12,9 +12,10 @@
 
 include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
 include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
+include( $$PWD/QRCodeReader/QRCodeReader.pri )
 
 INCLUDEPATH *= \
     $$PWD/
 
 HEADERS *= \
-    $$PWD/makegroup.h
+    $$PWD/qrcodegroup.h

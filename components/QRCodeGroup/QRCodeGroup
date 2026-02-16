@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -10,4 +10,4 @@
     GitHub: https://github.com/188080501/
 */
 
-#include "makegroup.h"
+#include "qrcodegroup.h"

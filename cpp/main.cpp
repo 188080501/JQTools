@@ -27,9 +27,9 @@
 #include <WelcomeGroup>
 #include <TextGroup>
 #include <CalculateGroup>
-#include <MakeGroup>
 #include <ImageGroup>
 #include <ToolsGroup>
+#include <QRCodeGroup>
 #include <QtGroup>
 
 void checkVersion();
@@ -67,9 +67,9 @@ int main(int argc, char *argv[])
     WELCOMEGROUP_INITIALIZA
     TEXTGROUP_INITIALIZA
     CALCULATEGROUP_INITIALIZA
-    MAKEGROUP_INITIALIZA
     IMAGEGROUP_INITIALIZA
     TOOLSGROUP_INITIALIZA
+    QRCODEGROUP_INITIALIZA
     QTGROUP_INITIALIZA
 
     engine.load( QUrl( "qrc:/main.qml" ) );

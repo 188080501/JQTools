@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -10,15 +10,17 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef MAKEGROUP_MAKEGROUP_H_
-#define MAKEGROUP_MAKEGROUP_H_
+#ifndef QRCODEGROUP_QRCODEGROUP_H_
+#define QRCODEGROUP_QRCODEGROUP_H_
 
-// MakeGroup lib import
+// QRCodeGroup lib import
 #include <QRCodeMaker>
 #include <BarcodeMaker>
+#include <QRCodeReader>
 
-#define MAKEGROUP_INITIALIZA \
+#define QRCODEGROUP_INITIALIZA \
     QRCODEMAKER_INITIALIZA; \
-    BARCODEMAKER_INITIALIZA;
+    BARCODEMAKER_INITIALIZA; \
+    QRCODEREADER_INITIALIZA;
 
-#endif//MAKEGROUP_MAKEGROUP_H_
+#endif//QRCODEGROUP_QRCODEGROUP_H_
