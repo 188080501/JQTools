@@ -23,7 +23,7 @@ using namespace RandomUuid;
 
 Manage::Manage()
 {
-    srand( QDateTime::currentDateTime().toTime_t() + qApp->applicationFilePath().size() );
+    srand( QDateTime::currentMSecsSinceEpoch() + qApp->applicationFilePath().size() );
 }
 
 QString Manage::randomUuid(const bool includeParantheses)

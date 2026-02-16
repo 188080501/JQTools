@@ -21,6 +21,7 @@
 #include <QMap>
 #include <QImage>
 #include <QQuickImageProvider>
+#include <QPointer>
 #include <QJsonArray>
 #include <QMutex>
 
@@ -30,12 +31,15 @@
 #define FONTTOPNG_INITIALIZA                                                        \
 {                                                                                   \
     auto fontToPngManage = new FontToPng::Manage;                                   \
-    engine.addImageProvider("FontToPngManage", fontToPngManage);                    \
+    auto fontToPngImageProvider = new FontToPng::ImageProvider( fontToPngManage );  \
+    engine.addImageProvider("FontToPngManage", fontToPngImageProvider);             \
     engine.rootContext()->setContextProperty("FontToPngManage", fontToPngManage);   \
 }
 
 namespace FontToPng
 {
+
+class Manage;
 
 struct CharAdaptation
 {
@@ -65,10 +69,22 @@ struct FontPackage
     QMap< ushort, CharPackage > charPackages;
 };
 
-class Manage: public AbstractTool, public QQuickImageProvider
+class ImageProvider: public QQuickImageProvider
+{
+public:
+    explicit ImageProvider(Manage *manage);
+
+    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+
+private:
+    QPointer< Manage > manage_;
+};
+
+class Manage: public AbstractTool
 {
     Q_OBJECT
     Q_DISABLE_COPY(Manage)
+    friend class ImageProvider;
 
 public:
     Manage();

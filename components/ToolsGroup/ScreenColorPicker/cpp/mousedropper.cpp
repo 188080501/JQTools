@@ -1,10 +1,13 @@
 ﻿#include "mousedropper.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QGuiApplication>
 #include <QPainter>
 #include <QScreen>
 #include <QCursor>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <QDesktopWidget>
+#endif
 
 const QSize winSize(100,100);       //窗口尺寸
 const int grabInterval=50;          //刷新频率
@@ -40,9 +43,36 @@ void MouseDropper::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED( e );
 
-    QPainter painter(this);
-    QPixmap grab=QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).copy(QCursor::pos().x()-winSize.width()/magnificationTimes/2,QCursor::pos().y()-winSize.height()*split/magnificationTimes/2,winSize.width()/magnificationTimes,winSize.height()*split/magnificationTimes);
-    painter.drawPixmap(0,0,winSize.width(),winSize.height()*split,grab);
+    QPainter painter( this );
+    QPixmap grab;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const auto desktopWinId = QApplication::desktop()->winId();
+    grab = QGuiApplication::primaryScreen()->grabWindow( desktopWinId ).copy(
+        QCursor::pos().x() - winSize.width() / magnificationTimes / 2,
+        QCursor::pos().y() - winSize.height() * split / magnificationTimes / 2,
+        winSize.width() / magnificationTimes,
+        winSize.height() * split / magnificationTimes
+    );
+#else
+    const auto cursorPos = QCursor::pos();
+    auto currentScreen = QGuiApplication::screenAt( cursorPos );
+    if ( !currentScreen )
+    {
+        currentScreen = QGuiApplication::primaryScreen();
+    }
+    if ( !currentScreen )
+    {
+        return;
+    }
+    const auto screenPos = cursorPos - currentScreen->geometry().topLeft();
+    grab = currentScreen->grabWindow( 0 ).copy(
+        screenPos.x() - winSize.width() / magnificationTimes / 2,
+        screenPos.y() - winSize.height() * split / magnificationTimes / 2,
+        winSize.width() / magnificationTimes,
+        winSize.height() * split / magnificationTimes
+    );
+#endif
+    painter.drawPixmap( 0, 0, winSize.width(), winSize.height() * split, grab );
 
     QPixmap pixmap = grab.copy(winSize.width()/magnificationTimes/2,winSize.height()*split/magnificationTimes/2,1,1);//截图1个像素
     color = pixmap.toImage().pixel(0,0);
@@ -57,5 +87,11 @@ void MouseDropper::paintEvent(QPaintEvent *e)
     painter.drawLine(45,35,55,35);
     painter.setPen(QColor(255,255,255));
     painter.drawText(32,82,"RGB");
-    painter.drawText(32,95,QString().sprintf("%d,%d,%d",(color.red()-1)*255/254,(color.green()-1)*255/254,(color.blue()-1)*255/254));       //根据透明度算法复原原色素值
+    painter.drawText(
+        32,
+        95,
+        QString( "%1,%2,%3" )
+            .arg( ( color.red() - 1 ) * 255 / 254 )
+            .arg( ( color.green() - 1 ) * 255 / 254 )
+            .arg( ( color.blue() - 1 ) * 255 / 254 ) ); //根据透明度算法复原原色素值
 }

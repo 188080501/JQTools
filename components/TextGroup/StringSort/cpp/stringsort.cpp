@@ -19,7 +19,7 @@ using namespace StringSort;
 
 QString Manage::sort(const QString &string, const bool descOrder)
 {
-    auto list = string.split( "\n", QString::SkipEmptyParts );
+    auto list = string.split( "\n", Qt::SkipEmptyParts );
 
     std::sort( list.begin(), list.end(), [ = ]( const QString &a, const QString &b )
     {

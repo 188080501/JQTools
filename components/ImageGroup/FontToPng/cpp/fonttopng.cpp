@@ -26,8 +26,19 @@
 
 using namespace FontToPng;
 
-Manage::Manage():
+ImageProvider::ImageProvider(Manage *manage):
     QQuickImageProvider( QQuickImageProvider::Image )
+    , manage_( manage )
+{ }
+
+QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    if ( manage_.isNull() ) { return { }; }
+
+    return manage_->requestImage( id, size, requestedSize );
+}
+
+Manage::Manage()
 { }
 
 void Manage::begin()
@@ -152,7 +163,7 @@ void Manage::loadFont(const QString fontName)
     fontPackage.fontId = fontId;
     fontPackage.familieName = QFontDatabase::applicationFontFamilies( fontId ).first();
 
-    auto txtData = JQFile::readFile( fontPackage.txtFilePath );
+    auto txtData = JQFile::readFile( QFileInfo( fontPackage.txtFilePath ) );
     if ( !txtData.first ) { return; }
 
     auto txtLines = txtData.second.split( '\n' );

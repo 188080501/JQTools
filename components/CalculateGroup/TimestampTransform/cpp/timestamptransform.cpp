@@ -20,7 +20,7 @@ using namespace TimestampTransform;
 
 QString Manage::currentDateTimeTimestampString()
 {
-    return QString::number( QDateTime::currentDateTime().toTime_t() );
+    return QString::number( QDateTime::currentSecsSinceEpoch() );
 }
 
 QString Manage::dateTimeStringFromTimestampString(const QString &timestampString)
@@ -31,7 +31,7 @@ QString Manage::dateTimeStringFromTimestampString(const QString &timestampString
     }
     else if ( timestampString.size() == 10 )
     {
-        return QDateTime::fromTime_t( timestampString.toInt() ).toString( "yyyy-MM-dd hh:mm:ss" );
+        return QDateTime::fromSecsSinceEpoch( timestampString.toLongLong() ).toString( "yyyy-MM-dd hh:mm:ss" );
     }
 
     return { };

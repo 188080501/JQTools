@@ -139,10 +139,9 @@ bool JQFile::writeFile(const QFileInfo &targetFilePath, const QByteArray &data, 
 bool JQFile::writeFileToDesktop(const QString &fileName, const QByteArray &data, const bool cover)
 {
     return writeFile(
-                { QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) },
-                data,
-                cover
-                );
+        QFileInfo( QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) ),
+        data,
+        cover );
 }
 
 bool JQFile::writeFileToTemp(const QString &fileName, const QByteArray &data, const bool cover)
@@ -191,13 +190,12 @@ QPair< bool, QByteArray > JQFile::readFile(const QFileInfo &filePath)
 QPair< bool, QByteArray > JQFile::readFileFromDesktop(const QString &fileName)
 {
     return readFile(
-                { QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) }
-            );
+        QFileInfo( QString( "%1/%2" ).arg( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), fileName ) ) );
 }
 
 QPair< bool, QByteArray > JQFile::readFileFromTemp(const QString &fileName)
 {
-    return readFile( tempFilePath( fileName ) );
+    return readFile( QFileInfo( tempFilePath( fileName ) ) );
 }
 
 bool JQFile::copyFile(const QFileInfo &sourceFileInfo, const QFileInfo &targetFileInfo, const bool cover)
@@ -276,7 +274,7 @@ bool JQFile::copyDirectory(const QDir &sourceDirectory, const QDir &targetDirect
     return fun( sourceDirectory, [ & ](const QFileInfo &info, bool &continueFlag)
     {
         const auto path = info.path().mid( sourceDirectory.path().size() );
-        if ( !JQFile::copyFile( info, targetDirectory.path() + "/" + ( ( path.isEmpty() ) ? ( "" ) : ( path + "/" ) ) + info.fileName(), cover ) )
+        if ( !JQFile::copyFile( info, QFileInfo( targetDirectory.path() + "/" + ( ( path.isEmpty() ) ? ( "" ) : ( path + "/" ) ) + info.fileName() ), cover ) )
         {
             continueFlag = false;
         }

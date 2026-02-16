@@ -104,7 +104,7 @@ QJsonObject Manage::startBatchReplacement(
                 ++fileCount;
                 replacementCount += matchCount;
 
-                JQFile::writeFile( info.filePath(), fileAllData.replace( currentSourceKey.toUtf8(), currentTargetKey.toUtf8() ) );
+                JQFile::writeFile( QFileInfo( info.filePath() ), fileAllData.replace( currentSourceKey.toUtf8(), currentTargetKey.toUtf8() ) );
             }, true );
 
             if ( availableSuffixs.contains( "filenameanddirname" ) )

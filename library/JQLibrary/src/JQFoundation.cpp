@@ -538,7 +538,7 @@ void JQFoundation::setDebugOutput(const QString &rawTargetFilePath_, const bool 
             file.open( QIODevice::WriteOnly | QIODevice::Append );
 
             QTextStream textStream( &file );
-            textStream << QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss" ) << ": " << message << endl;
+            textStream << QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss" ) << ": " << message << Qt::endl;
         }
     };
 
@@ -656,7 +656,7 @@ bool JQFoundation::singleApplicationExist(const QString &)
 
 QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool firstCharUpper)
 {
-    const auto splitList = source.split( '_', QString::SkipEmptyParts );
+    const auto splitList = source.split( '_', Qt::SkipEmptyParts );
     QString result;
 
     for ( const auto &splitTag: splitList )
@@ -686,7 +686,7 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool fir
                 if ( firstCharUpper )
                 {
                     result += splitTag[ 0 ].toUpper();
-                    result += splitTag.midRef( 1 );
+                    result += splitTag.mid( 1 );
                 }
                 else
                 {
@@ -696,7 +696,7 @@ QString JQFoundation::snakeCaseToCamelCase(const QString &source, const bool fir
             else
             {
                 result += splitTag[ 0 ].toUpper();
-                result += splitTag.midRef( 1 );
+                result += splitTag.mid( 1 );
             }
         }
     }

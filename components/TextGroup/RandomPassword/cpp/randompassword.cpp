@@ -20,7 +20,7 @@ using namespace RandomPassword;
 
 Manage::Manage()
 {
-    srand( QDateTime::currentDateTime().toTime_t() + qApp->applicationFilePath().size() );
+    srand( QDateTime::currentMSecsSinceEpoch() + qApp->applicationFilePath().size() );
 }
 
 QString Manage::randomPassword(const int length, const bool number, const bool englishCharacters, const bool caseSensitive, const bool dividingLine)
