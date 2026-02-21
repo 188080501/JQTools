@@ -14,10 +14,12 @@ INCLUDEPATH *= \
     $$PWD/cpp/
 
 HEADERS *= \
-    $$PWD/cpp/barcodemaker.h
+    $$PWD/cpp/barcodemaker.h \
+    $$PWD/cpp/barcodegenerator.h
 
 SOURCES *= \
-    $$PWD/cpp/barcodemaker.cpp
+    $$PWD/cpp/barcodemaker.cpp \
+    $$PWD/cpp/barcodegenerator.cpp
 
 RESOURCES *= \
     $$PWD/qml/BarcodeMakerQml.qrc

@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -20,9 +20,9 @@
 #include <QStandardPaths>
 #include <QtConcurrent>
 
-// JQLibrary import
+// JQToolsLibrary import
 #include "JQZopfli.h"
-#include "JQFile.h"
+#include <JQToolsLibrary>
 
 using namespace PngOptimize;
 
@@ -66,7 +66,7 @@ QString Manage::optimizePngByOpenDirectory(const bool coverOldFile)
 
     if ( directoryPath.isEmpty() ) { return "cancel"; }
 
-    JQFile::foreachFileFromDirectory(
+    AbstractTool::foreachFileFromDirectory(
                 directoryPath,
                 [ &filePaths ]
                 (const QFileInfo &fileInfo)

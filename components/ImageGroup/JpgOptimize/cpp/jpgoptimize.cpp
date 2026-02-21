@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -22,7 +22,7 @@
 
 // JQGuetzli import
 #include "JQGuetzli.h"
-#include "JQFile.h"
+#include <JQToolsLibrary>
 
 using namespace JpgOptimize;
 
@@ -66,7 +66,7 @@ QString Manage::optimizeJpgByOpenDirectory(const bool coverOldFile)
 
     if ( directoryPath.isEmpty() ) { return "cancel"; }
 
-    JQFile::foreachFileFromDirectory(
+    AbstractTool::foreachFileFromDirectory(
                 directoryPath,
                 [ &filePaths ]
                 (const QFileInfo &fileInfo)

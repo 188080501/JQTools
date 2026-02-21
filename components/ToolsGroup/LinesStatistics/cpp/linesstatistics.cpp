@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -20,8 +20,8 @@
 #include <QEventLoop>
 #include <QtConcurrent>
 
-// JQLibrary import
-#include "JQFile.h"
+// JQToolsLibrary import
+#include <JQToolsLibrary>
 
 using namespace LinesStatistics;
 
@@ -65,7 +65,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
             imageSuffixs.insert( "ai" );
         }
 
-        JQFile::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
+        AbstractTool::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
         {
             if ( !availableSuffixs.contains( info.suffix().toLower() ) ) { return; }
 

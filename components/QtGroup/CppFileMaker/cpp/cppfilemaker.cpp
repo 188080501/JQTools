@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -15,8 +15,8 @@
 // Qt lib import
 #include <QStandardPaths>
 
-// JQLibrary import
-#include "JQFile.h"
+// JQToolsLibrary import
+#include <JQToolsLibrary>
 
 using namespace CppFileMaker;
 
@@ -57,10 +57,10 @@ QString Manage::make(
     targetFilePath3 = QString( "%1/%2.inc" ).arg( desktopPath, className.toLower() );
     targetFilePath4 = QString( "%1/%2.cpp" ).arg( desktopPath, className.toLower() );
 
-    JQFile::writeFile( QFileInfo( targetFilePath1 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath1, macroProtectsPrefix, className ).toUtf8() );
-    JQFile::writeFile( QFileInfo( targetFilePath2 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath2, macroProtectsPrefix, className ).toUtf8() );
-    JQFile::writeFile( QFileInfo( targetFilePath3 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath3, macroProtectsPrefix, className ).toUtf8() );
-    JQFile::writeFile( QFileInfo( targetFilePath4 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath4, macroProtectsPrefix, className ).toUtf8() );
+    AbstractTool::writeFile( QFileInfo( targetFilePath1 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath1, macroProtectsPrefix, className ).toUtf8() );
+    AbstractTool::writeFile( QFileInfo( targetFilePath2 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath2, macroProtectsPrefix, className ).toUtf8() );
+    AbstractTool::writeFile( QFileInfo( targetFilePath3 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath3, macroProtectsPrefix, className ).toUtf8() );
+    AbstractTool::writeFile( QFileInfo( targetFilePath4 ), QByteArray::fromHex( "efbbbf" ) + this->getTemplateData( sourceFilePath4, macroProtectsPrefix, className ).toUtf8() );
 
     return "OK";
 }
@@ -71,7 +71,7 @@ QString Manage::getTemplateData(
         const QString &className
     )
 {
-    auto readFileReply = JQFile::readFile( QFileInfo( templateFilePath ) );
+    auto readFileReply = AbstractTool::readFile( QFileInfo( templateFilePath ) );
     if ( !readFileReply.first ) { return { }; }
 
     readFileReply.second = readFileReply.second.replace( "%classname%", className.toUtf8().toLower() );

@@ -15,9 +15,7 @@
 // Qt lib import
 #include <QCoreApplication>
 #include <QDateTime>
-
-// JQLibrary lib import
-#include "JQFoundation.h"
+#include <QUuid>
 
 using namespace RandomUuid;
 
@@ -28,12 +26,5 @@ Manage::Manage()
 
 QString Manage::randomUuid(const bool includeParantheses)
 {
-    if ( includeParantheses )
-    {
-        return "{" + JQFoundation::createUuidString() + "}";
-    }
-    else
-    {
-        return JQFoundation::createUuidString();
-    }
+    return QUuid::createUuid().toString( ( includeParantheses ) ? ( QUuid::WithBraces ) : ( QUuid::WithoutBraces ) );
 }

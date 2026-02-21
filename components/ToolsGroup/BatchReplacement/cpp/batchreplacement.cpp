@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -21,8 +21,8 @@
 #include <QtConcurrent>
 #include <QDir>
 
-// JQLibrary import
-#include "JQFile.h"
+// JQToolsLibrary import
+#include <JQToolsLibrary>
 
 using namespace BatchReplacement;
 
@@ -67,7 +67,7 @@ QJsonObject Manage::startBatchReplacement(
         {
             qDebug() << "batchReplacement:" << currentSourceKey << currentTargetKey;
 
-            JQFile::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
+            AbstractTool::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
             {
                 if ( info.suffix().isEmpty() )
                 {
@@ -104,7 +104,7 @@ QJsonObject Manage::startBatchReplacement(
                 ++fileCount;
                 replacementCount += matchCount;
 
-                JQFile::writeFile( QFileInfo( info.filePath() ), fileAllData.replace( currentSourceKey.toUtf8(), currentTargetKey.toUtf8() ) );
+                AbstractTool::writeFile( QFileInfo( info.filePath() ), fileAllData.replace( currentSourceKey.toUtf8(), currentTargetKey.toUtf8() ) );
             }, true );
 
             if ( availableSuffixs.contains( "filenameanddirname" ) )
@@ -112,7 +112,7 @@ QJsonObject Manage::startBatchReplacement(
                 QFileInfoList fileNameList;
                 QList< QDir > dirNameList;
 
-                JQFile::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
+                AbstractTool::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
                 {
                     if ( info.suffix().isEmpty() )
                     {
@@ -141,7 +141,7 @@ QJsonObject Manage::startBatchReplacement(
                     fileNameList.push_back( info );
                 }, true );
 
-                JQFile::foreachDirectoryFromDirectory( { currentPath }, [ & ](const QDir &dir)
+                AbstractTool::foreachDirectoryFromDirectory( { currentPath }, [ & ](const QDir &dir)
                 {
                     const auto matchCount = dir.dirName().count( currentSourceKey );
 

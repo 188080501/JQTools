@@ -21,8 +21,8 @@
 #include <QtConcurrent>
 #include <QDebug>
 
-// JQLibrary import
-#include "JQFile.h"
+// JQToolsLibrary import
+#include <JQToolsLibrary>
 
 using namespace FontToPng;
 
@@ -163,7 +163,7 @@ void Manage::loadFont(const QString fontName)
     fontPackage.fontId = fontId;
     fontPackage.familieName = QFontDatabase::applicationFontFamilies( fontId ).first();
 
-    auto txtData = JQFile::readFile( QFileInfo( fontPackage.txtFilePath ) );
+    auto txtData = AbstractTool::readFile( QFileInfo( fontPackage.txtFilePath ) );
     if ( !txtData.first ) { return; }
 
     auto txtLines = txtData.second.split( '\n' );

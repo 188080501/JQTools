@@ -13,15 +13,44 @@
 #ifndef JQTOOLSLIBRARY_H_
 #define JQTOOLSLIBRARY_H_
 
+// C++ lib import
+#include <functional>
+
 // Qt lib import
+#include <QByteArray>
 #include <QObject>
+#include <QPair>
 #include <QPointer>
+#include <QFileInfo>
 
 class QQmlApplicationEngine;
+class QDir;
+class QFileInfo;
 
 class AbstractTool: public QObject
 {
     Q_OBJECT
+
+public:
+    static void foreachFileFromDirectory(
+            const QDir &directory,
+            const std::function< void(const QFileInfo &) > &each,
+            const bool recursion = false
+        );
+
+    static void foreachDirectoryFromDirectory(
+            const QDir &directory,
+            const std::function< void(const QDir &) > &each,
+            const bool recursion = false
+        );
+
+    static bool writeFile(
+            const QFileInfo &targetFilePath,
+            const QByteArray &data,
+            const bool cover = true
+        );
+
+    static QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
 
 public slots:
     QString jqToolsVersionString();

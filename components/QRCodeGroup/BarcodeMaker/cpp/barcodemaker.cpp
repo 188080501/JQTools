@@ -20,8 +20,8 @@
 #include <QPainter>
 #include <QCoreApplication>
 
-// JQLibrary lib import
-#include "JQBarcode.h"
+// Group lib import
+#include "barcodegenerator.h"
 
 using namespace BarcodeMaker;
 
@@ -54,7 +54,7 @@ QString Manage::savePng(const QString &string)
     QImage targetImage( QSize( 210, 140 ), QImage::Format_RGB888 );
     targetImage.fill( QColor( "#ffffff" ) );
 
-    const auto barcodeImage = JQBarcode::makeBarcode( string.toLongLong() );
+    const auto barcodeImage = BarcodeGenerator::makeBarcode( string.toLongLong() );
 
     if ( ( string.size() == 13 ) && string.toLongLong() && ( string[ 0 ] == '6' ) )
     {
@@ -80,7 +80,7 @@ QImage ImageProvider::requestImage(const QString &id, QSize *, const QSize &)
 {
     if ( ( id.size() == 13 ) && id.toLongLong() && ( id[ 0 ] == '6' ) )
     {
-        return JQBarcode::makeBarcode( id.toLongLong() );
+        return BarcodeGenerator::makeBarcode( id.toLongLong() );
     }
     else
     {
