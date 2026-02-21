@@ -134,7 +134,7 @@ Item {
                     return;
                 }
 
-                if ( checkBoxForFileAndDir.checked && ( textFieldForSourceKey.text == "" ) )
+                if ( checkBoxForFileAndDir.checked && ( textFieldForTargetKey.text == "" ) )
                 {
                     materialUI.showSnackbarMessage( "请输入目标值" );
                     return;
