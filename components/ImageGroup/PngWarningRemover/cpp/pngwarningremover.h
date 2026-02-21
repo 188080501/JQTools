@@ -13,6 +13,9 @@
 #ifndef GROUP_QTGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
 #define GROUP_QTGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
 
+// Qt lib import
+#include <QStringList>
+
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 
@@ -37,9 +40,13 @@ public:
 public slots:
     QString conversationPng();
 
+    QString conversationPngByOpenDirectory();
+
     inline QString lastErrorFileName() { return lastErrorFileName_; }
 
 private:
+    QString conversationPng(const QStringList &filePaths);
+
     QString lastErrorFileName_;
 };
 

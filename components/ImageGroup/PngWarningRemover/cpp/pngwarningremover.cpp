@@ -23,9 +23,6 @@ using namespace PngWarningRemover;
 
 QString Manage::conversationPng()
 {
-    QEventLoop eventLoop;
-    QString reply;
-
     const auto filePaths = QFileDialog::getOpenFileNames(
                     nullptr,
                     QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
@@ -33,9 +30,46 @@ QString Manage::conversationPng()
                     "*.png"
                 );
 
+    return this->conversationPng( filePaths );
+}
+
+QString Manage::conversationPngByOpenDirectory()
+{
+    QStringList filePaths;
+
+    const auto directoryPath = QFileDialog::getExistingDirectory(
+                nullptr,
+                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BPNG\u56FE\u7247\u7684\u6587\u4EF6\u5939" ),
+                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
+            );
+
+    if ( directoryPath.isEmpty() ) { return "cancel"; }
+
+    AbstractTool::foreachFileFromDirectory(
+                directoryPath,
+                [ &filePaths ]
+                (const QFileInfo &fileInfo)
+                {
+                    if ( fileInfo.suffix().toLower() != "png" ) { return; }
+
+                    filePaths.push_back( fileInfo.filePath() );
+                },
+                true
+            );
+
+    if ( filePaths.isEmpty() ) { return "empty"; }
+
+    return this->conversationPng( filePaths );
+}
+
+QString Manage::conversationPng(const QStringList &filePaths)
+{
+    QEventLoop eventLoop;
+    QString reply;
+
     this->lastErrorFileName_.clear();
 
-    QtConcurrent::run( [ this, &eventLoop, &reply, &filePaths ]()
+    QtConcurrent::run( [ this, &eventLoop, &reply, filePaths ]()
     {
         if ( filePaths.isEmpty() )
         {

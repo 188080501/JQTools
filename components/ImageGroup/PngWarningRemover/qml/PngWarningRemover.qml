@@ -40,30 +40,55 @@ libpng warning: iCCP: known incorrect sRGB profile
         horizontalAlignment: Text.AlignHCenter
     }
 
-    MaterialButton {
-        x: 254
-        y: 278
-        width: 120
-        height: 40
-        text: "选择图片"
+    Row {
         anchors.verticalCenterOffset: 53
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
+        spacing: 16
 
-        onClicked: {
-            materialUI.showLoading();
+        MaterialButton {
+            width: 120
+            height: 40
+            text: qsTr( "选择图片" )
 
-            var reply = pngWarningRemoverManage.conversationPng();
+            onClicked: {
+                materialUI.showLoading();
 
-            switch( reply )
-            {
-                case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
-                case "openSourceError": materialUI.showSnackbarMessage( "打开源文件失败：" + pngWarningRemoverManage.lastErrorFileName() ); break;
-                case "saveTargetError": materialUI.showSnackbarMessage( "保存目标文件失败：" + pngWarningRemoverManage.lastErrorFileName() ); break;
-                case "OK": materialUI.showSnackbarMessage( "所有图片转换已经完成" ); break;
+                var reply = pngWarningRemoverManage.conversationPng();
+
+                switch( reply )
+                {
+                    case "cancel": materialUI.showSnackbarMessage( qsTr( "用户取消操作" ) ); break;
+                    case "openSourceError": materialUI.showSnackbarMessage( qsTr( "打开源文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "saveTargetError": materialUI.showSnackbarMessage( qsTr( "保存目标文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "OK": materialUI.showSnackbarMessage( qsTr( "所有图片转换已经完成" ) ); break;
+                }
+
+                materialUI.hideLoading();
             }
+        }
 
-            materialUI.hideLoading();
+        MaterialButton {
+            width: 120
+            height: 40
+            text: qsTr( "选择文件夹" )
+
+            onClicked: {
+                materialUI.showLoading();
+
+                var reply = pngWarningRemoverManage.conversationPngByOpenDirectory();
+
+                switch( reply )
+                {
+                    case "cancel": materialUI.showSnackbarMessage( qsTr( "用户取消操作" ) ); break;
+                    case "empty": materialUI.showSnackbarMessage( qsTr( "所选文件夹不包含png图片" ) ); break;
+                    case "openSourceError": materialUI.showSnackbarMessage( qsTr( "打开源文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "saveTargetError": materialUI.showSnackbarMessage( qsTr( "保存目标文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "OK": materialUI.showSnackbarMessage( qsTr( "所有图片转换已经完成" ) ); break;
+                }
+
+                materialUI.hideLoading();
+            }
         }
     }
 }
