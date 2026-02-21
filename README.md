@@ -75,7 +75,7 @@ JQTools（Jason Qt Tools）是一个基于 Qt/QML + C++ 开发的开源工具集
   基于 Zopfli 开发，用于压缩 PNG 图片，压缩是无损的。
 
 - JPG 图片压缩  
-  基于 Guetzli 开发，用于压缩 JPG 图片，压缩是有损的（当前工程支持 Windows 与 macOS）。
+  基于 Guetzli 开发，用于压缩 JPG 图片，压缩是有损的。
 
 ### 工具类
 
