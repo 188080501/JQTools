@@ -80,6 +80,7 @@ QString Manage::makeAll()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
@@ -106,6 +107,7 @@ QString Manage::makeOSX()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
@@ -132,6 +134,7 @@ QString Manage::makeIOS()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
@@ -158,6 +161,7 @@ QString Manage::makeWindows()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
@@ -184,6 +188,7 @@ QString Manage::makeWP()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
@@ -210,6 +215,7 @@ QString Manage::makeAndroid()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
@@ -236,6 +242,7 @@ QString Manage::makePWA()
         {
             reply = "saveToFileError";
             eventLoop.quit();
+            return;
         }
 
         reply = "OK";
