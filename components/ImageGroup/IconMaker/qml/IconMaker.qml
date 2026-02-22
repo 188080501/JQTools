@@ -106,7 +106,7 @@ Item {
                 switch( reply )
                 {
                     case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
-                    case "OK": materialUI.showSnackbarMessage( "保存路径已更改" ); break;
+                    case "OK": materialUI.showSnackbarMessage( "原图已更新" ); break;
                 }
 
                 materialUI.hideLoading();
@@ -141,7 +141,7 @@ Item {
             y: 65
             width: 120
             height: 40
-            text: "所有"
+            text: "全部生成"
 
             onClicked: {
                 materialUI.showLoading();

@@ -49,7 +49,7 @@ Item {
 
     MaterialButton {
         x: 386
-        text: "处理剪切板内容"
+        text: "处理剪贴板内容"
         anchors.horizontalCenterOffset: 172
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -59,7 +59,7 @@ Item {
             textFieldForSource.text = jsonFormatManage.clipboardText();
             if ( !jsonFormat.format() ) { return; }
             jsonFormatManage.setClipboardText( textFieldForSource.text );
-            materialUI.showSnackbarMessage( "格式化后的JSON字符串已经复制到了剪切板" );
+            materialUI.showSnackbarMessage( "格式化后的JSON字符串已经复制到了剪贴板" );
         }
     }
 

@@ -166,11 +166,11 @@ Item {
             x: 387
             y: 209
             width: 120
-            text: "从剪切板黏贴"
+            text: "从剪贴板粘贴"
 
             onClicked: {
                 textFieldForHexString.text = rgbStringTransformManage.clipboardText();
-                materialUI.showSnackbarMessage( "已从剪切板复制了颜色字符串" );
+                materialUI.showSnackbarMessage( "已从剪贴板粘贴颜色字符串" );
             }
         }
 
@@ -178,11 +178,11 @@ Item {
             x: 387
             y: 276
             width: 120
-            text: "复制到剪切板"
+            text: "复制到剪贴板"
 
             onClicked: {
                 rgbStringTransformManage.setClipboardText( textFieldForHexString.text );
-                materialUI.showSnackbarMessage( "颜色十六进制字符串已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "颜色十六进制字符串已经复制到了剪贴板" );
             }
         }
 

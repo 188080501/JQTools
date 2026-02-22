@@ -133,7 +133,7 @@ Item {
     MaterialRadioButton {
         id: radioButtonForNewFile
         x: 115
-        text: "压缩后的图片另存为到桌面"
+        text: "压缩后的图片另存到桌面"
         anchors.horizontalCenterOffset: -161
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top

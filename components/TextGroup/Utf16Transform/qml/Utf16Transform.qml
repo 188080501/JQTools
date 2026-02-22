@@ -44,7 +44,7 @@ Item {
         x: 420
         width: 120
         height: 40
-        text: "处理剪切板内容"
+        text: "处理剪贴板内容"
         anchors.horizontalCenterOffset: 160
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -53,7 +53,7 @@ Item {
         onClicked: {
             textFieldForSource.text = utf16TransformManage.clipboardText();
             utf16TransformManage.setClipboardText( textFieldForTarget.text );
-            materialUI.showSnackbarMessage( "UTF-16字符串已经复制到了剪切板" );
+            materialUI.showSnackbarMessage( "UTF-16字符串已经复制到了剪贴板" );
         }
     }
 

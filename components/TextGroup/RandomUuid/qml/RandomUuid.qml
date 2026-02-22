@@ -70,11 +70,11 @@ Item {
             x: 166
             y: 259
             width: 120
-            text: "复制到剪切板"
+            text: "复制到剪贴板"
 
             onClicked: {
                 randomUuidManage.setClipboardText( textFieldForPassword.text );
-                materialUI.showSnackbarMessage( "UUID已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "UUID已经复制到了剪贴板" );
             }
         }
     }

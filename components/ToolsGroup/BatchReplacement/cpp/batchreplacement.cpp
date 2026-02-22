@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -38,7 +38,7 @@ QJsonObject Manage::startBatchReplacement(
 
     static QString lastPath = QStandardPaths::writableLocation( QStandardPaths::DesktopLocation );
 
-    auto currentPath = QFileDialog::getExistingDirectory( nullptr, "Please choose target dir", lastPath );
+    auto currentPath = QFileDialog::getExistingDirectory( nullptr, u8"请选择目标目录", lastPath );
     if ( currentPath.isEmpty() )
     {
         return

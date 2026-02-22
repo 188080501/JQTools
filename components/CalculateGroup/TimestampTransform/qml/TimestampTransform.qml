@@ -53,11 +53,11 @@ Item {
         x: 235
         y: 166
         width: 150
-        text: "从剪切板黏贴"
+        text: "从剪贴板粘贴"
 
         onClicked: {
             textFieldForTimestampString.text = timestampTransformManage.clipboardText();
-            materialUI.showSnackbarMessage( "已从剪切板复制了时间戳字符串" );
+            materialUI.showSnackbarMessage( "已从剪贴板粘贴时间戳字符串" );
         }
     }
 

@@ -189,7 +189,7 @@ Item {
             y: 1
             width: 110
             height: 40
-            text: "黏贴内容"
+            text: "粘贴内容"
 
             onClicked: {
                 hashCalculateManage.pause();
@@ -217,7 +217,7 @@ Item {
 
             onClicked: {
                 hashCalculateManage.copy();
-                materialUI.showSnackbarMessage( "已将计算结果复制到了系统剪切板" );
+                materialUI.showSnackbarMessage( "已将计算结果复制到了系统剪贴板" );
             }
         }
 

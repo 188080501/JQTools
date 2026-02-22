@@ -49,11 +49,11 @@ Item {
             x: 40
             y: 55
             width: 120
-            text: "复制到剪切板"
+            text: "复制到剪贴板"
 
             onClicked: {
                 caseTransformManage.setClipboardText( textFieldForLower.text );
-                materialUI.showSnackbarMessage( "小写字符串已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "小写字符串已经复制到了剪贴板" );
             }
         }
 
@@ -61,12 +61,12 @@ Item {
             x: 166
             y: 55
             width: 140
-            text: "处理剪切板内容"
+            text: "处理剪贴板内容"
 
             onClicked: {
                 textFieldForSource.text = caseTransformManage.clipboardText();
                 caseTransformManage.setClipboardText( textFieldForLower.text );
-                materialUI.showSnackbarMessage( "小写字符串已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "小写字符串已经复制到了剪贴板" );
             }
         }
 
@@ -94,11 +94,11 @@ Item {
             x: 40
             y: 205
             width: 120
-            text: "从剪切板黏贴"
+            text: "从剪贴板粘贴"
 
             onClicked: {
                 textFieldForSource.text = caseTransformManage.clipboardText();
-                materialUI.showSnackbarMessage( "已从剪切板复制了源字符串" );
+                materialUI.showSnackbarMessage( "已从剪贴板粘贴源字符串" );
             }
         }
 
@@ -115,11 +115,11 @@ Item {
             x: 40
             y: 361
             width: 120
-            text: "复制到剪切板"
+            text: "复制到剪贴板"
 
             onClicked: {
                 caseTransformManage.setClipboardText( textFieldForUpper.text );
-                materialUI.showSnackbarMessage( "大写字符串已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "大写字符串已经复制到了剪贴板" );
             }
         }
 
@@ -127,12 +127,12 @@ Item {
             x: 166
             y: 361
             width: 140
-            text: "处理剪切板内容"
+            text: "处理剪贴板内容"
 
             onClicked: {
                 textFieldForSource.text = caseTransformManage.clipboardText();
                 caseTransformManage.setClipboardText( textFieldForUpper.text );
-                materialUI.showSnackbarMessage( "大写字符串已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "大写字符串已经复制到了剪贴板" );
             }
         }
     }

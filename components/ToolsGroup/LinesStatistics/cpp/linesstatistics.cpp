@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -31,7 +31,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
     auto lineCount = 0;
 
     auto currentPath = QFileDialog::getExistingDirectory( nullptr,
-                                                          "Please choose code dir",
+                                                          u8"请选择代码目录",
                                                           QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) );
     if ( currentPath.isEmpty() )
     {

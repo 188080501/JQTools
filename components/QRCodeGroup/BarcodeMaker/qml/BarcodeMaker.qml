@@ -34,7 +34,7 @@ Item {
             x: 40
             y: 50
             width: 540
-            placeholderText: "条形码ID\n目前仅支持EAN-13，并且需要6开头"
+            placeholderText: "条形码ID\n目前仅支持EAN-13，并且需以6开头"
             text: "6901234567892"
         }
 

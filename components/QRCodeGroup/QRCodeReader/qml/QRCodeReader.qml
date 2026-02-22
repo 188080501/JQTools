@@ -34,7 +34,7 @@ Item {
             x: 40
             y: 50
             width: 540
-            placeholderText: "被识别的标记"
+            placeholderText: "识别结果"
 
             Component.onCompleted: {
                 text = qrCodeReaderManage.decodeImage( "qrc:/QRCodeReaderImages/test.png" );

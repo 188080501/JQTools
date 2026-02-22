@@ -9,7 +9,7 @@ var items = [
             { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
             { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "qrc:/CaseTransform/CaseTransform.qml" },
             { bookmarkName: "密码随机器", titleName: "密码随机器", qrcLocation: "qrc:/RandomPassword/RandomPassword.qml" },
-            { bookmarkName: "UUID随机器", titleName: "UUID随机器", qrcLocation: "qrc:/RandomUuid/RandomUuid.qml" },
+            { bookmarkName: "UUID生成器", titleName: "UUID生成器", qrcLocation: "qrc:/RandomUuid/RandomUuid.qml" },
             { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" },
             { bookmarkName: "JSON格式化", titleName: "JSON格式化", qrcLocation: "qrc:/JsonFormat/JsonFormat.qml" },
             { bookmarkName: "字符串排序", titleName: "字符串排序", qrcLocation: "qrc:/StringSort/StringSort.qml" }
@@ -44,7 +44,7 @@ var items = [
         qrcLocation: "",
         children: [
             { bookmarkName: "代码行数统计", titleName: "代码行数统计", qrcLocation: "qrc:/LinesStatistics/LinesStatistics.qml" },
-            { bookmarkName: "批量替换", titleName: "批量替换 ", qrcLocation: "qrc:/BatchReplacement/BatchReplacement.qml" },
+            { bookmarkName: "批量替换", titleName: "批量替换", qrcLocation: "qrc:/BatchReplacement/BatchReplacement.qml" },
             { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "qrc:/ScreenColorPicker/ScreenColorPicker.qml" }
         ]
     },
@@ -55,7 +55,7 @@ var items = [
         children: [
             { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "qrc:/QRCodeMaker/QRCodeMaker.qml" },
             { bookmarkName: "条形码生成器", titleName: "条形码生成器", qrcLocation: "qrc:/BarcodeMaker/BarcodeMaker.qml" },
-            { bookmarkName: "二维码识别器", titleName: "二维码识别器 ", qrcLocation: "qrc:/QRCodeReader/QRCodeReader.qml" }
+            { bookmarkName: "二维码识别器", titleName: "二维码识别器", qrcLocation: "qrc:/QRCodeReader/QRCodeReader.qml" }
         ]
     },
     {

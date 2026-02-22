@@ -232,7 +232,7 @@ Item {
                     else if ( mouse.button & Qt.RightButton )
                     {
                         FontToPngManage.setClipboardText( "\\u" + charCode );
-                        materialUI.showSnackbarMessage( "编号已经复制到了剪切板" );
+                        materialUI.showSnackbarMessage( "编号已经复制到了剪贴板" );
                     }
                 }
             }

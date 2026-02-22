@@ -59,11 +59,11 @@ Item {
             x: 40
             y: 135
             width: 120
-            text: "从剪切板黏贴"
+            text: "从剪贴板粘贴"
 
             onClicked: {
                 textFieldForSource.text = urlEncodeManage.clipboardText();
-                materialUI.showSnackbarMessage( "已从剪切板复制了URL" );
+                materialUI.showSnackbarMessage( "已从剪贴板粘贴URL" );
             }
         }
 
@@ -90,11 +90,11 @@ Item {
             x: 40
             y: 300
             width: 120
-            text: "复制到剪切板"
+            text: "复制到剪贴板"
 
             onClicked: {
                 urlEncodeManage.setClipboardText( textFieldForTarget.text );
-                materialUI.showSnackbarMessage( "URL已经复制到了剪切板" );
+                materialUI.showSnackbarMessage( "URL已经复制到了剪贴板" );
             }
         }
 
