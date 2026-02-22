@@ -82,7 +82,7 @@ QString Manage::conversationPng(const QStringList &filePaths)
         {
             QImage image( filePath, "PNG" );
 
-            if ( image.isNull() || !image.save( filePath ) )
+            if ( image.isNull() )
             {
                 reply = "openSourceError";
                 this->lastErrorFileName_ = QFileInfo( filePath ).fileName();
@@ -90,9 +90,9 @@ QString Manage::conversationPng(const QStringList &filePaths)
                 return;
             }
 
-            QImage image2( image.bits(), image.width(), image.height(), QImage::Format_ARGB32 );
+            const auto image2 = image.convertToFormat( QImage::Format_ARGB32 );
 
-            if ( image2.isNull() || !image2.save( filePath ) )
+            if ( image2.isNull() || !image2.save( filePath, "PNG" ) )
             {
                 reply = "saveTargetError";
                 this->lastErrorFileName_ = QFileInfo( filePath ).fileName();
