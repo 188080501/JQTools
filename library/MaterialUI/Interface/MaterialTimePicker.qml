@@ -268,7 +268,9 @@ FocusScope {
 
                     Connections {
                         target: hoursPathView
-                        onCurrentIndexChanged: {
+
+                        function onCurrentIndexChanged()
+                        {
                             if (isHours)
                                 pointer.setAngle()
                         }
@@ -276,7 +278,9 @@ FocusScope {
 
                     Connections {
                         target: minutesPathView
-                        onCurrentIndexChanged: {
+
+                        function onCurrentIndexChanged()
+                        {
                             if (!isHours)
                                 pointer.setAngle()
                         }
@@ -284,7 +288,11 @@ FocusScope {
 
                     Connections {
                         target: timePicker
-                        onIsHoursChanged: pointer.setAngle()
+
+                        function onIsHoursChanged()
+                        {
+                            pointer.setAngle()
+                        }
                     }
 
                     function setAngle()
@@ -347,11 +355,13 @@ FocusScope {
                         Connections {
                             target: parentMouseArea
 
-                            onClicked: {
+                            function onClicked()
+                            {
                                 checkClick(false)
                             }
 
-                            onPositionChanged: {
+                            function onPositionChanged()
+                            {
                                 checkClick(true)
                             }
 

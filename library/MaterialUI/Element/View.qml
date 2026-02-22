@@ -126,7 +126,8 @@ Item {
     ]
 
     Connections {
-        onElevationChanged: {
+        function onElevationChanged()
+        {
             bottomShadowBlurAnimation.to = bottomShadowData[Math.min(elevation, 5)]["blur"];
             topShadowBlurAnimation.to = topShadowData[Math.min(elevation, 5)]["blur"];
 

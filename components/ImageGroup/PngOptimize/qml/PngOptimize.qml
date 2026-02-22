@@ -167,13 +167,15 @@ Item {
             Connections {
                 target: pngOptimizeManage
 
-                onOptimizePngStart: {
+                function onOptimizePngStart(currentFilePath)
+                {
                     if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.indeterminate = true;
                 }
 
-                onOptimizePngFinish: {
+                function onOptimizePngFinish(currentFilePath, optimizeResult)
+                {
                     if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.opacity = 0;

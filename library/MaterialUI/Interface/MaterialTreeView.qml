@@ -115,7 +115,8 @@ TreeView {
         Connections {
             target: styleData
 
-            onValueChanged: {
+            function onValueChanged()
+            {
                 if (((typeof styleData.value) !== "string") && ((typeof styleData.value) !== "number")) { return; }
 
                 label.text = styleData.value;

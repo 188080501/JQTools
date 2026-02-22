@@ -53,7 +53,8 @@ Rectangle {
     Connections {
         target: base
 
-        onYChanged: {
+        function onYChanged()
+        {
             if (base.y > 0)
             {
                 var bufHeight;

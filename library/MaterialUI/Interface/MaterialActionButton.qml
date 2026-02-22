@@ -89,9 +89,21 @@ Controls.Button {
                     anchors.fill: parent
                     Connections {
                         target: control.__behavior
-                        onPressed: mouseArea.onPressed(mouse)
-                        onCanceled: mouseArea.onCanceled()
-                        onReleased: mouseArea.onReleased(mouse)
+
+                        function onPressed(mouse)
+                        {
+                            mouseArea.onPressed(mouse)
+                        }
+
+                        function onCanceled()
+                        {
+                            mouseArea.onCanceled()
+                        }
+
+                        function onReleased(mouse)
+                        {
+                            mouseArea.onReleased(mouse)
+                        }
                     }
 
                     circular: true

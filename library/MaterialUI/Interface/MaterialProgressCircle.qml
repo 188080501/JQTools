@@ -106,10 +106,23 @@ Rectangle {
 
                 Connections {
                     target: control
-                    onColorChanged: requestPaint()
-                    onValueChanged: requestPaint()
-                    onSpinnerWidthChanged: requestPaint()
-                    onIndeterminateChanged:
+
+                    function onColorChanged()
+                    {
+                        requestPaint();
+                    }
+
+                    function onValueChanged()
+                    {
+                        requestPaint();
+                    }
+
+                    function onSpinnerWidthChanged()
+                    {
+                        requestPaint();
+                    }
+
+                    function onIndeterminateChanged()
                     {
                         if (control.indeterminate)
                         {

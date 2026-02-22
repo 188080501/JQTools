@@ -167,13 +167,15 @@ Item {
             Connections {
                 target: jpgOptimizeManage
 
-                onOptimizeJpgStart: {
+                function onOptimizeJpgStart(currentFilePath)
+                {
                     if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.indeterminate = true;
                 }
 
-                onOptimizeJpgFinish: {
+                function onOptimizeJpgFinish(currentFilePath, optimizeResult)
+                {
                     if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.opacity = 0;

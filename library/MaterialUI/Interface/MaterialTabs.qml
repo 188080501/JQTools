@@ -89,7 +89,8 @@ Item {
                 Connections {
                     target: parent.parent.parent.parent
 
-                    onXChanged: {
+                    function onXChanged()
+                    {
                         refreshPosition();
                     }
                 }
@@ -97,15 +98,18 @@ Item {
                 Connections {
                     target: tabs
 
-                    onWidthChanged: {
+                    function onWidthChanged()
+                    {
                         refreshPosition();
                     }
 
-                    onCurrentIndexChanged: {
+                    function onCurrentIndexChanged()
+                    {
                         refreshPosition();
                     }
 
-                    onIndexRefreshed: {
+                    function onIndexRefreshed()
+                    {
                         refreshPosition();
                     }
                 }

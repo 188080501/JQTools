@@ -167,13 +167,15 @@ Item {
             Connections {
                 target: webPMakerManage
 
-                onMakeWebPStart: {
+                function onMakeWebPStart(currentFilePath)
+                {
                     if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.indeterminate = true;
                 }
 
-                onMakeWebPFinish: {
+                function onMakeWebPFinish(currentFilePath, makeResult)
+                {
                     if ( currentFilePath !== filePath ) { return; }
 
                     progressCircleForOptimizing.opacity = 0;
