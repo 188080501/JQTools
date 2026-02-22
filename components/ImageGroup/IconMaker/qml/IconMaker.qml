@@ -213,24 +213,6 @@ Item {
             y: 269
             width: 120
             height: 40
-            text: "WP(png)"
-
-            onClicked: {
-                materialUI.showLoading();
-
-                var reply = iconMakerManage.makeWP();
-
-                iconMaker.makeReplyProcessor( reply );
-
-                materialUI.hideLoading();
-            }
-        }
-
-        MaterialButton {
-            x: 476
-            y: 325
-            width: 120
-            height: 40
             text: "Android(png)"
 
             onClicked: {
@@ -246,7 +228,7 @@ Item {
 
         MaterialButton {
             x: 476
-            y: 382
+            y: 325
             width: 120
             height: 40
             text: "PWA(png)"

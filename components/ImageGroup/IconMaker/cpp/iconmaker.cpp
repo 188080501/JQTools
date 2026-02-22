@@ -73,8 +73,8 @@ QString Manage::makeAll()
             this->realMakeOSX();
             this->realMakeIOS();
             this->realMakeWindows();
-            this->realMakeWP();
             this->realMakeAndroid();
+            this->realMakePWA();
         }
         catch(const bool)
         {
@@ -156,33 +156,6 @@ QString Manage::makeWindows()
         try
         {
             this->realMakeWindows();
-        }
-        catch(const bool)
-        {
-            reply = "saveToFileError";
-            eventLoop.quit();
-            return;
-        }
-
-        reply = "OK";
-        eventLoop.quit();
-    } );
-
-    eventLoop.exec();
-
-    return reply;
-}
-
-QString Manage::makeWP()
-{
-    QEventLoop eventLoop;
-    QString reply;
-
-    QtConcurrent::run( [ this, &eventLoop, &reply ]()
-    {
-        try
-        {
-            this->realMakeWP();
         }
         catch(const bool)
         {
@@ -324,20 +297,6 @@ void Manage::realMakeWindows() // TODO
     this->saveToPng( targetSavePath_ + "/Windows/icon_48.png",  { 48, 48 } );
     this->saveToPng( targetSavePath_ + "/Windows/icon_64.png",  { 64, 64 } );
     this->saveToPng( targetSavePath_ + "/Windows/icon_256.png",  { 256, 256 } );
-}
-
-void Manage::realMakeWP()
-{
-    if ( !QDir().mkpath( targetSavePath_ + "/WP" ) )
-    {
-        throw false;
-    }
-
-    this->saveToPng( targetSavePath_ + "/WP/logo_44x44.png",   { 44, 44 } );
-    this->saveToPng( targetSavePath_ + "/WP/logo_71x71.png",   { 71, 71 } );
-    this->saveToPng( targetSavePath_ + "/WP/logo_480x800.png", { 480, 480 } );
-    this->saveToPng( targetSavePath_ + "/WP/logo_large.png",   { 150, 150 } );
-    this->saveToPng( targetSavePath_ + "/WP/logo_store.png",   { 50, 50 } );
 }
 
 void Manage::realMakeAndroid()

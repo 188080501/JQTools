@@ -58,8 +58,6 @@ public slots:
 
     QString makeWindows();
 
-    QString makeWP();
-
     QString makeAndroid();
 
     QString makePWA();
@@ -70,8 +68,6 @@ private:
     void realMakeIOS();
 
     void realMakeWindows();
-
-    void realMakeWP();
 
     void realMakeAndroid();
 
