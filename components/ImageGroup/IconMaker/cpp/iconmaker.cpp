@@ -246,7 +246,8 @@ void Manage::realMakeOSX()
     this->saveToPng( targetSavePath_ + "/OSX/icon.iconset/icon_512x512@2x.png", { 1024, 1024 } );
 
 #ifdef Q_OS_MAC
-    system( QString( "iconutil -c icns " + QString( targetSavePath_.replace( ' ', "\\ " ) + "/OSX/icon.iconset" ) ).toUtf8().data() );
+    const auto escapedTargetSavePath = QString( targetSavePath_ ).replace( ' ', "\\ " );
+    system( QString( "iconutil -c icns " + escapedTargetSavePath + "/OSX/icon.iconset" ).toUtf8().data() );
 #endif
 }
 
