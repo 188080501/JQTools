@@ -69,8 +69,6 @@ QJsonObject Manage::startBatchReplacement(
                 const QString &currentTargetKey
             )
         {
-            qDebug() << "batchReplacement:" << currentSourceKey << currentTargetKey;
-
             AbstractTool::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
             {
                 if ( info.suffix().isEmpty() )
@@ -102,8 +100,6 @@ QJsonObject Manage::startBatchReplacement(
                 const auto matchCount = fileAllData.count( currentSourceKey.toUtf8() );
 
                 if ( !matchCount ) { return; }
-
-                qDebug() << "file data:" << info.filePath() << matchCount;
 
                 ++fileCount;
                 replacementCount += matchCount;
@@ -137,8 +133,6 @@ QJsonObject Manage::startBatchReplacement(
 
                     if ( !matchCount ) { return; }
 
-                    qDebug() << "file name:" << info.filePath() << matchCount;
-
                     ++fileCount;
                     replacementCount += matchCount;
 
@@ -150,8 +144,6 @@ QJsonObject Manage::startBatchReplacement(
                     const auto matchCount = dir.dirName().count( currentSourceKey );
 
                     if ( !matchCount ) { return; }
-
-                    qDebug() << "dir path:" << dir.path() << matchCount;
 
                     ++fileCount;
                     replacementCount += matchCount;
@@ -179,7 +171,6 @@ QJsonObject Manage::startBatchReplacement(
                 {
                     const QString targetFilePath = QString( "%1/%2" ).arg( info.path(), info.fileName().replace( currentSourceKey, currentTargetKey ) );
 
-                    qDebug() << "file:" << info.filePath() << "->" << targetFilePath;
                     QFile::rename( info.filePath(), targetFilePath );
                 }
 
@@ -187,7 +178,6 @@ QJsonObject Manage::startBatchReplacement(
                 {
                     const QString targetDir = QString( "%1/%2" ).arg( QFileInfo( dir.path() ).path(), dir.dirName().replace( currentSourceKey, currentTargetKey ) );
 
-                    qDebug() << "dir:" << dir.path() << "->" << targetDir;
                     QDir().rename( dir.path(), targetDir );
                 }
             }
