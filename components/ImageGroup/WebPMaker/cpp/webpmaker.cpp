@@ -120,7 +120,7 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
     {
         if ( size < 1024 )
         {
-            return QString( "%1 byte" ).arg( size );
+            return QString( "%1 Byte" ).arg( size );
         }
         else if ( size < ( 1024 * 1024 ) )
         {
