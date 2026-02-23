@@ -123,10 +123,10 @@ Item {
         id: radioButtonForCoverOldFile
         x: 115
         text: "压缩后的图片覆盖源文件"
-        anchors.horizontalCenterOffset: -168
+        anchors.left: parent.horizontalCenter
+        anchors.leftMargin: -270
         anchors.top: parent.top
         anchors.topMargin: 83
-        anchors.horizontalCenter: parent.horizontalCenter
         exclusiveGroup: exclusiveGroupForMode
     }
 
@@ -134,8 +134,8 @@ Item {
         id: radioButtonForNewFile
         x: 115
         text: "压缩后的图片另存到桌面"
-        anchors.horizontalCenterOffset: -161
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.horizontalCenter
+        anchors.leftMargin: -270
         anchors.top: parent.top
         anchors.topMargin: 126
         exclusiveGroup: exclusiveGroupForMode
