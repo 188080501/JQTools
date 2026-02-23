@@ -18,6 +18,7 @@
 #include <QStandardPaths>
 #include <QJsonArray>
 #include <QEventLoop>
+#include <QMetaObject>
 #include <QtConcurrent>
 
 // JQToolsLibrary import
@@ -83,7 +84,7 @@ QJsonObject Manage::collectLineStatistics(const QJsonArray &suffixes)
             lineCount += fileAllData.count('\n') + 1;
         }, true );
 
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();

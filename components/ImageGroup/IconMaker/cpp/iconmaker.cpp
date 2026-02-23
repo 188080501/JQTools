@@ -21,6 +21,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMetaObject>
 #include <QStandardPaths>
 #include <QtConcurrent>
 
@@ -85,12 +86,12 @@ QString Manage::makeAll()
         catch(const bool)
         {
             reply = "saveToFileError";
-            eventLoop.quit();
+            QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
         reply = "OK";
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();
@@ -112,12 +113,12 @@ QString Manage::makeOSX()
         catch(const bool)
         {
             reply = "saveToFileError";
-            eventLoop.quit();
+            QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
         reply = "OK";
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();
@@ -139,12 +140,12 @@ QString Manage::makeIOS()
         catch(const bool)
         {
             reply = "saveToFileError";
-            eventLoop.quit();
+            QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
         reply = "OK";
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();
@@ -166,12 +167,12 @@ QString Manage::makeWindows()
         catch(const bool)
         {
             reply = "saveToFileError";
-            eventLoop.quit();
+            QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
         reply = "OK";
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();
@@ -193,12 +194,12 @@ QString Manage::makeAndroid()
         catch(const bool)
         {
             reply = "saveToFileError";
-            eventLoop.quit();
+            QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
         reply = "OK";
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();
@@ -220,12 +221,12 @@ QString Manage::makePWA()
         catch(const bool)
         {
             reply = "saveToFileError";
-            eventLoop.quit();
+            QMetaObject::invokeMethod( &eventLoop, "quit" );
             return;
         }
 
         reply = "OK";
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();

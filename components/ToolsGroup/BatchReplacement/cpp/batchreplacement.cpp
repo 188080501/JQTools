@@ -21,6 +21,7 @@
 #include <QStandardPaths>
 #include <QJsonArray>
 #include <QEventLoop>
+#include <QMetaObject>
 #include <QtConcurrent>
 #include <QDir>
 
@@ -222,7 +223,7 @@ QJsonObject Manage::startBatchReplacement(
             batchReplacement( sourceKey, targetKey );
         }
 
-        eventLoop.quit();
+        QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
 
     eventLoop.exec();
