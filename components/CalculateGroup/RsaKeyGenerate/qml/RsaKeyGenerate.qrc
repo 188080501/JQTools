@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/RsaKeyGenerate">
+        <file>RsaKeyGenerate.qml</file>
+    </qresource>
+</RCC>
