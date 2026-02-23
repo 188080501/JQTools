@@ -16,9 +16,11 @@
 #include <functional>
 
 // Qt lib import
+#include <QAtomicInt>
 #include <QStandardPaths>
 #include <QtConcurrent>
 #include <QImage>
+#include <QSharedPointer>
 
 // JQToolsLibrary import
 #include "JQZopfli.h"
@@ -112,8 +114,7 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
 
     QJsonArray fileList;
 
-    static auto packageCount = 0;
-    static QMutex mutex;
+    auto packageCount = QSharedPointer< QAtomicInt >::create( 0 );
 
     for ( const auto &filePath: filePaths )
     {
@@ -125,11 +126,12 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
                                                { "originalSize", AbstractTool::fileSizeString( fileInfo.size() ) }
                                            } } ) );
 
-        ++packageCount;
+        packageCount->fetchAndAddOrdered( 1 );
 
         waitMakeQueue_[ filePath ] = [
                 this,
                 filePath,
+                packageCount,
                 fileName = fileInfo.fileName(),
                 originalFilePath = filePath,
                 resultFilePath = ( targetDir.isEmpty() ) ? ( fileInfo.path() + "/" + fileInfo.completeBaseName() + ".webp" ) : ( targetDir + "/" + fileInfo.completeBaseName() + ".webp" )
@@ -158,16 +160,10 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
                           } }
                     );
 
-            mutex.lock();
-
-            --packageCount;
-
-            if ( packageCount <= 0 )
+            if ( packageCount->fetchAndSubOrdered( 1 ) == 1 )
             {
                 emit this->makeEnd();
             }
-
-            mutex.unlock();
         };
     }
 

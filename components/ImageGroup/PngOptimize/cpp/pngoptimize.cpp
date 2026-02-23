@@ -16,8 +16,10 @@
 #include <functional>
 
 // Qt lib import
+#include <QAtomicInt>
 #include <QStandardPaths>
 #include <QtConcurrent>
+#include <QSharedPointer>
 
 // JQToolsLibrary import
 #include "JQZopfli.h"
@@ -111,8 +113,7 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
 
     QJsonArray fileList;
 
-    static auto packageCount = 0;
-    static QMutex mutex;
+    auto packageCount = QSharedPointer< QAtomicInt >::create( 0 );
 
     for ( const auto &filePath: filePaths )
     {
@@ -124,11 +125,12 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
                                                { "originalSize", AbstractTool::fileSizeString( fileInfo.size() ) }
                                            } } ) );
 
-        ++packageCount;
+        packageCount->fetchAndAddOrdered( 1 );
 
         waitOptimizeQueue_[ filePath ] = [
                 this,
                 filePath,
+                packageCount,
                 fileName = fileInfo.fileName(),
                 originalFilePath = filePath,
                 resultFilePath = ( targetDir.isEmpty() ) ? ( filePath ) : ( targetDir + "/" + fileInfo.fileName() )
@@ -152,16 +154,10 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
                           } }
                     );
 
-            mutex.lock();
-
-            --packageCount;
-
-            if ( packageCount <= 0 )
+            if ( packageCount->fetchAndSubOrdered( 1 ) == 1 )
             {
                 emit this->optimizeEnd();
             }
-
-            mutex.unlock();
         };
     }
 
