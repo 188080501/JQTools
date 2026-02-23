@@ -87,24 +87,24 @@ void Manage::begin()
     eventLoop.exec();
 }
 
-QJsonArray Manage::getCharList(const QString &familieName, const QString &searchKey)
+QJsonArray Manage::getCharList(const QString &fontName, const QString &searchKey)
 {
     QJsonArray result;
 
     for ( const auto &fontPackage: fontPackages_ )
     {
-        if ( ( familieName != fontPackage.fontName ) && ( familieName != QStringLiteral("\u6240\u6709\u5B57\u4F53\u96C6") ) ) { continue; }
+        if ( ( fontName != fontPackage.fontName ) && ( fontName != QStringLiteral("\u6240\u6709\u5B57\u4F53\u96C6") ) ) { continue; }
 
         for ( const auto &charPackage: fontPackage.charPackages )
         {
             if ( ( searchKey.isEmpty() ) ? ( false ) : ( !charPackage.name.contains( searchKey ) ) ) { continue; }
 
             result.push_back( QJsonObject( { {
-                                                 { "familieName", fontPackage.familieName },
+                                                 { "fontFamilyName", fontPackage.fontFamilyName },
                                                  { "charCode", QString::number( charPackage.code, 16 ).toUpper() },
                                                  { "charName", charPackage.name },
                                                  { "charPreviewUrl", QString( "image://FontToPngManage/CharPreview/%1/%2" ).
-                                                     arg( fontPackage.familieName ).
+                                                     arg( fontPackage.fontFamilyName ).
                                                      arg( charPackage.code ) }
                                              } } ) );
         }
@@ -113,7 +113,7 @@ QJsonArray Manage::getCharList(const QString &familieName, const QString &search
     return result;
 }
 
-QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexString, const int pixelSize, const QString &color)
+QString Manage::saveIcon(const QString &fontFamilyName, const QString &charCodeHexString, const int pixelSize, const QString &color)
 {
     auto filePath = QFileDialog::getSaveFileName(
                 nullptr,
@@ -133,7 +133,7 @@ QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexS
 
     for ( const auto &fontPackage: fontPackages_ )
     {
-        if ( familieName != fontPackage.familieName ) { continue; }
+        if ( fontFamilyName != fontPackage.fontFamilyName ) { continue; }
 
         const auto charCode = charCodeHexString.toInt( nullptr, 16 );
 
@@ -144,7 +144,7 @@ QString Manage::saveIcon(const QString &familieName, const QString &charCodeHexS
 
     if ( !charPackage.code ) { return "error"; }
 
-    const auto image = this->paintChar( familieName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ), true );
+    const auto image = this->paintChar( fontFamilyName, charPackage, QColor( color ), QSizeF( pixelSize, pixelSize ), QSizeF( pixelSize, pixelSize ), true );
     const auto saveSucceed = image.save( filePath, "PNG" );
 
     return ( saveSucceed ) ? ( "OK" ) : ( "error" );
@@ -161,7 +161,7 @@ void Manage::loadFont(const QString fontName)
     auto fontId = QFontDatabase::addApplicationFont( fontPackage.ttfFilePath );
 
     fontPackage.fontId = fontId;
-    fontPackage.familieName = QFontDatabase::applicationFontFamilies( fontId ).first();
+    fontPackage.fontFamilyName = QFontDatabase::applicationFontFamilies( fontId ).first();
 
     auto txtData = AbstractTool::readFile( QFileInfo( fontPackage.txtFilePath ) );
     if ( !txtData.first ) { return; }
@@ -179,8 +179,8 @@ void Manage::loadFont(const QString fontName)
 
         if ( !charPackage.code ) { continue; }
 
-        this->makeAdaptation( fontPackage.familieName, charPackage );
-        charPackage.preview = this->paintChar( fontPackage.familieName, charPackage, "#000000", { 60, 60 }, { 60, 60 }, false );
+        this->makeAdaptation( fontPackage.fontFamilyName, charPackage );
+        charPackage.preview = this->paintChar( fontPackage.fontFamilyName, charPackage, "#000000", { 60, 60 }, { 60, 60 }, false );
 
         fontPackage.charPackages[ charPackage.code ] = charPackage;
     }
@@ -190,7 +190,7 @@ void Manage::loadFont(const QString fontName)
     mutex_.unlock();
 }
 
-QImage Manage::paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess)
+QImage Manage::paintChar(const QString &fontFamilyName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess)
 {
     QImage image( backgroundSize.toSize(), QImage::Format_ARGB32 );
     QPainter patiner;
@@ -199,7 +199,7 @@ QImage Manage::paintChar(const QString &familieName, const CharPackage &charPack
 
     if ( !patiner.begin( &image ) ) { return image; }
 
-    QFont font( familieName );
+    QFont font( fontFamilyName );
     font.setPixelSize( qMin( charSize.width(), charSize.height() ) * charPackage.charAdaptation.scale );
 
     QColor backgroundColor = color;
@@ -243,12 +243,12 @@ QImage Manage::paintChar(const QString &familieName, const CharPackage &charPack
     return image;
 }
 
-void Manage::makeAdaptation(const QString &familieName, CharPackage &charPackage)
+void Manage::makeAdaptation(const QString &fontFamilyName, CharPackage &charPackage)
 {
     QSizeF charSize( 400, 400 );
     QSizeF backgroundSize( 500, 500 );
 
-    auto referenceImage = this->paintChar( familieName, charPackage, { "#000000" }, charSize, backgroundSize, false );
+    auto referenceImage = this->paintChar( fontFamilyName, charPackage, { "#000000" }, charSize, backgroundSize, false );
 
     qreal xStart = -1;
     qreal xEnd = backgroundSize.width();
@@ -341,11 +341,11 @@ QImage Manage::requestImage(const QString &id, QSize *, const QSize &)
 
     if ( mode == "CharPreview" )
     {
-        auto familieName = datas.at( 1 );
+        auto fontFamilyName = datas.at( 1 );
 
         for ( const auto &fontPackage: fontPackages_ )
         {
-            if ( familieName != fontPackage.familieName ) { continue; }
+            if ( fontFamilyName != fontPackage.fontFamilyName ) { continue; }
 
             auto charCode = datas.at( 2 ).toUShort();
 

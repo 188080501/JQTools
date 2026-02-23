@@ -37,7 +37,7 @@ void Manage::resetTarget()
     emit targetChanged();
 }
 
-void Manage::pause()
+void Manage::paste()
 {
     source_ = this->clipboardText();
     emit sourceChanged();
@@ -56,7 +56,7 @@ void Manage::copy()
     this->setClipboardText( target_ );
 }
 
-void Manage::cut()
+void Manage::moveTargetToSource()
 {
     source_ = target_;
     target_.clear();
@@ -64,13 +64,13 @@ void Manage::cut()
     emit targetChanged();
 }
 
-void Manage::calculateToBase64()
+void Manage::encodeToBase64()
 {
     target_ = source_.toUtf8().toBase64();
     emit targetChanged();
 }
 
-void Manage::calculateFromBase64()
+void Manage::decodeFromBase64()
 {
     target_ = QByteArray::fromBase64( source_.toUtf8() );
     emit targetChanged();
@@ -142,13 +142,13 @@ void Manage::calculateSha3_512()
     emit targetChanged();
 }
 
-void Manage::calculateToZipAndBase64()
+void Manage::compressAndEncodeBase64()
 {
     target_ = qCompress( source_.toUtf8() ).toBase64();
     emit targetChanged();
 }
 
-void Manage::calculateFromBase64AndZip()
+void Manage::decodeBase64AndDecompress()
 {
     target_ = qUncompress( QByteArray::fromBase64( source_.toUtf8() ) );
     emit targetChanged();

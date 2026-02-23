@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef GROUP_MAKEGROUP_FONTTOPNG_CPP_FONTTOPNG_H_
-#define GROUP_MAKEGROUP_FONTTOPNG_CPP_FONTTOPNG_H_
+#ifndef GROUP_IMAGEGROUP_FONTTOPNG_CPP_FONTTOPNG_H_
+#define GROUP_IMAGEGROUP_FONTTOPNG_CPP_FONTTOPNG_H_
 
 // C++ lib import
 #include <functional>
@@ -64,7 +64,7 @@ struct FontPackage
     QString txtFilePath;
 
     int fontId;
-    QString familieName;
+    QString fontFamilyName;
 
     QMap< ushort, CharPackage > charPackages;
 };
@@ -94,16 +94,16 @@ public:
 public slots:
     void begin();
 
-    QJsonArray getCharList(const QString &familieName, const QString &searchKey);
+    QJsonArray getCharList(const QString &fontName, const QString &searchKey);
 
-    QString saveIcon(const QString &familieName, const QString &charCodeHexString, const int pixelSize, const QString &color);
+    QString saveIcon(const QString &fontFamilyName, const QString &charCodeHexString, const int pixelSize, const QString &color);
 
 private:
     void loadFont(const QString fontName);
 
-    QImage paintChar(const QString &familieName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess);
+    QImage paintChar(const QString &fontFamilyName, const CharPackage &charPackage, const QColor &color, const QSizeF &charSize, const QSizeF &backgroundSize, const bool moreProcess);
 
-    void makeAdaptation(const QString &familieName, CharPackage &charPackage);
+    void makeAdaptation(const QString &fontFamilyName, CharPackage &charPackage);
 
     QImage requestImage(const QString &id, QSize *, const QSize &);
 
@@ -114,4 +114,4 @@ private:
 
 }
 
-#endif//GROUP_MAKEGROUP_FONTTOPNG_CPP_FONTTOPNG_H_
+#endif//GROUP_IMAGEGROUP_FONTTOPNG_CPP_FONTTOPNG_H_

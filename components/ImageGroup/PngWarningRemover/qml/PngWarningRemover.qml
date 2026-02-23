@@ -54,7 +54,7 @@ libpng warning: iCCP: known incorrect sRGB profile
             onClicked: {
                 materialUI.showLoading();
 
-                var reply = pngWarningRemoverManage.conversationPng();
+                var reply = pngWarningRemoverManage.convertPng();
 
                 switch( reply )
                 {
@@ -76,7 +76,7 @@ libpng warning: iCCP: known incorrect sRGB profile
             onClicked: {
                 materialUI.showLoading();
 
-                var reply = pngWarningRemoverManage.conversationPngByOpenDirectory();
+                var reply = pngWarningRemoverManage.convertPngByOpenDirectory();
 
                 switch( reply )
                 {

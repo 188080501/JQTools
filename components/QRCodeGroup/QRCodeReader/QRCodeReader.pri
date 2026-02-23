@@ -17,7 +17,7 @@ HEADERS *= \
     $$PWD/cpp/qrcodereader.h
 
 SOURCES *= \
-    $$PWD/cpp/qrcodereader_.cpp
+    $$PWD/cpp/qrcodereader_.cpp # 因为文件名冲突，所以这里加一个下划线
 
 RESOURCES *= \
     $$PWD/qml/QRCodeReaderQml.qrc \

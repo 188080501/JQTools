@@ -24,7 +24,7 @@ Manage::Manage()
     srand( QDateTime::currentMSecsSinceEpoch() + qApp->applicationFilePath().size() );
 }
 
-QString Manage::randomUuid(const bool includeParantheses)
+QString Manage::randomUuid(const bool includeBraces)
 {
-    return QUuid::createUuid().toString( ( includeParantheses ) ? ( QUuid::WithBraces ) : ( QUuid::WithoutBraces ) );
+    return QUuid::createUuid().toString( ( includeBraces ) ? ( QUuid::WithBraces ) : ( QUuid::WithoutBraces ) );
 }

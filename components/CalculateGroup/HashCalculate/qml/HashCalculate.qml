@@ -192,7 +192,7 @@ Item {
             text: "粘贴内容"
 
             onClicked: {
-                hashCalculateManage.pause();
+                hashCalculateManage.paste();
             }
         }
 
@@ -229,7 +229,7 @@ Item {
             text: "剪切到源"
 
             onClicked: {
-                hashCalculateManage.cut();
+                hashCalculateManage.moveTargetToSource();
             }
         }
 
@@ -241,7 +241,7 @@ Item {
             text: "To Base64"
 
             onClicked: {
-                hashCalculateManage.calculateToBase64();
+                hashCalculateManage.encodeToBase64();
             }
         }
 
@@ -253,7 +253,7 @@ Item {
             text: "From Base64"
 
             onClicked: {
-                hashCalculateManage.calculateFromBase64();
+                hashCalculateManage.decodeFromBase64();
             }
         }
 
@@ -398,7 +398,7 @@ Item {
             text: "压缩 & Base64"
 
             onClicked: {
-                hashCalculateManage.calculateToZipAndBase64();
+                hashCalculateManage.compressAndEncodeBase64();
             }
         }
 
@@ -411,7 +411,7 @@ Item {
             text: "解压 & Base64"
 
             onClicked: {
-                hashCalculateManage.calculateFromBase64AndZip();
+                hashCalculateManage.decodeBase64AndDecompress();
             }
         }
     }

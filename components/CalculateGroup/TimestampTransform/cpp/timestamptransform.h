@@ -16,7 +16,7 @@
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 
-#define TTIMESTAMPTRANSFORM_INITIALIZA                                                                       \
+#define TIMESTAMPTRANSFORM_INITIALIZA                                                                        \
 {                                                                                                           \
     qmlRegisterType<TimestampTransform::Manage>("TimestampTransform", 1, 0, "TimestampTransformManage");    \
 }

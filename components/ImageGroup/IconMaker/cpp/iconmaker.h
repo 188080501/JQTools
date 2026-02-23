@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef GROUP_MAKEGROUP_ICONMAKER_CPP_ICONMAKER_H_
-#define GROUP_MAKEGROUP_ICONMAKER_CPP_ICONMAKER_H_
+#ifndef GROUP_IMAGEGROUP_ICONMAKER_CPP_ICONMAKER_H_
+#define GROUP_IMAGEGROUP_ICONMAKER_CPP_ICONMAKER_H_
 
 // Qt lib import
 #include <QImage>
@@ -42,13 +42,13 @@ public slots:
 
     inline QString sourceIconFilePath() const { return sourceIconFilePath_; }
 
-    inline int sourceIconImageWidht() const { return sourceIconImage_.width(); }
+    inline int sourceIconImageWidth() const { return sourceIconImage_.width(); }
 
     inline int sourceIconImageHeight() const { return sourceIconImage_.height(); }
 
     QString chooseTargetSavePath();
 
-    QString choostSourceIconFilePath();
+    QString chooseSourceIconFilePath();
 
     QString makeAll();
 
@@ -89,4 +89,4 @@ private:
 
 }
 
-#endif//GROUP_MAKEGROUP_ICONMAKER_CPP_ICONMAKER_H_
+#endif//GROUP_IMAGEGROUP_ICONMAKER_CPP_ICONMAKER_H_

@@ -38,8 +38,8 @@ Item {
 
         onSourceIconFilePathChanged: {
             labelForSourceFilePath.sourceIconFilePath = iconMakerManage.sourceIconFilePath();
-            labelForSourceIconImageWidht.sourceIconImageWidht = iconMakerManage.sourceIconImageWidht();
-            labelForTargetIconImageWidht.sourceIconImageHeight = iconMakerManage.sourceIconImageHeight();
+            labelForSourceIconImageWidth.sourceIconImageWidth = iconMakerManage.sourceIconImageWidth();
+            labelForSourceIconImageHeight.sourceIconImageHeight = iconMakerManage.sourceIconImageHeight();
             imageForIcon.source = "file:/" + iconMakerManage.sourceIconFilePath();
         }
     }
@@ -73,16 +73,16 @@ Item {
         }
 
         MaterialLabel {
-            id: labelForSourceIconImageWidht
+            id: labelForSourceIconImageWidth
             x: 49
             y: 112
-            text: "原图宽：" + sourceIconImageWidht
+            text: "原图宽：" + sourceIconImageWidth
 
-            property string sourceIconImageWidht: "未选择"
+            property string sourceIconImageWidth: "未选择"
         }
 
         MaterialLabel {
-            id: labelForTargetIconImageWidht
+            id: labelForSourceIconImageHeight
             x: 49
             y: 138
             text: "原图高：" + sourceIconImageHeight
@@ -101,7 +101,7 @@ Item {
             onClicked: {
                 materialUI.showLoading();
 
-                var reply = iconMakerManage.choostSourceIconFilePath();
+                var reply = iconMakerManage.chooseSourceIconFilePath();
 
                 switch( reply )
                 {

@@ -37,7 +37,7 @@ Item {
         height: 540
 
         MaterialTextField {
-            id: textFieldForPassword
+            id: textFieldForUuid
             x: 40
             y: 317
             width: 540
@@ -59,7 +59,7 @@ Item {
             text: "随机UUID"
 
             onClicked: {
-                textFieldForPassword.text = randomUuidManage.randomUuid(
+                textFieldForUuid.text = randomUuidManage.randomUuid(
                                 checkBoxForNumber.checked
                             );
                 materialUI.showSnackbarMessage( "随机UUID已经生成" );
@@ -73,7 +73,7 @@ Item {
             text: "复制到剪贴板"
 
             onClicked: {
-                randomUuidManage.setClipboardText( textFieldForPassword.text );
+                randomUuidManage.setClipboardText( textFieldForUuid.text );
                 materialUI.showSnackbarMessage( "UUID已经复制到了剪贴板" );
             }
         }

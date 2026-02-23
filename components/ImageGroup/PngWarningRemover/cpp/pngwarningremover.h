@@ -10,8 +10,8 @@
     GitHub: https://github.com/188080501/
 */
 
-#ifndef GROUP_QTGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
-#define GROUP_QTGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
+#ifndef GROUP_IMAGEGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
+#define GROUP_IMAGEGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
 
 // Qt lib import
 #include <QStringList>
@@ -38,18 +38,18 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString conversationPng();
+    QString convertPng();
 
-    QString conversationPngByOpenDirectory();
+    QString convertPngByOpenDirectory();
 
     inline QString lastErrorFileName() { return lastErrorFileName_; }
 
 private:
-    QString conversationPng(const QStringList &filePaths);
+    QString convertPng(const QStringList &filePaths);
 
     QString lastErrorFileName_;
 };
 
 }
 
-#endif//GROUP_QTGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_
+#endif//GROUP_IMAGEGROUP_PNGWARNINGREMOVER_CPP_PNGWARNINGREMOVER_H_

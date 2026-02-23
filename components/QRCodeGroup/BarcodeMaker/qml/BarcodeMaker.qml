@@ -16,7 +16,7 @@ import "qrc:/MaterialUI/Interface/"
 import BarcodeMaker 1.0
 
 Item {
-    id: qrcodeMaker
+    id: barcodeMaker
     width: 620
     height: 540
 
@@ -30,7 +30,7 @@ Item {
         height: 540
 
         MaterialTextField {
-            id: textFieldForLower
+            id: textFieldForBarcodeId
             x: 40
             y: 50
             width: 540
@@ -47,7 +47,7 @@ Item {
             width: 250
             height: 250
             fillMode: Image.PreserveAspectFit
-            source: "image://BarcodeMaker/" + textFieldForLower.text
+            source: "image://BarcodeMaker/" + textFieldForBarcodeId.text
 
             MaterialButton {
                 anchors.left: parent.right
@@ -59,7 +59,7 @@ Item {
                     materialUI.showLoading();
 
                     var reply = barcodeMakerManage.savePng(
-                                textFieldForLower.text
+                                textFieldForBarcodeId.text
                             );
 
                     materialUI.hideLoading();

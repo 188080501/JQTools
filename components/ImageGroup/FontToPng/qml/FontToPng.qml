@@ -22,13 +22,13 @@ Item {
     clip: true
 
     function refresh() {
-        var charList = FontToPngManage.getCharList( menuFieldForFamilieName.selectedText, textFieldForSearchKey.text );
+        var charList = FontToPngManage.getCharList( menuFieldForFontName.selectedText, textFieldForSearchKey.text );
 
         listModel.clear();
         for ( var index = 0; index < charList.length; ++index )
         {
             listModel.append( {
-                                 familieName: charList[ index ][ "familieName" ],
+                                 fontFamilyName: charList[ index ][ "fontFamilyName" ],
                                  charCode: charList[ index ][ "charCode" ],
                                  charName: charList[ index ][ "charName" ],
                                  charPreviewUrl: charList[ index ][ "charPreviewUrl" ]
@@ -82,7 +82,7 @@ Item {
         }
 
         MaterialMenuField {
-            id: menuFieldForFamilieName
+            id: menuFieldForFontName
             x: 90
             y: 15
             width: 200
@@ -159,7 +159,7 @@ Item {
         }
 
         delegate: Rectangle {
-            id: rectanglrForChar
+            id: rectangleForChar
             width: 86
             height: 106
             color: "#00000000"
@@ -213,18 +213,18 @@ Item {
                 hoverEnabled: true
 
                 onEntered: {
-                    rectanglrForChar.color = "#33a1a1a1"
+                    rectangleForChar.color = "#33a1a1a1"
                 }
 
                 onExited: {
-                    rectanglrForChar.color = "#00000000"
+                    rectangleForChar.color = "#00000000"
                 }
 
                 onClicked: {
                     if ( mouse.button & Qt.LeftButton )
                     {
                         backgroundForDialog.opacity = 1.0;
-                        dialogForSaveIcon.familieName = familieName;
+                        dialogForSaveIcon.fontFamilyName = fontFamilyName;
                         dialogForSaveIcon.charCode = charCode;
                         dialogForSaveIcon.charName = charName;
                         dialogForSaveIcon.open();
@@ -271,7 +271,7 @@ Item {
         negativeButtonText: materialUI.dialogCancelText
         positiveButtonText: materialUI.dialogOKText
 
-        property string familieName
+        property string fontFamilyName
         property string charCode
         property string charName
 
@@ -285,7 +285,7 @@ Item {
             materialUI.showLoading();
 
             var reply = FontToPngManage.saveIcon(
-                        dialogForSaveIcon.familieName,
+                        dialogForSaveIcon.fontFamilyName,
                         dialogForSaveIcon.charCode,
                         parseInt( labelForSize.text ),
                         textFieldForColor.text
@@ -314,12 +314,12 @@ Item {
             }
 
             MaterialLabel {
-                id: labelForFamilieName
+                id: labelForFontFamilyName
                 x: 100
                 y: 13
                 width: 120
                 height: 56
-                text: dialogForSaveIcon.familieName
+                text: dialogForSaveIcon.fontFamilyName
             }
 
             MaterialLabel {

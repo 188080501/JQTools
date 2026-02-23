@@ -46,17 +46,17 @@ public slots:
 
     void resetTarget();
 
-    void pause();
+    void paste();
 
     void clear();
 
     void copy();
 
-    void cut();
+    void moveTargetToSource();
 
-    void calculateToBase64();
+    void encodeToBase64();
 
-    void calculateFromBase64();
+    void decodeFromBase64();
 
     void calculateMD4();
 
@@ -80,9 +80,9 @@ public slots:
 
     void calculateSha3_512();
 
-    void calculateToZipAndBase64();
+    void compressAndEncodeBase64();
 
-    void calculateFromBase64AndZip();
+    void decodeBase64AndDecompress();
 
 signals:
     void sourceChanged();

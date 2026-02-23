@@ -142,65 +142,65 @@ Item {
 
                 materialUI.showLoading();
 
-                var suffixs = new Array;
+                var suffixes = new Array;
 
                 if ( checkBoxForCpp.checked )
                 {
-                    suffixs.push( "h" );
-                    suffixs.push( "c" );
-                    suffixs.push( "cc" );
-                    suffixs.push( "cp" );
-                    suffixs.push( "cpp" );
-                    suffixs.push( "hpp" );
-                    suffixs.push( "inc" );
-                    suffixs.push( "i" );
-                    suffixs.push( "ii" );
-                    suffixs.push( "m" );
+                    suffixes.push( "h" );
+                    suffixes.push( "c" );
+                    suffixes.push( "cc" );
+                    suffixes.push( "cp" );
+                    suffixes.push( "cpp" );
+                    suffixes.push( "hpp" );
+                    suffixes.push( "inc" );
+                    suffixes.push( "i" );
+                    suffixes.push( "ii" );
+                    suffixes.push( "m" );
                 }
 
                 if ( checkBoxForQml.checked )
                 {
-                    suffixs.push( "qml" );
+                    suffixes.push( "qml" );
                 }
 
                 if ( checkBoxForUi.checked )
                 {
-                    suffixs.push( "ui" );
+                    suffixes.push( "ui" );
                 }
 
                 if ( checkBoxForJsonAndXml.checked )
                 {
-                    suffixs.push( "json" );
-                    suffixs.push( "xml" );
+                    suffixes.push( "json" );
+                    suffixes.push( "xml" );
                 }
 
                 if ( checkBoxForBatAndSh.checked )
                 {
-                    suffixs.push( "bat" );
-                    suffixs.push( "sh" );
+                    suffixes.push( "bat" );
+                    suffixes.push( "sh" );
                 }
 
                 if ( checkBoxForQmake.checked )
                 {
-                    suffixs.push( "pro" );
-                    suffixs.push( "pri" );
-                    suffixs.push( "prf" );
-                    suffixs.push( "prl" );
-                    suffixs.push( "qrc" );
+                    suffixes.push( "pro" );
+                    suffixes.push( "pri" );
+                    suffixes.push( "prf" );
+                    suffixes.push( "prl" );
+                    suffixes.push( "qrc" );
                 }
 
                 if ( checkBoxForNoSuffixFile.checked )
                 {
-                    suffixs.push( "NoSuffixFile" );
+                    suffixes.push( "NoSuffixFile" );
                 }
 
                 if ( checkBoxForFileAndDir.checked )
                 {
-                    suffixs.push( "FileNameAndDirName" );
+                    suffixes.push( "FileNameAndDirName" );
                 }
 
                 var reply = batchReplacementManage.startBatchReplacement(
-                            suffixs,
+                            suffixes,
                             textFieldForSourceKey.text,
                             textFieldForTargetKey.text,
                             checkBoxForMultiCase.checked

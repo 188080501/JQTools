@@ -52,9 +52,9 @@ Item {
                 rgbStringTransform.changingFlag = true;
 
                 textFieldForHexString.text = rgbStringTransformManage.getHexStringFromColorName( textFieldForColorName.text );
-                textFiedForRed.text = rgbStringTransformManage.getRed( textFieldForHexString.text );
-                textFiedForGreen.text = rgbStringTransformManage.getGreen( textFieldForHexString.text );
-                textFiedForBlue.text = rgbStringTransformManage.getBlue( textFieldForHexString.text );
+                textFieldForRed.text = rgbStringTransformManage.getRed( textFieldForHexString.text );
+                textFieldForGreen.text = rgbStringTransformManage.getGreen( textFieldForHexString.text );
+                textFieldForBlue.text = rgbStringTransformManage.getBlue( textFieldForHexString.text );
 
                 rgbStringTransform.changingFlag = false;
             }
@@ -74,16 +74,16 @@ Item {
                 rgbStringTransform.changingFlag = true;
 
                 textFieldForColorName.text = "";
-                textFiedForRed.text = rgbStringTransformManage.getRed( textFieldForHexString.text );
-                textFiedForGreen.text = rgbStringTransformManage.getGreen( textFieldForHexString.text );
-                textFiedForBlue.text = rgbStringTransformManage.getBlue( textFieldForHexString.text );
+                textFieldForRed.text = rgbStringTransformManage.getRed( textFieldForHexString.text );
+                textFieldForGreen.text = rgbStringTransformManage.getGreen( textFieldForHexString.text );
+                textFieldForBlue.text = rgbStringTransformManage.getBlue( textFieldForHexString.text );
 
                 rgbStringTransform.changingFlag = false;
             }
         }
 
         MaterialTextField {
-            id: textFiedForRed
+            id: textFieldForRed
             x: 156
             y: 313
             placeholderText: "红(R)"
@@ -96,14 +96,14 @@ Item {
                 rgbStringTransform.changingFlag = true;
 
                 textFieldForColorName.text = "";
-                textFieldForHexString.text = rgbStringTransformManage.getHexString( textFiedForRed.text, textFiedForGreen.text, textFiedForBlue.text );
+                textFieldForHexString.text = rgbStringTransformManage.getHexString( textFieldForRed.text, textFieldForGreen.text, textFieldForBlue.text );
 
                 rgbStringTransform.changingFlag = false;
             }
         }
 
         MaterialTextField {
-            id: textFiedForGreen
+            id: textFieldForGreen
             x: 222
             y: 313
             placeholderText: "绿(G)"
@@ -116,14 +116,14 @@ Item {
                 rgbStringTransform.changingFlag = true;
 
                 textFieldForColorName.text = "";
-                textFieldForHexString.text = rgbStringTransformManage.getHexString( textFiedForRed.text, textFiedForGreen.text, textFiedForBlue.text );
+                textFieldForHexString.text = rgbStringTransformManage.getHexString( textFieldForRed.text, textFieldForGreen.text, textFieldForBlue.text );
 
                 rgbStringTransform.changingFlag = false;
             }
         }
 
         MaterialTextField {
-            id: textFiedForBlue
+            id: textFieldForBlue
             x: 288
             y: 313
             placeholderText: "蓝(B)"
@@ -136,7 +136,7 @@ Item {
                 rgbStringTransform.changingFlag = true;
 
                 textFieldForColorName.text = "";
-                textFieldForHexString.text = rgbStringTransformManage.getHexString( textFiedForRed.text, textFiedForGreen.text, textFiedForBlue.text );
+                textFieldForHexString.text = rgbStringTransformManage.getHexString( textFieldForRed.text, textFieldForGreen.text, textFieldForBlue.text );
 
                 rgbStringTransform.changingFlag = false;
             }

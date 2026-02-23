@@ -30,7 +30,7 @@
 using namespace BatchReplacement;
 
 QJsonObject Manage::startBatchReplacement(
-        const QJsonArray &suffixs,
+        const QJsonArray &suffixes,
         const QString &sourceKey,
         const QString &targetKey,
         const bool multiCase
@@ -52,18 +52,18 @@ QJsonObject Manage::startBatchReplacement(
 
     lastPath = currentPath;
 
-    QSet< QString > availableSuffixs;
+    QSet< QString > availableSuffixes;
 
-    for ( const auto suffix: suffixs )
+    for ( const auto suffix: suffixes )
     {
-        availableSuffixs.insert( suffix.toString().toLower() );
+        availableSuffixes.insert( suffix.toString().toLower() );
     }
 
     QEventLoop eventLoop;
 
     QtConcurrent::run( [ & ]()
     {
-        auto batchReplacement = [ &fileCount, &replacementCount, currentPath, availableSuffixs ](
+        auto batchReplacement = [ &fileCount, &replacementCount, currentPath, availableSuffixes ](
                 const QString &currentSourceKey,
                 const QString &currentTargetKey
             )
@@ -74,14 +74,14 @@ QJsonObject Manage::startBatchReplacement(
             {
                 if ( info.suffix().isEmpty() )
                 {
-                    if ( !availableSuffixs.contains( "nosuffixfile" ) )
+                    if ( !availableSuffixes.contains( "nosuffixfile" ) )
                     {
                         return;
                     }
                 }
                 else
                 {
-                    if ( !availableSuffixs.contains( info.suffix().toLower() ) )
+                    if ( !availableSuffixes.contains( info.suffix().toLower() ) )
                     {
                         return;
                     }
@@ -110,7 +110,7 @@ QJsonObject Manage::startBatchReplacement(
                 AbstractTool::writeFile( QFileInfo( info.filePath() ), fileAllData.replace( currentSourceKey.toUtf8(), currentTargetKey.toUtf8() ) );
             }, true );
 
-            if ( availableSuffixs.contains( "filenameanddirname" ) )
+            if ( availableSuffixes.contains( "filenameanddirname" ) )
             {
                 QFileInfoList fileNameList;
                 QList< QDir > dirNameList;
@@ -119,14 +119,14 @@ QJsonObject Manage::startBatchReplacement(
                 {
                     if ( info.suffix().isEmpty() )
                     {
-                        if ( !availableSuffixs.contains( "nosuffixfile" ) )
+                        if ( !availableSuffixes.contains( "nosuffixfile" ) )
                         {
                             return;
                         }
                     }
                     else
                     {
-                        if ( !availableSuffixs.contains( info.suffix().toLower() ) )
+                        if ( !availableSuffixes.contains( info.suffix().toLower() ) )
                         {
                             return;
                         }

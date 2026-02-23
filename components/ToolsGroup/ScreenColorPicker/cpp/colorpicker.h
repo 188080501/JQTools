@@ -1,5 +1,5 @@
-#ifndef COLORPICKER_H_
-#define COLORPICKER_H_
+#ifndef GROUP_TOOLSGROUP_SCREENCOLORPICKER_CPP_COLORPICKER_H_
+#define GROUP_TOOLSGROUP_SCREENCOLORPICKER_CPP_COLORPICKER_H_
 
 #include "mousedropper.h"
 #include <QWidget>
@@ -18,4 +18,4 @@ signals:
     void colorSelect(const QColor & c);
 public slots:
 };
-#endif//COLORPICKER_H_
+#endif//GROUP_TOOLSGROUP_SCREENCOLORPICKER_CPP_COLORPICKER_H_

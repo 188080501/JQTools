@@ -45,7 +45,7 @@ QString Manage::chooseTargetSavePath()
     return "OK";
 }
 
-QString Manage::choostSourceIconFilePath()
+QString Manage::chooseSourceIconFilePath()
 {
     const auto sourceIconFilePath = QFileDialog::getOpenFileName(
         nullptr,

@@ -21,7 +21,7 @@
 
 using namespace PngWarningRemover;
 
-QString Manage::conversationPng()
+QString Manage::convertPng()
 {
     const auto filePaths = QFileDialog::getOpenFileNames(
                     nullptr,
@@ -30,10 +30,10 @@ QString Manage::conversationPng()
                     "*.png"
                 );
 
-    return this->conversationPng( filePaths );
+    return this->convertPng( filePaths );
 }
 
-QString Manage::conversationPngByOpenDirectory()
+QString Manage::convertPngByOpenDirectory()
 {
     QStringList filePaths;
 
@@ -59,10 +59,10 @@ QString Manage::conversationPngByOpenDirectory()
 
     if ( filePaths.isEmpty() ) { return "empty"; }
 
-    return this->conversationPng( filePaths );
+    return this->convertPng( filePaths );
 }
 
-QString Manage::conversationPng(const QStringList &filePaths)
+QString Manage::convertPng(const QStringList &filePaths)
 {
     QEventLoop eventLoop;
     QString reply;

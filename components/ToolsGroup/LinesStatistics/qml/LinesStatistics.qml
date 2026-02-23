@@ -88,48 +88,48 @@ Item {
             onClicked: {
                 materialUI.showLoading();
 
-                var suffixs = new Array;
+                var suffixes = new Array;
 
                 if ( checkBoxForCpp.checked )
                 {
-                    suffixs.push( "h" );
-                    suffixs.push( "c" );
-                    suffixs.push( "cc" );
-                    suffixs.push( "cp" );
-                    suffixs.push( "cpp" );
-                    suffixs.push( "hpp" );
-                    suffixs.push( "inc" );
-                    suffixs.push( "i" );
-                    suffixs.push( "ii" );
-                    suffixs.push( "m" );
+                    suffixes.push( "h" );
+                    suffixes.push( "c" );
+                    suffixes.push( "cc" );
+                    suffixes.push( "cp" );
+                    suffixes.push( "cpp" );
+                    suffixes.push( "hpp" );
+                    suffixes.push( "inc" );
+                    suffixes.push( "i" );
+                    suffixes.push( "ii" );
+                    suffixes.push( "m" );
                 }
 
                 if ( checkBoxForQml.checked )
                 {
-                    suffixs.push( "qml" );
+                    suffixes.push( "qml" );
                 }
 
                 if ( checkBoxForQmake.checked )
                 {
-                    suffixs.push( "pro" );
-                    suffixs.push( "pri" );
-                    suffixs.push( "prf" );
-                    suffixs.push( "prl" );
+                    suffixes.push( "pro" );
+                    suffixes.push( "pri" );
+                    suffixes.push( "prf" );
+                    suffixes.push( "prl" );
                 }
 
                 if ( checkBoxForImage.checked )
                 {
-                    suffixs.push( "png" );
-                    suffixs.push( "jpg" );
-                    suffixs.push( "jpeg" );
-                    suffixs.push( "bmp" );
-                    suffixs.push( "gif" );
-                    suffixs.push( "svg" );
-                    suffixs.push( "psd" );
-                    suffixs.push( "ai" );
+                    suffixes.push( "png" );
+                    suffixes.push( "jpg" );
+                    suffixes.push( "jpeg" );
+                    suffixes.push( "bmp" );
+                    suffixes.push( "gif" );
+                    suffixes.push( "svg" );
+                    suffixes.push( "psd" );
+                    suffixes.push( "ai" );
                 }
 
-                var reply = linesStatisticsManage.statisticsLines( suffixs );
+                var reply = linesStatisticsManage.statisticsLines( suffixes );
 
                 if ( "cancel" in reply )
                 {

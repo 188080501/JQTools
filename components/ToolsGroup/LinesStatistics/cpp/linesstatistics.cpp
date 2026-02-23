@@ -25,7 +25,7 @@
 
 using namespace LinesStatistics;
 
-QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
+QJsonObject Manage::statisticsLines(const QJsonArray &suffixes)
 {
     auto fileCount = 0;
     auto lineCount = 0;
@@ -41,33 +41,33 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
             } };
     }
 
-    QSet< QString > availableSuffixs;
+    QSet< QString > availableSuffixes;
 
-    for ( const auto suffix: suffixs )
+    for ( const auto suffix: suffixes )
     {
-        availableSuffixs.insert( suffix.toString().toLower() );
+        availableSuffixes.insert( suffix.toString().toLower() );
     }
 
     QEventLoop eventLoop;
 
     QtConcurrent::run( [ & ]()
     {
-        static QSet< QString > imageSuffixs;
-        if ( imageSuffixs.isEmpty() )
+        static QSet< QString > imageSuffixes;
+        if ( imageSuffixes.isEmpty() )
         {
-            imageSuffixs.insert( "png" );
-            imageSuffixs.insert( "jpg" );
-            imageSuffixs.insert( "jpeg" );
-            imageSuffixs.insert( "bmp" );
-            imageSuffixs.insert( "gif" );
-            imageSuffixs.insert( "svg" );
-            imageSuffixs.insert( "psd" );
-            imageSuffixs.insert( "ai" );
+            imageSuffixes.insert( "png" );
+            imageSuffixes.insert( "jpg" );
+            imageSuffixes.insert( "jpeg" );
+            imageSuffixes.insert( "bmp" );
+            imageSuffixes.insert( "gif" );
+            imageSuffixes.insert( "svg" );
+            imageSuffixes.insert( "psd" );
+            imageSuffixes.insert( "ai" );
         }
 
         AbstractTool::foreachFileFromDirectory( { currentPath }, [ & ](const QFileInfo &info)
         {
-            if ( !availableSuffixs.contains( info.suffix().toLower() ) ) { return; }
+            if ( !availableSuffixes.contains( info.suffix().toLower() ) ) { return; }
 
             QFile file( info.filePath() );
             if ( !file.open( QIODevice::ReadOnly ) ) { return; }
@@ -78,7 +78,7 @@ QJsonObject Manage::statisticsLines(const QJsonArray &suffixs)
 
             if ( fileAllData.isEmpty() ) { return; }
 
-            if ( imageSuffixs.contains( info.suffix().toLower() ) ) { return; }
+            if ( imageSuffixes.contains( info.suffix().toLower() ) ) { return; }
 
             lineCount += fileAllData.count('\n') + 1;
         }, true );

@@ -30,7 +30,7 @@ Item {
         height: 540
 
         MaterialTextField {
-            id: textFieldForLower
+            id: textFieldForSourceText
             x: 40
             y: 50
             width: 540
@@ -47,7 +47,7 @@ Item {
             width: 250
             height: 250
             fillMode: Image.PreserveAspectFit
-            source: "image://QRCodeMaker/" + textFieldForLower.text
+            source: "image://QRCodeMaker/" + textFieldForSourceText.text
 
             MaterialButton {
                 anchors.left: parent.right
@@ -59,7 +59,7 @@ Item {
                     materialUI.showLoading();
 
                     var reply = qrCodeMakerManage.savePng(
-                                textFieldForLower.text
+                                textFieldForSourceText.text
                             );
 
                     materialUI.hideLoading();
