@@ -1,6 +1,6 @@
 # JQTools
 
-JQTools（Jason Qt Tools）是一个基于 Qt/QML + C++ 开发的开源工具集合，聚焦于开发过程中的高频小功能。
+JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具集合，聚焦于开发过程中的高频小功能。
 
 - GitHub: https://github.com/188080501/JQTools
 - 最新版下载: https://github.com/188080501/JQTools/releases/latest
