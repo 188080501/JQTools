@@ -75,10 +75,6 @@ private:
 
     void saveToPng(const QString &targetFilePath, const QSize &size);
 
-    void saveToEmptyPng(const QString &targetFilePath, const QSize &size);
-
-    void saveToJpg(const QString &targetFilePath, const QSize &size);
-
 signals:
     void targetSavePathChanged();
 

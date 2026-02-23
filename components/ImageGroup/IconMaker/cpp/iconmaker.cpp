@@ -18,6 +18,9 @@
 #include <QFile>
 #include <QImage>
 #include <QFileDialog>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QStandardPaths>
 #include <QtConcurrent>
 
@@ -256,36 +259,108 @@ void Manage::generateOSXIconAssets()
 
 void Manage::generateIOSIconAssets()
 {
-    if ( !QDir().mkpath( targetSavePath_ + "/iOS" ) )
+    const auto appIconSetPath = targetSavePath_ + "/iOS/AppIcon.appiconset";
+
+    if ( !QDir().mkpath( appIconSetPath ) )
     {
         throw false;
     }
 
-    this->saveToPng( targetSavePath_ + "/iOS/icon_29x29.png",     { 29, 29 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_29x29@2x.png",  { 58, 58 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_29x29@3x.png",  { 87, 87 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_40x40.png",     { 40, 40 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_40x40@2x.png",  { 80, 80 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_40x40@3x.png",  { 120, 120 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_50x50.png",     { 50, 50 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_50x50@2x.png",  { 100, 100 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_57x57.png",     { 57, 57 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_57x57@2x.png",  { 114, 114 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_60x60@2x.png",  { 120, 120 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_60x60@3x.png",  { 180, 180 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_72x72.png",     { 72, 72 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_72x72@2x.png",  { 144, 144 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_76x76.png",     { 76, 76 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_76x76@2x.png",  { 152, 152 } );
-    this->saveToPng( targetSavePath_ + "/iOS/icon_83.5x83.5@2x.png",{ 167, 167 } );
-    this->saveToJpg( targetSavePath_ + "/iOS/icon_1024x1024.jpg", { 1024, 1024 } );
+    struct IOSIconFileItem
+    {
+        QString fileName;
+        QSize pixelSize;
+    };
 
-    this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_2x_640x960.png", { 640, 960 } );
-    this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_R4_640x1136.png", { 640, 1136 } );
-    this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_R4.7_750x1334.png", { 750, 1334 } );
-    this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_R5.5_1242x2208.png", { 1242, 2208 } );
-    this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_iPad_Portrait_1536x2048.png", { 1536, 2048 } );
-    this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_iPad_Landscape_2048x1536.png", { 2048, 1536 } );
+    const QList< IOSIconFileItem > iosIconFileItems
+    {
+        { "icon_20x20.png", { 20, 20 } },
+        { "icon_20x20@2x.png", { 40, 40 } },
+        { "icon_20x20@3x.png", { 60, 60 } },
+        { "icon_29x29.png", { 29, 29 } },
+        { "icon_29x29@2x.png", { 58, 58 } },
+        { "icon_29x29@3x.png", { 87, 87 } },
+        { "icon_40x40.png", { 40, 40 } },
+        { "icon_40x40@2x.png", { 80, 80 } },
+        { "icon_40x40@3x.png", { 120, 120 } },
+        { "icon_60x60@2x.png", { 120, 120 } },
+        { "icon_60x60@3x.png", { 180, 180 } },
+        { "icon_76x76.png", { 76, 76 } },
+        { "icon_76x76@2x.png", { 152, 152 } },
+        { "icon_83.5x83.5@2x.png", { 167, 167 } },
+        { "icon_1024x1024.png", { 1024, 1024 } },
+    };
+
+    for ( const auto &iosIconFileItem: iosIconFileItems )
+    {
+        this->saveToPng( appIconSetPath + "/" + iosIconFileItem.fileName, iosIconFileItem.pixelSize );
+    }
+
+    struct IOSIconSlotItem
+    {
+        QString fileName;
+        QString idiom;
+        QString pointSize;
+        QString scale;
+    };
+
+    const QList< IOSIconSlotItem > iosIconSlotItems
+    {
+        { "icon_20x20@2x.png", "iphone", "20x20", "2x" },
+        { "icon_20x20@3x.png", "iphone", "20x20", "3x" },
+        { "icon_29x29@2x.png", "iphone", "29x29", "2x" },
+        { "icon_29x29@3x.png", "iphone", "29x29", "3x" },
+        { "icon_40x40@2x.png", "iphone", "40x40", "2x" },
+        { "icon_40x40@3x.png", "iphone", "40x40", "3x" },
+        { "icon_60x60@2x.png", "iphone", "60x60", "2x" },
+        { "icon_60x60@3x.png", "iphone", "60x60", "3x" },
+        { "icon_20x20.png", "ipad", "20x20", "1x" },
+        { "icon_20x20@2x.png", "ipad", "20x20", "2x" },
+        { "icon_29x29.png", "ipad", "29x29", "1x" },
+        { "icon_29x29@2x.png", "ipad", "29x29", "2x" },
+        { "icon_40x40.png", "ipad", "40x40", "1x" },
+        { "icon_40x40@2x.png", "ipad", "40x40", "2x" },
+        { "icon_76x76.png", "ipad", "76x76", "1x" },
+        { "icon_76x76@2x.png", "ipad", "76x76", "2x" },
+        { "icon_83.5x83.5@2x.png", "ipad", "83.5x83.5", "2x" },
+        { "icon_1024x1024.png", "ios-marketing", "1024x1024", "1x" },
+    };
+
+    QJsonArray imagesJsonArray;
+
+    for ( const auto &iosIconSlotItem: iosIconSlotItems )
+    {
+        QJsonObject imageJsonObject;
+
+        imageJsonObject[ "filename" ] = iosIconSlotItem.fileName;
+        imageJsonObject[ "idiom" ] = iosIconSlotItem.idiom;
+        imageJsonObject[ "size" ] = iosIconSlotItem.pointSize;
+        imageJsonObject[ "scale" ] = iosIconSlotItem.scale;
+
+        imagesJsonArray << imageJsonObject;
+    }
+
+    QJsonObject infoJsonObject;
+    infoJsonObject[ "author" ] = "xcode";
+    infoJsonObject[ "version" ] = 1;
+
+    QJsonObject contentsJsonObject;
+    contentsJsonObject[ "images" ] = imagesJsonArray;
+    contentsJsonObject[ "info" ] = infoJsonObject;
+
+    QFile contentsFile( appIconSetPath + "/Contents.json" );
+
+    if ( !contentsFile.open( QIODevice::WriteOnly | QIODevice::Truncate ) )
+    {
+        throw false;
+    }
+
+    const auto contentsJsonData = QJsonDocument( contentsJsonObject ).toJson( QJsonDocument::Indented );
+
+    if ( contentsFile.write( contentsJsonData ) != contentsJsonData.size() )
+    {
+        throw false;
+    }
 }
 
 void Manage::generateWindowsIconAsset()
@@ -414,30 +489,6 @@ void Manage::generatePWAIconAssets()
 void Manage::saveToPng(const QString &targetFilePath, const QSize &size)
 {
     if ( !sourceIconImage_.scaled( size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ).save( targetFilePath, "PNG" ) )
-    {
-        throw false;
-    }
-}
-
-void Manage::saveToEmptyPng(const QString &targetFilePath, const QSize &size)
-{
-    QImage image( size, QImage::Format_ARGB32 );
-
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0)
-    memset( image.bits(), 0xff, static_cast< size_t >( image.sizeInBytes() ) );
-#else
-    memset( image.bits(), 0xff, static_cast< size_t >( image.byteCount() ) );
-#endif
-
-    if ( !image.save( targetFilePath, "PNG" ) )
-    {
-        throw false;
-    }
-}
-
-void Manage::saveToJpg(const QString &targetFilePath, const QSize &size)
-{
-    if ( !sourceIconImage_.scaled( size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ).save( targetFilePath, "JPG" ) )
     {
         throw false;
     }
