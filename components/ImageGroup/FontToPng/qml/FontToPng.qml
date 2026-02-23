@@ -90,6 +90,7 @@ Item {
             model: [
                 "所有字体集",
                 "Elusive",
+                "Feather",
                 "FontAwesome",
                 "Foundation",
                 "GlyphiconsHalflings",
@@ -97,8 +98,10 @@ Item {
                 "IconFont",
                 "Icons8",
                 "IconWorks",
+                "Ionicons",
                 "JustVector",
                 "MaterialDesign",
+                "MaterialIcons",
                 "Metrize",
                 "Mfglabs",
                 "OpenIconic",

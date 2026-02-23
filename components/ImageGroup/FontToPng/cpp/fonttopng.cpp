@@ -46,6 +46,7 @@ void Manage::initializeFonts()
 //    eventLoop.exec();
 
     QtConcurrent::run( [ this ](){ this->loadFont( "Elusive" ); } );
+    QtConcurrent::run( [ this ](){ this->loadFont( "Feather" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "FontAwesome" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "Foundation" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "GlyphiconsHalflings" ); } );
@@ -53,8 +54,10 @@ void Manage::initializeFonts()
     QtConcurrent::run( [ this ](){ this->loadFont( "IconFont" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "Icons8" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "IconWorks" ); } );
+    QtConcurrent::run( [ this ](){ this->loadFont( "Ionicons" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "JustVector" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "MaterialDesign" ); } );
+    QtConcurrent::run( [ this ](){ this->loadFont( "MaterialIcons" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "Metrize" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "Mfglabs" ); } );
     QtConcurrent::run( [ this ](){ this->loadFont( "OpenIconic" ); } );

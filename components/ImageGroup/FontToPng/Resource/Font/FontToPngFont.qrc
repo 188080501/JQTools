@@ -3,6 +3,8 @@
     <file>FontToPngFont.qrc</file>
         <file>Elusive/Elusive.ttf</file>
         <file>Elusive/Elusive.txt</file>
+        <file>Feather/Feather.ttf</file>
+        <file>Feather/Feather.txt</file>
         <file>FontAwesome/FontAwesome.ttf</file>
         <file>FontAwesome/FontAwesome.txt</file>
         <file>Foundation/Foundation.ttf</file>
@@ -17,10 +19,14 @@
         <file>Icons8/Icons8.txt</file>
         <file>IconWorks/IconWorks.ttf</file>
         <file>IconWorks/IconWorks.txt</file>
+        <file>Ionicons/Ionicons.ttf</file>
+        <file>Ionicons/Ionicons.txt</file>
         <file>JustVector/JustVector.ttf</file>
         <file>JustVector/JustVector.txt</file>
         <file>MaterialDesign/MaterialDesign.ttf</file>
         <file>MaterialDesign/MaterialDesign.txt</file>
+        <file>MaterialIcons/MaterialIcons.ttf</file>
+        <file>MaterialIcons/MaterialIcons.txt</file>
         <file>Metrize/Metrize.ttf</file>
         <file>Metrize/Metrize.txt</file>
         <file>Mfglabs/Mfglabs.ttf</file>
