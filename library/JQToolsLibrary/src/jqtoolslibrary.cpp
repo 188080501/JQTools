@@ -102,6 +102,20 @@ QPair< bool, QByteArray > AbstractTool::readFile(const QFileInfo &filePath)
     return { true, file.readAll() };
 }
 
+QString AbstractTool::fileSizeString(const qint64 size)
+{
+    if ( size < 1024 )
+    {
+        return QString( "%1 Byte" ).arg( size );
+    }
+    else if ( size < ( 1024 * 1024 ) )
+    {
+        return QString( "%1 KB" ).arg( QString::number( size / 1024.0, 'f', 2 ) );
+    }
+
+    return QString( "%1 MB" ).arg( QString::number( size / 1024.0 / 1024.0, 'f', 2 ) );
+}
+
 QString AbstractTool::jqToolsVersionString()
 {
     const auto compileDateText = QStringLiteral( __DATE__ ).simplified();

@@ -116,22 +116,6 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
 
     QJsonArray fileList;
 
-    auto makeSizeString = [](const int size)
-    {
-        if ( size < 1024 )
-        {
-            return QString( "%1 Byte" ).arg( size );
-        }
-        else if ( size < ( 1024 * 1024 ) )
-        {
-            return QString( "%1 KB" ).arg( size / 1024 );
-        }
-        else
-        {
-            return QString( "%1.%2 MB" ).arg( size / 1024 / 1024 ).arg( size / 1024 % 1024 );
-        }
-    };
-
     static auto packageCount = 0;
     static QMutex mutex;
 
@@ -142,7 +126,7 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
         fileList.push_back( QJsonObject( { {
                                                { "fileName", fileInfo.fileName() },
                                                { "filePath", filePath },
-                                               { "originalSize", makeSizeString( fileInfo.size() ) }
+                                               { "originalSize", AbstractTool::fileSizeString( fileInfo.size() ) }
                                            } } ) );
 
         ++packageCount;
@@ -150,7 +134,6 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
         waitMakeQueue_[ filePath ] = [
                 this,
                 filePath,
-                makeSizeString,
                 fileName = fileInfo.fileName(),
                 originalFilePath = filePath,
                 resultFilePath = ( targetDir.isEmpty() ) ? ( fileInfo.path() + "/" + fileInfo.completeBaseName() + ".webp" ) : ( targetDir + "/" + fileInfo.completeBaseName() + ".webp" )
@@ -169,7 +152,7 @@ QString Manage::makeWebP(const bool coverOldFile, const QStringList &filePaths)
                         filePath,
                         { {
                               { "makeSucceed", saveSucceed },
-                              { "resultSize", makeSizeString( targetFileInfo.size() ) },
+                              { "resultSize", AbstractTool::fileSizeString( targetFileInfo.size() ) },
                               { "compressionRatio", QString( "%1%2%" ).
                                 arg( ( compressionRatio < 1 ) ? ( "-" ) : ( "" )  ).
                                 arg( 100 - (int)(compressionRatio * 100) ) },

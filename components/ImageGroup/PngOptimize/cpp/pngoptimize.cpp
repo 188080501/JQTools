@@ -116,22 +116,6 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
 
     QJsonArray fileList;
 
-    auto makeSizeString = [](const int size)
-    {
-        if ( size < 1024 )
-        {
-            return QString( "%1 Byte" ).arg( size );
-        }
-        else if ( size < ( 1024 * 1024 ) )
-        {
-            return QString( "%1 KB" ).arg( size / 1024 );
-        }
-        else
-        {
-            return QString( "%1.%2 MB" ).arg( size / 1024 / 1024 ).arg( size / 1024 % 1024 );
-        }
-    };
-
     static auto packageCount = 0;
     static QMutex mutex;
 
@@ -142,7 +126,7 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
         fileList.push_back( QJsonObject( { {
                                                { "fileName", fileInfo.fileName() },
                                                { "filePath", filePath },
-                                               { "originalSize", makeSizeString( fileInfo.size() ) }
+                                               { "originalSize", AbstractTool::fileSizeString( fileInfo.size() ) }
                                            } } ) );
 
         ++packageCount;
@@ -150,7 +134,6 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
         waitOptimizeQueue_[ filePath ] = [
                 this,
                 filePath,
-                makeSizeString,
                 fileName = fileInfo.fileName(),
                 originalFilePath = filePath,
                 resultFilePath = ( targetDir.isEmpty() ) ? ( filePath ) : ( targetDir + "/" + fileInfo.fileName() )
@@ -164,7 +147,7 @@ QString Manage::optimizePng(const bool coverOldFile, const QStringList &filePath
                         filePath,
                         { {
                               { "optimizeSucceed", optimizeResult.optimizeSucceed },
-                              { "resultSize", makeSizeString( optimizeResult.resultSize ) },
+                              { "resultSize", AbstractTool::fileSizeString( optimizeResult.resultSize ) },
                               { "compressionRatio", QString( "%1%2%" ).
                                 arg( ( optimizeResult.compressionRatio < 1 ) ? ( "-" ) : ( "" )  ).
                                 arg( 100 - (int)(optimizeResult.compressionRatio * 100) ) },

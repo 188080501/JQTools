@@ -52,6 +52,8 @@ public:
 
     static QPair< bool, QByteArray > readFile(const QFileInfo &filePath);
 
+    static QString fileSizeString(const qint64 size);
+
 public slots:
     QString jqToolsVersionString();
 
