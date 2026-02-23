@@ -13,6 +13,9 @@
 #ifndef GROUP_TEXTGROUP_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H_
 #define GROUP_TEXTGROUP_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H_
 
+// Qt lib import
+#include <QRandomGenerator>
+
 // JQToolsLibrary import
 #include <JQToolsLibrary>
 
@@ -36,6 +39,9 @@ public:
 
 public slots:
     QString randomPassword(const int length, const bool number, const bool englishCharacters, const bool includeUppercaseLetters, const bool dividingLine);
+
+private:
+    QRandomGenerator randomGenerator_;
 };
 
 }
