@@ -20,8 +20,8 @@ import "qrc:/BookmarkData.js" as BookmarkData
 ApplicationWindow {
     id: applicationWindow
     title: "JQTools"
-    width: 800
-    height: 600
+    width: 960
+    height: 720
     visible: true
     opacity: 0
     color: "#fafafa"
