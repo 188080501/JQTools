@@ -137,6 +137,24 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 - 工程文件: `JQTools.pro`
 
+## 依赖说明（Qt 与第三方库）
+
+JQTools 的程序主体（界面、交互、功能编排）基于 Qt/QML/C++ 实现。  
+当前仅在特定功能中引入少量第三方源码库，引用入口统一在 `JQTools.pro` -> `library/JQLibraryImport.pri`。
+
+| 模块 | 第三方来源 | 主要用途 | 引用入口 |
+| --- | --- | --- | --- |
+| JQQRCodeReader | ZXing | 二维码/条码识别 | `library/JQLibrary/JQQRCodeReader.pri` |
+| JQQRCodeWriter | qrencode | 二维码生成 | `library/JQLibrary/JQQRCodeWriter.pri` |
+| JQZopfli | Zopfli + LodePNG | PNG 无损压缩及相关图片处理 | `library/JQLibrary/JQZopfli.pri` |
+| JQGuetzli | Guetzli + Butteraugli | JPG 有损压缩 | `library/JQLibrary/JQGuetzli.pri` |
+| JQMbedTLS | Mbed TLS | RSA 密钥生成与加解密 | `library/JQLibrary/JQMbedTLS.pri` |
+
+补充说明：
+
+- 上述第三方库均以内置源码方式随仓库管理，不需要额外安装对应第三方库。
+- 通用能力（如 HASH 计算）优先使用 Qt 自带能力（如 `QCryptographicHash`）。
+
 ## 目录结构
 
 ```text
