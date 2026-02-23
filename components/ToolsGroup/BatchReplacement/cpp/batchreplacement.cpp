@@ -12,6 +12,9 @@
 
 #include "batchreplacement.h"
 
+// STL import
+#include <algorithm>
+
 // Qt lib import
 #include <QSet>
 #include <QFileDialog>
@@ -154,6 +157,22 @@ QJsonObject Manage::startBatchReplacement(
 
                     dirNameList.push_back( dir );
                 }, true );
+
+                // 目录改名需要先子后父，避免父目录先改名导致子目录路径失效
+                std::sort( dirNameList.begin(), dirNameList.end(), [ ](const QDir &left, const QDir &right)
+                {
+                    const auto leftPath = QDir::cleanPath( left.path() );
+                    const auto rightPath = QDir::cleanPath( right.path() );
+                    const auto leftDepth = leftPath.count( '/' );
+                    const auto rightDepth = rightPath.count( '/' );
+
+                    if ( leftDepth == rightDepth )
+                    {
+                        return leftPath.size() > rightPath.size();
+                    }
+
+                    return leftDepth > rightDepth;
+                } );
 
                 for ( const auto &info: fileNameList )
                 {
