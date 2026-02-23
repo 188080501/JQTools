@@ -15,7 +15,6 @@
 // Qt lib import
 #include <QFontDatabase>
 #include <QPainter>
-#include <QFileDialog>
 #include <QJsonObject>
 #include <QEventLoop>
 #include <QtConcurrent>
@@ -115,10 +114,10 @@ QJsonArray Manage::getCharList(const QString &fontName, const QString &searchKey
 
 QString Manage::saveIcon(const QString &fontFamilyName, const QString &charCodeHexString, const int pixelSize, const QString &color)
 {
-    auto filePath = QFileDialog::getSaveFileName(
-                nullptr,
+    auto filePath = AbstractTool::getSaveFileName(
+                QStringLiteral( "4dbc8cac-b342-4fea-9756-b1295e98d4c3" ),
                 QStringLiteral( "请选择保存图标的路径" ),
-                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
+                QString(),
                 "*.png"
             );
 

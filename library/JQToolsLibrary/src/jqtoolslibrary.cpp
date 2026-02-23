@@ -18,8 +18,11 @@
 #include <QDate>
 #include <QDir>
 #include <QFile>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QLocale>
+#include <QSettings>
+#include <QStandardPaths>
 #include <QDebug>
 
 void AbstractTool::foreachFileFromDirectory(
@@ -114,6 +117,167 @@ QString AbstractTool::fileSizeString(const qint64 size)
     }
 
     return QString( "%1 MB" ).arg( QString::number( size / 1024.0 / 1024.0, 'f', 2 ) );
+}
+
+QString AbstractTool::getDialogPath(
+        const QString &dialogName,
+        const QString &defaultPath
+    )
+{
+#ifndef Q_OS_WASM
+    QSettings settings( QSettings::NativeFormat, QSettings::UserScope, "JQTools", "JQTools" );
+    settings.beginGroup( "dialog" );
+
+    const auto fallbackPath = ( defaultPath.isEmpty() ) ? ( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) ) : ( defaultPath );
+    auto result = settings.value( dialogName, fallbackPath ).toString();
+
+    // 如果初始路径存在，直接返回
+    if ( QDir( result ).exists() )
+    {
+        return result;
+    }
+
+    QFileInfo fileInfo( result );
+
+    // 逐级向上查找存在的父目录（包含根目录）
+    while ( true )
+    {
+        if ( fileInfo.exists() )
+        {
+            return ( fileInfo.isDir() ) ? ( fileInfo.absoluteFilePath() ) : ( fileInfo.absolutePath() );
+        }
+
+        const auto parentPath = fileInfo.path();
+        if ( parentPath.isEmpty() || parentPath == fileInfo.filePath() )
+        {
+            break;
+        }
+
+        fileInfo = QFileInfo( parentPath );
+    }
+
+    return ( QDir( fallbackPath ).exists() ) ? ( fallbackPath ) : ( QDir::homePath() );
+#else
+    Q_UNUSED( dialogName );
+    Q_UNUSED( defaultPath );
+
+    return { };
+#endif
+}
+
+QString AbstractTool::getOpenFileName(
+        const QString &dialogName,
+        const QString &caption,
+        const QString &filter
+    )
+{
+#ifndef Q_OS_WASM
+    const auto filePath = QFileDialog::getOpenFileName(
+                nullptr,
+                caption,
+                AbstractTool::getDialogPath( dialogName ),
+                filter
+            );
+    if ( filePath.isEmpty() ) { return { }; }
+
+    QSettings settings( QSettings::NativeFormat, QSettings::UserScope, "JQTools", "JQTools" );
+    settings.beginGroup( "dialog" );
+    settings.setValue( dialogName, QFileInfo( filePath ).path() );
+
+    return filePath;
+#else
+    Q_UNUSED( dialogName );
+    Q_UNUSED( caption );
+    Q_UNUSED( filter );
+
+    return { };
+#endif
+}
+
+QString AbstractTool::getExistingDirectory(
+        const QString &dialogName,
+        const QString &caption
+    )
+{
+#ifndef Q_OS_WASM
+    const auto dir = QFileDialog::getExistingDirectory(
+                nullptr,
+                caption,
+                AbstractTool::getDialogPath( dialogName )
+            );
+    if ( dir.isEmpty() ) { return { }; }
+
+    QSettings settings( QSettings::NativeFormat, QSettings::UserScope, "JQTools", "JQTools" );
+    settings.beginGroup( "dialog" );
+    settings.setValue( dialogName, dir );
+
+    return dir;
+#else
+    Q_UNUSED( dialogName );
+    Q_UNUSED( caption );
+
+    return { };
+#endif
+}
+
+QStringList AbstractTool::getOpenFileNames(
+        const QString &dialogName,
+        const QString &caption,
+        const QString &filter
+    )
+{
+#ifndef Q_OS_WASM
+    const auto filePathList = QFileDialog::getOpenFileNames(
+                nullptr,
+                caption,
+                AbstractTool::getDialogPath( dialogName ),
+                filter
+            );
+    if ( filePathList.isEmpty() ) { return { }; }
+
+    QSettings settings( QSettings::NativeFormat, QSettings::UserScope, "JQTools", "JQTools" );
+    settings.beginGroup( "dialog" );
+    settings.setValue( dialogName, QFileInfo( filePathList.first() ).path() );
+
+    return filePathList;
+#else
+    Q_UNUSED( dialogName );
+    Q_UNUSED( caption );
+    Q_UNUSED( filter );
+
+    return { };
+#endif
+}
+
+QString AbstractTool::getSaveFileName(
+        const QString &dialogName,
+        const QString &caption,
+        const QString &fileName,
+        const QString &filter
+    )
+{
+#ifndef Q_OS_WASM
+    const auto filePath = QFileDialog::getSaveFileName(
+                nullptr,
+                caption,
+                QDir( AbstractTool::getDialogPath( dialogName ) ).filePath( fileName ),
+                filter
+            );
+    if ( filePath.isEmpty() ) { return { }; }
+
+    QSettings settings( QSettings::NativeFormat, QSettings::UserScope, "JQTools", "JQTools" );
+    settings.beginGroup( "dialog" );
+    settings.setValue( dialogName, QFileInfo( filePath ).path() );
+
+    return filePath;
+#else
+    Q_UNUSED( dialogName );
+    Q_UNUSED( caption );
+    Q_UNUSED( fileName );
+    Q_UNUSED( filter );
+
+    return { };
+#endif
 }
 
 QString AbstractTool::jqToolsVersionString()

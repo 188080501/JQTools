@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -16,7 +16,6 @@
 #include <functional>
 
 // Qt lib import
-#include <QFileDialog>
 #include <QStandardPaths>
 #include <QtConcurrent>
 
@@ -40,14 +39,11 @@ QString Manage::optimizeJpgByFilePaths(const bool coverOldFile, const QJsonArray
 
 QString Manage::optimizeJpgByOpenFiles(const bool coverOldFile)
 {
-    QStringList filePaths;
-
-    filePaths = QFileDialog::getOpenFileNames(
-                        nullptr,
-                        QStringLiteral( "\u8BF7\u9009\u62E9JPG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
-                        QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
-                        "*.jpg"
-                    );
+    const auto filePaths = AbstractTool::getOpenFileNames(
+                QStringLiteral( "d0247a92-ad1d-41f6-b13a-6f767990872c" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9JPG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                "*.jpg"
+            );
 
     if ( filePaths.isEmpty() ) { return "cancel"; }
 
@@ -58,10 +54,9 @@ QString Manage::optimizeJpgByOpenDirectory(const bool coverOldFile)
 {
     QStringList filePaths;
 
-    const auto directoryPath = QFileDialog::getExistingDirectory(
-                nullptr,
-                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BJPG\u56FE\u7247\u7684\u6587\u4EF6\u5939" ),
-                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
+    const auto directoryPath = AbstractTool::getExistingDirectory(
+                QStringLiteral( "c302cf0a-390f-4e7c-943a-fa8fcc812eb5" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BJPG\u56FE\u7247\u7684\u6587\u4EF6\u5939" )
             );
 
     if ( directoryPath.isEmpty() ) { return "cancel"; }

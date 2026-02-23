@@ -17,8 +17,6 @@
 
 // Qt lib import
 #include <QSet>
-#include <QFileDialog>
-#include <QStandardPaths>
 #include <QJsonArray>
 #include <QEventLoop>
 #include <QMetaObject>
@@ -40,9 +38,10 @@ QJsonObject Manage::startBatchReplacement(
     auto fileCount = 0;
     auto replacementCount = 0;
 
-    static QString lastPath = QStandardPaths::writableLocation( QStandardPaths::DesktopLocation );
-
-    auto currentPath = QFileDialog::getExistingDirectory( nullptr, u8"请选择目标目录", lastPath );
+    auto currentPath = AbstractTool::getExistingDirectory(
+                QStringLiteral( "ba0f41c3-0d36-454a-8e79-7728738c9309" ),
+                u8"请选择目标目录"
+            );
     if ( currentPath.isEmpty() )
     {
         return
@@ -50,8 +49,6 @@ QJsonObject Manage::startBatchReplacement(
                 { "cancel", true }
             } };
     }
-
-    lastPath = currentPath;
 
     QSet< QString > availableSuffixes;
 

@@ -14,8 +14,6 @@
 
 // Qt lib import
 #include <QImage>
-#include <QFileDialog>
-#include <QStandardPaths>
 #include <QtConcurrent>
 #include <QFileInfo>
 
@@ -23,12 +21,11 @@ using namespace PngWarningRemover;
 
 QString Manage::convertPng()
 {
-    const auto filePaths = QFileDialog::getOpenFileNames(
-                    nullptr,
-                    QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
-                    QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
-                    "*.png"
-                );
+    const auto filePaths = AbstractTool::getOpenFileNames(
+                QStringLiteral( "954a5acc-346a-4706-bd73-f7eedc74fad2" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9PNG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                "*.png"
+            );
 
     return this->convertPng( filePaths );
 }
@@ -37,10 +34,9 @@ QString Manage::convertPngByOpenDirectory()
 {
     QStringList filePaths;
 
-    const auto directoryPath = QFileDialog::getExistingDirectory(
-                nullptr,
-                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BPNG\u56FE\u7247\u7684\u6587\u4EF6\u5939" ),
-                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
+    const auto directoryPath = AbstractTool::getExistingDirectory(
+                QStringLiteral( "0dc5b5c7-4b5c-4caf-a3ba-b60730f26b3d" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BPNG\u56FE\u7247\u7684\u6587\u4EF6\u5939" )
             );
 
     if ( directoryPath.isEmpty() ) { return "cancel"; }

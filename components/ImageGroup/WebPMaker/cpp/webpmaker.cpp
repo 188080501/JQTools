@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -16,9 +16,9 @@
 #include <functional>
 
 // Qt lib import
-#include <QFileDialog>
 #include <QStandardPaths>
 #include <QtConcurrent>
+#include <QImage>
 
 // JQToolsLibrary import
 #include "JQZopfli.h"
@@ -40,14 +40,11 @@ QString Manage::makeWebPByFilePaths(const bool coverOldFile, const QJsonArray &f
 
 QString Manage::makeWebPByOpenFiles(const bool coverOldFile)
 {
-    QStringList filePaths;
-
-    filePaths = QFileDialog::getOpenFileNames(
-                        nullptr,
-                        QStringLiteral( "\u8BF7\u9009\u62E9PNG/JPG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
-                        QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
-                        "Images (*.png *.jpg)"
-                    );
+    const auto filePaths = AbstractTool::getOpenFileNames(
+                QStringLiteral( "fa20a092-2936-4d14-8996-dacdd2c1f7bd" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9PNG/JPG\u56FE\u7247\uFF08\u53EF\u591A\u9009\uFF09" ),
+                "Images (*.png *.jpg)"
+            );
 
     if ( filePaths.isEmpty() ) { return "cancel"; }
 
@@ -58,10 +55,9 @@ QString Manage::makeWebPByOpenDirectory(const bool coverOldFile)
 {
     QStringList filePaths;
 
-    const auto directoryPath = QFileDialog::getExistingDirectory(
-                nullptr,
-                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BPNG/JPG\u56FE\u7247\u7684\u6587\u4EF6\u5939" ),
-                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation )
+    const auto directoryPath = AbstractTool::getExistingDirectory(
+                QStringLiteral( "1aca401b-7f11-4c42-8327-cdfb33ac5f89" ),
+                QStringLiteral( "\u8BF7\u9009\u62E9\u5305\u542BPNG/JPG\u56FE\u7247\u7684\u6587\u4EF6\u5939" )
             );
 
     if ( directoryPath.isEmpty() ) { return "cancel"; }

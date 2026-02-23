@@ -15,8 +15,6 @@
 // Qt lib import
 #include <QDebug>
 #include <QQmlApplicationEngine>
-#include <QFileDialog>
-#include <QStandardPaths>
 #include <QPainter>
 #include <QCoreApplication>
 
@@ -37,10 +35,10 @@ Manage::~Manage()
 
 QString Manage::savePng(const QString &string)
 {
-    auto filePath = QFileDialog::getSaveFileName(
-                nullptr,
+    auto filePath = AbstractTool::getSaveFileName(
+                QStringLiteral( "4dbeef55-cb71-4828-88df-0c3105647a2c" ),
                 QStringLiteral( "请选择保存图片的路径" ),
-                QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
+                QString(),
                 "*.png"
             );
 

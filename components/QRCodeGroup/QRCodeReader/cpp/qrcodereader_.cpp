@@ -14,8 +14,6 @@
 
 // Qt lib import
 #include <QDebug>
-#include <QFileDialog>
-#include <QStandardPaths>
 #include <QUrl>
 
 // JQLibrary lib import
@@ -30,10 +28,9 @@ Manage::Manage():
 QUrl Manage::chooseImage() const
 {
     return QUrl::fromLocalFile(
-                QFileDialog::getOpenFileName(
-                    nullptr,
+                AbstractTool::getOpenFileName(
+                    QStringLiteral( "5786d92b-7deb-4a6e-8d39-d45181ecceb5" ),
                     QStringLiteral( "\u8BF7\u9009\u62E9\u56FE\u7247" ),
-                    QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
                     "*.png *.jpg"
                 )
             );

@@ -14,8 +14,6 @@
 
 // Qt lib import
 #include <QSet>
-#include <QFileDialog>
-#include <QStandardPaths>
 #include <QJsonArray>
 #include <QEventLoop>
 #include <QMetaObject>
@@ -31,9 +29,10 @@ QJsonObject Manage::collectLineStatistics(const QJsonArray &suffixes)
     auto fileCount = 0;
     auto lineCount = 0;
 
-    auto currentPath = QFileDialog::getExistingDirectory( nullptr,
-                                                          u8"请选择代码目录",
-                                                          QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) );
+    auto currentPath = AbstractTool::getExistingDirectory(
+                QStringLiteral( "5bf4742e-886d-4938-840f-3106416f9416" ),
+                u8"请选择代码目录"
+            );
     if ( currentPath.isEmpty() )
     {
         return

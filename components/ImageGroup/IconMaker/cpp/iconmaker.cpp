@@ -17,7 +17,6 @@
 #include <QDataStream>
 #include <QFile>
 #include <QImage>
-#include <QFileDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -35,7 +34,10 @@ Manage::Manage()
 
 QString Manage::chooseTargetSavePath()
 {
-    const auto targetSavePath = QFileDialog::getExistingDirectory( nullptr, "\u8BF7\u9009\u62E9\u4FDD\u5B58\u8DEF\u5F84", QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ) );
+    const auto targetSavePath = AbstractTool::getExistingDirectory(
+                QStringLiteral( "c006719b-2fec-43ab-a296-e4f9029ecddc" ),
+                "\u8BF7\u9009\u62E9\u4FDD\u5B58\u8DEF\u5F84"
+            );
 
     if ( targetSavePath.isEmpty() ) { return "cancel"; }
 
@@ -48,10 +50,9 @@ QString Manage::chooseTargetSavePath()
 
 QString Manage::chooseSourceIconFilePath()
 {
-    const auto sourceIconFilePath = QFileDialog::getOpenFileName(
-        nullptr,
+    const auto sourceIconFilePath = AbstractTool::getOpenFileName(
+        QStringLiteral( "a6974b21-e63b-49b2-9655-eb9beb713d95" ),
         "\u8BF7\u9009\u62E9\u56FE\u6807\u6587\u4EF6",
-        QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ),
         "*.png *.jpg *.jpeg *.bmp" );
 
     if ( sourceIconFilePath.isEmpty() ) { return "cancel"; }
