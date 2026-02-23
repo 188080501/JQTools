@@ -13,6 +13,9 @@
 #include "iconmaker.h"
 
 // Qt lib import
+#include <QBuffer>
+#include <QDataStream>
+#include <QFile>
 #include <QImage>
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -285,19 +288,98 @@ void Manage::realMakeIOS()
     this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_iPad_Landscape_2048x1536.png", { 2048, 1536 } );
 }
 
-void Manage::realMakeWindows() // TODO
+void Manage::realMakeWindows()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/Windows" ) )
     {
         throw false;
     }
 
-    this->saveToPng( targetSavePath_ + "/Windows/icon_16.png",  { 16, 16 } );
-    this->saveToPng( targetSavePath_ + "/Windows/icon_24.png",  { 24, 24 } );
-    this->saveToPng( targetSavePath_ + "/Windows/icon_32.png",  { 32, 32 } );
-    this->saveToPng( targetSavePath_ + "/Windows/icon_48.png",  { 48, 48 } );
-    this->saveToPng( targetSavePath_ + "/Windows/icon_64.png",  { 64, 64 } );
-    this->saveToPng( targetSavePath_ + "/Windows/icon_256.png",  { 256, 256 } );
+    const QList< QSize > iconSizes
+    {
+        { 16, 16 },
+        { 20, 20 },
+        { 24, 24 },
+        { 32, 32 },
+        { 40, 40 },
+        { 48, 48 },
+        { 64, 64 },
+        { 72, 72 },
+        { 80, 80 },
+        { 96, 96 },
+        { 128, 128 },
+        { 256, 256 },
+    };
+
+    QList< QByteArray > iconImageDataList;
+
+    for ( const auto &iconSize: iconSizes )
+    {
+        QByteArray iconImageData;
+        QBuffer iconDataBuffer( &iconImageData );
+
+        if ( !iconDataBuffer.open( QIODevice::WriteOnly ) )
+        {
+            throw false;
+        }
+
+        const auto scaledIconImage = sourceIconImage_.scaled(
+            iconSize,
+            Qt::IgnoreAspectRatio,
+            Qt::SmoothTransformation
+        ).convertToFormat( QImage::Format_ARGB32 );
+
+        if ( !scaledIconImage.save( &iconDataBuffer, "PNG" ) )
+        {
+            throw false;
+        }
+
+        iconImageDataList << iconImageData;
+    }
+
+    QFile iconFile( targetSavePath_ + "/Windows/icon.ico" );
+
+    if ( !iconFile.open( QIODevice::WriteOnly ) )
+    {
+        throw false;
+    }
+
+    QDataStream iconStream( &iconFile );
+    iconStream.setByteOrder( QDataStream::LittleEndian );
+
+    iconStream << static_cast< quint16 >( 0 );
+    iconStream << static_cast< quint16 >( 1 );
+    iconStream << static_cast< quint16 >( iconSizes.size() );
+
+    quint32 imageDataOffset = static_cast< quint32 >( 6 + ( iconSizes.size() * 16 ) );
+
+    for ( int index = 0; index < iconSizes.size(); ++index )
+    {
+        const auto iconWidth = iconSizes[ index ].width();
+        const auto iconHeight = iconSizes[ index ].height();
+        const auto iconDataSize = iconImageDataList[ index ].size();
+        const auto icoWidth = static_cast< quint8 >( ( iconWidth >= 256 ) ? 0 : iconWidth );
+        const auto icoHeight = static_cast< quint8 >( ( iconHeight >= 256 ) ? 0 : iconHeight );
+
+        iconStream << icoWidth;
+        iconStream << icoHeight;
+        iconStream << static_cast< quint8 >( 0 );
+        iconStream << static_cast< quint8 >( 0 );
+        iconStream << static_cast< quint16 >( 1 );
+        iconStream << static_cast< quint16 >( 32 );
+        iconStream << static_cast< quint32 >( iconDataSize );
+        iconStream << imageDataOffset;
+
+        imageDataOffset += static_cast< quint32 >( iconDataSize );
+    }
+
+    for ( const auto &iconImageData: std::as_const( iconImageDataList ) )
+    {
+        if ( iconStream.writeRawData( iconImageData.constData(), iconImageData.size() ) != iconImageData.size() )
+        {
+            throw false;
+        }
+    }
 }
 
 void Manage::realMakeAndroid()
@@ -327,14 +409,6 @@ void Manage::realMakePWA()
     this->saveToPng( targetSavePath_ + "/PWA/icon_144.png", { 144, 144 } );
     this->saveToPng( targetSavePath_ + "/PWA/icon_168.png", { 168, 168 } );
     this->saveToPng( targetSavePath_ + "/PWA/icon_192.png", { 192, 192 } );
-}
-
-void Manage::saveToIco(const QString &targetFilePath, const QSize &size)
-{
-    if ( !sourceIconImage_.scaled( size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ).save( targetFilePath, "JPG" ) )
-    {
-        throw false;
-    }
 }
 
 void Manage::saveToPng(const QString &targetFilePath, const QSize &size)

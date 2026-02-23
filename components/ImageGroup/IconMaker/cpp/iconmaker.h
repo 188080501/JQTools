@@ -73,8 +73,6 @@ private:
 
     void realMakePWA();
 
-    void saveToIco(const QString &targetFilePath, const QSize &size);
-
     void saveToPng(const QString &targetFilePath, const QSize &size);
 
     void saveToEmptyPng(const QString &targetFilePath, const QSize &size);

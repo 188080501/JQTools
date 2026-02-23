@@ -195,7 +195,7 @@ Item {
             y: 223
             width: 120
             height: 40
-            text: "Windows(png)"
+            text: "Windows(ico)"
 
             onClicked: {
                 materialUI.showLoading();
