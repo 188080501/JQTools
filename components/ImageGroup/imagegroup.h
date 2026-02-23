@@ -16,16 +16,16 @@
 // ImageGroup lib import
 #include <IconMaker>
 #include <FontToPng>
-#include <WebPMaker>
 #include <PngWarningRemover>
+#include <WebPMaker>
 #include <PngOptimize>
 #include <JpgOptimize>
 
 #define IMAGEGROUP_INITIALIZA \
     ICONMAKER_INITIALIZA; \
     FONTTOPNG_INITIALIZA; \
-    WEBPMAKER_INITIALIZA; \
     PNGWARNINGREMOVER_INITIALIZA; \
+    WEBPMAKER_INITIALIZA; \
     PNGOPTIMIZE_INITIALIZA; \
     JPGOPTIMIZE_INITIALIZA;
 

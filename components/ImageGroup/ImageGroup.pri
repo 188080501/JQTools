@@ -12,8 +12,8 @@
 
 include( $$PWD/IconMaker/IconMaker.pri )
 include( $$PWD/FontToPng/FontToPng.pri )
-include( $$PWD/WebPMaker/WebPMaker.pri )
 include( $$PWD/PngWarningRemover/PngWarningRemover.pri )
+include( $$PWD/WebPMaker/WebPMaker.pri )
 include( $$PWD/PngOptimize/PngOptimize.pri )
 include( $$PWD/JpgOptimize/JpgOptimize.pri )
 

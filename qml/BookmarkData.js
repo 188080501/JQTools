@@ -32,8 +32,8 @@ var items = [
         children: [
             { bookmarkName: "图标生成器", titleName: "图标生成器", qrcLocation: "qrc:/IconMaker/IconMaker.qml" },
             { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG", qrcLocation: "qrc:/FontToPng/FontToPng.qml" },
-            { bookmarkName: "WebP图片制作器", titleName: "WebP图片制作器", qrcLocation: "qrc:/WebPMaker/WebPMaker.qml" },
             { bookmarkName: "PNG警告消除", titleName: "PNG警告消除", qrcLocation: "qrc:/PngWarningRemover/PngWarningRemover.qml" },
+            { bookmarkName: "WebP图片制作器", titleName: "WebP图片制作器", qrcLocation: "qrc:/WebPMaker/WebPMaker.qml" },
             { bookmarkName: "PNG图片压缩", titleName: "PNG图片压缩", qrcLocation: "qrc:/PngOptimize/PngOptimize.qml" },
             { bookmarkName: "JPG图片压缩", titleName: "JPG图片压缩", qrcLocation: "qrc:/JpgOptimize/JpgOptimize.qml" }
         ]
