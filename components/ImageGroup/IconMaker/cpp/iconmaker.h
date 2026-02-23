@@ -63,15 +63,15 @@ public slots:
     QString makePWA();
 
 private:
-    void realMakeOSX();
+    void generateOSXIconAssets();
 
-    void realMakeIOS();
+    void generateIOSIconAssets();
 
-    void realMakeWindows();
+    void generateWindowsIconAsset();
 
-    void realMakeAndroid();
+    void generateAndroidIconAssets();
 
-    void realMakePWA();
+    void generatePWAIconAssets();
 
     void saveToPng(const QString &targetFilePath, const QSize &size);
 

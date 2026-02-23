@@ -73,11 +73,11 @@ QString Manage::makeAll()
     {
         try
         {
-            this->realMakeOSX();
-            this->realMakeIOS();
-            this->realMakeWindows();
-            this->realMakeAndroid();
-            this->realMakePWA();
+            this->generateOSXIconAssets();
+            this->generateIOSIconAssets();
+            this->generateWindowsIconAsset();
+            this->generateAndroidIconAssets();
+            this->generatePWAIconAssets();
         }
         catch(const bool)
         {
@@ -104,7 +104,7 @@ QString Manage::makeOSX()
     {
         try
         {
-            this->realMakeOSX();
+            this->generateOSXIconAssets();
         }
         catch(const bool)
         {
@@ -131,7 +131,7 @@ QString Manage::makeIOS()
     {
         try
         {
-            this->realMakeIOS();
+            this->generateIOSIconAssets();
         }
         catch(const bool)
         {
@@ -158,7 +158,7 @@ QString Manage::makeWindows()
     {
         try
         {
-            this->realMakeWindows();
+            this->generateWindowsIconAsset();
         }
         catch(const bool)
         {
@@ -185,7 +185,7 @@ QString Manage::makeAndroid()
     {
         try
         {
-            this->realMakeAndroid();
+            this->generateAndroidIconAssets();
         }
         catch(const bool)
         {
@@ -212,7 +212,7 @@ QString Manage::makePWA()
     {
         try
         {
-            this->realMakePWA();
+            this->generatePWAIconAssets();
         }
         catch(const bool)
         {
@@ -230,7 +230,7 @@ QString Manage::makePWA()
     return reply;
 }
 
-void Manage::realMakeOSX()
+void Manage::generateOSXIconAssets()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/OSX/icon.iconset" ) )
     {
@@ -254,7 +254,7 @@ void Manage::realMakeOSX()
 #endif
 }
 
-void Manage::realMakeIOS()
+void Manage::generateIOSIconAssets()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/iOS" ) )
     {
@@ -288,7 +288,7 @@ void Manage::realMakeIOS()
     this->saveToEmptyPng( targetSavePath_ + "/iOS/LaunchImage_iPad_Landscape_2048x1536.png", { 2048, 1536 } );
 }
 
-void Manage::realMakeWindows()
+void Manage::generateWindowsIconAsset()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/Windows" ) )
     {
@@ -382,7 +382,7 @@ void Manage::realMakeWindows()
     }
 }
 
-void Manage::realMakeAndroid()
+void Manage::generateAndroidIconAssets()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/Android" ) )
     {
@@ -394,7 +394,7 @@ void Manage::realMakeAndroid()
     this->saveToPng( targetSavePath_ + "/Android/icon_96.png", { 96, 96 } );
 }
 
-void Manage::realMakePWA()
+void Manage::generatePWAIconAssets()
 {
     if ( !QDir().mkpath( targetSavePath_ + "/PWA" ) )
     {
