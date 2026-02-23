@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/RsaCrypt">
+        <file>RsaCrypt.qml</file>
+    </qresource>
+</RCC>
