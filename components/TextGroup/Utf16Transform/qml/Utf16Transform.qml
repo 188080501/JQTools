@@ -30,7 +30,7 @@ Item {
     MaterialLabel {
         x: 162
         text:
-"UTF16-转换工具，可以将文本和UTF-16之间互转
+"Unicode 转义转换工具，可以将文本和 \\uXXXX 之间互转
 例如将 “中文” 与 “\\u4E2D\\u6587” 互转"
         anchors.horizontalCenterOffset: -91
         anchors.top: parent.top
@@ -53,7 +53,7 @@ Item {
         onClicked: {
             textFieldForSource.text = utf16TransformManage.clipboardText();
             utf16TransformManage.setClipboardText( textFieldForTarget.text );
-            materialUI.showSnackbarMessage( "UTF-16字符串已经复制到了剪贴板" );
+            materialUI.showSnackbarMessage( "Unicode 转义字符串已经复制到了剪贴板" );
         }
     }
 
@@ -110,7 +110,7 @@ Item {
 
                     utf16Transform.changingFlag = true;
 
-                    textFieldForTarget.text = utf16TransformManage.toUtf16( textFieldForSource.text );
+                    textFieldForTarget.text = utf16TransformManage.encodeToUnicodeEscape( textFieldForSource.text );
 
                     utf16Transform.changingFlag = false;
                 }
@@ -128,7 +128,7 @@ Item {
     }
 
     MaterialLabel {
-        text: "UTF-16字符串"
+        text: "Unicode转义字符串"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForTarget.top
         anchors.bottomMargin: 10
@@ -180,7 +180,7 @@ Item {
 
                     utf16Transform.changingFlag = true;
 
-                    textFieldForSource.text = utf16TransformManage.fromUtf16( textFieldForTarget.text );
+                    textFieldForSource.text = utf16TransformManage.decodeFromUnicodeEscape( textFieldForTarget.text );
 
                     utf16Transform.changingFlag = false;
                 }

@@ -9,14 +9,14 @@ Item {
     width: 620
     height: 540
 
-    property string guess: ""
+    property string currentGuess: ""
     property bool canStartGame: false 
-    property bool startRecord: false 
+    property bool gameStarted: false 
 
     BinarySearchAssistantManage {
         id: binarySearchAssistantManage
         onGuessChanged: {
-            binarySearchAssistant.guess = binarySearchAssistantManage.guess();
+            binarySearchAssistant.currentGuess = binarySearchAssistantManage.guess();
         }
     }
 
@@ -34,7 +34,7 @@ Item {
                 var maxVal = parseInt(maxField.text);
                 canStartGame = minVal < maxVal;;
                 if (!canStartGame) {
-                    startRecord = false;
+                    gameStarted = false;
                 }
             }
         }
@@ -48,7 +48,7 @@ Item {
                 var maxVal = parseInt(maxField.text);
                 canStartGame = minVal < maxVal;;
                 if (!canStartGame) {
-                    startRecord = false;
+                    gameStarted = false;
                 }
             }
         }
@@ -59,30 +59,30 @@ Item {
         }
 
         MaterialButton {
-            text: canStartGame ? (startRecord ? "开始新记录" : "开始记录") : "最小值小于最大值才能开始"
+            text: canStartGame ? (gameStarted ? "重新开始" : "开始游戏") : "最小值小于最大值才能开始"
             enabled: canStartGame
             onClicked: {
                 if (canStartGame) {
-                    startRecord = true;
+                    gameStarted = true;
                     binarySearchAssistantManage.startNewGame(minField.text, maxField.text);
                 }
             }
         }
 
         MaterialLabel {
-            text: startRecord ? "我的猜测是：" + binarySearchAssistant.guess : ""
+            text: gameStarted ? "我的猜测是：" + binarySearchAssistant.currentGuess : ""
         }
 
         MaterialButton {
             text: "更高"
-            enabled: startRecord
-            onClicked: binarySearchAssistantManage.guessHigher()
+            enabled: gameStarted
+            onClicked: binarySearchAssistantManage.targetIsHigher()
         }
 
         MaterialButton {
             text: "更低"
-            enabled: startRecord
-            onClicked: binarySearchAssistantManage.guessLower()
+            enabled: gameStarted
+            onClicked: binarySearchAssistantManage.targetIsLower()
         }
     }
 }

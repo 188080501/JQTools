@@ -213,15 +213,15 @@ Item {
                     return;
                 }
 
-                labelForLinesCount.fileCount = reply[ "fileCount" ];
-                labelForLinesCount.replacementCount = reply[ "replacementCount" ];
+                labelForReplacementSummary.fileCount = reply[ "fileCount" ];
+                labelForReplacementSummary.replacementCount = reply[ "replacementCount" ];
 
                 materialUI.hideLoading();
             }
         }
 
         MaterialLabel {
-            id: labelForLinesCount
+            id: labelForReplacementSummary
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.horizontalCenterOffset: 150
             anchors.verticalCenterOffset: -120

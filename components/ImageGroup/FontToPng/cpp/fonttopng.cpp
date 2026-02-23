@@ -41,7 +41,7 @@ QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &
 Manage::Manage()
 { }
 
-void Manage::begin()
+void Manage::initializeFonts()
 {
     QEventLoop eventLoop;
 //    eventLoop.exec();

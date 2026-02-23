@@ -129,7 +129,7 @@ Item {
                     suffixes.push( "ai" );
                 }
 
-                var reply = linesStatisticsManage.statisticsLines( suffixes );
+                var reply = linesStatisticsManage.collectLineStatistics( suffixes );
 
                 if ( "cancel" in reply )
                 {

@@ -25,7 +25,7 @@
 
 using namespace LinesStatistics;
 
-QJsonObject Manage::statisticsLines(const QJsonArray &suffixes)
+QJsonObject Manage::collectLineStatistics(const QJsonArray &suffixes)
 {
     auto fileCount = 0;
     auto lineCount = 0;

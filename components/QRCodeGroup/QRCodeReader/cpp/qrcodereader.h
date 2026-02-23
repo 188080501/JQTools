@@ -22,12 +22,12 @@
 
 #define QRCODEREADER_INITIALIZA                                                             \
 {                                                                                           \
-    qmlRegisterType< QRCodeReader_::Manage >( "QRCodeReader", 1, 0, "QRCodeReaderManage" ); \
+    qmlRegisterType< QRCodeReader::Manage >( "QRCodeReader", 1, 0, "QRCodeReaderManage" ); \
 }
 
 class JQQRCodeReader;
 
-namespace QRCodeReader_
+namespace QRCodeReader
 {
 
 class Manage: public AbstractTool

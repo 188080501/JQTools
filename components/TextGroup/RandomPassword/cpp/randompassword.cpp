@@ -23,7 +23,7 @@ Manage::Manage()
     srand( QDateTime::currentMSecsSinceEpoch() + qApp->applicationFilePath().size() );
 }
 
-QString Manage::randomPassword(const int length, const bool number, const bool englishCharacters, const bool caseSensitive, const bool dividingLine)
+QString Manage::randomPassword(const int length, const bool number, const bool englishCharacters, const bool includeUppercaseLetters, const bool dividingLine)
 {
     QString password;
     QString table;
@@ -38,7 +38,7 @@ QString Manage::randomPassword(const int length, const bool number, const bool e
     }
     if ( englishCharacters )
     {
-        if ( caseSensitive )
+        if ( includeUppercaseLetters )
         {
             table += lowercaseCharacters;
             table += upperCharacters;

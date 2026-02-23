@@ -39,18 +39,18 @@ Item {
     }
 
     Component.onCompleted: {
-        timerForBegin.start();
+        timerForInitializeFonts.start();
     }
 
     Timer {
-        id: timerForBegin
+        id: timerForInitializeFonts
         interval: 50
         repeat: false
 
         onTriggered: {
             materialUI.showLoading( "初始化中，请稍等" );
 
-            FontToPngManage.begin();
+            FontToPngManage.initializeFonts();
             fontToPng.refresh();
 
             materialUI.hideLoading();
@@ -117,16 +117,16 @@ Item {
             height: 56
             placeholderText: "搜索"
 
-            property bool isChenged: false
+            property bool isChanged: false
 
             onTextChanged: {
-                isChenged = true;
+                isChanged = true;
             }
 
             onEditingFinished: {
-                if ( isChenged )
+                if ( isChanged )
                 {
-                    isChenged = false;
+                    isChanged = false;
                     fontToPng.refresh();
                 }
             }
@@ -287,7 +287,7 @@ Item {
             var reply = FontToPngManage.saveIcon(
                         dialogForSaveIcon.fontFamilyName,
                         dialogForSaveIcon.charCode,
-                        parseInt( labelForSize.text ),
+                        parseInt( textFieldForSize.text ),
                         textFieldForColor.text
                     );
 
@@ -362,7 +362,7 @@ Item {
             }
 
             MaterialTextField {
-                id: labelForSize
+                id: textFieldForSize
                 x: 145
                 y: 157
                 width: 120

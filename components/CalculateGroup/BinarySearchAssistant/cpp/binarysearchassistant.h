@@ -47,9 +47,9 @@ public slots:
 public slots:
     void startNewGame(int min, int max);
 
-    void guessHigher();
+    void targetIsHigher();
 
-    void guessLower();
+    void targetIsLower();
 
 signals:
     void guessChanged();

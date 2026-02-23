@@ -21,7 +21,7 @@
 // JQLibrary lib import
 #include "JQQRCodeReader.h"
 
-using namespace QRCodeReader_;
+using namespace QRCodeReader;
 
 Manage::Manage():
     jqQRCodeReader_( new JQQRCodeReader )

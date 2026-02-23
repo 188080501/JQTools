@@ -38,7 +38,7 @@ public:
     ~Manage() = default;
 
 public slots:
-    QJsonObject statisticsLines(const QJsonArray &suffixes);
+    QJsonObject collectLineStatistics(const QJsonArray &suffixes);
 };
 
 }

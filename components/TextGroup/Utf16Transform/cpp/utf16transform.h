@@ -35,9 +35,9 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString toUtf16(const QString &string);
+    QString encodeToUnicodeEscape(const QString &string);
 
-    QString fromUtf16(const QString &string);
+    QString decodeFromUnicodeEscape(const QString &string);
 };
 
 }

@@ -92,7 +92,7 @@ public:
     ~Manage() = default;
 
 public slots:
-    void begin();
+    void initializeFonts();
 
     QJsonArray getCharList(const QString &fontName, const QString &searchKey);
 

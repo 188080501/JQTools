@@ -30,7 +30,7 @@ Item {
         height: 540
 
         MaterialTextField {
-            id: textFieldForTag
+            id: textFieldForResult
             x: 40
             y: 50
             width: 540
@@ -62,11 +62,11 @@ Item {
 
                     if ( imageForQRCode.source.toString() !== "" )
                     {
-                        textFieldForTag.text = qrCodeReaderManage.decodeImage( imageForQRCode.source );
+                        textFieldForResult.text = qrCodeReaderManage.decodeImage( imageForQRCode.source );
                     }
                     else
                     {
-                        textFieldForTag.text = "";
+                        textFieldForResult.text = "";
                         materialUI.showSnackbarMessage( "用户取消操作" );
                     }
                 }

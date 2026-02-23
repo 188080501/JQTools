@@ -18,7 +18,7 @@
 
 using namespace Utf16Transform;
 
-QString Manage::toUtf16(const QString &string)
+QString Manage::encodeToUnicodeEscape(const QString &string)
 {
     QString source = string;
     QString target;
@@ -39,7 +39,7 @@ QString Manage::toUtf16(const QString &string)
     return target;
 }
 
-QString Manage::fromUtf16(const QString &string)
+QString Manage::decodeFromUnicodeEscape(const QString &string)
 {
     QString source = string;
     QString target;

@@ -22,13 +22,13 @@ void Manage::startNewGame(int min, int max)
     updateGuess();
 }
 
-void Manage::guessHigher()
+void Manage::targetIsHigher()
 {
     m_min = m_guess + 1;
     updateGuess();
 }
 
-void Manage::guessLower()
+void Manage::targetIsLower()
 {
     m_max = m_guess - 1;
     updateGuess();

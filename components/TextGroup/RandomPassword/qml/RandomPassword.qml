@@ -78,10 +78,10 @@ Item {
         }
 
         MaterialCheckBox {
-            id: checkBoxForCaseSensitive
+            id: checkBoxForIncludeUppercaseLetters
             x: 302
             y: 181
-            text: "区分大小写"
+            text: "包含大写字母"
             checked: true
             enabled: checkBoxForEnglishCharacters.checked
         }
@@ -105,7 +105,7 @@ Item {
                                 parseInt( textFieldForLength.text ),
                                 checkBoxForNumber.checked,
                                 checkBoxForEnglishCharacters.checked,
-                                checkBoxForCaseSensitive.checked,
+                                checkBoxForIncludeUppercaseLetters.checked,
                                 checkBoxForDividingLine.checked
                             );
                 materialUI.showSnackbarMessage( "随机密码已经生成" );
