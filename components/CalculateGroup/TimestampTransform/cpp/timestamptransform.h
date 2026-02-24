@@ -35,9 +35,18 @@ public:
     ~Manage() = default;
 
 public slots:
-    QString currentDateTimeTimestampString();
+    QString currentSecondsTimestampString();
+
+    QString currentMillisecondsTimestampString();
+
+    QString currentDateTimeString();
 
     QString dateTimeStringFromTimestampString(const QString &timestampString);
+
+    QString timestampStringFromDateTimeString(
+            const QString &dateTimeString,
+            const bool milliseconds
+        );
 };
 
 }

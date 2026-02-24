@@ -14,25 +14,131 @@
 
 // Qt lib import
 #include <QDateTime>
-#include <QCryptographicHash>
+#include <QRegularExpression>
 
 using namespace TimestampTransform;
 
-QString Manage::currentDateTimeTimestampString()
+namespace
+{
+
+bool parseTimestampString(const QString &timestampString, qint64 &msecsSinceEpoch)
+{
+    const auto trimmedString = timestampString.trimmed();
+    if ( trimmedString.isEmpty() ) { return false; }
+
+    static const QRegularExpression timestampPattern( QStringLiteral( "^[+-]?\\d+$" ) );
+    if ( !timestampPattern.match( trimmedString ).hasMatch() ) { return false; }
+
+    bool convertOk = false;
+    const auto timestampValue = trimmedString.toLongLong( &convertOk );
+    if ( !convertOk ) { return false; }
+
+    auto digitsCount = trimmedString.size();
+    if ( ( trimmedString.startsWith( '+' ) ) || ( trimmedString.startsWith( '-' ) ) )
+    {
+        --digitsCount;
+    }
+
+    if ( ( digitsCount != 10 ) && ( digitsCount != 13 ) )
+    {
+        return false;
+    }
+
+    if ( digitsCount == 13 )
+    {
+        msecsSinceEpoch = timestampValue;
+    }
+    else
+    {
+        msecsSinceEpoch = timestampValue * 1000;
+    }
+
+    return true;
+}
+
+bool parseDateTimeString(
+        const QString &dateTimeString,
+        QDateTime &dateTime
+    )
+{
+    const auto trimmedString = dateTimeString.trimmed();
+    if ( trimmedString.isEmpty() ) { return false; }
+
+    QDateTime parsedDateTime;
+
+    static const QStringList formatList {
+        QStringLiteral( "yyyy-MM-dd hh:mm:ss.zzz" ),
+        QStringLiteral( "yyyy-MM-dd hh:mm:ss" ),
+        QStringLiteral( "yyyy/MM/dd hh:mm:ss.zzz" ),
+        QStringLiteral( "yyyy/MM/dd hh:mm:ss" )
+    };
+
+    for ( const auto &format: formatList )
+    {
+        parsedDateTime = QDateTime::fromString( trimmedString, format );
+        if ( !parsedDateTime.isValid() ) { continue; }
+
+        dateTime = QDateTime(
+                    parsedDateTime.date(),
+                    parsedDateTime.time(),
+                    Qt::LocalTime
+                );
+        return true;
+    }
+
+    return false;
+}
+
+QString toDisplayDateTimeString(const QDateTime &dateTime)
+{
+    if ( !dateTime.isValid() ) { return { }; }
+
+    return dateTime.toString( "yyyy-MM-dd hh:mm:ss.zzz" );
+}
+
+}
+
+QString Manage::currentSecondsTimestampString()
 {
     return QString::number( QDateTime::currentSecsSinceEpoch() );
 }
 
+QString Manage::currentMillisecondsTimestampString()
+{
+    return QString::number( QDateTime::currentMSecsSinceEpoch() );
+}
+
+QString Manage::currentDateTimeString()
+{
+    return QDateTime::currentDateTime().toString( "yyyy-MM-dd hh:mm:ss.zzz" );
+}
+
 QString Manage::dateTimeStringFromTimestampString(const QString &timestampString)
 {
-    if ( timestampString.size() == 13 )
+    qint64 msecsSinceEpoch = 0;
+    if ( !parseTimestampString( timestampString, msecsSinceEpoch ) )
     {
-        return QDateTime::fromMSecsSinceEpoch( timestampString.toLongLong() ).toString( "yyyy-MM-dd hh:mm:ss" );
-    }
-    else if ( timestampString.size() == 10 )
-    {
-        return QDateTime::fromSecsSinceEpoch( timestampString.toLongLong() ).toString( "yyyy-MM-dd hh:mm:ss" );
+        return { };
     }
 
-    return { };
+    return toDisplayDateTimeString( QDateTime::fromMSecsSinceEpoch( msecsSinceEpoch, Qt::LocalTime ) );
+}
+
+QString Manage::timestampStringFromDateTimeString(
+        const QString &dateTimeString,
+        const bool milliseconds
+    )
+{
+    QDateTime dateTime;
+    if ( !parseDateTimeString( dateTimeString, dateTime ) )
+    {
+        return { };
+    }
+
+    if ( milliseconds )
+    {
+        return QString::number( dateTime.toMSecsSinceEpoch() );
+    }
+
+    return QString::number( dateTime.toSecsSinceEpoch() );
 }
