@@ -71,7 +71,7 @@ The project is currently under refactoring and upgrades.
   Generate app icon images in target resolutions from PNG/JPG/JPEG/BMP input, for example `icon_128x128@2x.png` for macOS.
 
 - Icon Font to PNG  
-  Convert built-in TTF icon fonts to PNG. Currently includes 5555 available icons.
+  Convert built-in TTF icon fonts to PNG. Currently includes 8763 available icons.
 
 - PNG Warning Remover  
   Fix PNG files that may trigger Qt runtime loading warnings. Converted PNG files can avoid those warnings.
