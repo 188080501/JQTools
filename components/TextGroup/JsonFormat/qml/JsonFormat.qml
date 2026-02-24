@@ -21,19 +21,46 @@ Item {
     width: 620
     height: 540
 
-    function format() {
-        if ( !jsonFormatManage.check( textFieldForSource.text ) )
+    property string lastCheckedText: ""
+
+    function refreshParseErrorMessage() {
+        if ( textFieldForSource.text === lastCheckedText )
         {
-            materialUI.showSnackbarMessage( "无效的JSON字符串" );
+            return;
+        }
+
+        labelForParseError.text = jsonFormatManage.parseErrorString( textFieldForSource.text );
+        lastCheckedText = textFieldForSource.text;
+    }
+
+    function format() {
+        var parseErrorMessage = jsonFormatManage.parseErrorString( textFieldForSource.text );
+        lastCheckedText = textFieldForSource.text;
+        if ( parseErrorMessage !== "" )
+        {
+            labelForParseError.text = parseErrorMessage;
+            materialUI.showSnackbarMessage( parseErrorMessage );
             return false;
         }
 
         textFieldForSource.text = jsonFormatManage.format( textFieldForSource.text, checkBoxForCompact.checked );
+        labelForParseError.text = "";
+        lastCheckedText = textFieldForSource.text;
         return true;
     }
 
     JsonFormatManage {
         id: jsonFormatManage
+    }
+
+    Timer {
+        interval: 1000
+        repeat: true
+        running: true
+
+        onTriggered: {
+            jsonFormat.refreshParseErrorMessage();
+        }
     }
 
     MaterialButton {
@@ -73,6 +100,16 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
+    MaterialLabel {
+        id: labelForParseError
+        x: 10
+        y: 72
+        width: jsonFormat.width - 20
+        color: "#d32f2f"
+        wrapMode: Text.WordWrap
+        font.pixelSize: 13
+    }
+
     RectangularGlow {
         z: -1
         anchors.fill: itemForSource
@@ -85,10 +122,11 @@ Item {
         id: itemForSource
         anchors.left: parent.left
         anchors.leftMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: 110
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         width: jsonFormat.width - 20
-        height: jsonFormat.height - 110
         clip: true
 
         Rectangle {
