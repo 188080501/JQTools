@@ -1,0 +1,16 @@
+# Keep ambiguous headers counted as C++ in GitHub Linguist.
+*.h linguist-language=C++
+*.hpp linguist-language=C++
+*.inl linguist-language=C++
+
+# Exclude bundled third-party sources from language stats.
+library/JQLibrary/src/JQMbedTLS/mbedtls/** linguist-vendored=true
+library/JQLibrary/include/JQMbedTLS/mbedtls/** linguist-vendored=true
+library/JQLibrary/src/JQQRCodeReader/zxing/** linguist-vendored=true
+library/JQLibrary/src/JQQRCodeWriter/qrencode/** linguist-vendored=true
+library/JQLibrary/src/JQZopfli/zopfli/** linguist-vendored=true
+library/JQLibrary/include/JQZopfli/zopfli/** linguist-vendored=true
+library/JQLibrary/src/JQZopfli/zopflipng/lodepng/** linguist-vendored=true
+library/JQLibrary/include/JQZopfli/zopflipng/lodepng/** linguist-vendored=true
+library/JQLibrary/src/JQGuetzli/guetzli/** linguist-vendored=true
+library/JQLibrary/src/JQGuetzli/butteraugli/** linguist-vendored=true
