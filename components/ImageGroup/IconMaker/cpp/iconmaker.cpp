@@ -22,6 +22,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMetaObject>
+#include <QProcess>
 #include <QStandardPaths>
 #include <QtConcurrent>
 
@@ -255,8 +256,15 @@ void Manage::generateOSXIconAssets()
     this->saveToPng( targetSavePath_ + "/OSX/icon.iconset/icon_512x512@2x.png", { 1024, 1024 } );
 
 #ifdef Q_OS_MAC
-    const auto escapedTargetSavePath = QString( targetSavePath_ ).replace( ' ', "\\ " );
-    system( QString( "iconutil -c icns " + escapedTargetSavePath + "/OSX/icon.iconset" ).toUtf8().data() );
+    const auto commandResult = QProcess::execute(
+                QStringLiteral( "iconutil" ),
+                {
+                    QStringLiteral( "-c" ),
+                    QStringLiteral( "icns" ),
+                    targetSavePath_ + QStringLiteral( "/OSX/icon.iconset" )
+                }
+            );
+    Q_UNUSED( commandResult );
 #endif
 }
 
