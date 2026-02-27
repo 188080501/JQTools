@@ -285,7 +285,23 @@ Item {
 
                 labelForReplacementSummary.fileCount = reply[ "fileCount" ];
                 labelForReplacementSummary.replacementCount = reply[ "replacementCount" ];
-                materialUI.showSnackbarMessage( qsTr( "替换完成" ) );
+                var failedOperationCount = ("failedOperationCount" in reply) ? reply[ "failedOperationCount" ] : 0;
+
+                if ( failedOperationCount > 0 )
+                {
+                    var failedMessage = qsTr( "替换完成，但有 " ) + failedOperationCount + qsTr( " 个操作失败" );
+
+                    if ( ("failedPaths" in reply) && reply[ "failedPaths" ].length > 0 )
+                    {
+                        failedMessage += "\n" + qsTr( "示例：" ) + reply[ "failedPaths" ][ 0 ];
+                    }
+
+                    materialUI.showSnackbarMessage( failedMessage );
+                }
+                else
+                {
+                    materialUI.showSnackbarMessage( qsTr( "替换完成" ) );
+                }
             }
 
             MaterialLabel {

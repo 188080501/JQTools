@@ -60,10 +60,21 @@ void collectReplacementBySingleCase(
         const QString &targetKey,
         const bool applyChanges,
         int &fileCount,
-        int &replacementCount
+        int &replacementCount,
+        int &failedOperationCount,
+        QJsonArray &failedPaths
     )
 {
     if ( sourceKey.isEmpty() ) { return; }
+
+    auto recordFailurePath = [ & ](const QString &path)
+    {
+        ++failedOperationCount;
+
+        // 仅回传部分失败路径，避免结果过大
+        if ( failedPaths.size() >= 20 ) { return; }
+        failedPaths.push_back( path );
+    };
 
     const auto sourceKeyData = sourceKey.toUtf8();
     const auto targetKeyData = targetKey.toUtf8();
@@ -91,10 +102,13 @@ void collectReplacementBySingleCase(
 
         if ( !applyChanges ) { return; }
 
-        AbstractTool::writeFile(
+        if ( !AbstractTool::writeFile(
                     QFileInfo( info.filePath() ),
                     fileAllData.replace( sourceKeyData, targetKeyData )
-                );
+                ) )
+        {
+            recordFailurePath( info.filePath() );
+        }
     }, true );
 
     if ( !availableSuffixes.contains( "filenameanddirname" ) ) { return; }
@@ -157,7 +171,12 @@ void collectReplacementBySingleCase(
                     info.fileName().replace( sourceKey, targetKey )
                 );
 
-        QFile::rename( info.filePath(), targetFilePath );
+        if ( targetFilePath == info.filePath() ) { continue; }
+
+        if ( !QFile::rename( info.filePath(), targetFilePath ) )
+        {
+            recordFailurePath( info.filePath() );
+        }
     }
 
     for ( const auto &dir: dirNameList )
@@ -167,7 +186,12 @@ void collectReplacementBySingleCase(
                     dir.dirName().replace( sourceKey, targetKey )
                 );
 
-        QDir().rename( dir.path(), targetDir );
+        if ( targetDir == dir.path() ) { continue; }
+
+        if ( !QDir().rename( dir.path(), targetDir ) )
+        {
+            recordFailurePath( dir.path() );
+        }
     }
 }
 
@@ -182,6 +206,8 @@ QJsonObject runBatchReplacement(
 {
     auto fileCount = 0;
     auto replacementCount = 0;
+    auto failedOperationCount = 0;
+    QJsonArray failedPaths;
 
     const auto availableSuffixes = makeAvailableSuffixes( suffixes );
     auto batchReplacement = [ & ](
@@ -196,7 +222,9 @@ QJsonObject runBatchReplacement(
                     currentTargetKey,
                     applyChanges,
                     fileCount,
-                    replacementCount
+                    replacementCount,
+                    failedOperationCount,
+                    failedPaths
                 );
     };
 
@@ -233,7 +261,9 @@ QJsonObject runBatchReplacement(
     return
         { {
             { "fileCount", fileCount },
-            { "replacementCount", replacementCount }
+            { "replacementCount", replacementCount },
+            { "failedOperationCount", failedOperationCount },
+            { "failedPaths", failedPaths }
         } };
 }
 
