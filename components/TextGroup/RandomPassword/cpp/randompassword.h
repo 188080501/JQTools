@@ -14,7 +14,7 @@
 #define GROUP_TEXTGROUP_RANDOMPASSWORD_CPP_RANDOMPASSWORD_H_
 
 // Qt lib import
-#include <QRandomGenerator>
+#include <QString>
 
 // JQToolsLibrary import
 #include <JQToolsLibrary>
@@ -33,15 +33,22 @@ class Manage: public AbstractTool
     Q_DISABLE_COPY(Manage)
 
 public:
-    Manage();
+    Manage() = default;
 
     ~Manage() = default;
 
 public slots:
-    QString randomPassword(const int length, const bool number, const bool englishCharacters, const bool includeUppercaseLetters, const bool dividingLine);
-
-private:
-    QRandomGenerator randomGenerator_;
+    QString randomPassword(
+            const int length,
+            const bool number,
+            const bool englishCharacters,
+            const bool includeUppercaseLetters,
+            const bool includeSpecialCharacters,
+            const QString &customSpecialCharacters,
+            const bool excludeAmbiguousCharacters,
+            const bool ensureEachSelectedType,
+            const bool dividingLine
+        );
 };
 
 }

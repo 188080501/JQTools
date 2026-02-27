@@ -38,89 +38,136 @@ Item {
 
         MaterialLabel {
             x: 40
-            y: 132
-            text: "密码长度："
-        }
+            y: 92
+            text: qsTr( "密码长度：" )
 
-        MaterialTextField {
-            id: textFieldForLength
-            x: 116
-            y: 91
-            width: 50
-            characterLimit: 2
-            characterLimitVisible: false
-            validator: RegExpValidator{ regExp: /^([0-9]+)$/ }
-            text: "15"
-        }
-
-        MaterialTextField {
-            id: textFieldForPassword
-            x: 40
-            y: 317
-            width: 540
-            placeholderText: "随机密码"
+            MaterialTextField {
+                id: textFieldForLength
+                anchors.left: parent.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: -22
+                width: 60
+                characterLimit: 3
+                characterLimitVisible: false
+                validator: RegExpValidator { regExp: /^([0-9]+)$/ }
+                text: "11"
+            }
         }
 
         MaterialCheckBox {
             id: checkBoxForNumber
             x: 34
-            y: 181
-            text: "允许数字"
+            y: 141
+            text: qsTr( "允许数字" )
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForEnglishCharacters
-            x: 154
-            y: 181
-            text: "允许英文字符"
+            x: 164
+            y: 141
+            text: qsTr( "允许英文字符" )
             checked: true
         }
 
         MaterialCheckBox {
             id: checkBoxForIncludeUppercaseLetters
-            x: 302
-            y: 181
-            text: "包含大写字母"
+            x: 312
+            y: 141
+            text: qsTr( "包含大写字母" )
             checked: true
             enabled: checkBoxForEnglishCharacters.checked
         }
 
         MaterialCheckBox {
             id: checkBoxForDividingLine
-            x: 436
-            y: 181
-            text: "插入分割线"
+            x: 446
+            y: 141
+            text: qsTr( "插入分割线" )
             checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForSpecialCharacters
+            x: 34
+            y: 186
+            text: qsTr( "允许特殊字符" )
+            checked: false
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForExcludeAmbiguousCharacters
+            x: 164
+            y: 186
+            text: qsTr( "排除易混淆字符" )
+            checked: false
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForEnsureEachSelectedType
+            x: 312
+            y: 186
+            text: qsTr( "每类至少一个字符" )
+            checked: true
+        }
+
+        MaterialTextField {
+            id: textFieldForCustomSpecialCharacters
+            x: 40
+            y: 240
+            width: 540
+            placeholderText: qsTr( "特殊字符集" )
+            text: "!@#$%^&*()-_=+[]{}:,.?"
+            enabled: checkBoxForSpecialCharacters.checked
+        }
+
+        MaterialTextField {
+            id: textFieldForPassword
+            x: 40
+            y: 430
+            width: 540
+            placeholderText: qsTr( "随机密码" )
         }
 
         MaterialButton {
             x: 40
-            y: 259
+            y: 380
             width: 120
-            text: "随机密码"
+            text: qsTr( "随机密码" )
 
             onClicked: {
-                textFieldForPassword.text = randomPasswordManage.randomPassword(
+                var randomPasswordString = randomPasswordManage.randomPassword(
                                 parseInt( textFieldForLength.text ),
                                 checkBoxForNumber.checked,
                                 checkBoxForEnglishCharacters.checked,
                                 checkBoxForIncludeUppercaseLetters.checked,
+                                checkBoxForSpecialCharacters.checked,
+                                textFieldForCustomSpecialCharacters.text,
+                                checkBoxForExcludeAmbiguousCharacters.checked,
+                                checkBoxForEnsureEachSelectedType.checked,
                                 checkBoxForDividingLine.checked
                             );
-                materialUI.showSnackbarMessage( "随机密码已经生成" );
+                if ( randomPasswordString === "" )
+                {
+                    materialUI.showSnackbarMessage( qsTr( "生成失败，请检查长度和选项配置" ) );
+                    return;
+                }
+
+                textFieldForPassword.text = randomPasswordString;
+                materialUI.showSnackbarMessage( qsTr( "随机密码已经生成" ) );
             }
         }
 
         MaterialButton {
             x: 166
-            y: 259
+            y: 380
             width: 120
-            text: "复制到剪贴板"
+            text: qsTr( "复制到剪贴板" )
 
             onClicked: {
                 randomPasswordManage.setClipboardText( textFieldForPassword.text );
-                materialUI.showSnackbarMessage( "密码已经复制到了剪贴板" );
+                materialUI.showSnackbarMessage( qsTr( "密码已经复制到了剪贴板" ) );
             }
         }
     }
