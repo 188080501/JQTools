@@ -53,6 +53,9 @@ The project is currently under refactoring and upgrades.
 - Hash Calculator  
   Calculate common hash values such as SHA1 and MD5.
 
+- File Hash Calculator  
+  Select a single file and calculate MD5, SHA1, and SHA256 hashes.
+
 - Unix Timestamp Converter  
   Convert between Unix timestamps and date/time.
 

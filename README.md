@@ -53,6 +53,9 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 - HASH 计算器  
   计算常用的摘要值，如 SHA1、MD5。
 
+- 文件哈希值  
+  选择单个文件并计算 MD5、SHA1 与 SHA256 哈希值。
+
 - Unix 时间戳转换  
   Unix 时间戳与日期转换。
 

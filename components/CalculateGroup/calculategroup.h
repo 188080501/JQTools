@@ -15,6 +15,7 @@
 
 // CalculateGroup lib import
 #include <HashCalculate>
+#include <FileHashCalculate>
 #include <TimestampTransform>
 #include <BinarySearchAssistant>
 #include <RsaKeyGenerate>
@@ -22,6 +23,7 @@
 
 #define CALCULATEGROUP_INITIALIZA \
     HASHCALCULATE_INITIALIZA; \
+    FILEHASHCALCULATE_INITIALIZA; \
     TIMESTAMPTRANSFORM_INITIALIZA;\
     BINARYSEARCHASSISTANT_INITIALIZA; \
     RSAKEYGENERATE_INITIALIZA; \

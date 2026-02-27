@@ -24,7 +24,8 @@ var items = [
             { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" },
             { bookmarkName: "二分法助手", titleName: "二分法助手", qrcLocation: "qrc:/BinarySearchAssistant/BinarySearchAssistant.qml" },
             { bookmarkName: "RSA密钥生成", titleName: "RSA密钥生成", qrcLocation: "qrc:/RsaKeyGenerate/RsaKeyGenerate.qml" },
-            { bookmarkName: "RSA加解密", titleName: "RSA加解密", qrcLocation: "qrc:/RsaCrypt/RsaCrypt.qml" }
+            { bookmarkName: "RSA加解密", titleName: "RSA加解密", qrcLocation: "qrc:/RsaCrypt/RsaCrypt.qml" },
+            { bookmarkName: "文件哈希值", titleName: "文件哈希值", qrcLocation: "qrc:/FileHashCalculate/FileHashCalculate.qml" }
         ]
     },
     {
