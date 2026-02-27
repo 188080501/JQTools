@@ -1,4 +1,4 @@
-var items = [
+﻿var items = [
     { bookmarkName: "首页", titleName: "首页", qrcLocation: "qrc:/Welcome/Welcome.qml", children: [ ] },
     {
         bookmarkName: "文本类",
@@ -25,6 +25,7 @@ var items = [
             { bookmarkName: "二分法助手", titleName: "二分法助手", qrcLocation: "qrc:/BinarySearchAssistant/BinarySearchAssistant.qml" },
             { bookmarkName: "RSA密钥生成", titleName: "RSA密钥生成", qrcLocation: "qrc:/RsaKeyGenerate/RsaKeyGenerate.qml" },
             { bookmarkName: "RSA加解密", titleName: "RSA加解密", qrcLocation: "qrc:/RsaCrypt/RsaCrypt.qml" },
+            { bookmarkName: "AES加解密", titleName: "AES加解密 & HMAC", qrcLocation: "qrc:/AesCrypt/AesCrypt.qml" },
             { bookmarkName: "文件哈希值", titleName: "文件哈希值", qrcLocation: "qrc:/FileHashCalculate/FileHashCalculate.qml" }
         ]
     },

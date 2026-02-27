@@ -16,6 +16,7 @@ include( $$PWD/TimestampTransform/TimestampTransform.pri )
 include( $$PWD/BinarySearchAssistant/BinarySearchAssistant.pri )
 include( $$PWD/RsaKeyGenerate/RsaKeyGenerate.pri )
 include( $$PWD/RsaCrypt/RsaCrypt.pri )
+include( $$PWD/AesCrypt/AesCrypt.pri )
 
 INCLUDEPATH *= \
     $$PWD/

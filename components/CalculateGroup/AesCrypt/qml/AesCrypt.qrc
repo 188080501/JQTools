@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/AesCrypt">
+        <file>AesCrypt.qml</file>
+    </qresource>
+</RCC>

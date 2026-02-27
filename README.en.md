@@ -68,6 +68,9 @@ The project is currently under refactoring and upgrades.
 - RSA Encrypt/Decrypt  
   Support RSA public-key encryption (Base64 output) and private-key decryption (Base64 input).
 
+- AES Encrypt/Decrypt & HMAC  
+  Support AES-CBC encryption/decryption (Base64 I/O, PKCS#7 padding) and HMAC-SHA256 calculation.
+
 ### Image
 
 - Icon Generator  
@@ -175,7 +178,7 @@ Only a few third-party source libraries are used for specific features. The unif
 | JQQRCodeWriter | qrencode | QR code generation | `library/JQLibrary/JQQRCodeWriter.pri` |
 | JQZopfli | Zopfli + LodePNG | PNG lossless compression and related image processing | `library/JQLibrary/JQZopfli.pri` |
 | JQGuetzli | Guetzli + Butteraugli | JPG lossy compression | `library/JQLibrary/JQGuetzli.pri` |
-| JQMbedTLS | Mbed TLS | RSA key generation and encryption/decryption | `library/JQLibrary/JQMbedTLS.pri` |
+| JQMbedTLS | Mbed TLS | RSA key generation/encryption/decryption, AES and HMAC | `library/JQLibrary/JQMbedTLS.pri` |
 
 Additional notes:
 

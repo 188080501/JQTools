@@ -68,6 +68,9 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 - RSA 加解密  
   支持使用 RSA 公钥加密（输出 Base64 密文）和私钥解密（输入 Base64 密文）。
 
+- AES 加解密 & HMAC  
+  支持 AES-CBC 加密/解密（Base64 输入输出，PKCS#7 填充）以及 HMAC-SHA256 计算。
+
 ### 图片类
 
 - 图标生成器  
@@ -175,7 +178,7 @@ JQTools 的程序主体（界面、交互、功能编排）基于 Qt/QML/C++ 实
 | JQQRCodeWriter | qrencode | 二维码生成 | `library/JQLibrary/JQQRCodeWriter.pri` |
 | JQZopfli | Zopfli + LodePNG | PNG 无损压缩及相关图片处理 | `library/JQLibrary/JQZopfli.pri` |
 | JQGuetzli | Guetzli + Butteraugli | JPG 有损压缩 | `library/JQLibrary/JQGuetzli.pri` |
-| JQMbedTLS | Mbed TLS | RSA 密钥生成与加解密 | `library/JQLibrary/JQMbedTLS.pri` |
+| JQMbedTLS | Mbed TLS | RSA 密钥生成与加解密，AES 与 HMAC | `library/JQLibrary/JQMbedTLS.pri` |
 
 补充说明：
 
