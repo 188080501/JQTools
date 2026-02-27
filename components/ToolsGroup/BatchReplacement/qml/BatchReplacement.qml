@@ -140,8 +140,6 @@ Item {
                     return;
                 }
 
-                materialUI.showLoading();
-
                 var suffixes = new Array;
 
                 if ( checkBoxForCpp.checked )
@@ -199,24 +197,41 @@ Item {
                     suffixes.push( "FileNameAndDirName" );
                 }
 
-                var reply = batchReplacementManage.startBatchReplacement(
+                materialUI.showLoading();
+
+                var reply = batchReplacementManage.previewBatchReplacement(
                             suffixes,
                             textFieldForSourceKey.text,
-                            textFieldForTargetKey.text,
                             checkBoxForMultiCase.checked
                         );
+                materialUI.hideLoading();
 
                 if ( "cancel" in reply )
                 {
                     materialUI.showSnackbarMessage( "用户取消操作" );
-                    materialUI.hideLoading();
                     return;
                 }
 
-                labelForReplacementSummary.fileCount = reply[ "fileCount" ];
-                labelForReplacementSummary.replacementCount = reply[ "replacementCount" ];
+                if ( "error" in reply )
+                {
+                    materialUI.showSnackbarMessage( qsTr( "预搜索失败" ) );
+                    return;
+                }
 
-                materialUI.hideLoading();
+                if ( reply[ "replacementCount" ] <= 0 )
+                {
+                    materialUI.showSnackbarMessage( qsTr( "未搜索到可替换内容" ) );
+                    return;
+                }
+
+                dialogForConfirm.directoryPath = reply[ "directoryPath" ];
+                dialogForConfirm.suffixes = suffixes;
+                dialogForConfirm.sourceKey = textFieldForSourceKey.text;
+                dialogForConfirm.targetKey = textFieldForTargetKey.text;
+                dialogForConfirm.multiCase = checkBoxForMultiCase.checked;
+                dialogForConfirm.fileCount = reply[ "fileCount" ];
+                dialogForConfirm.replacementCount = reply[ "replacementCount" ];
+                dialogForConfirm.open();
             }
         }
 
@@ -232,6 +247,59 @@ Item {
 
             property int fileCount: 0
             property int replacementCount: 0
+        }
+
+        MaterialDialog {
+            id: dialogForConfirm
+            title: qsTr( "确认替换" )
+            text: qsTr( "已完成粗略搜索，是否开始执行替换？" )
+            negativeButtonText: materialUI.dialogCancelText
+            positiveButtonText: materialUI.dialogOKText
+
+            property string directoryPath: ""
+            property var suffixes: [ ]
+            property string sourceKey: ""
+            property string targetKey: ""
+            property bool multiCase: false
+            property int fileCount: 0
+            property int replacementCount: 0
+
+            onAccepted: {
+                materialUI.showLoading();
+
+                var reply = batchReplacementManage.startBatchReplacement(
+                            directoryPath,
+                            suffixes,
+                            sourceKey,
+                            targetKey,
+                            multiCase
+                        );
+
+                materialUI.hideLoading();
+
+                if ( "error" in reply )
+                {
+                    materialUI.showSnackbarMessage( qsTr( "替换失败，请检查参数" ) );
+                    return;
+                }
+
+                labelForReplacementSummary.fileCount = reply[ "fileCount" ];
+                labelForReplacementSummary.replacementCount = reply[ "replacementCount" ];
+                materialUI.showSnackbarMessage( qsTr( "替换完成" ) );
+            }
+
+            MaterialLabel {
+                text: qsTr( "目录：" ) + dialogForConfirm.directoryPath
+                wrapMode: Text.WrapAnywhere
+            }
+
+            MaterialLabel {
+                text: qsTr( "预计影响文件数：" ) + dialogForConfirm.fileCount
+            }
+
+            MaterialLabel {
+                text: qsTr( "预计替换处数：" ) + dialogForConfirm.replacementCount
+            }
         }
     }
 }

@@ -14,6 +14,7 @@
 #define GROUP_TOOLSGROUP_BATCHREPLACEMENT_CPP_BATCHREPLACEMENT_H_
 
 // Qt lib import
+#include <QJsonArray>
 #include <QJsonObject>
 
 // JQToolsLibrary import
@@ -38,7 +39,14 @@ public:
     ~Manage() = default;
 
 public slots:
+    QJsonObject previewBatchReplacement(
+            const QJsonArray &suffixes,
+            const QString &sourceKey,
+            const bool multiCase
+        );
+
     QJsonObject startBatchReplacement(
+            const QString &directoryPath,
             const QJsonArray &suffixes,
             const QString &sourceKey,
             const QString &targetKey,
