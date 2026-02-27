@@ -32,7 +32,8 @@ qint64 BarcodeGenerator::makeNumber(const qint64 rawNumber)
     const auto c1 = n1 + n3 + n5 + n7 + n9 + n11;
     const auto c2 = ( n2 + n4 + n6 + n8 + n10 + n12 ) * 3;
     const auto cc = c1 + c2;
-    const auto c = qAbs( 10 - ( cc % 10 ) );
+    // EAN-13 check digit: (10 - (sum % 10)) % 10, so remainder 0 gives 0.
+    const auto c = ( 10 - ( cc % 10 ) ) % 10;
 
     return rawNumber * 10 + c;
 }
