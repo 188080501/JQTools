@@ -74,6 +74,28 @@ Item {
             checked: false
         }
 
+        MaterialLabel {
+            x: 64
+            y: 396
+            text: "过滤特殊目录"
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForIgnoreBuild
+            x: 64
+            y: 422
+            text: "build"
+            checked: true
+        }
+
+        MaterialCheckBox {
+            id: checkBoxForIgnoreGit
+            x: 64
+            y: 462
+            text: ".git"
+            checked: true
+        }
+
         MaterialButton {
             x: 254
             y: 278
@@ -129,7 +151,19 @@ Item {
                     suffixes.push( "ai" );
                 }
 
-                var reply = linesStatisticsManage.collectLineStatistics( suffixes );
+                var ignoredDirectoryNames = new Array;
+
+                if ( checkBoxForIgnoreBuild.checked )
+                {
+                    ignoredDirectoryNames.push( "build" );
+                }
+
+                if ( checkBoxForIgnoreGit.checked )
+                {
+                    ignoredDirectoryNames.push( ".git" );
+                }
+
+                var reply = linesStatisticsManage.collectLineStatistics( suffixes, ignoredDirectoryNames );
 
                 if ( "cancel" in reply )
                 {
