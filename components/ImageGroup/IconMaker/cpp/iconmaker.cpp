@@ -459,7 +459,7 @@ void Manage::generateWindowsIconAsset()
         imageDataOffset += static_cast< quint32 >( iconDataSize );
     }
 
-    for ( const auto &iconImageData: std::as_const( iconImageDataList ) )
+    for ( const auto &iconImageData: static_cast< const QList< QByteArray > & >( iconImageDataList ) )
     {
         if ( iconStream.writeRawData( iconImageData.constData(), iconImageData.size() ) != iconImageData.size() )
         {
