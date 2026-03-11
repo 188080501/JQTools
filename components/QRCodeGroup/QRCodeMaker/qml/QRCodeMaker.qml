@@ -32,10 +32,35 @@ Item {
         MaterialTextField {
             id: textFieldForSourceText
             x: 40
-            y: 50
+            y: 30
             width: 540
             placeholderText: "需要被编码的字符串"
             text: "JQTools"
+        }
+
+        MaterialLabel {
+            x: 40
+            y: 105
+            text: "导出分辨率："
+            height: 56
+            font.pixelSize: 16
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        MaterialMenuField {
+            id: menuFieldForResolution
+            x: 145
+            y: 105
+            width: 130
+            model: [
+                "128",
+                "256",
+                "512",
+                "1024",
+                "2048",
+                "4096"
+            ]
+            selectedIndex: 2
         }
 
         Image {
@@ -43,7 +68,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.horizontalCenterOffset: -100
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: 50
+            anchors.verticalCenterOffset: 80
             width: 250
             height: 250
             fillMode: Image.PreserveAspectFit
@@ -59,7 +84,8 @@ Item {
                     materialUI.showLoading();
 
                     var reply = qrCodeMakerManage.savePng(
-                                textFieldForSourceText.text
+                                textFieldForSourceText.text,
+                                parseInt( menuFieldForResolution.selectedText )
                             );
 
                     materialUI.hideLoading();

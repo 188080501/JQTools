@@ -33,7 +33,7 @@ Manage::~Manage()
     qApp->property( "qmlEngine" ).value< QQmlApplicationEngine * >()->removeImageProvider( "QRCodeMaker" );
 }
 
-QString Manage::savePng(const QString &string)
+QString Manage::savePng(const QString &string, int resolution)
 {
     auto filePath = AbstractTool::getSaveFileName(
                 QStringLiteral( "081ee636-a896-4dd0-9155-1eab9a1bdcd4" ),
@@ -49,15 +49,19 @@ QString Manage::savePng(const QString &string)
         filePath += ".png";
     }
 
-    QImage targetImage( QSize( 500, 500 ), QImage::Format_RGB888 );
+    const auto imageSideLength = qBound( 128, resolution, 8192 );
+    const auto imagePadding = qMax( 2, imageSideLength / 50 );
+    const auto qrCodeSideLength = qMax( 1, imageSideLength - ( imagePadding * 2 ) );
+
+    QImage targetImage( QSize( imageSideLength, imageSideLength ), QImage::Format_RGB888 );
     targetImage.fill( QColor( "#ffffff" ) );
 
-    const auto qrCodeImage = JQQRCodeWriter::makeQRcode( string, QSize( 475, 475 ) );
+    const auto qrCodeImage = JQQRCodeWriter::makeQRcode( string, QSize( qrCodeSideLength, qrCodeSideLength ) );
 
     {
         QPainter painter;
         painter.begin( &targetImage );
-        painter.drawImage( 10, 10, qrCodeImage );
+        painter.drawImage( imagePadding, imagePadding, qrCodeImage );
     }
 
     const auto saveSucceed = targetImage.save( filePath );

@@ -39,7 +39,7 @@ public:
     ~Manage();
 
 public slots:
-    QString savePng(const QString &string);
+    QString savePng(const QString &string, int resolution);
 };
 
 class ImageProvider: public QQuickImageProvider
