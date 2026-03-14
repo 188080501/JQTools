@@ -1,0 +1,29 @@
+module JQControls
+
+singleton JQGlobal 1.0 JQGlobal.qml
+
+JQButton 1.0 JQButton.qml
+JQCheckBox 1.0 JQCheckBox.qml
+JQComboBox 1.0 JQComboBox.qml
+JQDateTimeTextField 1.0 JQDateTimeTextField.qml
+JQDialog 1.0 JQDialog.qml
+JQDoubleSpinBox 1.0 JQDoubleSpinBox.qml
+JQFlatButton 1.0 JQFlatButton.qml
+JQFlickable 1.0 JQFlickable.qml
+JQHexTextField 1.0 JQHexTextField.qml
+JQListView 1.0 JQListView.qml
+JQLoadingIndicator 1.0 JQLoadingIndicator.qml
+JQMenu 1.0 JQMenu.qml
+JQMenuDialogOpener 1.0 JQMenuDialogOpener.qml
+JQMenuItem 1.0 JQMenuItem.qml
+JQMenuSeparator 1.0 JQMenuSeparator.qml
+JQNavigationButton 1.0 JQNavigationButton.qml
+JQNavigationInfo 1.0 JQNavigationInfo.qml
+JQPane 1.0 JQPane.qml
+JQRadioButton 1.0 JQRadioButton.qml
+JQSnakeBar 1.0 JQSnakeBar.qml
+JQSlider 1.0 JQSlider.qml
+JQSpinBox 1.0 JQSpinBox.qml
+JQText 1.0 JQText.qml
+JQTextField 1.0 JQTextField.qml
+JQWindow 1.0 JQWindow.qml

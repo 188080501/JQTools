@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file>DeterminationMonoWebRegular.ttf</file>
+        <file>MiSans-Bold.ttf</file>
+        <file>MiSans-Light.ttf</file>
+        <file>MiSans-Medium.ttf</file>
+        <file>MiSans-Regular.ttf</file>
+    </qresource>
+</RCC>

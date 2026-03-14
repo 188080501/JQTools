@@ -12,7 +12,7 @@
 
 TEMPLATE = app
 
-QT += qml quick widgets concurrent
+QT += qml quick widgets concurrent quickcontrols2
 
 CONFIG += c++11
 CONFIG += c++14
@@ -29,7 +29,13 @@ SOURCES *= \
     $$PWD/cpp/main.cpp
 
 RESOURCES *= \
-    $$PWD/qml/qml.qrc
+    $$PWD/qml/qml.qrc \
+    $$PWD/fonts/fonts.qrc \
+    $$PWD/images/jqcontrolsimages.qrc \
+    $$PWD/qml/jqcontrolsqml.qrc
+
+QML_IMPORT_PATH *= \
+    $$PWD/qml
 
 mac {
     ICON = $$PWD/icon/icon.icns

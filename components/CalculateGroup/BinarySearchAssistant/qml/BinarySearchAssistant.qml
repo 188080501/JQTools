@@ -1,8 +1,9 @@
-﻿import QtQuick 2.7
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 import "qrc:/MaterialUI/Interface/"
 import BinarySearchAssistant 1.0
+import JQControls 1.0
 
 Item {
     id: binarySearchAssistant

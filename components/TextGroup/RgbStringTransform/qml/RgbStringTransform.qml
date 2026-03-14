@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -16,6 +16,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.3
 import "qrc:/MaterialUI/Interface/"
 import RgbStringTransform 1.0
+import JQControls 1.0
 
 
 Item {

@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -14,6 +14,7 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import "qrc:/MaterialUI/Interface/"
 import IconMaker 1.0
+import JQControls 1.0
 
 Item {
     id: iconMaker

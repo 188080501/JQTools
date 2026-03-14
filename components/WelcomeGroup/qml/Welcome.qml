@@ -11,9 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import "qrc:/MaterialUI/Interface/"
 import Welcome 1.0
+import JQControls 1.0
 
 Item {
     id: welcome
@@ -24,7 +23,7 @@ Item {
         id: welcomeManage
     }
 
-    MaterialLabel {
+    JQText {
         x: 162
         y: 170
         text:
@@ -40,11 +39,10 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    MaterialButton {
+    JQButton {
         x: 254
         y: 278
         width: 120
-        height: 40
         text: "前往GitHub"
         anchors.verticalCenterOffset: 53
         anchors.horizontalCenterOffset: -95
@@ -56,11 +54,10 @@ Item {
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 254
         y: 278
         width: 120
-        height: 40
         text: "下载最新版本"
         anchors.verticalCenterOffset: 53
         anchors.horizontalCenterOffset: 95
@@ -72,7 +69,7 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         anchors.right: parent.right
         anchors.rightMargin: 5
         anchors.bottom: parent.bottom

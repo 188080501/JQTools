@@ -16,18 +16,18 @@ import QtGraphicalEffects 1.0
 import "qrc:/MaterialUI/"
 import "qrc:/MaterialUI/Interface/"
 import "qrc:/BookmarkData.js" as BookmarkData
+import JQControls 1.0
 
-ApplicationWindow {
+JQWindow {
     id: applicationWindow
-    title: "JQTools"
     width: 960
     height: 720
-    visible: true
-    opacity: 0
-    color: "#fafafa"
-
     minimumWidth: 800
     minimumHeight: 600
+    visible: true
+    opacity: 0
+    title: "JQTools"
+    color: "#fafafa"
 
     Component.onCompleted: {
         mainPageContains.showPage( "首页", "qrc:/Welcome/Welcome.qml" );
@@ -340,8 +340,19 @@ ApplicationWindow {
 
                             if ( component.status === Component.Ready ) {
                                 var page = component.createObject( mainPageContains );
-                                page.anchors.fill = mainPageContains;
-                                mainPageContains.pages[ itemQrcLocation ] = page;
+                                if ( page )
+                                {
+                                    page.anchors.fill = mainPageContains;
+                                    mainPageContains.pages[ itemQrcLocation ] = page;
+                                }
+                                else
+                                {
+                                    print( "[main] createObject failed:", itemQrcLocation, component.errorString() );
+                                }
+                            }
+                            else
+                            {
+                                print( "[main] createComponent failed:", itemQrcLocation, component.errorString() );
                             }
                         }
 
@@ -351,7 +362,14 @@ ApplicationWindow {
                         }
 
                         currentItemTitleNameLabel.text = titleName;
-                        mainPageContains.pages[ itemQrcLocation ].visible = true;
+                        if ( itemQrcLocation in mainPageContains.pages )
+                        {
+                            mainPageContains.pages[ itemQrcLocation ].visible = true;
+                        }
+                        else
+                        {
+                            print( "[main] page not loaded:", itemQrcLocation );
+                        }
 
                         break;
                 }

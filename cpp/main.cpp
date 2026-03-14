@@ -18,6 +18,10 @@
 #include <QTimer>
 #include <QLockFile>
 #include <QStandardPaths>
+#include <QQuickStyle>
+#include <QFontDatabase>
+#include <QFileInfo>
+#include <QDebug>
 
 // JQToolsLibrary import
 #include <JQToolsLibrary>
@@ -43,6 +47,49 @@ bool checkSingletonFlag(const QString &flag)
     return false;
 }
 
+void initFont()
+{
+    QStringList fontFilePathList;
+
+    fontFilePathList.append( QStringLiteral( ":/fonts/DeterminationMonoWebRegular.ttf" ) );
+    fontFilePathList.append( QStringLiteral( ":/fonts/MiSans-Regular.ttf" ) );
+    fontFilePathList.append( QStringLiteral( ":/fonts/MiSans-Medium.ttf" ) );
+    fontFilePathList.append( QStringLiteral( ":/fonts/MiSans-Bold.ttf" ) );
+    fontFilePathList.append( QStringLiteral( ":/fonts/MiSans-Light.ttf" ) );
+
+    for ( const auto &filePath: fontFilePathList )
+    {
+        QFileInfo fileInfo( filePath );
+
+        if ( !fileInfo.exists() )
+        {
+            qDebug() << "initFont: font file not exists:" << filePath;
+            continue;
+        }
+
+        auto fontId = QFontDatabase::addApplicationFont( filePath );
+        if ( fontId < 0 )
+        {
+            qDebug() << "initFont: addApplicationFont error:" << filePath;
+            continue;
+        }
+
+        if ( fileInfo.baseName() == QStringLiteral( "MiSans-Regular" ) )
+        {
+            const auto families = QFontDatabase::applicationFontFamilies( fontId );
+            if ( families.isEmpty() )
+            {
+                qDebug() << "initFont: no families for:" << filePath;
+                continue;
+            }
+
+            QFont font( families.first(), 11 );
+            font.setHintingPreference( QFont::PreferFullHinting );
+            qApp->setFont( font );
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_OS_WIN
@@ -50,6 +97,7 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
+    initFont();
 
     if ( !checkSingletonFlag( "8a6f4ab6-68d7-4a09-9e89-0e651f573b69" ) )
     {
@@ -63,6 +111,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    QQuickStyle::setStyle( "Material" );
+
     QQmlApplicationEngine engine;
     app.setProperty( "qmlEngine", QVariant::fromValue( &engine ) );
 
@@ -75,6 +125,7 @@ int main(int argc, char *argv[])
     QRCODEGROUP_INITIALIZA
     QTGROUP_INITIALIZA
 
+    engine.addImportPath( QStringLiteral( "qrc:/qml" ) );
     engine.load( QUrl( "qrc:/main.qml" ) );
 
     return app.exec();

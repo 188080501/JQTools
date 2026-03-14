@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>JQControls/JQGlobal.qml</file>
+        <file>JQControls/JQText.qml</file>
+        <file>JQControls/qmldir</file>
+        <file>JQControls/JQSnakeBar.qml</file>
+        <file>JQControls/JQDoubleSpinBox.qml</file>
+        <file>JQControls/JQSpinBox.qml</file>
+        <file>JQControls/JQPane.qml</file>
+        <file>JQControls/JQButton.qml</file>
+        <file>JQControls/JQComboBox.qml</file>
+        <file>JQControls/JQDialog.qml</file>
+        <file>JQControls/JQMenu.qml</file>
+        <file>JQControls/JQMenuItem.qml</file>
+        <file>JQControls/JQCheckBox.qml</file>
+        <file>JQControls/JQTextField.qml</file>
+        <file>JQControls/JQDateTimeTextField.qml</file>
+        <file>JQControls/JQListView.qml</file>
+        <file>JQControls/JQRadioButton.qml</file>
+        <file>JQControls/JQNavigationButton.qml</file>
+        <file>JQControls/JQWindow.qml</file>
+        <file>JQControls/JQMenuSeparator.qml</file>
+        <file>JQControls/JQFlickable.qml</file>
+        <file>JQControls/JQNavigationInfo.qml</file>
+        <file>JQControls/JQMenuDialogOpener.qml</file>
+        <file>JQControls/JQFlatButton.qml</file>
+        <file>JQControls/JQHexTextField.qml</file>
+        <file>JQControls/JQSlider.qml</file>
+        <file>JQControls/JQLoadingIndicator.qml</file>
+    </qresource>
+</RCC>
+

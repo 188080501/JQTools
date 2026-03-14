@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -15,6 +15,7 @@ import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 import "qrc:/MaterialUI/Interface/"
 import Utf16Transform 1.0
+import JQControls 1.0
 
 Item {
     id: utf16Transform

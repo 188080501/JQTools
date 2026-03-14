@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/jqcontrolsimages">
+        <file>JQSnakeBar/Frame.png</file>
+        <file>JQSnakeBar/Frame@2x.png</file>
+    </qresource>
+</RCC>
+

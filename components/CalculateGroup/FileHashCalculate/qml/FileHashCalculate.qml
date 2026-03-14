@@ -15,6 +15,7 @@ import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 import "qrc:/MaterialUI/Interface/"
 import FileHashCalculate 1.0
+import JQControls 1.0
 
 Item {
     id: fileHashCalculate
