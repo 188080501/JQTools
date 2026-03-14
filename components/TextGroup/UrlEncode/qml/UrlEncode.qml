@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import UrlEncode 1.0
 import JQControls 1.0
+import UrlEncode 1.0
 
 Item {
     id: urlEncode
@@ -37,41 +34,47 @@ Item {
         width: 620
         height: 540
 
-        MaterialTextField {
-            id: textFieldForExclude
+        JQText {
             x: 40
-            y: 30
-            width: 150
-            placeholderText: "不编码字符"
-            text: "/:?=&%"
+            y: 70
+            text: "不编码字符"
 
-            onTextChanged: {
-                if ( urlEncode.changingFlag ) { return; }
+            JQTextField {
+                id: textFieldForExclude
+                anchors.left: parent.right
+                anchors.leftMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                width: 150
+                text: "/:?=&%"
 
-                urlEncode.changingFlag = true;
+                onTextChanged: {
+                    if ( urlEncode.changingFlag ) { return; }
 
-                textFieldForTarget.text = urlEncodeManage.encode( textFieldForSource.text, textFieldForExclude.text );
+                    urlEncode.changingFlag = true;
 
-                urlEncode.changingFlag = false;
+                    textFieldForTarget.text = urlEncodeManage.encode( textFieldForSource.text, textFieldForExclude.text );
+
+                    urlEncode.changingFlag = false;
+                }
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 40
-            y: 135
+            y: 155
             width: 120
             text: "从剪贴板粘贴"
 
             onClicked: {
                 textFieldForSource.text = urlEncodeManage.clipboardText();
-                materialUI.showSnackbarMessage( "已从剪贴板粘贴URL" );
+                JQGlobal.showMessage( "已从剪贴板粘贴URL" );
             }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForSource
             x: 40
-            y: 180
+            y: 205
             width: 540
             placeholderText: "源URL"
             text: "https://www.google.com/search?q=中文"
@@ -87,22 +90,22 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 40
-            y: 300
+            y: 320
             width: 120
             text: "复制到剪贴板"
 
             onClicked: {
                 urlEncodeManage.setClipboardText( textFieldForTarget.text );
-                materialUI.showSnackbarMessage( "URL已经复制到了剪贴板" );
+                JQGlobal.showMessage( "URL已经复制到了剪贴板" );
             }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForTarget
             x: 40
-            y: 340
+            y: 365
             width: 540
             placeholderText: "编码URL"
             text: "https://www.google.com/search?q=%E4%B8%AD%E6%96%87"

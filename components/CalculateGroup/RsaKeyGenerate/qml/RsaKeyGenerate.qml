@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import RsaKeyGenerate 1.0
 import JQControls 1.0
+import RsaKeyGenerate 1.0
 
 Item {
     id: rsaKeyGenerate
@@ -52,82 +49,80 @@ Item {
         onErrorStringChanged: {
             if ( rsaKeyGenerateManage.errorString().length > 0 )
             {
-                materialUI.showSnackbarMessage( rsaKeyGenerateManage.errorString() );
+                JQGlobal.showMessage( rsaKeyGenerateManage.errorString() );
             }
         }
     }
 
-    MaterialLabel {
-        x: 20
-        y: 18
-        text: "\u5BC6\u94A5\u4F4D\u6570\uFF1A"
-        font.pixelSize: 16
-        height: 56
-        verticalAlignment: Text.AlignVCenter
-    }
+    Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.top
+        anchors.verticalCenterOffset: 40
+        spacing: 16
 
-    MaterialMenuField {
-        id: menuFieldForKeyBits
-        x: 95
-        y: 19
-        width: 120
-        model: [
-            "2048",
-            "1024",
-            "3072",
-            "4096"
-        ]
-    }
+        JQText {
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTr( "密钥位数：" )
+            font.pixelSize: 16
+            verticalAlignment: Text.AlignVCenter
+        }
 
-    MaterialButton {
-        x: 230
-        y: 26
-        width: 120
-        text: "\u751F\u6210\u5BC6\u94A5"
+        JQComboBox {
+            id: menuFieldForKeyBits
+            anchors.verticalCenter: parent.verticalCenter
+            width: 120
+            model: [
+                "2048",
+                "1024",
+                "3072",
+                "4096"
+            ]
+        }
 
-        onClicked: {
-            rsaKeyGenerateManage.generate( menuFieldForKeyBits.selectedText );
-            if ( rsaKeyGenerateManage.errorString().length === 0 )
-            {
-                materialUI.showSnackbarMessage( "RSA \u5BC6\u94A5\u751F\u6210\u6210\u529F" );
+        JQButton {
+            anchors.verticalCenter: parent.verticalCenter
+            width: 120
+            text: qsTr( "生成密钥" )
+
+            onClicked: {
+                rsaKeyGenerateManage.generate( menuFieldForKeyBits.currentText );
+                if ( rsaKeyGenerateManage.errorString().length === 0 )
+                {
+                    JQGlobal.showMessage( qsTr( "RSA 密钥生成成功" ) );
+                }
+            }
+        }
+
+        JQButton {
+            anchors.verticalCenter: parent.verticalCenter
+            width: 100
+            text: qsTr( "复制公钥" )
+
+            onClicked: {
+                rsaKeyGenerateManage.copyPublicKeyPem();
+                JQGlobal.showMessage( qsTr( "已将公钥复制到剪贴板" ) );
+            }
+        }
+
+        JQButton {
+            anchors.verticalCenter: parent.verticalCenter
+            width: 100
+            text: qsTr( "复制私钥" )
+
+            onClicked: {
+                rsaKeyGenerateManage.copyPrivateKeyPem();
+                JQGlobal.showMessage( qsTr( "已将私钥复制到剪贴板" ) );
             }
         }
     }
 
-    MaterialButton {
-        x: 370
-        y: 26
-        width: 100
-        text: "\u590D\u5236\u516C\u94A5"
-
-        onClicked: {
-            rsaKeyGenerateManage.copyPublicKeyPem();
-            materialUI.showSnackbarMessage( "\u5DF2\u5C06\u516C\u94A5\u590D\u5236\u5230\u526A\u8D34\u677F" );
-        }
-    }
-
-    MaterialButton {
-        x: 485
-        y: 26
-        width: 100
-        text: "\u590D\u5236\u79C1\u94A5"
-
-        onClicked: {
-            rsaKeyGenerateManage.copyPrivateKeyPem();
-            materialUI.showSnackbarMessage( "\u5DF2\u5C06\u79C1\u94A5\u590D\u5236\u5230\u526A\u8D34\u677F" );
-        }
-    }
-
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForPublicKey
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
-    MaterialLabel {
-        text: "\u516C\u94A5 PEM"
+    JQText {
+        text: qsTr( "公钥 PEM" )
         height: keyLabelHeight
         verticalAlignment: Text.AlignVCenter
         anchors.bottom: itemForPublicKey.top
@@ -172,16 +167,13 @@ Item {
         }
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForPrivateKey
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
-    MaterialLabel {
-        text: "\u79C1\u94A5 PEM"
+    JQText {
+        text: qsTr( "私钥 PEM" )
         height: keyLabelHeight
         verticalAlignment: Text.AlignVCenter
         anchors.bottom: itemForPrivateKey.top

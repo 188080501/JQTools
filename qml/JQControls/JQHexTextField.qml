@@ -89,4 +89,3 @@ JQTextField {
         return Math.min( hexDigitCount + spaceCount, formattedLength );
     }
 }
-

@@ -85,4 +85,3 @@ QtObject {
         JQSnakeBar { }
     }
 }
-

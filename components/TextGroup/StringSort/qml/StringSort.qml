@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import StringSort 1.0
 import JQControls 1.0
+import StringSort 1.0
 
 Item {
     id: stringSort
@@ -31,59 +28,55 @@ Item {
         id: stringSortManage
     }
 
-    MaterialButton {
-        x: 386
-        text: "排序"
-        anchors.horizontalCenterOffset: 0
+    Row {
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 39
+        anchors.verticalCenter: parent.top
+        anchors.verticalCenterOffset: 55
+        spacing: 32
 
-        onClicked: stringSort.sort();
-    }
+        JQCheckBox {
+            id: descOrderCheckBox
+            anchors.verticalCenter: parent.verticalCenter
+            text: "降序排序"
+        }
 
-    MaterialButton {
-        x: 386
-        text: "处理剪贴板内容"
-        anchors.horizontalCenterOffset: 172
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 39
+        JQButton {
+            anchors.verticalCenter: parent.verticalCenter
+            width: 120
+            text: "排序"
 
-        onClicked: {
-            sourceTextField.text = stringSortManage.clipboardText();
-            if ( !stringSort.sort() ) { return; }
-            stringSortManage.setClipboardText( sourceTextField.text );
-            materialUI.showSnackbarMessage( "排序后的字符串已经复制到了剪贴板" );
+            onClicked: stringSort.sort();
+        }
+
+        JQButton {
+            width: 120
+            anchors.verticalCenter: parent.verticalCenter
+            text: "处理剪贴板内容"
+
+            onClicked: {
+                sourceTextField.text = stringSortManage.clipboardText();
+                if ( !stringSort.sort() ) { return; }
+                stringSortManage.setClipboardText( sourceTextField.text );
+                JQGlobal.showMessage( "排序后的字符串已经复制到了剪贴板" );
+            }
         }
     }
 
-    MaterialCheckBox {
-        id: descOrderCheckBox
-        x: 192
-        text: "降序排序"
-        anchors.horizontalCenterOffset: -147
-        anchors.top: parent.top
-        anchors.topMargin: 30
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
-
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForSource
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
+        anchors.margins: -3
     }
 
     Item {
         id: itemForSource
         anchors.left: parent.left
         anchors.leftMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: 110
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         width: stringSort.width - 20
-        height: stringSort.height - 110
         clip: true
 
         Rectangle {

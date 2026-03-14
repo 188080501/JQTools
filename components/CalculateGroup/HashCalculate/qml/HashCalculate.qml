@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import HashCalculate 1.0
 import JQControls 1.0
+import HashCalculate 1.0
 
 Item {
     id: hashCalculate
@@ -48,7 +45,7 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         text: "源字符串"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForSource.top
@@ -57,12 +54,9 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForSource
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
     Item {
@@ -118,7 +112,7 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         text: "计算结果"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForTarget.top
@@ -127,12 +121,9 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForTarget
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
     Item {
@@ -185,11 +176,11 @@ Item {
         width: 250
         height: 430
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 1
             width: 110
-            height: 40
+            height: 50
             text: "粘贴内容"
 
             onClicked: {
@@ -197,11 +188,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 47
             width: 110
-            height: 40
+            height: 50
             text: "清空所有"
 
             onClicked: {
@@ -209,24 +200,24 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 1
             width: 110
-            height: 40
+            height: 50
             text: "复制结果"
 
             onClicked: {
                 hashCalculateManage.copy();
-                materialUI.showSnackbarMessage( "已将计算结果复制到了系统剪贴板" );
+                JQGlobal.showMessage( "已将计算结果复制到了系统剪贴板" );
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 47
             width: 110
-            height: 40
+            height: 50
             text: "剪切到源"
 
             onClicked: {
@@ -234,11 +225,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 93
             width: 110
-            height: 40
+            height: 50
             text: "To Base64"
 
             onClicked: {
@@ -246,11 +237,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 93
             width: 110
-            height: 40
+            height: 50
             text: "From Base64"
 
             onClicked: {
@@ -258,11 +249,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 139
             width: 110
-            height: 40
+            height: 50
             text: "MD4"
 
             onClicked: {
@@ -270,11 +261,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 139
             width: 110
-            height: 40
+            height: 50
             text: "MD5"
 
             onClicked: {
@@ -282,11 +273,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 185
             width: 110
-            height: 40
+            height: 50
             text: "Sha1"
 
             onClicked: {
@@ -294,11 +285,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 185
             width: 110
-            height: 40
+            height: 50
             text: "Sha224"
 
             onClicked: {
@@ -306,11 +297,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 231
             width: 110
-            height: 40
+            height: 50
             text: "Sha256"
 
             onClicked: {
@@ -318,11 +309,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 231
             width: 110
-            height: 40
+            height: 50
             text: "Sha384"
 
             onClicked: {
@@ -330,11 +321,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 277
             width: 110
-            height: 40
+            height: 50
             text: "Sha512"
 
             onClicked: {
@@ -342,11 +333,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 277
             width: 110
-            height: 40
+            height: 50
             text: "Sha3_224"
 
             onClicked: {
@@ -354,11 +345,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 323
             width: 110
-            height: 40
+            height: 50
             text: "Sha3_256"
 
             onClicked: {
@@ -366,11 +357,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 323
             width: 110
-            height: 40
+            height: 50
             text: "Sha3_384"
 
             onClicked: {
@@ -378,11 +369,11 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 369
             width: 110
-            height: 40
+            height: 50
             text: "Sha3_512"
 
             onClicked: {
@@ -390,12 +381,12 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 8
             y: 415
             width: 110
-            height: 40
-            textSize: 14
+            height: 50
+            font.pixelSize: 14
             text: "压缩 & Base64"
 
             onClicked: {
@@ -403,12 +394,12 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 124
             y: 415
             width: 110
-            height: 40
-            textSize: 14
+            height: 50
+            font.pixelSize: 14
             text: "解压 & Base64"
 
             onClicked: {

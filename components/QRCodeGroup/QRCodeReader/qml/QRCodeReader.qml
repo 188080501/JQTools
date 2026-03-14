@@ -11,10 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import "qrc:/MaterialUI/Interface/"
-import QRCodeReader 1.0
 import JQControls 1.0
+import QRCodeReader 1.0
 
 Item {
     id: qrCodeReader
@@ -30,7 +28,7 @@ Item {
         width: 620
         height: 540
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForResult
             x: 40
             y: 50
@@ -52,10 +50,11 @@ Item {
             height: 250
             source: "qrc:/QRCodeReaderImages/test.png"
 
-            MaterialButton {
+            JQButton {
                 anchors.left: parent.right
                 anchors.leftMargin: 50
                 anchors.verticalCenter: parent.verticalCenter
+                width: 120
                 text: "选取图片"
 
                 onClicked: {
@@ -68,7 +67,7 @@ Item {
                     else
                     {
                         textFieldForResult.text = "";
-                        materialUI.showSnackbarMessage( "用户取消操作" );
+                        JQGlobal.showMessage( "用户取消操作" );
                     }
                 }
             }

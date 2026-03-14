@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import RandomUuid 1.0
 import JQControls 1.0
+import RandomUuid 1.0
 
 Item {
     id: randomUuid
@@ -37,7 +34,7 @@ Item {
         width: 620
         height: 540
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForUuid
             x: 40
             y: 317
@@ -45,7 +42,7 @@ Item {
             placeholderText: "随机UUID"
         }
 
-        MaterialCheckBox {
+        JQCheckBox {
             id: checkBoxForNumber
             x: 34
             y: 181
@@ -53,7 +50,7 @@ Item {
             checked: false
         }
 
-        MaterialButton {
+        JQButton {
             x: 40
             y: 259
             width: 120
@@ -63,11 +60,11 @@ Item {
                 textFieldForUuid.text = randomUuidManage.randomUuid(
                                 checkBoxForNumber.checked
                             );
-                materialUI.showSnackbarMessage( "随机UUID已经生成" );
+                JQGlobal.showMessage( "随机UUID已经生成" );
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 166
             y: 259
             width: 120
@@ -75,7 +72,7 @@ Item {
 
             onClicked: {
                 randomUuidManage.setClipboardText( textFieldForUuid.text );
-                materialUI.showSnackbarMessage( "UUID已经复制到了剪贴板" );
+                JQGlobal.showMessage( "UUID已经复制到了剪贴板" );
             }
         }
     }

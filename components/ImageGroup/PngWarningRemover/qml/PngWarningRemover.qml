@@ -11,21 +11,20 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import "qrc:/MaterialUI/Interface/"
-import PngWarningRemover 1.0
 import JQControls 1.0
+import PngWarningRemover 1.0
 
 Item {
     id: pngWarningRemover
     width: 620
     height: 540
+    property bool loadingVisible: false
 
     PngWarningRemoverManage {
         id: pngWarningRemoverManage
     }
 
-    MaterialLabel {
+    JQText {
         x: 162
         y: 170
         text:
@@ -47,49 +46,63 @@ libpng warning: iCCP: known incorrect sRGB profile
         anchors.verticalCenter: parent.verticalCenter
         spacing: 16
 
-        MaterialButton {
+        JQButton {
             width: 120
-            height: 40
             text: qsTr( "选择图片" )
 
             onClicked: {
-                materialUI.showLoading();
+                pngWarningRemover.loadingVisible = true;
 
                 var reply = pngWarningRemoverManage.convertPng();
 
                 switch( reply )
                 {
-                    case "cancel": materialUI.showSnackbarMessage( qsTr( "用户取消操作" ) ); break;
-                    case "openSourceError": materialUI.showSnackbarMessage( qsTr( "打开源文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
-                    case "saveTargetError": materialUI.showSnackbarMessage( qsTr( "保存目标文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
-                    case "OK": materialUI.showSnackbarMessage( qsTr( "所有图片转换已经完成" ) ); break;
+                    case "cancel": JQGlobal.showMessage(  qsTr( "用户取消操作" ) ); break;
+                    case "openSourceError": JQGlobal.showMessage(  qsTr( "打开源文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "saveTargetError": JQGlobal.showMessage(  qsTr( "保存目标文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "OK": JQGlobal.showMessage(  qsTr( "所有图片转换已经完成" ) ); break;
                 }
 
-                materialUI.hideLoading();
+                pngWarningRemover.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             width: 120
-            height: 40
             text: qsTr( "选择文件夹" )
 
             onClicked: {
-                materialUI.showLoading();
+                pngWarningRemover.loadingVisible = true;
 
                 var reply = pngWarningRemoverManage.convertPngByOpenDirectory();
 
                 switch( reply )
                 {
-                    case "cancel": materialUI.showSnackbarMessage( qsTr( "用户取消操作" ) ); break;
-                    case "empty": materialUI.showSnackbarMessage( qsTr( "所选文件夹不包含png图片" ) ); break;
-                    case "openSourceError": materialUI.showSnackbarMessage( qsTr( "打开源文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
-                    case "saveTargetError": materialUI.showSnackbarMessage( qsTr( "保存目标文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
-                    case "OK": materialUI.showSnackbarMessage( qsTr( "所有图片转换已经完成" ) ); break;
+                    case "cancel": JQGlobal.showMessage(  qsTr( "用户取消操作" ) ); break;
+                    case "empty": JQGlobal.showMessage(  qsTr( "所选文件夹不包含png图片" ) ); break;
+                    case "openSourceError": JQGlobal.showMessage(  qsTr( "打开源文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "saveTargetError": JQGlobal.showMessage(  qsTr( "保存目标文件失败：" ) + pngWarningRemoverManage.lastErrorFileName() ); break;
+                    case "OK": JQGlobal.showMessage(  qsTr( "所有图片转换已经完成" ) ); break;
                 }
 
-                materialUI.hideLoading();
+                pngWarningRemover.loadingVisible = false;
             }
+        }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        z: 999
+        visible: pngWarningRemover.loadingVisible
+        color: "#55000000"
+
+        JQLoadingIndicator {
+            anchors.centerIn: parent
+            text: "处理中..."
+        }
+
+        MouseArea {
+            anchors.fill: parent
         }
     }
 }

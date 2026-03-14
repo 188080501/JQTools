@@ -11,22 +11,21 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import "qrc:/MaterialUI/Interface/"
-import IconMaker 1.0
 import JQControls 1.0
+import IconMaker 1.0
 
 Item {
     id: iconMaker
     width: 620
     height: 540
+    property bool loadingVisible: false
 
     function makeReplyProcessor( reply )
     {
         switch( reply )
         {
-            case "saveToFileError": materialUI.showSnackbarMessage( "保存失败" ); break;
-            case "OK": materialUI.showSnackbarMessage( "图标制作成功" ); break;
+            case "saveToFileError": JQGlobal.showMessage( "保存失败" ); break;
+            case "OK": JQGlobal.showMessage( "图标制作成功" ); break;
         }
     }
 
@@ -51,7 +50,7 @@ Item {
         width: 640
         height: 430
 
-        MaterialLabel {
+        JQText {
             id: labelForTargetSavePath
             x: 49
             y: 60
@@ -62,7 +61,7 @@ Item {
             property string targetSavePath: iconMakerManage.targetSavePath()
         }
 
-        MaterialLabel {
+        JQText {
             id: labelForSourceFilePath
             x: 49
             y: 86
@@ -73,7 +72,7 @@ Item {
             property string sourceIconFilePath: "未选择"
         }
 
-        MaterialLabel {
+        JQText {
             id: labelForSourceIconImageWidth
             x: 49
             y: 112
@@ -82,7 +81,7 @@ Item {
             property string sourceIconImageWidth: "未选择"
         }
 
-        MaterialLabel {
+        JQText {
             id: labelForSourceIconImageHeight
             x: 49
             y: 138
@@ -91,161 +90,152 @@ Item {
             property string sourceIconImageHeight: "未选择"
         }
 
-        MaterialButton {
+        JQButton {
             x: 279
             y: 208
             width: 120
-            height: 40
             text: "选择原图"
-            backgroundColor: "#2196f3"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.chooseSourceIconFilePath();
 
                 switch( reply )
                 {
-                    case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
-                    case "OK": materialUI.showSnackbarMessage( "原图已更新" ); break;
+                    case "cancel": JQGlobal.showMessage( "用户取消操作" ); break;
+                    case "OK": JQGlobal.showMessage( "原图已更新" ); break;
                 }
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 279
             y: 291
             width: 120
-            height: 40
             text: "更改保存路径"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.chooseTargetSavePath();
 
                 switch( reply )
                 {
-                    case "cancel": materialUI.showSnackbarMessage( "用户取消操作" ); break;
-                    case "openFail": materialUI.showSnackbarMessage( "文件打开失败" ); break;
-                    case "OK": materialUI.showSnackbarMessage( "保存路径已更改" ); break;
+                    case "cancel": JQGlobal.showMessage( "用户取消操作" ); break;
+                    case "openFail": JQGlobal.showMessage( "文件打开失败" ); break;
+                    case "OK": JQGlobal.showMessage( "保存路径已更改" ); break;
                 }
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 476
             y: 65
             width: 120
-            height: 40
             text: "全部生成"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.makeAll();
 
                 iconMaker.makeReplyProcessor( reply );
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 476
             y: 121
             width: 120
-            height: 40
             text: "OS X(icns)"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.makeOSX();
 
                 iconMaker.makeReplyProcessor( reply );
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 476
             y: 167
             width: 120
-            height: 40
             text: "iOS(png)"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.makeIOS();
 
                 iconMaker.makeReplyProcessor( reply );
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 476
             y: 223
             width: 120
-            height: 40
             text: "Windows(ico)"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.makeWindows();
 
                 iconMaker.makeReplyProcessor( reply );
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 476
             y: 269
             width: 120
-            height: 40
             text: "Android(png)"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.makeAndroid();
 
                 iconMaker.makeReplyProcessor( reply );
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 476
             y: 325
             width: 120
-            height: 40
             text: "PWA(png)"
 
             onClicked: {
-                materialUI.showLoading();
+                iconMaker.loadingVisible = true;
 
                 var reply = iconMakerManage.makePWA();
 
                 iconMaker.makeReplyProcessor( reply );
 
-                materialUI.hideLoading();
+                iconMaker.loadingVisible = false;
             }
         }
 
-        MaterialLabel {
+        JQText {
             x: 98
             y: 182
             text: "图标预览"
@@ -279,6 +269,22 @@ Item {
                 width: 160
                 height: 160
                 source: "qrc:/IconMaker/DefaultIcon.png"
+            }
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            z: 999
+            visible: iconMaker.loadingVisible
+            color: "#55000000"
+
+            JQLoadingIndicator {
+                anchors.centerIn: parent
+                text: "处理中..."
+            }
+
+            MouseArea {
+                anchors.fill: parent
             }
         }
     }

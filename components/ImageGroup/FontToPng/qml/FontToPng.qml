@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -11,9 +11,7 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
+import QtQuick.Controls.Material 2.15
 import JQControls 1.0
 
 Item {
@@ -21,9 +19,10 @@ Item {
     width: 620
     height: 540
     clip: true
+    property bool loadingVisible: false
 
     function refresh() {
-        var charList = FontToPngManage.getCharList( menuFieldForFontName.selectedText, textFieldForSearchKey.text );
+        var charList = FontToPngManage.getCharList( menuFieldForFontName.currentText, textFieldForSearchKey.text );
 
         listModel.clear();
         for ( var index = 0; index < charList.length; ++index )
@@ -49,23 +48,19 @@ Item {
         repeat: false
 
         onTriggered: {
-            materialUI.showLoading( "初始化中，请稍等" );
+            fontToPng.loadingVisible = true;
 
             FontToPngManage.initializeFonts();
             fontToPng.refresh();
 
-            materialUI.hideLoading();
+            fontToPng.loadingVisible = false;
         }
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         width: parent.width
         height: 80
-        glowRadius: 5
-        spread: 0.22
-        color: "#30000000"
-        cornerRadius: 3
     }
 
     Rectangle {
@@ -74,20 +69,19 @@ Item {
         height: 80
         color: "#fafafa"
 
-        MaterialLabel {
+        JQText {
             x: 22
-            y: 34
+            anchors.verticalCenter: parent.verticalCenter
             text: "字体集："
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignRight
         }
 
-        MaterialMenuField {
+        JQComboBox {
             id: menuFieldForFontName
             x: 90
-            y: 15
+            anchors.verticalCenter: parent.verticalCenter
             width: 200
-            maxVisibleItems: 5
             model: [
                 "所有字体集",
                 "Elusive",
@@ -110,13 +104,13 @@ Item {
                 "Typicons"
             ]
 
-            onSelectedTextChanged: fontToPng.refresh();
+            onCurrentTextChanged: fontToPng.refresh();
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForSearchKey
-            x: 310
-            y: -7
+            x: 330
+            anchors.verticalCenter: parent.verticalCenter
             width: 150
             height: 56
             placeholderText: "搜索"
@@ -136,7 +130,7 @@ Item {
             }
         }
 
-        MaterialLabel {
+        JQText {
             id: labelForIconCount
             anchors.right: parent.right
             anchors.rightMargin: 5
@@ -179,7 +173,7 @@ Item {
                 source: charPreviewUrl
             }
 
-            MaterialLabel {
+            JQText {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 25
@@ -191,7 +185,7 @@ Item {
                 font.pixelSize: 14
             }
 
-            MaterialLabel {
+            JQText {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 10
@@ -236,7 +230,7 @@ Item {
                     else if ( mouse.button & Qt.RightButton )
                     {
                         FontToPngManage.setClipboardText( "\\u" + charCode );
-                        materialUI.showSnackbarMessage( "编号已经复制到了剪贴板" );
+                        JQGlobal.showMessage( "编号已经复制到了剪贴板" );
                     }
                 }
             }
@@ -266,27 +260,24 @@ Item {
         }
     }
 
-    MaterialDialog {
+    JQDialog {
         id: dialogForSaveIcon
         z: 10
-        width: 350
-        height: 440
         title: "保存图标"
-        negativeButtonText: materialUI.dialogCancelText
-        positiveButtonText: materialUI.dialogOKText
+        destroyOnClosed: false
+        centerItem: contentForSaveDialog
 
         property string fontFamilyName
         property string charCode
         property string charName
 
-        onRejected: {
+        onClosed: {
             backgroundForDialog.opacity = 0;
         }
 
-        onAccepted: {
+        function saveIcon() {
             backgroundForDialog.opacity = 0;
-
-            materialUI.showLoading();
+            fontToPng.loadingVisible = true;
 
             var reply = FontToPngManage.saveIcon(
                         dialogForSaveIcon.fontFamilyName,
@@ -295,45 +286,45 @@ Item {
                         textFieldForColor.text
                     );
 
-            materialUI.hideLoading();
+            fontToPng.loadingVisible = false;
 
             switch ( reply )
             {
-                case "cancel": materialUI.showSnackbarMessage( "取消保存" ); break;
-                case "error": materialUI.showSnackbarMessage( "保存失败" ); break;
-                case "OK": materialUI.showSnackbarMessage( "保存成功" ); break;
+                case "cancel": JQGlobal.showMessage( "取消保存" ); break;
+                case "error": JQGlobal.showMessage( "保存失败" ); break;
+                case "OK": JQGlobal.showMessage( "保存成功" ); break;
                 default: break;
             }
         }
 
         Item {
+            id: contentForSaveDialog
             width: 300
-            height: 320
+            height: 380
 
-            MaterialLabel {
+            JQText {
                 x: 28
                 y: 10
                 text: "字体集："
                 font.pixelSize: 16
             }
 
-            MaterialLabel {
+            JQText {
                 id: labelForFontFamilyName
                 x: 100
-                y: 13
+                y: 10
                 width: 120
-                height: 56
                 text: dialogForSaveIcon.fontFamilyName
             }
 
-            MaterialLabel {
+            JQText {
                 x: 28
                 y: 72
                 text: "字符代码："
                 font.pixelSize: 16
             }
 
-            MaterialLabel {
+            JQText {
                 id: labelForCharCode
                 x: 115
                 y: 75
@@ -342,54 +333,97 @@ Item {
                 text: "\\u" + dialogForSaveIcon.charCode
             }
 
-            MaterialLabel {
+            JQText {
                 x: 28
                 y: 133
                 text: "字符名称："
                 font.pixelSize: 16
             }
 
-            MaterialLabel {
+            JQText {
                 id: labelForCharName
                 x: 115
-                y: 137
+                y: 133
                 width: 120
                 height: 56
                 text: dialogForSaveIcon.charName
             }
 
-            MaterialLabel {
+            JQText {
                 x: 28
-                y: 196
+                y: 176
+                height: 55
                 text: "大小（像素）："
                 font.pixelSize: 16
+                verticalAlignment: Text.AlignVCenter
             }
 
-            MaterialTextField {
+            JQTextField {
                 id: textFieldForSize
                 x: 145
-                y: 157
+                y: 176
                 width: 120
-                height: 56
                 text: "1000"
                 validator: RegExpValidator { regExp: /^(-?\d+)$/ }
             }
 
-            MaterialLabel {
+            JQText {
                 x: 28
-                y: 258
+                y: 238
+                height: 55
                 text: "颜色："
                 font.pixelSize: 16
+                verticalAlignment: Text.AlignVCenter
             }
 
-            MaterialTextField {
+            JQTextField {
                 id: textFieldForColor
                 x: 82
-                y: 220
+                y: 238
                 width: 150
-                placeholderText: "十六进制值或者描述字符串"
                 text: "#000000"
             }
+
+            Row {
+                x: 80
+                y: 335
+                spacing: 16
+
+                JQButton {
+                    text: "取消"
+
+                    onClicked: {
+                        dialogForSaveIcon.close();
+                    }
+                }
+
+                JQButton {
+                    text: "保存"
+                    Material.background: Material.Blue
+                    Material.foreground: "#ffffff"
+
+                    onClicked: {
+                        dialogForSaveIcon.close();
+                        dialogForSaveIcon.saveIcon();
+                    }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        z: 20
+        visible: fontToPng.loadingVisible
+        color: "#55000000"
+
+        JQLoadingIndicator {
+            anchors.centerIn: parent
+            text: "处理中..."
+        }
+
+        MouseArea {
+            anchors.fill: parent
         }
     }
 }

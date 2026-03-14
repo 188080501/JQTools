@@ -4,6 +4,7 @@ Item {
     id: jqSnakeBar
     x: 30
     y: ( parent ) ? ( parent.height - height ) : ( 0 )
+    z: 999
     width: jqLabel.contentWidth + 50
     height: jqLabel.contentHeight + 30
 
@@ -80,6 +81,3 @@ Item {
         }
     }
 }
-
-
-

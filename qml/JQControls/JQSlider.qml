@@ -14,4 +14,3 @@ Slider {
 
     property real defaultValue: from
 }
-

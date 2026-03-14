@@ -15,4 +15,3 @@ ComboBox {
     font.pixelSize: 14
     Material.accent: Material.Blue
 }
-

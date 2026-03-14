@@ -11,12 +11,9 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.3
-import "qrc:/MaterialUI/Interface/"
-import RgbStringTransform 1.0
 import JQControls 1.0
+import RgbStringTransform 1.0
 
 
 Item {
@@ -39,7 +36,7 @@ Item {
         width: 620
         height: 540
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForColorName
             x: 202
             y: 124
@@ -61,7 +58,7 @@ Item {
             }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForHexString
             x: 202
             y: 214
@@ -81,9 +78,20 @@ Item {
 
                 rgbStringTransform.changingFlag = false;
             }
+
+            Rectangle {
+                anchors.right: textFieldForHexString.left
+                anchors.rightMargin: 16
+                anchors.verticalCenter: parent.verticalCenter
+                width: 25
+                height: 25
+                color: textFieldForHexString.text
+                border.width: 1
+                border.color: "#000000"
+            }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForRed
             x: 156
             y: 313
@@ -103,7 +111,7 @@ Item {
             }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForGreen
             x: 222
             y: 313
@@ -123,7 +131,7 @@ Item {
             }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForBlue
             x: 288
             y: 313
@@ -143,7 +151,7 @@ Item {
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 387
             y: 130
             width: 120
@@ -159,11 +167,11 @@ Item {
             title: "选择一个颜色"
             onAccepted: {
                 textFieldForHexString.text = rgbStringTransformManage.getHexString(colorDialog.color);
-                materialUI.showSnackbarMessage( "已从颜色对话框获取颜色" );
+                JQGlobal.showMessage( "已从颜色对话框获取颜色" );
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 387
             y: 209
             width: 120
@@ -171,11 +179,11 @@ Item {
 
             onClicked: {
                 textFieldForHexString.text = rgbStringTransformManage.clipboardText();
-                materialUI.showSnackbarMessage( "已从剪贴板粘贴颜色字符串" );
+                JQGlobal.showMessage( "已从剪贴板粘贴颜色字符串" );
             }
         }
 
-        MaterialButton {
+        JQButton {
             x: 387
             y: 276
             width: 120
@@ -183,18 +191,8 @@ Item {
 
             onClicked: {
                 rgbStringTransformManage.setClipboardText( textFieldForHexString.text );
-                materialUI.showSnackbarMessage( "颜色十六进制字符串已经复制到了剪贴板" );
+                JQGlobal.showMessage( "颜色十六进制字符串已经复制到了剪贴板" );
             }
-        }
-
-        Rectangle {
-            x: 165
-            y: 252
-            width: 25
-            height: 25
-            color: textFieldForHexString.text
-            border.width: 1
-            border.color: "#000000"
         }
     }
 }

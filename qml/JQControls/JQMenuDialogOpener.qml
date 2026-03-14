@@ -12,4 +12,3 @@ JQMenuItem {
         JQGlobal.createObjectAndOpen( dialogUrl, dialogProperties )
     }
 }
-

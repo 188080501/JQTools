@@ -35,5 +35,3 @@ MouseArea {
         color: "#000000"
     }
 }
-
-

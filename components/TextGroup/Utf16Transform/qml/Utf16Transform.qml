@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import Utf16Transform 1.0
 import JQControls 1.0
+import Utf16Transform 1.0
 
 Item {
     id: utf16Transform
@@ -28,12 +25,12 @@ Item {
         id: utf16TransformManage
     }
 
-    MaterialLabel {
+    JQText {
         x: 162
         text:
 "Unicode 转义转换工具，可以将文本和 \\uXXXX 之间互转
 例如将 “中文” 与 “\\u4E2D\\u6587” 互转"
-        anchors.horizontalCenterOffset: -91
+        anchors.horizontalCenterOffset: -100
         anchors.top: parent.top
         anchors.topMargin: 18
         anchors.horizontalCenter: parent.horizontalCenter
@@ -41,10 +38,9 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    MaterialButton {
+    JQButton {
         x: 420
         width: 120
-        height: 40
         text: "处理剪贴板内容"
         anchors.horizontalCenterOffset: 160
         anchors.horizontalCenter: parent.horizontalCenter
@@ -54,11 +50,11 @@ Item {
         onClicked: {
             textFieldForSource.text = utf16TransformManage.clipboardText();
             utf16TransformManage.setClipboardText( textFieldForTarget.text );
-            materialUI.showSnackbarMessage( "Unicode 转义字符串已经复制到了剪贴板" );
+            JQGlobal.showMessage( "Unicode 转义字符串已经复制到了剪贴板" );
         }
     }
 
-    MaterialLabel {
+    JQText {
         text: "文本字符串"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForSource.top
@@ -67,12 +63,10 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForSource
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
+        anchors.margins: -3
     }
 
     Item {
@@ -128,7 +122,7 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         text: "Unicode转义字符串"
         anchors.horizontalCenterOffset: 0
         anchors.bottom: itemForTarget.top
@@ -137,12 +131,10 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForTarget
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
+        anchors.margins: -3
     }
 
     Item {

@@ -11,12 +11,10 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/"
-import "qrc:/MaterialUI/Interface/"
-import "qrc:/BookmarkData.js" as BookmarkData
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import JQControls 1.0
+import "qrc:/BookmarkData.js" as BookmarkData
 
 JQWindow {
     id: applicationWindow
@@ -54,15 +52,11 @@ JQWindow {
         height: 64
     }
 
-    RectangularGlow {
+    JQPane {
         x: 180
         z: -1
         width: parent.width - 180
         height: 64
-        glowRadius: 5
-        spread: 0.22
-        color: "#30000000"
-        cornerRadius: 3
     }
 
     Rectangle {
@@ -72,14 +66,14 @@ JQWindow {
         height: 64
         color: "#2196F3"
 
-        MaterialLabel {
+        JQText {
             id: currentItemTitleNameLabel
             x: 60
             z: 1
             height: 64
             font.pixelSize: 20
             verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.Left
+            horizontalAlignment: Text.AlignLeft
             color: "#ffffff"
         }
     }
@@ -93,7 +87,7 @@ JQWindow {
         color: "#e1e1e1"
     }
 
-    MaterialLabel {
+    JQText {
         z: 1
         width: 180
         height: 64
@@ -173,13 +167,17 @@ JQWindow {
                         width: bookmarkListView.width
                         height: 42
 
-                        MaterialButton {
+                        JQButton {
+                            id: secondLevelButton
                             anchors.fill: parent
-                            elevation: 0
                             text: ""
                             visible: secondBookmarkListView.y === 0
+                            padding: 0
+                            topInset: 0
+                            bottomInset: 0
+                            Material.background: "#00000000"
 
-                            MaterialLabel {
+                            JQText {
                                 x: 36
                                 height: parent.height
                                 text: bookmarkName
@@ -200,7 +198,7 @@ JQWindow {
                             color: "#ffffff"
                             visible: secondBookmarkListView.y !== 0
 
-                            MaterialLabel {
+                            JQText {
                                 x: 36
                                 height: parent.height
                                 text: bookmarkName
@@ -212,11 +210,15 @@ JQWindow {
                 }
             }
 
-            MaterialButton {
+            JQButton {
+                id: firstLevelButton
                 width: parent.width
                 height: 42
-                elevation: 0
-                textHorizontalAlignment: Text.AlignLeft
+                text: ""
+                padding: 0
+                topInset: 0
+                bottomInset: 0
+                Material.background: "#00000000"
 
                 onClicked: {
                     mainPageContains.showPage( titleName, itemQrcLocation );
@@ -236,11 +238,12 @@ JQWindow {
                     }
                 }
 
-                MaterialLabel {
+                JQText {
                     x: 18
                     height: parent.height
                     text: bookmarkName
-                    font.bold: true
+                    font.bold: false
+                    font.weight: Font.Normal
                     verticalAlignment: Text.AlignVCenter
                     font.pixelSize: 16
                     color: ( currentItemTitleNameLabel.text === titleName ) ? ( "#1e88e5" ) : ( "#000000" )
@@ -377,11 +380,171 @@ JQWindow {
         }
     }
 
-    MaterialUI {
+    Item {
         id: materialUI
         z: 2
         anchors.fill: parent
-        dialogCancelText: "取消"
-        dialogOKText: "确定"
+
+        property var onDarkBackgroundClicked: null
+        property var onStealthBackgroundClicked: null
+        property var stealthBackgroundFilterItem: null
+        property string dialogCancelText: "取消"
+        property string dialogOKText: "确定"
+
+        function isSmartPhone() {
+            return ( Qt.platform.os === "ios" ) || ( Qt.platform.os === "android" );
+        }
+
+        function showDarkBackground(onDarkBackgroundClicked) {
+            darkBackground.opacity = 1;
+
+            switch (arguments.length)
+            {
+                case 1:
+                    materialUI.onDarkBackgroundClicked = onDarkBackgroundClicked;
+                    break;
+                default:
+                    materialUI.onDarkBackgroundClicked = null;
+                    break;
+            }
+        }
+
+        function showStealthBackground(onStealthBackgroundClicked, stealthBackgroundFilterItem) {
+            stealthBackground.opacity = 1;
+
+            switch (arguments.length)
+            {
+                case 2:
+                    materialUI.stealthBackgroundFilterItem = stealthBackgroundFilterItem;
+                case 1:
+                    materialUI.onStealthBackgroundClicked = onStealthBackgroundClicked;
+                    break;
+                default:
+                    materialUI.onStealthBackgroundClicked = null;
+                    break;
+            }
+        }
+
+        function hideDarkBackground() {
+            darkBackground.opacity = 0;
+        }
+
+        function hideStealthBackground() {
+            stealthBackground.opacity = 0;
+        }
+
+        function showSnackbarMessage(message) {
+            JQGlobal.showMessage( message );
+        }
+
+        function showLoading(text, callbackOnClicked) {
+            loadingIndicatorContainer.visible = true;
+            loadingIndicator.text = "";
+
+            switch (arguments.length)
+            {
+                case 1:
+                case 2:
+                    loadingIndicator.text = text;
+                    break;
+                default:
+                    break;
+            }
+
+            showDarkBackground(( arguments.length === 2 ) ? ( callbackOnClicked ) : ( null ));
+        }
+
+        function hideLoading() {
+            loadingIndicatorContainer.visible = false;
+            hideDarkBackground();
+        }
+
+        Rectangle {
+            id: darkBackground
+            anchors.fill: parent
+            color: "#55000000"
+            visible: opacity !== 0
+            opacity: 0
+
+            Behavior on opacity {
+                NumberAnimation { duration: 500; easing.type: Easing.OutCubic }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.AllButtons
+
+                onClicked: {
+                    if ( materialUI.onDarkBackgroundClicked )
+                    {
+                        materialUI.onDarkBackgroundClicked();
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: stealthBackground
+            anchors.fill: parent
+            color: "#00000000"
+            visible: opacity !== 0
+            opacity: 0
+
+            Behavior on opacity {
+                NumberAnimation { duration: 500; easing.type: Easing.OutCubic }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton
+
+                onPressed: {
+                    if ( materialUI.stealthBackgroundFilterItem )
+                    {
+                        var item = materialUI.stealthBackgroundFilterItem;
+                        var currentX = item.x;
+                        var currentY = item.y;
+                        var parent = item.parent;
+
+                        while ( parent && ( "x" in parent ) )
+                        {
+                            currentX += parent.x;
+                            currentY += parent.y;
+                            parent = parent.parent;
+                        }
+
+                        if ((( mouseX > currentX ) && ( mouseX < ( currentX + item.width ) )) &&
+                            (( mouseY > currentY ) && ( mouseY < ( currentY + item.height ) )))
+                        {
+                            mouse.accepted = false;
+                        }
+                    }
+                }
+
+                onClicked: {
+                    if ( materialUI.onStealthBackgroundClicked )
+                    {
+                        materialUI.onStealthBackgroundClicked();
+                    }
+                }
+            }
+        }
+
+        Item {
+            id: loadingIndicatorContainer
+            anchors.centerIn: parent
+            visible: false
+            z: 1
+            width: loadingIndicator.implicitWidth
+            height: loadingIndicator.implicitHeight
+
+            JQLoadingIndicator {
+                id: loadingIndicator
+                anchors.centerIn: parent
+                running: loadingIndicatorContainer.visible
+                indicatorSize: 40
+                textColor: "#ffffff"
+            }
+        }
     }
 }

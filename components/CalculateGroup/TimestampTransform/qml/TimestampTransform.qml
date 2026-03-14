@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import TimestampTransform 1.0
 import JQControls 1.0
+import TimestampTransform 1.0
 
 Item {
     id: timestampTransform
@@ -91,7 +88,7 @@ Item {
             width: 620
             height: 280
 
-            MaterialLabel {
+            JQText {
                 x: 40
                 y: 15
                 width: 540
@@ -100,13 +97,13 @@ Item {
                 wrapMode: Text.WordWrap
             }
 
-            MaterialLabel {
+            JQText {
                 x: 40
                 y: 58
                 text: qsTr( "时间戳 -> 日期时间" )
             }
 
-            MaterialTextField {
+            JQTextField {
                 id: textFieldForTimestampString
                 x: 40
                 y: 84
@@ -118,11 +115,10 @@ Item {
                 }
             }
 
-            MaterialButton {
+            JQButton {
                 x: 390
                 y: 60
-                width: 190
-                height: 40
+                width: 150
                 text: qsTr( "当前秒级时间戳" )
 
                 onClicked: {
@@ -130,11 +126,10 @@ Item {
                 }
             }
 
-            MaterialButton {
+            JQButton {
                 x: 390
                 y: 105
-                width: 190
-                height: 40
+                width: 150
                 text: qsTr( "当前毫秒时间戳" )
 
                 onClicked: {
@@ -142,7 +137,7 @@ Item {
                 }
             }
 
-            MaterialLabel {
+            JQText {
                 id: labelForConvertedDateTimeString
                 x: 40
                 y: 170
@@ -151,22 +146,21 @@ Item {
                 wrapMode: Text.WordWrap
             }
 
-            MaterialButton {
+            JQButton {
                 x: 390
                 y: 160
-                width: 190
-                height: 40
+                width: 150
                 text: qsTr( "复制日期时间" )
 
                 onClicked: {
                     if ( convertedDateTimeStringValue === "" )
                     {
-                        materialUI.showSnackbarMessage( qsTr( "当前没有可复制的日期时间" ) );
+                        JQGlobal.showMessage( qsTr( "当前没有可复制的日期时间" ) );
                         return;
                     }
 
                     timestampTransformManage.setClipboardText( convertedDateTimeStringValue );
-                    materialUI.showSnackbarMessage( qsTr( "日期时间已复制到剪贴板" ) );
+                    JQGlobal.showMessage( qsTr( "日期时间已复制到剪贴板" ) );
                 }
             }
 
@@ -184,13 +178,13 @@ Item {
             width: 620
             height: 220
 
-            MaterialLabel {
+            JQText {
                 x: 40
                 y: 0
                 text: qsTr( "日期时间 -> 时间戳" )
             }
 
-            MaterialTextField {
+            JQTextField {
                 id: textFieldForDateTimeString
                 x: 40
                 y: 30
@@ -202,11 +196,10 @@ Item {
                 }
             }
 
-            MaterialButton {
+            JQButton {
                 x: 390
                 y: 30
-                width: 190
-                height: 40
+                width: 150
                 text: qsTr( "填入当前时间" )
 
                 onClicked: {
@@ -214,7 +207,7 @@ Item {
                 }
             }
 
-            MaterialLabel {
+            JQText {
                 id: labelForSecondsTimestamp
                 x: 40
                 y: 120
@@ -223,26 +216,25 @@ Item {
                 wrapMode: Text.WordWrap
             }
 
-            MaterialButton {
+            JQButton {
                 x: 390
                 y: 85
-                width: 190
-                height: 40
+                width: 150
                 text: qsTr( "复制秒级时间戳" )
 
                 onClicked: {
                     if ( secondsTimestampStringValue === "" )
                     {
-                        materialUI.showSnackbarMessage( qsTr( "当前没有可复制的秒级时间戳" ) );
+                        JQGlobal.showMessage( qsTr( "当前没有可复制的秒级时间戳" ) );
                         return;
                     }
 
                     timestampTransformManage.setClipboardText( secondsTimestampStringValue );
-                    materialUI.showSnackbarMessage( qsTr( "秒级时间戳已复制到剪贴板" ) );
+                    JQGlobal.showMessage( qsTr( "秒级时间戳已复制到剪贴板" ) );
                 }
             }
 
-            MaterialLabel {
+            JQText {
                 id: labelForMillisecondsTimestamp
                 x: 40
                 y: 160
@@ -251,26 +243,25 @@ Item {
                 wrapMode: Text.WordWrap
             }
 
-            MaterialButton {
+            JQButton {
                 x: 390
                 y: 130
-                width: 190
-                height: 40
+                width: 150
                 text: qsTr( "复制毫秒时间戳" )
 
                 onClicked: {
                     if ( millisecondsTimestampStringValue === "" )
                     {
-                        materialUI.showSnackbarMessage( qsTr( "当前没有可复制的毫秒时间戳" ) );
+                        JQGlobal.showMessage( qsTr( "当前没有可复制的毫秒时间戳" ) );
                         return;
                     }
 
                     timestampTransformManage.setClipboardText( millisecondsTimestampStringValue );
-                    materialUI.showSnackbarMessage( qsTr( "毫秒时间戳已复制到剪贴板" ) );
+                    JQGlobal.showMessage( qsTr( "毫秒时间戳已复制到剪贴板" ) );
                 }
             }
 
-            MaterialLabel {
+            JQText {
                 x: 40
                 y: 200
                 width: 540

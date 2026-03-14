@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import FileHashCalculate 1.0
 import JQControls 1.0
+import FileHashCalculate 1.0
 
 Item {
     id: fileHashCalculate
@@ -46,31 +43,31 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 32
-        text: qsTr( "\u9009\u62e9\u5355\u4e2a\u6587\u4ef6\u540e\uff0c\u8ba1\u7b97 MD5\u3001SHA1 \u4e0e SHA256 \u54c8\u5e0c\u503c" )
+        text: qsTr( "选择单个文件后，计算 MD5、SHA1 与 SHA256 哈希值" )
     }
 
-    MaterialButton {
+    JQButton {
         x: 48
         y: 78
         width: 120
-        height: 40
-        text: qsTr( "\u9009\u62e9\u6587\u4ef6" )
+        height: 50
+        text: qsTr( "选择文件" )
 
         onClicked: {
             fileHashCalculateManage.chooseFile();
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 182
         y: 78
         width: 120
-        height: 40
-        text: qsTr( "\u8ba1\u7b97\u54c8\u5e0c" )
+        height: 50
+        text: qsTr( "计算哈希" )
 
         onClicked: {
             var reply = fileHashCalculateManage.calculate();
@@ -78,41 +75,38 @@ Item {
             switch( reply )
             {
                 case "OK":
-                    materialUI.showSnackbarMessage( qsTr( "\u54c8\u5e0c\u503c\u8ba1\u7b97\u5b8c\u6210" ) );
+                    JQGlobal.showMessage( qsTr( "哈希值计算完成" ) );
                     break;
                 case "empty file path":
-                    materialUI.showSnackbarMessage( qsTr( "\u8bf7\u5148\u9009\u62e9\u6587\u4ef6" ) );
+                    JQGlobal.showMessage( qsTr( "请先选择文件" ) );
                     break;
                 case "file not exist":
-                    materialUI.showSnackbarMessage( qsTr( "\u6587\u4ef6\u4e0d\u5b58\u5728\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9" ) );
+                    JQGlobal.showMessage( qsTr( "文件不存在，请重新选择" ) );
                     break;
                 case "calculate hash error":
-                    materialUI.showSnackbarMessage( qsTr( "\u6587\u4ef6\u8bfb\u53d6\u5931\u8d25\uff0c\u65e0\u6cd5\u8ba1\u7b97\u54c8\u5e0c\u503c" ) );
+                    JQGlobal.showMessage( qsTr( "文件读取失败，无法计算哈希值" ) );
                     break;
             }
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 316
         y: 78
         width: 120
-        height: 40
-        text: qsTr( "\u6e05\u7a7a" )
+        height: 50
+        text: qsTr( "清空" )
 
         onClicked: {
             fileHashCalculateManage.clear();
         }
     }
 
-    RectangularGlow {
+    JQPane {
         x: 40
         y: 142
-        width: 540
+        width: 560
         height: 230
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
     Rectangle {
@@ -123,92 +117,92 @@ Item {
         color: "#ffffff"
     }
 
-    MaterialLabel {
+    JQText {
         x: 58
         y: 160
         width: 504
-        text: qsTr( "\u6587\u4ef6\u8def\u5f84\uff1a" ) + fileHashCalculate.filePathValue
+        text: qsTr( "文件路径：" ) + fileHashCalculate.filePathValue
         elide: Text.ElideMiddle
     }
 
-    MaterialLabel {
+    JQText {
         x: 58
         y: 206
         width: 400
-        text: qsTr( "MD5\uff1a" ) + fileHashCalculate.md5Value
+        text: qsTr( "MD5：" ) + fileHashCalculate.md5Value
         elide: Text.ElideRight
     }
 
-    MaterialButton {
+    JQButton {
         x: 468
         y: 194
-        width: 94
-        height: 36
-        text: qsTr( "\u590d\u5236 MD5" )
+        width: 110
+        height: 50
+        text: qsTr( "复制 MD5" )
 
         onClicked: {
             if ( fileHashCalculate.md5Value.length === 0 )
             {
-                materialUI.showSnackbarMessage( qsTr( "\u5f53\u524d\u6ca1\u6709\u53ef\u590d\u5236\u7684 MD5 \u7ed3\u679c" ) );
+                JQGlobal.showMessage( qsTr( "当前没有可复制的 MD5 结果" ) );
                 return;
             }
 
             fileHashCalculateManage.copyMd5();
-            materialUI.showSnackbarMessage( qsTr( "MD5 \u7ed3\u679c\u5df2\u590d\u5236\u5230\u526a\u8d34\u677f" ) );
+            JQGlobal.showMessage( qsTr( "MD5 结果已复制到剪贴板" ) );
         }
     }
 
-    MaterialLabel {
+    JQText {
         x: 58
         y: 258
         width: 400
-        text: qsTr( "SHA1\uff1a" ) + fileHashCalculate.sha1Value
+        text: qsTr( "SHA1：" ) + fileHashCalculate.sha1Value
         elide: Text.ElideRight
     }
 
-    MaterialButton {
+    JQButton {
         x: 468
         y: 246
-        width: 94
-        height: 36
-        text: qsTr( "\u590d\u5236 SHA1" )
+        width: 110
+        height: 50
+        text: qsTr( "复制 SHA1" )
 
         onClicked: {
             if ( fileHashCalculate.sha1Value.length === 0 )
             {
-                materialUI.showSnackbarMessage( qsTr( "\u5f53\u524d\u6ca1\u6709\u53ef\u590d\u5236\u7684 SHA1 \u7ed3\u679c" ) );
+                JQGlobal.showMessage( qsTr( "当前没有可复制的 SHA1 结果" ) );
                 return;
             }
 
             fileHashCalculateManage.copySha1();
-            materialUI.showSnackbarMessage( qsTr( "SHA1 \u7ed3\u679c\u5df2\u590d\u5236\u5230\u526a\u8d34\u677f" ) );
+            JQGlobal.showMessage( qsTr( "SHA1 结果已复制到剪贴板" ) );
         }
     }
 
-    MaterialLabel {
+    JQText {
         x: 58
         y: 310
         width: 400
-        text: qsTr( "SHA256\uff1a" ) + fileHashCalculate.sha256Value
+        text: qsTr( "SHA256：" ) + fileHashCalculate.sha256Value
         elide: Text.ElideRight
     }
 
-    MaterialButton {
+    JQButton {
         x: 468
         y: 298
-        width: 94
-        height: 36
-        text: qsTr( "\u590d\u5236 SHA256" )
+        width: 110
+        height: 50
+        text: qsTr( "复制 SHA256" )
 
         onClicked: {
             if ( fileHashCalculate.sha256Value.length === 0 )
             {
-                materialUI.showSnackbarMessage( qsTr( "\u5f53\u524d\u6ca1\u6709\u53ef\u590d\u5236\u7684 SHA256 \u7ed3\u679c" ) );
+                JQGlobal.showMessage( qsTr( "当前没有可复制的 SHA256 结果" ) );
                 return;
             }
 
             fileHashCalculateManage.copySha256();
-            materialUI.showSnackbarMessage( qsTr( "SHA256 \u7ed3\u679c\u5df2\u590d\u5236\u5230\u526a\u8d34\u677f" ) );
+            JQGlobal.showMessage( qsTr( "SHA256 结果已复制到剪贴板" ) );
         }
     }
 }

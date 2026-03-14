@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import CppFileMaker 1.0
 import JQControls 1.0
+import CppFileMaker 1.0
 
 Item {
     id: cppFileMaker
@@ -28,29 +25,39 @@ Item {
 
     Column {
         anchors.centerIn: parent
-        spacing: 36
+        spacing: 24
 
-        MaterialLabel {
+        JQText {
             width: 200
             text: "生成CPP文件基本结构\n默认保存在桌面"
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForMacroProtectsPrefix
             width: 200
-            height: 36
-            placeholderText: "头文件保护前缀"
             text: "MyGroup"
+
+            JQText {
+                anchors.right: parent.left
+                anchors.rightMargin: 8
+                anchors.verticalCenter: parent.verticalCenter
+                text: "头文件保护前缀："
+            }
         }
 
-        MaterialTextField {
+        JQTextField {
             id: textFieldForClassName
             width: 200
-            height: 36
-            placeholderText: "类名"
             text: "MyClass"
+
+            JQText {
+                anchors.right: parent.left
+                anchors.rightMargin: 8
+                anchors.verticalCenter: parent.verticalCenter
+                text: "类名："
+            }
         }
 
         Item {
@@ -58,12 +65,12 @@ Item {
             height: 1
         }
 
-        MaterialCheckBox {
+        JQCheckBox {
             id: checkBoxForQmlExpand
             text: "QML扩展"
         }
 
-        MaterialButton {
+        JQButton {
             anchors.horizontalCenter: parent.horizontalCenter
             text: "生成"
 
@@ -73,6 +80,7 @@ Item {
                             textFieldForClassName.text,
                             checkBoxForQmlExpand.checked
                         );
+                JQGlobal.showMessage( "生成成功" );
             }
         }
     }

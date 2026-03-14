@@ -5,4 +5,3 @@ Menu {
     id: jqMenu
     width: 150
 }
-

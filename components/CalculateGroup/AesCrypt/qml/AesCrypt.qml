@@ -11,11 +11,8 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtGraphicalEffects 1.0
-import "qrc:/MaterialUI/Interface/"
-import AesCrypt 1.0
 import JQControls 1.0
+import AesCrypt 1.0
 
 Item {
     id: aesCrypt
@@ -23,6 +20,14 @@ Item {
     height: 540
 
     property bool changingFlag: false
+    property int panelLabelHeight: 24
+    property int panelLabelBottomMargin: 8
+    property int panelTopMargin: 200
+    property int panelSpacing: 36
+    property int panelBottomMargin: 10
+    property int panelAreaHeight: height - panelTopMargin - panelBottomMargin - panelSpacing
+    property int sourcePanelHeight: panelAreaHeight / 2
+    property int targetPanelHeight: panelAreaHeight - sourcePanelHeight
 
     AesCryptManage {
         id: aesCryptManage
@@ -62,12 +67,12 @@ Item {
         onErrorStringChanged: {
             if ( aesCryptManage.errorString().length > 0 )
             {
-                materialUI.showSnackbarMessage( aesCryptManage.errorString() );
+                JQGlobal.showMessage( aesCryptManage.errorString() );
             }
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 10
         y: 10
         width: 120
@@ -77,12 +82,12 @@ Item {
             aesCryptManage.encryptToBase64();
             if ( aesCryptManage.errorString().length === 0 )
             {
-                materialUI.showSnackbarMessage( qsTr("AES-CBC 加密成功") );
+                JQGlobal.showMessage( qsTr("AES-CBC 加密成功") );
             }
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 140
         y: 10
         width: 120
@@ -92,12 +97,12 @@ Item {
             aesCryptManage.decryptFromBase64();
             if ( aesCryptManage.errorString().length === 0 )
             {
-                materialUI.showSnackbarMessage( qsTr("AES-CBC 解密成功") );
+                JQGlobal.showMessage( qsTr("AES-CBC 解密成功") );
             }
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 270
         y: 10
         width: 120
@@ -107,12 +112,12 @@ Item {
             aesCryptManage.calculateHmacSha256ToHex();
             if ( aesCryptManage.errorString().length === 0 )
             {
-                materialUI.showSnackbarMessage( qsTr("HMAC-SHA256 计算成功") );
+                JQGlobal.showMessage( qsTr("HMAC-SHA256 计算成功") );
             }
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 400
         y: 10
         width: 100
@@ -123,7 +128,7 @@ Item {
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 510
         y: 10
         width: 100
@@ -134,9 +139,9 @@ Item {
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 10
-        y: 54
+        y: 64
         width: 90
         text: qsTr("粘贴输入")
 
@@ -145,9 +150,9 @@ Item {
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 110
-        y: 54
+        y: 64
         width: 90
         text: qsTr("粘贴密钥")
 
@@ -156,9 +161,9 @@ Item {
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 210
-        y: 54
+        y: 64
         width: 90
         text: qsTr("粘贴IV")
 
@@ -167,49 +172,48 @@ Item {
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 310
-        y: 54
+        y: 64
         width: 90
         text: qsTr("复制输出")
 
         onClicked: {
             aesCryptManage.copyTarget();
-            materialUI.showSnackbarMessage( qsTr("已将输出复制到剪贴板") );
+            JQGlobal.showMessage( qsTr("已将输出复制到剪贴板") );
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 410
-        y: 54
+        y: 64
         width: 90
         text: qsTr("复制密钥")
 
         onClicked: {
             aesCryptManage.copyKey();
-            materialUI.showSnackbarMessage( qsTr("已将密钥复制到剪贴板") );
+            JQGlobal.showMessage( qsTr("已将密钥复制到剪贴板") );
         }
     }
 
-    MaterialButton {
+    JQButton {
         x: 510
-        y: 54
+        y: 64
         width: 90
         text: qsTr("复制IV")
 
         onClicked: {
             aesCryptManage.copyIv();
-            materialUI.showSnackbarMessage( qsTr("已将 IV 复制到剪贴板") );
+            JQGlobal.showMessage( qsTr("已将 IV 复制到剪贴板") );
         }
     }
 
-    MaterialTextField {
+    JQTextField {
         id: keyTextField
         x: 16
         y: 106
         width: 286
         placeholderText: qsTr("密钥（16/24/32字节）")
-        helperText: qsTr("支持 hex: / base64: 前缀，不带前缀按文本处理")
 
         onTextChanged: {
             if ( aesCrypt.changingFlag ) { return; }
@@ -220,13 +224,12 @@ Item {
         }
     }
 
-    MaterialTextField {
+    JQTextField {
         id: ivTextField
         x: 316
         y: 106
         width: 286
         placeholderText: qsTr("IV（16字节）")
-        helperText: qsTr("支持 hex: / base64: 前缀，不带前缀按文本处理")
 
         onTextChanged: {
             if ( aesCrypt.changingFlag ) { return; }
@@ -237,28 +240,30 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         text: qsTr("输入（加密明文 / 解密时 Base64 密文 / HMAC 原文）")
+        height: panelLabelHeight
+        verticalAlignment: Text.AlignVCenter
         anchors.bottom: itemForSource.top
-        anchors.bottomMargin: 8
+        anchors.bottomMargin: panelLabelBottomMargin
         anchors.horizontalCenter: itemForSource.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForSource
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
     Item {
         id: itemForSource
-        x: 10
-        y: 230
-        width: parent.width - 20
-        height: 156
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: panelTopMargin
+        height: sourcePanelHeight
         clip: true
 
         Rectangle {
@@ -302,28 +307,30 @@ Item {
         }
     }
 
-    MaterialLabel {
+    JQText {
         text: qsTr("输出")
+        height: panelLabelHeight
+        verticalAlignment: Text.AlignVCenter
         anchors.bottom: itemForTarget.top
-        anchors.bottomMargin: 8
+        anchors.bottomMargin: panelLabelBottomMargin
         anchors.horizontalCenter: itemForTarget.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
     }
 
-    RectangularGlow {
+    JQPane {
         z: -1
         anchors.fill: itemForTarget
-        glowRadius: 6
-        spread: 0.22
-        color: "#20000000"
     }
 
     Item {
         id: itemForTarget
-        x: 10
-        y: 430
-        width: parent.width - 20
-        height: 156
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.top: itemForSource.bottom
+        anchors.topMargin: panelSpacing
+        height: targetPanelHeight
         clip: true
 
         Rectangle {

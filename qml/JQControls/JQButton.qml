@@ -4,10 +4,9 @@ import QtQuick.Controls.Material 2.15
 
 Button {
     id: jqButton
-    width: 80
+    width: 100
     height: 50
     font.capitalization: Font.MixedCase
-    Material.background: Material.Blue
-    Material.foreground: "#ffffff"
+    Material.background: "#ffffff"
+    Material.foreground: "#d8000000"
 }
-

@@ -6,4 +6,3 @@ MenuItem {
     width: parent.width
     height: 40
 }
-

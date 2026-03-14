@@ -5,4 +5,3 @@ RadioButton {
     id: jqRadioButton
     height: 40
 }
-
