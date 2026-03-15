@@ -71,3 +71,7 @@ DEFINES *= MBEDTLS_CONFIG_FILE=\\\"mbedtls/mbedtls_config_jqmbedtls.h\\\"
 wasm {
     DEFINES *= MBEDTLS_NO_PLATFORM_ENTROPY
 }
+
+win32 {
+    LIBS += -ladvapi32
+}
