@@ -12,7 +12,7 @@
 
 TEMPLATE = app
 
-QT += qml quick widgets concurrent quickcontrols2
+QT *= qml quick widgets quickcontrols2
 
 CONFIG += c++11
 CONFIG += c++14
@@ -44,4 +44,8 @@ mac {
 
 win32 {
     RC_ICONS = $$PWD/icon/icon.ico
+}
+
+!wasm {
+    QT *= concurrent
 }

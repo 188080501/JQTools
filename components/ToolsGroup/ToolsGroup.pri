@@ -10,9 +10,12 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include( $$PWD/LinesStatistics/LinesStatistics.pri )
 include( $$PWD/BatchReplacement/BatchReplacement.pri )
-include( $$PWD/ScreenColorPicker/ScreenColorPicker.pri )
+
+!wasm {
+    include( $$PWD/LinesStatistics/LinesStatistics.pri )
+    include( $$PWD/ScreenColorPicker/ScreenColorPicker.pri )
+}
 
 INCLUDEPATH *= \
     $$PWD/

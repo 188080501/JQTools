@@ -1,74 +1,88 @@
-﻿var items = [
-    { bookmarkName: "首页", titleName: "首页", qrcLocation: "qrc:/Welcome/Welcome.qml", children: [ ] },
-    {
-        bookmarkName: "文本类",
-        titleName: "文本类",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "UTF-16转换", titleName: "UTF-16转换", qrcLocation: "qrc:/Utf16Transform/Utf16Transform.qml" },
-            { bookmarkName: "RGB转16进制", titleName: "RGB转16进制", qrcLocation: "qrc:/RgbStringTransform/RgbStringTransform.qml" },
-            { bookmarkName: "大小写转换", titleName: "大小写转换", qrcLocation: "qrc:/CaseTransform/CaseTransform.qml" },
-            { bookmarkName: "密码随机器", titleName: "密码随机器", qrcLocation: "qrc:/RandomPassword/RandomPassword.qml" },
-            { bookmarkName: "UUID生成器", titleName: "UUID生成器", qrcLocation: "qrc:/RandomUuid/RandomUuid.qml" },
-            { bookmarkName: "URL转码", titleName: "URL转码", qrcLocation: "qrc:/UrlEncode/UrlEncode.qml" },
-            { bookmarkName: "JSON格式化", titleName: "JSON格式化", qrcLocation: "qrc:/JsonFormat/JsonFormat.qml" },
-            { bookmarkName: "字符串排序", titleName: "字符串排序", qrcLocation: "qrc:/StringSort/StringSort.qml" }
-        ]
-    },
-    {
-        bookmarkName: "计算类",
-        titleName: "计算类",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "HASH计算器", titleName: "HASH计算器", qrcLocation: "qrc:/HashCalculate/HashCalculate.qml" },
-            { bookmarkName: "Unix时间戳转换", titleName: "Unix时间戳转换", qrcLocation: "qrc:/TimestampTransform/TimestampTransform.qml" },
-            { bookmarkName: "二分法助手", titleName: "二分法助手", qrcLocation: "qrc:/BinarySearchAssistant/BinarySearchAssistant.qml" },
-            { bookmarkName: "RSA密钥生成", titleName: "RSA密钥生成", qrcLocation: "qrc:/RsaKeyGenerate/RsaKeyGenerate.qml" },
-            { bookmarkName: "RSA加解密", titleName: "RSA加解密", qrcLocation: "qrc:/RsaCrypt/RsaCrypt.qml" },
-            { bookmarkName: "AES加解密", titleName: "AES加解密 & HMAC", qrcLocation: "qrc:/AesCrypt/AesCrypt.qml" },
-            { bookmarkName: "文件哈希值", titleName: "文件哈希值", qrcLocation: "qrc:/FileHashCalculate/FileHashCalculate.qml" }
-        ]
-    },
-    {
-        bookmarkName: "图片类",
-        titleName: "图片类",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "图标生成器", titleName: "图标生成器", qrcLocation: "qrc:/IconMaker/IconMaker.qml" },
-            { bookmarkName: "图标字体转PNG", titleName: "图标字体转PNG", qrcLocation: "qrc:/FontToPng/FontToPng.qml" },
-            { bookmarkName: "PNG警告消除", titleName: "PNG警告消除", qrcLocation: "qrc:/PngWarningRemover/PngWarningRemover.qml" },
-            { bookmarkName: "WebP图片制作器", titleName: "WebP图片制作器", qrcLocation: "qrc:/WebPMaker/WebPMaker.qml" },
-            { bookmarkName: "PNG图片压缩", titleName: "PNG图片压缩", qrcLocation: "qrc:/PngOptimize/PngOptimize.qml" },
-            { bookmarkName: "JPG图片压缩", titleName: "JPG图片压缩", qrcLocation: "qrc:/JpgOptimize/JpgOptimize.qml" }
-        ]
-    },
-    {
-        bookmarkName: "工具类",
-        titleName: "工具类",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "代码行数统计", titleName: "代码行数统计", qrcLocation: "qrc:/LinesStatistics/LinesStatistics.qml" },
-            { bookmarkName: "批量替换", titleName: "批量替换", qrcLocation: "qrc:/BatchReplacement/BatchReplacement.qml" },
-            { bookmarkName: "屏幕拾色器", titleName: "屏幕拾色器", qrcLocation: "qrc:/ScreenColorPicker/ScreenColorPicker.qml" }
-        ]
-    },
-    {
-        bookmarkName: "二维码类",
-        titleName: "二维码类",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "二维码生成器", titleName: "二维码生成器", qrcLocation: "qrc:/QRCodeMaker/QRCodeMaker.qml" },
-            { bookmarkName: "条形码生成器", titleName: "条形码生成器", qrcLocation: "qrc:/BarcodeMaker/BarcodeMaker.qml" },
-            { bookmarkName: "二维码识别器", titleName: "二维码识别器", qrcLocation: "qrc:/QRCodeReader/QRCodeReader.qml" }
-        ]
-    },
-    {
-        bookmarkName: "Qt相关",
-        titleName: "Qt相关",
-        qrcLocation: "",
-        children: [
-            { bookmarkName: "PROPERTY生成", titleName: "PROPERTY生成", qrcLocation: "qrc:/PropertyMaker/PropertyMaker.qml" },
-            { bookmarkName: "CPP文件生成", titleName: "CPP文件生成", qrcLocation: "qrc:/CppFileMaker/CppFileMaker.qml" }
-        ]
+function pushChild(children, bookmarkName, titleName, qrcLocation) {
+    children.push({
+                      bookmarkName: bookmarkName,
+                      titleName: titleName,
+                      qrcLocation: qrcLocation
+                  });
+}
+
+function pushGroup(groups, bookmarkName, titleName, qrcLocation, children) {
+    groups.push({
+                    bookmarkName: bookmarkName,
+                    titleName: titleName,
+                    qrcLocation: qrcLocation,
+                    children: children
+                });
+}
+
+function itemsByPlatform(platformOs) {
+    var isWasm = (platformOs === "wasm");
+    var result = [];
+    var children = [];
+
+    result.push({
+                    bookmarkName: "首页",
+                    titleName: "首页",
+                    qrcLocation: "qrc:/Welcome/Welcome.qml",
+                    children: []
+                });
+
+    children = [];
+    pushChild(children, "UTF-16转换", "UTF-16转换", "qrc:/Utf16Transform/Utf16Transform.qml");
+    pushChild(children, "RGB转16进制", "RGB转16进制", "qrc:/RgbStringTransform/RgbStringTransform.qml");
+    pushChild(children, "大小写转换", "大小写转换", "qrc:/CaseTransform/CaseTransform.qml");
+    pushChild(children, "密码随机器", "密码随机器", "qrc:/RandomPassword/RandomPassword.qml");
+    pushChild(children, "UUID生成器", "UUID生成器", "qrc:/RandomUuid/RandomUuid.qml");
+    pushChild(children, "URL转码", "URL转码", "qrc:/UrlEncode/UrlEncode.qml");
+    pushChild(children, "JSON格式化", "JSON格式化", "qrc:/JsonFormat/JsonFormat.qml");
+    pushChild(children, "字符串排序", "字符串排序", "qrc:/StringSort/StringSort.qml");
+    pushGroup(result, "文本类", "文本类", "", children);
+
+    children = [];
+    pushChild(children, "HASH计算器", "HASH计算器", "qrc:/HashCalculate/HashCalculate.qml");
+    pushChild(children, "Unix时间戳转换", "Unix时间戳转换", "qrc:/TimestampTransform/TimestampTransform.qml");
+    pushChild(children, "二分法助手", "二分法助手", "qrc:/BinarySearchAssistant/BinarySearchAssistant.qml");
+    pushChild(children, "RSA密钥生成", "RSA密钥生成", "qrc:/RsaKeyGenerate/RsaKeyGenerate.qml");
+    pushChild(children, "RSA加解密", "RSA加解密", "qrc:/RsaCrypt/RsaCrypt.qml");
+    pushChild(children, "AES加解密", "AES加解密 & HMAC", "qrc:/AesCrypt/AesCrypt.qml");
+    pushChild(children, "文件哈希值", "文件哈希值", "qrc:/FileHashCalculate/FileHashCalculate.qml");
+    pushGroup(result, "计算类", "计算类", "", children);
+
+    if (!isWasm) {
+        children = [];
+        pushChild(children, "图标生成器", "图标生成器", "qrc:/IconMaker/IconMaker.qml");
+        pushChild(children, "图标字体转PNG", "图标字体转PNG", "qrc:/FontToPng/FontToPng.qml");
+        pushChild(children, "PNG警告消除", "PNG警告消除", "qrc:/PngWarningRemover/PngWarningRemover.qml");
+        pushChild(children, "WebP图片制作器", "WebP图片制作器", "qrc:/WebPMaker/WebPMaker.qml");
+        pushChild(children, "PNG图片压缩", "PNG图片压缩", "qrc:/PngOptimize/PngOptimize.qml");
+        pushChild(children, "JPG图片压缩", "JPG图片压缩", "qrc:/JpgOptimize/JpgOptimize.qml");
+        pushGroup(result, "图片类", "图片类", "", children);
     }
-];
+
+    children = [];
+    if (!isWasm) {
+        pushChild(children, "代码行数统计", "代码行数统计", "qrc:/LinesStatistics/LinesStatistics.qml");
+    }
+    pushChild(children, "批量替换", "批量替换", "qrc:/BatchReplacement/BatchReplacement.qml");
+    if (!isWasm) {
+        pushChild(children, "屏幕拾色器", "屏幕拾色器", "qrc:/ScreenColorPicker/ScreenColorPicker.qml");
+    }
+    pushGroup(result, "工具类", "工具类", "", children);
+
+    if (!isWasm) {
+        children = [];
+        pushChild(children, "二维码生成器", "二维码生成器", "qrc:/QRCodeMaker/QRCodeMaker.qml");
+        pushChild(children, "条形码生成器", "条形码生成器", "qrc:/BarcodeMaker/BarcodeMaker.qml");
+        pushChild(children, "二维码识别器", "二维码识别器", "qrc:/QRCodeReader/QRCodeReader.qml");
+        pushGroup(result, "二维码类", "二维码类", "", children);
+    }
+
+    children = [];
+    pushChild(children, "PROPERTY生成", "PROPERTY生成", "qrc:/PropertyMaker/PropertyMaker.qml");
+    pushChild(children, "CPP文件生成", "CPP文件生成", "qrc:/CppFileMaker/CppFileMaker.qml");
+    pushGroup(result, "Qt相关", "Qt相关", "", children);
+
+    return result;
+}
+
+var items = itemsByPlatform((typeof Qt !== "undefined" && Qt.platform) ? Qt.platform.os : "");

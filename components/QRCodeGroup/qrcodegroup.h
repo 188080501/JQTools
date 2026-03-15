@@ -14,13 +14,19 @@
 #define QRCODEGROUP_QRCODEGROUP_H_
 
 // QRCodeGroup lib import
+#ifndef Q_OS_WASM
 #include <QRCodeMaker>
 #include <BarcodeMaker>
 #include <QRCodeReader>
+#endif
 
+#ifdef Q_OS_WASM
+#define QRCODEGROUP_INITIALIZA
+#else
 #define QRCODEGROUP_INITIALIZA \
     QRCODEMAKER_INITIALIZA; \
     BARCODEMAKER_INITIALIZA; \
     QRCODEREADER_INITIALIZA;
+#endif
 
 #endif//QRCODEGROUP_QRCODEGROUP_H_

@@ -14,13 +14,20 @@
 #define TOOLSGROUP_TOOLSGROUP_H_
 
 // ToolsGroup lib import
+#include <BatchReplacement>
+#ifndef Q_OS_WASM
 #include <LinesStatistics>
 #include <ScreenColorPicker>
-#include <BatchReplacement>
+#endif
 
+#ifdef Q_OS_WASM
+#define TOOLSGROUP_INITIALIZA \
+    BATCHREPLACEMENT_INITIALIZA;
+#else
 #define TOOLSGROUP_INITIALIZA \
     LINESSTATISTICS_INITIALIZA; \
-    BATCHREPLACEMENT_INITIALIZA;\
+    BATCHREPLACEMENT_INITIALIZA; \
     SCREENCOLORPICKER_INITIALIZA;
+#endif
 
 #endif//TOOLSGROUP_TOOLSGROUP_H_

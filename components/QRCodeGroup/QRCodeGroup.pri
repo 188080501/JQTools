@@ -10,9 +10,11 @@
 #   GitHub: https://github.com/188080501/
 #
 
-include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
-include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
-include( $$PWD/QRCodeReader/QRCodeReader.pri )
+!wasm {
+    include( $$PWD/QRCodeMaker/QRCodeMaker.pri )
+    include( $$PWD/BarcodeMaker/BarcodeMaker.pri )
+    include( $$PWD/QRCodeReader/QRCodeReader.pri )
+}
 
 INCLUDEPATH *= \
     $$PWD/

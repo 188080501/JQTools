@@ -30,7 +30,9 @@
 #include <WelcomeGroup>
 #include <TextGroup>
 #include <CalculateGroup>
+#ifndef Q_OS_WASM
 #include <ImageGroup>
+#endif
 #include <ToolsGroup>
 #include <QRCodeGroup>
 #include <QtGroup>
@@ -120,7 +122,9 @@ int main(int argc, char *argv[])
     WELCOMEGROUP_INITIALIZA
     TEXTGROUP_INITIALIZA
     CALCULATEGROUP_INITIALIZA
+#ifndef Q_OS_WASM
     IMAGEGROUP_INITIALIZA
+#endif
     TOOLSGROUP_INITIALIZA
     QRCODEGROUP_INITIALIZA
     QTGROUP_INITIALIZA

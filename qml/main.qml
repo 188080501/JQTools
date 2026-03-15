@@ -32,7 +32,7 @@ JQWindow {
 
         opacityAnimation.start();
 
-        bookmarkListView.refresh( BookmarkData.items );
+        bookmarkListView.refresh( BookmarkData.itemsByPlatform( Qt.platform.os ) );
     }
 
     NumberAnimation {
