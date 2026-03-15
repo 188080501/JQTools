@@ -269,9 +269,9 @@ JQWindow {
 
         MouseArea {
             anchors.fill: parent
-            acceptedButtons: Qt.MidButton
+            acceptedButtons: Qt.MiddleButton
 
-            onWheel: {
+            onWheel: function(wheel) {
                 bookmarkListView.contentY -= wheel.angleDelta.y;
 
                 if ( bookmarkListView.contentY < 0 )

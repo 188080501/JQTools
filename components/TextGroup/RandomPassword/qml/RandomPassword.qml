@@ -46,7 +46,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 60
                 maximumLength: 3
-                validator: RegExpValidator { regExp: /^([0-9]+)$/ }
+                validator: IntValidator { bottom: 0 }
                 text: "11"
             }
         }

@@ -134,12 +134,12 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 - Windows 10/11
 - Qt 5.15.2
+- Qt 6.5.3
 - MSVC2019 64bit Kit
 
 兼容性说明：
 
-- 建议最低使用 Qt 5.15。
-- Qt 6.7.2（含 WASM）正在逐步适配中，尚未全部完成。
+- 当前已支持并验证 Qt 5.15.2 与 Qt 6.5.3。
 
 本项目是标准 `qmake` 工程，无额外生成脚本或预处理步骤。
 
@@ -151,12 +151,10 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 1. 打开 Qt Creator，选择 `File -> Open File or Project...`。
 2. 选择仓库根目录下的 `JQTools.pro`。
-3. 在 Kit 中选择 `Desktop Qt 5.15.2 MSVC2019 64bit`（或本机可用的等效 Kit）。
+3. 选择 Kit。
 4. 点击“配置项目”后直接构建并运行。
 
 #### 方式 B：使用命令行（qmake）
-
-以下示例基于 `Qt 5.15.2 + MSVC2019 64bit`：
 
 ```powershell
 mkdir build

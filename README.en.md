@@ -134,12 +134,12 @@ Verified environment:
 
 - Windows 10/11
 - Qt 5.15.2
+- Qt 6.5.3
 - MSVC2019 64bit Kit
 
 Compatibility notes:
 
-- Recommended minimum Qt version: Qt 5.15.
-- Qt 6.7.2 (including WASM) is being adapted progressively and is not fully completed yet.
+- Currently supported and verified Qt versions: Qt 5.15.2 and Qt 6.5.3.
 
 This project is a standard `qmake` project, with no extra generation scripts or preprocessing steps.
 
@@ -151,12 +151,10 @@ Build entry:
 
 1. Open Qt Creator and choose `File -> Open File or Project...`.
 2. Select `JQTools.pro` in the repository root.
-3. Choose `Desktop Qt 5.15.2 MSVC2019 64bit` kit (or an equivalent available kit on your machine).
+3. Choose kit.
 4. Click "Configure Project", then build and run directly.
 
 #### Option B: Build from Command Line (qmake)
-
-The example below is based on `Qt 5.15.2 + MSVC2019 64bit`:
 
 ```powershell
 mkdir build

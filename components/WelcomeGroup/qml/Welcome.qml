@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -42,7 +42,7 @@ Item {
     JQButton {
         x: 254
         y: 278
-        width: 120
+        width: 140
         text: "前往GitHub"
         anchors.verticalCenterOffset: 53
         anchors.horizontalCenterOffset: -95
@@ -57,7 +57,7 @@ Item {
     JQButton {
         x: 254
         y: 278
-        width: 120
+        width: 140
         text: "下载最新版本"
         anchors.verticalCenterOffset: 53
         anchors.horizontalCenterOffset: 95

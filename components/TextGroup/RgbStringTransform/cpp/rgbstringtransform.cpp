@@ -14,12 +14,34 @@
 
 // Qt lib import
 #include <QColor>
+#include <QColorDialog>
 
 using namespace RgbStringTransform;
 
 QString Manage::getHexStringFromColorName(const QString &colorName)
 {
     return QColor( colorName ).name();
+}
+
+QString Manage::getHexStringFromColorDialog(const QString &defaultHexString)
+{
+    QColor defaultColor( defaultHexString );
+    if ( !defaultColor.isValid() )
+    {
+        defaultColor = QColor( Qt::white );
+    }
+
+    const auto selectedColor = QColorDialog::getColor(
+                    defaultColor,
+                    nullptr,
+                    QStringLiteral( "选择一个颜色" )
+                );
+    if ( !selectedColor.isValid() )
+    {
+        return QString();
+    }
+
+    return selectedColor.name();
 }
 
 QString Manage::getHexString(const QString &red, const QString &green, const QString &blue)

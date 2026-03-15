@@ -11,7 +11,6 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Dialogs 1.3
 import JQControls 1.0
 import RgbStringTransform 1.0
 
@@ -158,16 +157,11 @@ Item {
             text: "颜色对话框获取"
 
             onClicked: {
-                colorDialog.open();
-            }
-        }
-
-        ColorDialog {
-            id: colorDialog
-            title: "选择一个颜色"
-            onAccepted: {
-                textFieldForHexString.text = rgbStringTransformManage.getHexString(colorDialog.color);
-                JQGlobal.showMessage( "已从颜色对话框获取颜色" );
+                const chosenHexString = rgbStringTransformManage.getHexStringFromColorDialog(
+                            textFieldForHexString.text
+                        );
+                if ( chosenHexString === "" ) { return; }
+                textFieldForHexString.text = chosenHexString;
             }
         }
 

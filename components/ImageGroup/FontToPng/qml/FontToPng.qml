@@ -218,7 +218,7 @@ Item {
                     rectangleForChar.color = "#00000000"
                 }
 
-                onClicked: {
+                onClicked: function(mouse) {
                     if ( mouse.button & Qt.LeftButton )
                     {
                         backgroundForDialog.opacity = 1.0;
@@ -364,7 +364,7 @@ Item {
                 y: 176
                 width: 120
                 text: "1000"
-                validator: RegExpValidator { regExp: /^(-?\d+)$/ }
+                validator: IntValidator { }
             }
 
             JQText {

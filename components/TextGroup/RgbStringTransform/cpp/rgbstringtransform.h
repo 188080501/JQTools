@@ -39,6 +39,7 @@ public:
 
 public slots:
     QString getHexStringFromColorName(const QString &colorName);
+    QString getHexStringFromColorDialog(const QString &defaultHexString);
 
     QString getHexString(const QString &red, const QString &green, const QString &blue);
     QString getHexString(QColor color);
