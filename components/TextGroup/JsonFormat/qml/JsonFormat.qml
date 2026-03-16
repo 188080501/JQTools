@@ -61,97 +61,94 @@ Item {
         }
     }
 
-    Row {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.top
-        anchors.verticalCenterOffset: 55
-        spacing: 32
+    Column {
+        anchors.fill: parent
+        anchors.margins: 10
+        spacing: 8
 
-        JQCheckBox {
-            id: checkBoxForCompact
-            anchors.verticalCenter: parent.verticalCenter
-            text: "压缩模式"
-        }
+        Row {
+            id: topRow
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 32
 
-        JQButton {
-            anchors.verticalCenter: parent.verticalCenter
-            width: 120
-            text: "格式化"
+            JQCheckBox {
+                id: checkBoxForCompact
+                anchors.verticalCenter: parent.verticalCenter
+                text: "压缩模式"
+            }
 
-            onClicked: jsonFormat.format();
-        }
+            JQButton {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 120
+                text: "格式化"
 
-        JQButton {
-            anchors.verticalCenter: parent.verticalCenter
-            width: 140
-            text: "处理剪贴板"
+                onClicked: jsonFormat.format();
+            }
 
-            onClicked: {
-                textFieldForSource.text = jsonFormatManage.clipboardText();
-                if ( !jsonFormat.format() ) { return; }
-                jsonFormatManage.setClipboardText( textFieldForSource.text );
-                JQGlobal.showMessage( "格式化后的JSON字符串已经复制到了剪贴板" );
+            JQButton {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 140
+                text: "处理剪贴板"
+
+                onClicked: {
+                    textFieldForSource.text = jsonFormatManage.clipboardText();
+                    if ( !jsonFormat.format() ) { return; }
+                    jsonFormatManage.setClipboardText( textFieldForSource.text );
+                    JQGlobal.showMessage( "格式化后的JSON字符串已经复制到了剪贴板" );
+                }
             }
         }
-    }
 
-    JQText {
-        id: labelForParseError
-        x: 10
-        y: 72
-        width: jsonFormat.width - 20
-        color: "#d32f2f"
-        wrapMode: Text.WordWrap
-        font.pixelSize: 13
-    }
-
-    JQPane {
-        z: -1
-        anchors.fill: itemForSource
-        anchors.margins: -3
-    }
-
-    Item {
-        id: itemForSource
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        anchors.top: parent.top
-        anchors.topMargin: 110
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        width: jsonFormat.width - 20
-        clip: true
-
-        Rectangle {
-            anchors.fill: parent
-            color: "#ffffff"
+        JQText {
+            id: labelForParseError
+            width: parent.width
+            height: Math.max( 20, implicitHeight )
+            color: "#d32f2f"
+            wrapMode: Text.WordWrap
+            font.pixelSize: 13
         }
 
-        Flickable {
-            x: 5
-            y: 5
-            width: parent.width - 10
-            height: parent.height - 10
-            contentWidth: textFieldForSource.paintedWidth
-            contentHeight: textFieldForSource.paintedHeight
+        Item {
+            id: itemForSource
+            width: parent.width
+            height: Math.max( 0, parent.height - topRow.height - labelForParseError.height - parent.spacing * 2 )
             clip: true
 
-            TextEdit {
-                id: textFieldForSource
-                width: parent.width
-                height: parent.height
-                selectByMouse: true
-                selectionColor: "#2799f3"
-                text: "{}"
+            JQPane {
+                z: -1
+                anchors.fill: parent
+                anchors.margins: -3
             }
-        }
 
-        MouseArea {
-            anchors.fill: parent
-            visible: !textFieldForSource.focus
+            Rectangle {
+                anchors.fill: parent
+                color: "#ffffff"
+            }
 
-            onClicked: {
-                textFieldForSource.focus = true;
+            Flickable {
+                anchors.fill: parent
+                anchors.margins: 5
+                contentWidth: textFieldForSource.paintedWidth
+                contentHeight: textFieldForSource.paintedHeight
+                clip: true
+
+                TextEdit {
+                    id: textFieldForSource
+                    width: parent.width
+                    height: parent.height
+                    selectByMouse: true
+                    selectionColor: "#2799f3"
+                    text: "{}"
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                visible: !textFieldForSource.focus
+
+                onClicked: {
+                    textFieldForSource.focus = true;
+                }
             }
         }
     }

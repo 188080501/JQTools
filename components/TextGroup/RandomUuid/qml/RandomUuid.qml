@@ -29,51 +29,47 @@ Item {
         id: randomUuidManage
     }
 
-    Item {
+    Column {
         anchors.centerIn: parent
-        width: 620
-        height: 540
-
-        JQTextField {
-            id: textFieldForUuid
-            x: 40
-            y: 317
-            width: 540
-            placeholderText: "随机UUID"
-        }
+        width: 540
+        spacing: 22
 
         JQCheckBox {
             id: checkBoxForNumber
-            x: 34
-            y: 181
             text: "包括大括号"
             checked: false
         }
 
-        JQButton {
-            x: 40
-            y: 259
-            width: 120
-            text: "随机UUID"
+        Row {
+            spacing: 12
 
-            onClicked: {
-                textFieldForUuid.text = randomUuidManage.randomUuid(
-                                checkBoxForNumber.checked
-                            );
-                JQGlobal.showMessage( "随机UUID已经生成" );
+            JQButton {
+                width: 120
+                text: "随机UUID"
+
+                onClicked: {
+                    textFieldForUuid.text = randomUuidManage.randomUuid(
+                                    checkBoxForNumber.checked
+                                );
+                    JQGlobal.showMessage( "随机UUID已经生成" );
+                }
+            }
+
+            JQButton {
+                width: 140
+                text: "复制到剪贴板"
+
+                onClicked: {
+                    randomUuidManage.setClipboardText( textFieldForUuid.text );
+                    JQGlobal.showMessage( "UUID已经复制到了剪贴板" );
+                }
             }
         }
 
-        JQButton {
-            x: 166
-            y: 259
-            width: 140
-            text: "复制到剪贴板"
-
-            onClicked: {
-                randomUuidManage.setClipboardText( textFieldForUuid.text );
-                JQGlobal.showMessage( "UUID已经复制到了剪贴板" );
-            }
+        JQTextField {
+            id: textFieldForUuid
+            width: parent.width
+            placeholderText: "随机UUID"
         }
     }
 }

@@ -25,167 +25,166 @@ Item {
         id: utf16TransformManage
     }
 
-    JQText {
-        x: 162
-        text:
+    Column {
+        anchors.fill: parent
+        anchors.margins: 10
+        spacing: 12
+
+        Row {
+            id: topRow
+            width: parent.width
+            spacing: 12
+
+            JQText {
+                width: topRow.width - processClipboardButton.width - topRow.spacing
+                text:
 "Unicode 转义转换工具，可以将文本和 \\uXXXX 之间互转
 例如将 “中文” 与 “\\u4E2D\\u6587” 互转"
-        anchors.horizontalCenterOffset: -100
-        anchors.top: parent.top
-        anchors.topMargin: 18
-        anchors.horizontalCenter: parent.horizontalCenter
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-    }
+                verticalAlignment: Text.AlignVCenter
+            }
 
-    JQButton {
-        x: 420
-        width: 140
-        text: "处理剪贴板"
-        anchors.horizontalCenterOffset: 160
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 18
+            JQButton {
+                id: processClipboardButton
+                width: 140
+                text: "处理剪贴板"
+                anchors.verticalCenter: parent.verticalCenter
 
-        onClicked: {
-            textFieldForSource.text = utf16TransformManage.clipboardText();
-            utf16TransformManage.setClipboardText( textFieldForTarget.text );
-            JQGlobal.showMessage( "Unicode 转义字符串已经复制到了剪贴板" );
-        }
-    }
-
-    JQText {
-        text: "文本字符串"
-        anchors.horizontalCenterOffset: 0
-        anchors.bottom: itemForSource.top
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: itemForSource.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-    }
-
-    JQPane {
-        z: -1
-        anchors.fill: itemForSource
-        anchors.margins: -3
-    }
-
-    Item {
-        id: itemForSource
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        width: (utf16Transform.width - 40) / 2
-        height: utf16Transform.height - 110
-        clip: true
-
-        Rectangle {
-            anchors.fill: parent
-            color: "#ffffff"
-        }
-
-        Flickable {
-            x: 5
-            y: 5
-            width: parent.width - 10
-            height: parent.height - 10
-            contentWidth: textFieldForSource.paintedWidth
-            contentHeight: textFieldForSource.paintedHeight
-            clip: true
-
-            TextEdit {
-                id: textFieldForSource
-                width: parent.width
-                height: parent.height
-                selectByMouse: true
-                selectionColor: "#2799f3"
-
-                onTextChanged: {
-                    if ( utf16Transform.changingFlag ) { return; }
-
-                    utf16Transform.changingFlag = true;
-
-                    textFieldForTarget.text = utf16TransformManage.encodeToUnicodeEscape( textFieldForSource.text );
-
-                    utf16Transform.changingFlag = false;
+                onClicked: {
+                    textFieldForSource.text = utf16TransformManage.clipboardText();
+                    utf16TransformManage.setClipboardText( textFieldForTarget.text );
+                    JQGlobal.showMessage( "Unicode 转义字符串已经复制到了剪贴板" );
                 }
             }
         }
 
-        MouseArea {
-            anchors.fill: parent
-            visible: !textFieldForSource.focus
+        Row {
+            id: titleRow
+            width: parent.width
+            spacing: 20
 
-            onClicked: {
-                textFieldForSource.focus = true;
+            JQText {
+                width: ( titleRow.width - titleRow.spacing ) / 2
+                text: "文本字符串"
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            JQText {
+                width: ( titleRow.width - titleRow.spacing ) / 2
+                text: "Unicode转义字符串"
+                horizontalAlignment: Text.AlignHCenter
             }
         }
-    }
 
-    JQText {
-        text: "Unicode转义字符串"
-        anchors.horizontalCenterOffset: 0
-        anchors.bottom: itemForTarget.top
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: itemForTarget.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-    }
+        Row {
+            id: editorRow
+            width: parent.width
+            height: Math.max( 0, parent.height - topRow.height - titleRow.height - parent.spacing * 2 )
+            spacing: 20
 
-    JQPane {
-        z: -1
-        anchors.fill: itemForTarget
-        anchors.margins: -3
-    }
+            Item {
+                id: itemForSource
+                width: ( editorRow.width - editorRow.spacing ) / 2
+                height: editorRow.height
+                clip: true
 
-    Item {
-        id: itemForTarget
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        width: (utf16Transform.width - 40) / 2
-        height: utf16Transform.height - 110
-        clip: true
+                JQPane {
+                    z: -1
+                    anchors.fill: parent
+                    anchors.margins: -3
+                }
 
-        Rectangle {
-            anchors.fill: parent
-            color: "#ffffff"
-        }
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#ffffff"
+                }
 
-        Flickable {
-            x: 5
-            y: 5
-            width: parent.width - 10
-            height: parent.height - 10
-            contentWidth: textFieldForTarget.paintedWidth
-            contentHeight: textFieldForTarget.paintedHeight
-            clip: true
+                Flickable {
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    contentWidth: textFieldForSource.paintedWidth
+                    contentHeight: textFieldForSource.paintedHeight
+                    clip: true
 
-            TextEdit {
-                id: textFieldForTarget
-                width: parent.width
-                height: parent.height
-                selectByMouse: true
-                selectionColor: "#2799f3"
+                    TextEdit {
+                        id: textFieldForSource
+                        width: parent.width
+                        height: parent.height
+                        selectByMouse: true
+                        selectionColor: "#2799f3"
 
-                onTextChanged: {
-                    if ( utf16Transform.changingFlag ) { return; }
+                        onTextChanged: {
+                            if ( utf16Transform.changingFlag ) { return; }
 
-                    utf16Transform.changingFlag = true;
+                            utf16Transform.changingFlag = true;
 
-                    textFieldForSource.text = utf16TransformManage.decodeFromUnicodeEscape( textFieldForTarget.text );
+                            textFieldForTarget.text = utf16TransformManage.encodeToUnicodeEscape( textFieldForSource.text );
 
-                    utf16Transform.changingFlag = false;
+                            utf16Transform.changingFlag = false;
+                        }
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    visible: !textFieldForSource.focus
+
+                    onClicked: {
+                        textFieldForSource.focus = true;
+                    }
                 }
             }
-        }
 
-        MouseArea {
-            anchors.fill: parent
-            visible: !textFieldForTarget.focus
+            Item {
+                id: itemForTarget
+                width: ( editorRow.width - editorRow.spacing ) / 2
+                height: editorRow.height
+                clip: true
 
-            onClicked: {
-                textFieldForTarget.focus = true;
+                JQPane {
+                    z: -1
+                    anchors.fill: parent
+                    anchors.margins: -3
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#ffffff"
+                }
+
+                Flickable {
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    contentWidth: textFieldForTarget.paintedWidth
+                    contentHeight: textFieldForTarget.paintedHeight
+                    clip: true
+
+                    TextEdit {
+                        id: textFieldForTarget
+                        width: parent.width
+                        height: parent.height
+                        selectByMouse: true
+                        selectionColor: "#2799f3"
+
+                        onTextChanged: {
+                            if ( utf16Transform.changingFlag ) { return; }
+
+                            utf16Transform.changingFlag = true;
+
+                            textFieldForSource.text = utf16TransformManage.decodeFromUnicodeEscape( textFieldForTarget.text );
+
+                            utf16Transform.changingFlag = false;
+                        }
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    visible: !textFieldForTarget.focus
+
+                    onClicked: {
+                        textFieldForTarget.focus = true;
+                    }
+                }
             }
         }
     }

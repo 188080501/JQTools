@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -22,7 +22,7 @@ Item {
     property bool changingFlag: false
     property int panelLabelHeight: 24
     property int panelLabelBottomMargin: 8
-    property int panelTopMargin: 130
+    property int panelTopMargin: 140
     property int panelSpacing: 36
     property int panelBottomMargin: 10
     property int panelAreaHeight: height - panelTopMargin - panelBottomMargin - panelSpacing * 2
@@ -65,101 +65,101 @@ Item {
         }
     }
 
-    JQButton {
-        x: 10
-        y: 10
-        width: 120
-        text: qsTr("公钥加密")
+    Column {
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: 8
+        spacing: -2
 
-        onClicked: {
-            rsaCryptManage.publicKeyEncryptToBase64();
-            if ( rsaCryptManage.errorString().length === 0 )
-            {
-                JQGlobal.showMessage( qsTr("RSA 公钥加密成功") );
+        Row {
+            spacing: 10
+
+            JQButton {
+                width: 130
+                text: qsTr("公钥加密")
+
+                onClicked: {
+                    rsaCryptManage.publicKeyEncryptToBase64();
+                    if ( rsaCryptManage.errorString().length === 0 )
+                    {
+                        JQGlobal.showMessage( qsTr("RSA 公钥加密成功") );
+                    }
+                }
+            }
+
+            JQButton {
+                width: 130
+                text: qsTr("私钥解密")
+
+                onClicked: {
+                    rsaCryptManage.privateKeyDecryptFromBase64();
+                    if ( rsaCryptManage.errorString().length === 0 )
+                    {
+                        JQGlobal.showMessage( qsTr("RSA 私钥解密成功") );
+                    }
+                }
+            }
+
+            JQButton {
+                width: 130
+                text: qsTr("输出覆盖输入")
+
+                onClicked: {
+                    rsaCryptManage.moveTargetToSource();
+                }
+            }
+
+            JQButton {
+                width: 130
+                text: qsTr("清空全部")
+
+                onClicked: {
+                    rsaCryptManage.clear();
+                }
             }
         }
-    }
 
-    JQButton {
-        x: 140
-        y: 10
-        width: 120
-        text: qsTr("私钥解密")
+        Row {
+            spacing: 10
 
-        onClicked: {
-            rsaCryptManage.privateKeyDecryptFromBase64();
-            if ( rsaCryptManage.errorString().length === 0 )
-            {
-                JQGlobal.showMessage( qsTr("RSA 私钥解密成功") );
+            JQButton {
+                width: 130
+                text: qsTr("粘贴输入")
+
+                onClicked: {
+                    rsaCryptManage.pasteSource();
+                }
             }
-        }
-    }
 
-    JQButton {
-        x: 270
-        y: 10
-        width: 120
-        text: qsTr("输出覆盖输入")
+            JQButton {
+                width: 130
+                text: qsTr("粘贴密钥")
 
-        onClicked: {
-            rsaCryptManage.moveTargetToSource();
-        }
-    }
+                onClicked: {
+                    rsaCryptManage.pasteKeyPem();
+                }
+            }
 
-    JQButton {
-        x: 400
-        y: 10
-        width: 100
-        text: qsTr("清空全部")
+            JQButton {
+                width: 130
+                text: qsTr("复制输出")
 
-        onClicked: {
-            rsaCryptManage.clear();
-        }
-    }
+                onClicked: {
+                    rsaCryptManage.copyTarget();
+                    JQGlobal.showMessage( qsTr("已将输出内容复制到剪贴板") );
+                }
+            }
 
-    JQButton {
-        x: 10
-        y: 54
-        width: 100
-        text: qsTr("粘贴输入")
+            JQButton {
+                width: 130
+                text: qsTr("复制密钥")
 
-        onClicked: {
-            rsaCryptManage.pasteSource();
-        }
-    }
-
-    JQButton {
-        x: 120
-        y: 54
-        width: 100
-        text: qsTr("粘贴密钥")
-
-        onClicked: {
-            rsaCryptManage.pasteKeyPem();
-        }
-    }
-
-    JQButton {
-        x: 230
-        y: 54
-        width: 100
-        text: qsTr("复制输出")
-
-        onClicked: {
-            rsaCryptManage.copyTarget();
-            JQGlobal.showMessage( qsTr("已将输出内容复制到剪贴板") );
-        }
-    }
-
-    JQButton {
-        x: 340
-        y: 54
-        width: 100
-        text: qsTr("复制密钥")
-
-        onClicked: {
-            rsaCryptManage.copyKeyPem();
-            JQGlobal.showMessage( qsTr("已将密钥复制到剪贴板") );
+                onClicked: {
+                    rsaCryptManage.copyKeyPem();
+                    JQGlobal.showMessage( qsTr("已将密钥复制到剪贴板") );
+                }
+            }
         }
     }
 

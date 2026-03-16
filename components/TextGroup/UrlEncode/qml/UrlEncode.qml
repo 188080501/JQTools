@@ -29,21 +29,21 @@ Item {
         id: urlEncodeManage
     }
 
-    Item {
+    Column {
         anchors.centerIn: parent
-        width: 620
-        height: 540
+        width: 540
+        spacing: 18
 
-        JQText {
-            x: 40
-            y: 70
-            text: "不编码字符"
+        Row {
+            spacing: 12
+
+            JQText {
+                text: "不编码字符"
+                anchors.verticalCenter: parent.verticalCenter
+            }
 
             JQTextField {
                 id: textFieldForExclude
-                anchors.left: parent.right
-                anchors.leftMargin: 12
-                anchors.verticalCenter: parent.verticalCenter
                 width: 150
                 text: "/:?=&%"
 
@@ -60,8 +60,6 @@ Item {
         }
 
         JQButton {
-            x: 40
-            y: 155
             width: 140
             text: "从剪贴板粘贴"
 
@@ -73,9 +71,7 @@ Item {
 
         JQTextField {
             id: textFieldForSource
-            x: 40
-            y: 205
-            width: 540
+            width: parent.width
             placeholderText: "源URL"
             text: "https://www.google.com/search?q=中文"
 
@@ -91,8 +87,6 @@ Item {
         }
 
         JQButton {
-            x: 40
-            y: 320
             width: 140
             text: "复制到剪贴板"
 
@@ -104,9 +98,7 @@ Item {
 
         JQTextField {
             id: textFieldForTarget
-            x: 40
-            y: 365
-            width: 540
+            width: parent.width
             placeholderText: "编码URL"
             text: "https://www.google.com/search?q=%E4%B8%AD%E6%96%87"
 

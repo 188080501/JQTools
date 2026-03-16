@@ -93,7 +93,7 @@ Item {
     JQButton {
         x: 316
         y: 78
-        width: 120
+        width: 130
         height: 50
         text: qsTr( "清空" )
 
@@ -105,7 +105,7 @@ Item {
     JQPane {
         x: 40
         y: 142
-        width: 560
+        width: 630
         height: 230
     }
 
@@ -128,17 +128,19 @@ Item {
     JQText {
         x: 58
         y: 206
-        width: 400
+        width: 450
+        height: 50
         text: qsTr( "MD5：" ) + fileHashCalculate.md5Value
+        verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
 
     JQButton {
-        x: 468
-        y: 194
-        width: 110
+        x: 520
+        y: 206
+        width: 130
         height: 50
-        text: qsTr( "复制 MD5" )
+        text: qsTr( "复制MD5" )
 
         onClicked: {
             if ( fileHashCalculate.md5Value.length === 0 )
@@ -155,17 +157,19 @@ Item {
     JQText {
         x: 58
         y: 258
-        width: 400
+        width: 450
+        height: 50
         text: qsTr( "SHA1：" ) + fileHashCalculate.sha1Value
+        verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
 
     JQButton {
-        x: 468
-        y: 246
-        width: 110
+        x: 520
+        y: 258
+        width: 130
         height: 50
-        text: qsTr( "复制 SHA1" )
+        text: qsTr( "复制SHA1" )
 
         onClicked: {
             if ( fileHashCalculate.sha1Value.length === 0 )
@@ -182,17 +186,19 @@ Item {
     JQText {
         x: 58
         y: 310
-        width: 400
+        width: 450
+        height: 50
         text: qsTr( "SHA256：" ) + fileHashCalculate.sha256Value
+        verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
 
     JQButton {
-        x: 468
-        y: 298
-        width: 110
+        x: 520
+        y: 310
+        width: 130
         height: 50
-        text: qsTr( "复制 SHA256" )
+        text: qsTr( "复制SHA256" )
 
         onClicked: {
             if ( fileHashCalculate.sha256Value.length === 0 )

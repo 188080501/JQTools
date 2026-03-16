@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -22,7 +22,7 @@ Item {
     property bool changingFlag: false
     property int panelLabelHeight: 24
     property int panelLabelBottomMargin: 8
-    property int panelTopMargin: 200
+    property int panelTopMargin: 195
     property int panelSpacing: 36
     property int panelBottomMargin: 10
     property int panelAreaHeight: height - panelTopMargin - panelBottomMargin - panelSpacing
@@ -72,171 +72,169 @@ Item {
         }
     }
 
-    JQButton {
-        x: 10
-        y: 10
-        width: 120
-        text: qsTr("AES加密")
+    Column {
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: 8
+        spacing: -2
 
-        onClicked: {
-            aesCryptManage.encryptToBase64();
-            if ( aesCryptManage.errorString().length === 0 )
-            {
-                JQGlobal.showMessage( qsTr("AES-CBC 加密成功") );
+        Row {
+            spacing: 10
+
+            JQButton {
+                width: 120
+                text: qsTr("AES加密")
+
+                onClicked: {
+                    aesCryptManage.encryptToBase64();
+                    if ( aesCryptManage.errorString().length === 0 )
+                    {
+                        JQGlobal.showMessage( qsTr("AES-CBC 加密成功") );
+                    }
+                }
+            }
+
+            JQButton {
+                width: 120
+                text: qsTr("AES解密")
+
+                onClicked: {
+                    aesCryptManage.decryptFromBase64();
+                    if ( aesCryptManage.errorString().length === 0 )
+                    {
+                        JQGlobal.showMessage( qsTr("AES-CBC 解密成功") );
+                    }
+                }
+            }
+
+            JQButton {
+                width: 120
+                text: qsTr("HMAC计算")
+
+                onClicked: {
+                    aesCryptManage.calculateHmacSha256ToHex();
+                    if ( aesCryptManage.errorString().length === 0 )
+                    {
+                        JQGlobal.showMessage( qsTr("HMAC-SHA256 计算成功") );
+                    }
+                }
+            }
+
+            JQButton {
+                width: 130
+                text: qsTr("输出覆盖输入")
+
+                onClicked: {
+                    aesCryptManage.moveTargetToSource();
+                }
+            }
+
+            JQButton {
+                width: 120
+                text: qsTr("清空全部")
+
+                onClicked: {
+                    aesCryptManage.clear();
+                }
+            }
+        }
+
+        Row {
+            spacing: 10
+
+            JQButton {
+                width: 110
+                text: qsTr("粘贴输入")
+
+                onClicked: {
+                    aesCryptManage.pasteSource();
+                }
+            }
+
+            JQButton {
+                width: 110
+                text: qsTr("粘贴密钥")
+
+                onClicked: {
+                    aesCryptManage.pasteKey();
+                }
+            }
+
+            JQButton {
+                width: 110
+                text: qsTr("粘贴IV")
+
+                onClicked: {
+                    aesCryptManage.pasteIv();
+                }
+            }
+
+            JQButton {
+                width: 110
+                text: qsTr("复制输出")
+
+                onClicked: {
+                    aesCryptManage.copyTarget();
+                    JQGlobal.showMessage( qsTr("已将输出复制到剪贴板") );
+                }
+            }
+
+            JQButton {
+                width: 110
+                text: qsTr("复制密钥")
+
+                onClicked: {
+                    aesCryptManage.copyKey();
+                    JQGlobal.showMessage( qsTr("已将密钥复制到剪贴板") );
+                }
+            }
+
+            JQButton {
+                width: 110
+                text: qsTr("复制IV")
+
+                onClicked: {
+                    aesCryptManage.copyIv();
+                    JQGlobal.showMessage( qsTr("已将 IV 复制到剪贴板") );
+                }
             }
         }
     }
 
-    JQButton {
-        x: 140
-        y: 10
-        width: 120
-        text: qsTr("AES解密")
+    Row {
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        anchors.top: parent.top
+        anchors.topMargin: 106
+        spacing: 14
 
-        onClicked: {
-            aesCryptManage.decryptFromBase64();
-            if ( aesCryptManage.errorString().length === 0 )
-            {
-                JQGlobal.showMessage( qsTr("AES-CBC 解密成功") );
+        JQTextField {
+            id: keyTextField
+            width: 286
+            placeholderText: qsTr("密钥（16/24/32字节）")
+
+            onTextChanged: {
+                if ( aesCrypt.changingFlag ) { return; }
+
+                aesCrypt.changingFlag = true;
+                aesCryptManage.setKey( keyTextField.text );
+                aesCrypt.changingFlag = false;
             }
         }
-    }
 
-    JQButton {
-        x: 270
-        y: 10
-        width: 120
-        text: qsTr("HMAC计算")
+        JQTextField {
+            id: ivTextField
+            width: 286
+            placeholderText: qsTr("IV（16字节）")
 
-        onClicked: {
-            aesCryptManage.calculateHmacSha256ToHex();
-            if ( aesCryptManage.errorString().length === 0 )
-            {
-                JQGlobal.showMessage( qsTr("HMAC-SHA256 计算成功") );
+            onTextChanged: {
+                if ( aesCrypt.changingFlag ) { return; }
+
+                aesCrypt.changingFlag = true;
+                aesCryptManage.setIv( ivTextField.text );
+                aesCrypt.changingFlag = false;
             }
-        }
-    }
-
-    JQButton {
-        x: 400
-        y: 10
-        width: 100
-        text: qsTr("输出覆盖输入")
-
-        onClicked: {
-            aesCryptManage.moveTargetToSource();
-        }
-    }
-
-    JQButton {
-        x: 510
-        y: 10
-        width: 100
-        text: qsTr("清空全部")
-
-        onClicked: {
-            aesCryptManage.clear();
-        }
-    }
-
-    JQButton {
-        x: 10
-        y: 64
-        width: 90
-        text: qsTr("粘贴输入")
-
-        onClicked: {
-            aesCryptManage.pasteSource();
-        }
-    }
-
-    JQButton {
-        x: 110
-        y: 64
-        width: 90
-        text: qsTr("粘贴密钥")
-
-        onClicked: {
-            aesCryptManage.pasteKey();
-        }
-    }
-
-    JQButton {
-        x: 210
-        y: 64
-        width: 90
-        text: qsTr("粘贴IV")
-
-        onClicked: {
-            aesCryptManage.pasteIv();
-        }
-    }
-
-    JQButton {
-        x: 310
-        y: 64
-        width: 90
-        text: qsTr("复制输出")
-
-        onClicked: {
-            aesCryptManage.copyTarget();
-            JQGlobal.showMessage( qsTr("已将输出复制到剪贴板") );
-        }
-    }
-
-    JQButton {
-        x: 410
-        y: 64
-        width: 90
-        text: qsTr("复制密钥")
-
-        onClicked: {
-            aesCryptManage.copyKey();
-            JQGlobal.showMessage( qsTr("已将密钥复制到剪贴板") );
-        }
-    }
-
-    JQButton {
-        x: 510
-        y: 64
-        width: 90
-        text: qsTr("复制IV")
-
-        onClicked: {
-            aesCryptManage.copyIv();
-            JQGlobal.showMessage( qsTr("已将 IV 复制到剪贴板") );
-        }
-    }
-
-    JQTextField {
-        id: keyTextField
-        x: 16
-        y: 106
-        width: 286
-        placeholderText: qsTr("密钥（16/24/32字节）")
-
-        onTextChanged: {
-            if ( aesCrypt.changingFlag ) { return; }
-
-            aesCrypt.changingFlag = true;
-            aesCryptManage.setKey( keyTextField.text );
-            aesCrypt.changingFlag = false;
-        }
-    }
-
-    JQTextField {
-        id: ivTextField
-        x: 316
-        y: 106
-        width: 286
-        placeholderText: qsTr("IV（16字节）")
-
-        onTextChanged: {
-            if ( aesCrypt.changingFlag ) { return; }
-
-            aesCrypt.changingFlag = true;
-            aesCryptManage.setIv( ivTextField.text );
-            aesCrypt.changingFlag = false;
         }
     }
 

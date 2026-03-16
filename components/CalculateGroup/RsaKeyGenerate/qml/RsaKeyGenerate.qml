@@ -1,4 +1,4 @@
-/*
+﻿/*
     This file is part of JQTools
 
     Project introduce: https://github.com/188080501/JQTools
@@ -81,7 +81,7 @@ Item {
 
         JQButton {
             anchors.verticalCenter: parent.verticalCenter
-            width: 120
+            width: 130
             text: qsTr( "生成密钥" )
 
             onClicked: {
@@ -95,7 +95,7 @@ Item {
 
         JQButton {
             anchors.verticalCenter: parent.verticalCenter
-            width: 100
+            width: 130
             text: qsTr( "复制公钥" )
 
             onClicked: {
@@ -106,7 +106,7 @@ Item {
 
         JQButton {
             anchors.verticalCenter: parent.verticalCenter
-            width: 100
+            width: 130
             text: qsTr( "复制私钥" )
 
             onClicked: {

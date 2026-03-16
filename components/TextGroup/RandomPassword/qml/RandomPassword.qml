@@ -29,21 +29,21 @@ Item {
         id: randomPasswordManage
     }
 
-    Item {
+    Column {
         anchors.centerIn: parent
-        width: 620
-        height: 540
+        width: 540
+        spacing: 16
 
-        JQText {
-            x: 40
-            y: 92
-            text: qsTr( "密码长度：" )
+        Row {
+            spacing: 10
+
+            JQText {
+                text: qsTr( "密码长度：" )
+                anchors.verticalCenter: parent.verticalCenter
+            }
 
             JQTextField {
                 id: textFieldForLength
-                anchors.left: parent.right
-                anchors.leftMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
                 width: 60
                 maximumLength: 3
                 validator: IntValidator { bottom: 0 }
@@ -51,59 +51,51 @@ Item {
             }
         }
 
-        JQCheckBox {
-            id: checkBoxForNumber
-            x: 34
-            y: 141
-            text: qsTr( "允许数字" )
-            checked: true
-        }
+        Grid {
+            columns: 3
+            columnSpacing: 20
+            rowSpacing: 10
 
-        JQCheckBox {
-            id: checkBoxForEnglishCharacters
-            x: 224
-            y: 141
-            text: qsTr( "允许英文字符" )
-            checked: true
-        }
+            JQCheckBox {
+                id: checkBoxForNumber
+                text: qsTr( "允许数字" )
+                checked: true
+            }
 
-        JQCheckBox {
-            id: checkBoxForIncludeUppercaseLetters
-            x: 414
-            y: 141
-            text: qsTr( "包含大写字母" )
-            checked: true
-            enabled: checkBoxForEnglishCharacters.checked
-        }
+            JQCheckBox {
+                id: checkBoxForEnglishCharacters
+                text: qsTr( "允许英文字符" )
+                checked: true
+            }
 
-        JQCheckBox {
-            id: checkBoxForDividingLine
-            x: 34
-            y: 186
-            text: qsTr( "插入分割线" )
-            checked: true
-        }
+            JQCheckBox {
+                id: checkBoxForIncludeUppercaseLetters
+                text: qsTr( "包含大写字母" )
+                checked: true
+                enabled: checkBoxForEnglishCharacters.checked
+            }
 
-        JQCheckBox {
-            id: checkBoxForSpecialCharacters
-            x: 224
-            y: 186
-            text: qsTr( "允许特殊字符" )
-            checked: false
-        }
+            JQCheckBox {
+                id: checkBoxForDividingLine
+                text: qsTr( "插入分割线" )
+                checked: true
+            }
 
-        JQCheckBox {
-            id: checkBoxForExcludeAmbiguousCharacters
-            x: 414
-            y: 186
-            text: qsTr( "排除易混淆字符" )
-            checked: false
+            JQCheckBox {
+                id: checkBoxForSpecialCharacters
+                text: qsTr( "允许特殊字符" )
+                checked: false
+            }
+
+            JQCheckBox {
+                id: checkBoxForExcludeAmbiguousCharacters
+                text: qsTr( "排除易混淆字符" )
+                checked: false
+            }
         }
 
         JQCheckBox {
             id: checkBoxForEnsureEachSelectedType
-            x: 34
-            y: 231
             width: 190
             text: qsTr( "每类至少一个字符" )
             checked: true
@@ -111,61 +103,57 @@ Item {
 
         JQTextField {
             id: textFieldForCustomSpecialCharacters
-            x: 40
-            y: 286
-            width: 540
+            width: parent.width
             placeholderText: qsTr( "特殊字符集" )
             text: "!@#$%^&*()-_=+[]{}:,.?"
             enabled: checkBoxForSpecialCharacters.checked
         }
 
+        Row {
+            spacing: 12
+
+            JQButton {
+                width: 120
+                text: qsTr( "随机密码" )
+
+                onClicked: {
+                    var randomPasswordString = randomPasswordManage.randomPassword(
+                                    parseInt( textFieldForLength.text ),
+                                    checkBoxForNumber.checked,
+                                    checkBoxForEnglishCharacters.checked,
+                                    checkBoxForIncludeUppercaseLetters.checked,
+                                    checkBoxForSpecialCharacters.checked,
+                                    textFieldForCustomSpecialCharacters.text,
+                                    checkBoxForExcludeAmbiguousCharacters.checked,
+                                    checkBoxForEnsureEachSelectedType.checked,
+                                    checkBoxForDividingLine.checked
+                                );
+                    if ( randomPasswordString === "" )
+                    {
+                        JQGlobal.showMessage( qsTr( "生成失败，请检查长度和选项配置" ) );
+                        return;
+                    }
+
+                    textFieldForPassword.text = randomPasswordString;
+                    JQGlobal.showMessage( qsTr( "随机密码已经生成" ) );
+                }
+            }
+
+            JQButton {
+                width: 140
+                text: qsTr( "复制到剪贴板" )
+
+                onClicked: {
+                    randomPasswordManage.setClipboardText( textFieldForPassword.text );
+                    JQGlobal.showMessage( qsTr( "密码已经复制到了剪贴板" ) );
+                }
+            }
+        }
+
         JQTextField {
             id: textFieldForPassword
-            x: 40
-            y: 430
-            width: 540
+            width: parent.width
             placeholderText: qsTr( "随机密码" )
-        }
-
-        JQButton {
-            x: 40
-            y: 380
-            width: 120
-            text: qsTr( "随机密码" )
-
-            onClicked: {
-                var randomPasswordString = randomPasswordManage.randomPassword(
-                                parseInt( textFieldForLength.text ),
-                                checkBoxForNumber.checked,
-                                checkBoxForEnglishCharacters.checked,
-                                checkBoxForIncludeUppercaseLetters.checked,
-                                checkBoxForSpecialCharacters.checked,
-                                textFieldForCustomSpecialCharacters.text,
-                                checkBoxForExcludeAmbiguousCharacters.checked,
-                                checkBoxForEnsureEachSelectedType.checked,
-                                checkBoxForDividingLine.checked
-                            );
-                if ( randomPasswordString === "" )
-                {
-                    JQGlobal.showMessage( qsTr( "生成失败，请检查长度和选项配置" ) );
-                    return;
-                }
-
-                textFieldForPassword.text = randomPasswordString;
-                JQGlobal.showMessage( qsTr( "随机密码已经生成" ) );
-            }
-        }
-
-        JQButton {
-            x: 166
-            y: 380
-            width: 140
-            text: qsTr( "复制到剪贴板" )
-
-            onClicked: {
-                randomPasswordManage.setClipboardText( textFieldForPassword.text );
-                JQGlobal.showMessage( qsTr( "密码已经复制到了剪贴板" ) );
-            }
         }
     }
 }
