@@ -6,15 +6,8 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 - GitHub: https://github.com/188080501/JQTools
 - 最新版下载: https://github.com/188080501/JQTools/releases/latest
+- 在线 WASM 版本: https://web.jasonserver.com:10035/JQTools/JQTools.html
 - 问题反馈 & 功能建议: https://github.com/188080501/JQTools/issues
-
-## 项目状态（2026）
-
-项目正在进行重构与升级。
-
-- 项目始于 2016 年，当前正在进行十年版本重构。
-- 重构前最后一个稳定版本: [V26.2.14](https://github.com/188080501/JQTools/releases/tag/V26.2.14)
-- 新功能与重构代码优先在 `develop` 分支推进，稳定后再合并至 `master`。
 
 ## 界面预览
 
@@ -132,14 +125,14 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 当前已验证环境：
 
-- Windows 10/11
-- Qt 5.15.2
-- Qt 6.5.3
-- MSVC2019 64bit Kit
+- Qt 5.15.2 + MSVC2019
+- Qt 6.5.3 + MSVC2019
+- Qt 5.15.2 + Clang/x86
+- Qt 6.7.3 + WASM
 
 兼容性说明：
 
-- 当前已支持并验证 Qt 5.15.2 与 Qt 6.5.3。
+- 当前已支持并验证以上 4 套构建环境。
 
 本项目是标准 `qmake` 工程，无额外生成脚本或预处理步骤。
 
