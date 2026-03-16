@@ -23,25 +23,13 @@ JQWindow {
     minimumWidth: 800
     minimumHeight: 600
     visible: true
-    opacity: 0
     title: "JQTools"
     color: "#fafafa"
 
     Component.onCompleted: {
         mainPageContains.showPage( "首页", "qrc:/Welcome/Welcome.qml" );
 
-        opacityAnimation.start();
-
         bookmarkListView.refresh( BookmarkData.itemsByPlatform( Qt.platform.os ) );
-    }
-
-    NumberAnimation {
-        id: opacityAnimation
-        target: applicationWindow
-        property: "opacity"
-        easing.type: Easing.OutCubic
-        duration: 300
-        to: 1
     }
 
     Rectangle {

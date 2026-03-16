@@ -40,8 +40,8 @@ Item {
 
     JQButton {
         x: 420
-        width: 120
-        text: "处理剪贴板内容"
+        width: 140
+        text: "处理剪贴板"
         anchors.horizontalCenterOffset: 160
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top

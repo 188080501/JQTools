@@ -49,9 +49,9 @@ Item {
         }
 
         JQButton {
-            width: 120
+            width: 140
             anchors.verticalCenter: parent.verticalCenter
-            text: "处理剪贴板内容"
+            text: "处理剪贴板"
 
             onClicked: {
                 sourceTextField.text = stringSortManage.clipboardText();

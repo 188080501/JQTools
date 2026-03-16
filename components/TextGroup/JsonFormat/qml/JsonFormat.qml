@@ -83,8 +83,8 @@ Item {
 
         JQButton {
             anchors.verticalCenter: parent.verticalCenter
-            width: 120
-            text: "处理剪贴板内容"
+            width: 140
+            text: "处理剪贴板"
 
             onClicked: {
                 textFieldForSource.text = jsonFormatManage.clipboardText();

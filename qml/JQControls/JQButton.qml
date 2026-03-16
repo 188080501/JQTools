@@ -6,6 +6,8 @@ Button {
     id: jqButton
     width: 100
     height: 50
+    font.bold: false
+    font.weight: Font.Normal
     font.capitalization: Font.MixedCase
     Material.background: "#ffffff"
     Material.foreground: "#d8000000"

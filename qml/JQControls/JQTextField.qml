@@ -1,11 +1,11 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 
 TextField {
     id: jqTextField
     width: 200
-    height: 55
+    height: 50
     opacity: enabled ? 1 : 0.5
     leftPadding: 6
     rightPadding: 6

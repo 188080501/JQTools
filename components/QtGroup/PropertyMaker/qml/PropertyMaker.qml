@@ -68,7 +68,7 @@ Item {
 
             JQButton {
                 anchors.verticalCenter: parent.verticalCenter
-                text: "生成代码"
+                text: "生成"
 
                 onClicked: {
                     if ( !propertyMaker.make() )

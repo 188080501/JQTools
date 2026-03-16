@@ -168,7 +168,7 @@ Item {
         JQButton {
             x: 387
             y: 209
-            width: 120
+            width: 140
             text: "从剪贴板粘贴"
 
             onClicked: {
@@ -180,7 +180,7 @@ Item {
         JQButton {
             x: 387
             y: 276
-            width: 120
+            width: 140
             text: "复制到剪贴板"
 
             onClicked: {

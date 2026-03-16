@@ -67,7 +67,7 @@ Item {
         JQButton {
             x: 166
             y: 259
-            width: 120
+            width: 140
             text: "复制到剪贴板"
 
             onClicked: {

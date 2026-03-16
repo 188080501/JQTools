@@ -46,7 +46,7 @@ Item {
         JQButton {
             x: 40
             y: 55
-            width: 120
+            width: 140
             text: "复制到剪贴板"
 
             onClicked: {
@@ -59,7 +59,7 @@ Item {
             x: 166
             y: 55
             width: 140
-            text: "处理剪贴板内容"
+            text: "处理剪贴板"
 
             onClicked: {
                 textFieldForSource.text = caseTransformManage.clipboardText();
@@ -91,7 +91,7 @@ Item {
         JQButton {
             x: 40
             y: 205
-            width: 120
+            width: 140
             text: "从剪贴板粘贴"
 
             onClicked: {
@@ -112,7 +112,7 @@ Item {
         JQButton {
             x: 40
             y: 361
-            width: 120
+            width: 140
             text: "复制到剪贴板"
 
             onClicked: {
@@ -125,7 +125,7 @@ Item {
             x: 166
             y: 361
             width: 140
-            text: "处理剪贴板内容"
+            text: "处理剪贴板"
 
             onClicked: {
                 textFieldForSource.text = caseTransformManage.clipboardText();
