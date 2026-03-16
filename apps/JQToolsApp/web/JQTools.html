@@ -1,0 +1,81 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no,viewport-fit=cover">
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height">
+    <meta name="format-detection" content="telephone=no, email=no, address=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.ico">
+    <link rel="icon" type="image/ico" href="favicon.ico">
+    <title>JQTools</title>
+    <style>
+        html, body { background-color: #fafafa; padding: 0; margin: 0; overflow: hidden; height: 100% }
+        #loadingimg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 128px; height: 128px; }
+        #qtspinner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; margin-top: 100px; }
+        #screen { width: 100%; height: 100%; }
+    </style>
+    </head>
+  <body onload="init()">
+    <img id="loadingimg" src="favicon.ico" style="display:block"></img>
+
+    <figure id="qtspinner">
+        <div id="qtstatus" style="color: #333333; text-align: center;" width="500"></div>
+        <noscript style="color: #333333">JavaScript is disabled, please check browser settings.</noscript>
+    </figure>
+
+    <div id="screen"></div>
+
+    <script type="text/javascript">
+        async function init()
+        {
+            const spinner = document.querySelector('#qtspinner');
+            const screen = document.querySelector('#screen');
+            const status = document.querySelector('#qtstatus');
+
+            const showUi = (ui) => {
+                [spinner, screen].forEach(element => element.style.display = 'none');
+                if (screen === ui)
+                    screen.style.position = 'default';
+                ui.style.display = 'block';
+            };
+
+            try {
+                showUi(spinner);
+                status.innerHTML = 'Loading...';
+
+                await qtLoad({
+                    qt: {
+                        onLoaded: () =>
+                        {
+                            showUi(screen);
+                            document.querySelector('#loadingimg').style.display = 'none';
+                        },
+                        onExit: exitData =>
+                        {
+                            status.innerHTML = 'Application exit';
+                            status.innerHTML +=
+                                exitData.code !== undefined ? ` with code ${exitData.code}` : '';
+                            status.innerHTML +=
+                                exitData.text !== undefined ? ` (${exitData.text})` : '';
+                            showUi(spinner);
+                        },
+                        entryFunction: window.JQTools_entry,
+                        containerElements: [screen]
+                    }
+                });
+            } catch (e) {
+                console.error(e);
+                console.error(e.stack);
+            }
+        }
+    </script>
+    <script src="JQTools.js"></script>
+    <script type="text/javascript" src="qtloader.js"></script>
+  </body>
+</html>

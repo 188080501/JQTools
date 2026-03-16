@@ -1,3 +1,4 @@
+PRO_PATH = $$PWD
 PRO_ROOT = $$clean_path($$PWD/../..)
 TARGET = JQTools
 
@@ -39,4 +40,15 @@ win32 {
 
 !wasm {
     QT *= concurrent
+}
+
+wasm : !isEmpty( PRO_PATH ) {
+
+    versionAtLeast( QT_VERSION, 6.7.2 ) : versionAtMost( QT_VERSION, 6.7.3 ) {
+
+        exists( $$PRO_PATH/shell/copy_wasm_release.bat ) : CONFIG( release, debug | release ) {
+
+            QMAKE_POST_LINK *= $$PRO_PATH/shell/copy_wasm_release.bat $$escape_expand(\\n\\t)
+        }
+    }
 }
