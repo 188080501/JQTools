@@ -145,7 +145,8 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 构建入口：
 
-- 工程文件: `JQTools.pro`
+- 工程文件: `JQTools.pro`（顶层 `subdirs` 入口）
+- 应用子工程: `apps/JQToolsApp/JQToolsApp.pro`
 
 #### 方式 A：使用 Qt Creator（推荐）
 
@@ -187,7 +188,9 @@ JQTools 的程序主体（界面、交互、功能编排）基于 Qt/QML/C++ 实
 
 ```text
 JQTools
-├─ cpp/           # 应用入口与核心逻辑
+├─ apps/JQToolsApp/ # 应用子工程
+│  ├─ JQToolsApp.pro
+│  └─ cpp/         # 应用入口与核心逻辑
 ├─ qml/           # 主界面与QML资源
 ├─ components/    # 各功能模块（文本、图片、二维码等）
 ├─ library/       # 三方库与基础库封装

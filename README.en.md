@@ -145,7 +145,8 @@ This project is a standard `qmake` project, with no extra generation scripts or 
 
 Build entry:
 
-- Project file: `JQTools.pro`
+- Project file: `JQTools.pro` (top-level `subdirs` entry)
+- App subproject: `apps/JQToolsApp/JQToolsApp.pro`
 
 #### Option A: Build with Qt Creator (Recommended)
 
@@ -187,7 +188,9 @@ Additional notes:
 
 ```text
 JQTools
-├─ cpp/           # App entry and core logic
+├─ apps/JQToolsApp/ # App subproject
+│  ├─ JQToolsApp.pro
+│  └─ cpp/         # App entry and core logic
 ├─ qml/           # Main UI and QML resources
 ├─ components/    # Feature modules (text, image, QR code, etc.)
 ├─ library/       # Third-party libraries and base wrappers
