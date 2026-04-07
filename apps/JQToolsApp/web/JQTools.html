@@ -19,6 +19,9 @@
         #loadingimg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 128px; height: 128px; }
         #qtspinner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; margin-top: 100px; }
         #screen { width: 100%; height: 100%; }
+        #qtprogressWrap { width: min(210px, 35vw); margin-top: 12px; display: none; }
+        #qtprogressBar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.24); border-radius: 999px; overflow: hidden; }
+        #qtprogressFill { width: 0%; height: 100%; background: linear-gradient(90deg, #3fa9ff 0%, #8be9ff 100%); transition: width 0.12s linear; }
     </style>
     </head>
   <body onload="init()">
@@ -26,6 +29,9 @@
 
     <figure id="qtspinner">
         <div id="qtstatus" style="color: #333333; text-align: center;" width="500"></div>
+        <div id="qtprogressWrap">
+            <div id="qtprogressBar"><div id="qtprogressFill"></div></div>
+        </div>
         <noscript style="color: #333333">JavaScript is disabled, please check browser settings.</noscript>
     </figure>
 
@@ -37,39 +43,143 @@
             const spinner = document.querySelector('#qtspinner');
             const screen = document.querySelector('#screen');
             const status = document.querySelector('#qtstatus');
+            const progressWrap = document.querySelector('#qtprogressWrap');
+            const progressFill = document.querySelector('#qtprogressFill');
+            let appLoaded = false;
+            let progressRatio = 0;
+            let progressHasTotal = false;
+
+            const showProgressDelayed = () => {
+                window.setTimeout(() => {
+                    if (!appLoaded && progressHasTotal && progressRatio < 0.99)
+                        progressWrap.style.display = 'block';
+                }, 100);
+            };
+
+            const setProgress = (loaded, total) => {
+                const hasTotal = Number.isFinite(total) && total > 0;
+                progressHasTotal = hasTotal;
+                if (hasTotal) {
+                    const ratio = Math.max(0, Math.min(1, loaded / total));
+                    progressRatio = ratio;
+                    progressFill.style.width = `${(ratio * 100).toFixed(2)}%`;
+                    return;
+                }
+
+                progressRatio = 0;
+                progressFill.style.width = '0%';
+                progressWrap.style.display = 'none';
+            };
+
+            const installWasmProgressHook = () => {
+                if (window.__qtWasmFetchHookInstalled || typeof window.fetch !== 'function')
+                    return;
+                window.__qtWasmFetchHookInstalled = true;
+
+                const rawFetch = window.fetch.bind(window);
+                const wasmNameReg = /(?:^|\/)JQTools\.wasm(?:$|\?)/;
+                const fallbackWasmTotal = 20 * 1024 * 1024;
+
+                window.fetch = async (...args) => {
+                    const input = args[0];
+                    const url = typeof input === 'string'
+                        ? input
+                        : (input instanceof URL ? input.href : (input && input.url) || '');
+                    const response = await rawFetch(...args);
+
+                    if (!wasmNameReg.test(url) || !response || !response.body || typeof response.body.getReader !== 'function')
+                        return response;
+
+                    const totalHeader = response.headers.get('content-length');
+                    const parsedTotal = totalHeader ? parseInt(totalHeader, 10) : 0;
+                    const total = Number.isFinite(parsedTotal) && parsedTotal > 0 ? parsedTotal : fallbackWasmTotal;
+                    setProgress(0, total);
+                    showProgressDelayed();
+
+                    const reader = response.body.getReader();
+                    let loaded = 0;
+
+                    const trackedStream = new ReadableStream({
+                        start(controller) {
+                            const pump = () => reader.read().then(({ done, value }) => {
+                                if (done) {
+                                    if (Number.isFinite(total) && total > 0)
+                                        setProgress(total, total);
+                                    else
+                                        setProgress(loaded, 0);
+                                    window.fetch = rawFetch;
+                                    window.__qtWasmFetchHookInstalled = false;
+                                    controller.close();
+                                    return;
+                                }
+
+                                loaded += value.byteLength;
+                                setProgress(loaded, total);
+                                controller.enqueue(value);
+                                return pump();
+                            }).catch(err => {
+                                window.fetch = rawFetch;
+                                window.__qtWasmFetchHookInstalled = false;
+                                controller.error(err);
+                            });
+                            return pump();
+                        }
+                    });
+
+                    return new Response(trackedStream, {
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers
+                    });
+                };
+            };
 
             const showUi = (ui) => {
                 [spinner, screen].forEach(element => element.style.display = 'none');
                 if (screen === ui)
-                    screen.style.position = 'default';
+                    screen.style.position = '';
                 ui.style.display = 'block';
             };
 
             try {
+                installWasmProgressHook();
                 showUi(spinner);
-                status.innerHTML = 'Loading...';
+                status.innerHTML = '';
+                progressWrap.style.display = 'none';
+                setProgress(0, 0);
+                showProgressDelayed();
 
                 await qtLoad({
                     qt: {
                         onLoaded: () =>
                         {
+                            appLoaded = true;
+                            progressWrap.style.display = 'none';
+                            setProgress(1, 1);
                             showUi(screen);
                             document.querySelector('#loadingimg').style.display = 'none';
                         },
                         onExit: exitData =>
                         {
+                            progressWrap.style.display = 'none';
+                            appLoaded = false;
+                            setProgress(0, 0);
                             status.innerHTML = 'Application exit';
                             status.innerHTML +=
                                 exitData.code !== undefined ? ` with code ${exitData.code}` : '';
                             status.innerHTML +=
                                 exitData.text !== undefined ? ` (${exitData.text})` : '';
                             showUi(spinner);
+                            showProgressDelayed();
                         },
                         entryFunction: window.JQTools_entry,
-                        containerElements: [screen]
+                        containerElements: [screen],
+
                     }
                 });
             } catch (e) {
+                appLoaded = false;
+                setProgress(0, 0);
                 console.error(e);
                 console.error(e.stack);
             }
