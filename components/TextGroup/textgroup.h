@@ -22,6 +22,7 @@
 #include <UrlEncode>
 #include <JsonFormat>
 #include <StringSort>
+#include <TextDedupSort>
 
 #define TEXTGROUP_INITIALIZA \
     UTF16TRANSFORM_INITIALIZA; \
@@ -31,6 +32,7 @@
     RANDOMUUID_INITIALIZA; \
     URLENCODE_INITIALIZA; \
     JSONFORMAT_INITIALIZA; \
-    STRINGSORT_INITIALIZA;
+    STRINGSORT_INITIALIZA; \
+    TEXTDEDUPSORT_INITIALIZA;
 
 #endif//TEXTGROUP_TEXTGROUP_H_

@@ -36,6 +36,7 @@ function itemsByPlatform(platformOs) {
     pushChild(children, "URL转码", "URL转码", "qrc:/UrlEncode/UrlEncode.qml");
     pushChild(children, "JSON格式化", "JSON格式化", "qrc:/JsonFormat/JsonFormat.qml");
     pushChild(children, "字符串排序", "字符串排序", "qrc:/StringSort/StringSort.qml");
+    pushChild(children, "文本去重排序", "文本去重排序", "qrc:/TextDedupSort/TextDedupSort.qml");
     pushGroup(result, "文本类", "文本类", "", children);
 
     children = [];
