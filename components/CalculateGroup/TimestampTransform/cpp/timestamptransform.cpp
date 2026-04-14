@@ -14,6 +14,9 @@
 
 // Qt lib import
 #include <QDateTime>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#include <QTimeZone>
+#endif
 #include <QRegularExpression>
 
 using namespace TimestampTransform;
@@ -78,11 +81,19 @@ bool parseDateTimeString(
         parsedDateTime = QDateTime::fromString( trimmedString, format );
         if ( !parsedDateTime.isValid() ) { continue; }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+        dateTime = QDateTime(
+                    parsedDateTime.date(),
+                    parsedDateTime.time(),
+                    QTimeZone::LocalTime
+                );
+#else
         dateTime = QDateTime(
                     parsedDateTime.date(),
                     parsedDateTime.time(),
                     Qt::LocalTime
                 );
+#endif
         return true;
     }
 
@@ -121,7 +132,11 @@ QString Manage::dateTimeStringFromTimestampString(const QString &timestampString
         return { };
     }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    return toDisplayDateTimeString( QDateTime::fromMSecsSinceEpoch( msecsSinceEpoch, QTimeZone::LocalTime ) );
+#else
     return toDisplayDateTimeString( QDateTime::fromMSecsSinceEpoch( msecsSinceEpoch, Qt::LocalTime ) );
+#endif
 }
 
 QString Manage::timestampStringFromDateTimeString(
@@ -142,3 +157,4 @@ QString Manage::timestampStringFromDateTimeString(
 
     return QString::number( dateTime.toSecsSinceEpoch() );
 }
+
