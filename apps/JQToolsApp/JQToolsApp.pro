@@ -44,7 +44,7 @@ win32 {
 
 wasm : !isEmpty( PRO_PATH ) {
 
-    versionAtLeast( QT_VERSION, 6.7.2 ) : versionAtMost( QT_VERSION, 6.7.3 ) {
+    versionAtLeast( QT_VERSION, 6.8.3 ) : versionAtMost( QT_VERSION, 6.8.3 ) {
 
         exists( $$PRO_PATH/shell/copy_wasm_release.bat ) : CONFIG( release, debug | release ) {
 

@@ -128,7 +128,7 @@ Verified environment:
 - Qt 5.15.2 + MSVC2019
 - Qt 6.5.3 + MSVC2019
 - Qt 5.15.2 + Clang/x86
-- Qt 6.7.3 + WASM
+- Qt 6.8.3 + WASM
 
 Compatibility notes:
 

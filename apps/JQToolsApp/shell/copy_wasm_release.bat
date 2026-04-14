@@ -1,5 +1,5 @@
 cd  %~dp0
-cd "..\..\..\build\WebAssembly_Qt_6_7_*_single_threaded-Release\apps\JQToolsApp"
+cd "..\..\..\build\WebAssembly_Qt_6_8_*_single_threaded-Release\apps\JQToolsApp"
 
 ping -n 1 10.0.1.225 >nul
 if %errorlevel%==0 (
