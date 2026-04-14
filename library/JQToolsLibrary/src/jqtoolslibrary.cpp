@@ -293,6 +293,11 @@ QString AbstractTool::jqToolsVersionString()
     return compileDateText;
 }
 
+QString AbstractTool::qtVersionString()
+{
+    return QString::fromLatin1( qVersion() );
+}
+
 QString AbstractTool::clipboardText()
 {
     return qApp->clipboard()->text();

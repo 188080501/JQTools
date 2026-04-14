@@ -87,6 +87,8 @@ public:
 public slots:
     QString jqToolsVersionString();
 
+    QString qtVersionString();
+
     QString clipboardText();
 
     void setClipboardText(const QString &string);

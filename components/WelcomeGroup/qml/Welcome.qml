@@ -74,7 +74,8 @@ Item {
         anchors.rightMargin: 5
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 3
-        text: "作者：Jason    当前版本：V" + welcomeManage.jqToolsVersionString();
+        text: "作者：Jason    当前版本：V" + welcomeManage.jqToolsVersionString()
+              + "    基于Qt " + welcomeManage.qtVersionString();
         verticalAlignment: Text.AlignBottom
         horizontalAlignment: Text.AlignRight
         color: "#a1a1a1"
