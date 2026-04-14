@@ -23,8 +23,14 @@ using namespace TextDedupSort;
 
 QString Manage::deduplicateAndSort(const QString &string, const bool outputWrap)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    using Ucs4Char = char32_t;
+#else
+    using Ucs4Char = uint;
+#endif
+
     QSet<uint> uniqueCodes;
-    QVector<uint> uniqueChars;
+    QVector<Ucs4Char> uniqueChars;
     const auto unicodeCodePoints = string.toUcs4();
 
     uniqueChars.reserve( unicodeCodePoints.size() );
@@ -37,7 +43,7 @@ QString Manage::deduplicateAndSort(const QString &string, const bool outputWrap)
         }
 
         uniqueCodes.insert( unicode );
-        uniqueChars.push_back( unicode );
+        uniqueChars.push_back( static_cast<Ucs4Char>( unicode ) );
     }
 
     std::sort( uniqueChars.begin(), uniqueChars.end() );
@@ -47,7 +53,7 @@ QString Manage::deduplicateAndSort(const QString &string, const bool outputWrap)
         return QString::fromUcs4( uniqueChars.constData(), uniqueChars.size() );
     }
 
-    QVector<uint> wrappedChars;
+    QVector<Ucs4Char> wrappedChars;
     wrappedChars.reserve( uniqueChars.size() + ( uniqueChars.size() / 80 ) );
 
     auto currentLineLength = 0;
@@ -59,7 +65,7 @@ QString Manage::deduplicateAndSort(const QString &string, const bool outputWrap)
 
         if ( ( currentLineLength >= 80 ) && ( index + 1 < uniqueChars.size() ) )
         {
-            wrappedChars.push_back( '\n' );
+            wrappedChars.push_back( static_cast<Ucs4Char>( '\n' ) );
             currentLineLength = 0;
         }
     }
