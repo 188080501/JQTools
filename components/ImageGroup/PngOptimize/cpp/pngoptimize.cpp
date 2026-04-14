@@ -84,7 +84,8 @@ void Manage::startOptimize(const QString &currentFilePath)
 {
     if ( !waitOptimizeQueue_.contains( currentFilePath ) ) { return; }
 
-    QtConcurrent::run( waitOptimizeQueue_[ currentFilePath ] );
+    auto future = QtConcurrent::run( waitOptimizeQueue_[ currentFilePath ] );
+    Q_UNUSED( future );
 
     waitOptimizeQueue_.remove( currentFilePath );
 }

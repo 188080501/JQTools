@@ -43,30 +43,29 @@ Manage::Manage()
 void Manage::initializeFonts()
 {
     QEventLoop eventLoop;
-//    eventLoop.exec();
 
-    QtConcurrent::run( [ this ](){ this->loadFont( "Elusive" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Feather" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "FontAwesome" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Foundation" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "GlyphiconsHalflings" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "IcoMoon" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "IconFont" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Icons8" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "IconWorks" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Ionicons" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "JustVector" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "MaterialDesign" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "MaterialIcons" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Metrize" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Mfglabs" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "OpenIconic" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Socicon" ); } );
-    QtConcurrent::run( [ this ](){ this->loadFont( "Typicons" ); } );
+    auto future = QtConcurrent::run( [ this ](){ this->loadFont( "Elusive" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Feather" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "FontAwesome" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Foundation" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "GlyphiconsHalflings" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "IcoMoon" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "IconFont" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Icons8" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "IconWorks" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Ionicons" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "JustVector" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "MaterialDesign" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "MaterialIcons" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Metrize" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Mfglabs" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "OpenIconic" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Socicon" ); } );
+    future = QtConcurrent::run( [ this ](){ this->loadFont( "Typicons" ); } );
 
     QThreadPool threadPool;
     threadPool.setMaxThreadCount( 1 );
-    QtConcurrent::run( &threadPool, [ &eventLoop, this ]()
+    future = QtConcurrent::run( &threadPool, [ &eventLoop, this ]()
     {
         QThreadPool::globalInstance()->waitForDone();
 
@@ -85,6 +84,7 @@ void Manage::initializeFonts()
 
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 }

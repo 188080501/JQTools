@@ -65,7 +65,7 @@ QString Manage::convertPng(const QStringList &filePaths)
 
     this->lastErrorFileName_.clear();
 
-    QtConcurrent::run( [ this, &eventLoop, &reply, filePaths ]()
+    auto future = QtConcurrent::run( [ this, &eventLoop, &reply, filePaths ]()
     {
         if ( filePaths.isEmpty() )
         {
@@ -100,6 +100,7 @@ QString Manage::convertPng(const QStringList &filePaths)
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 

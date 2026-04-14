@@ -76,7 +76,7 @@ QString Manage::makeAll()
     QEventLoop eventLoop;
     QString reply;
 
-    QtConcurrent::run( [ this, &eventLoop, &reply ]()
+    auto future = QtConcurrent::run( [ this, &eventLoop, &reply ]()
     {
         try
         {
@@ -96,6 +96,7 @@ QString Manage::makeAll()
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 
@@ -107,7 +108,7 @@ QString Manage::makeOSX()
     QEventLoop eventLoop;
     QString reply;
 
-    QtConcurrent::run( [ this, &eventLoop, &reply ]()
+    auto future = QtConcurrent::run( [ this, &eventLoop, &reply ]()
     {
         try
         {
@@ -123,6 +124,7 @@ QString Manage::makeOSX()
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 
@@ -134,7 +136,7 @@ QString Manage::makeIOS()
     QEventLoop eventLoop;
     QString reply;
 
-    QtConcurrent::run( [ this, &eventLoop, &reply ]()
+    auto future = QtConcurrent::run( [ this, &eventLoop, &reply ]()
     {
         try
         {
@@ -150,6 +152,7 @@ QString Manage::makeIOS()
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 
@@ -161,7 +164,7 @@ QString Manage::makeWindows()
     QEventLoop eventLoop;
     QString reply;
 
-    QtConcurrent::run( [ =, &eventLoop, &reply ]()
+    auto future = QtConcurrent::run( [ =, &eventLoop, &reply ]()
     {
         try
         {
@@ -177,6 +180,7 @@ QString Manage::makeWindows()
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 
@@ -188,7 +192,7 @@ QString Manage::makeAndroid()
     QEventLoop eventLoop;
     QString reply;
 
-    QtConcurrent::run( [ this, &eventLoop, &reply ]()
+    auto future = QtConcurrent::run( [ this, &eventLoop, &reply ]()
     {
         try
         {
@@ -204,6 +208,7 @@ QString Manage::makeAndroid()
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 
@@ -215,7 +220,7 @@ QString Manage::makePWA()
     QEventLoop eventLoop;
     QString reply;
 
-    QtConcurrent::run( [ this, &eventLoop, &reply ]()
+    auto future = QtConcurrent::run( [ this, &eventLoop, &reply ]()
     {
         try
         {
@@ -231,6 +236,7 @@ QString Manage::makePWA()
         reply = "OK";
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 

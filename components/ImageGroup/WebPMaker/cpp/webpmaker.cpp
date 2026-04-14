@@ -85,7 +85,8 @@ void Manage::startMake(const QString &currentFilePath)
 {
     if ( !waitMakeQueue_.contains( currentFilePath ) ) { return; }
 
-    QtConcurrent::run( waitMakeQueue_[ currentFilePath ] );
+    auto future = QtConcurrent::run( waitMakeQueue_[ currentFilePath ] );
+    Q_UNUSED( future );
 
     waitMakeQueue_.remove( currentFilePath );
 }

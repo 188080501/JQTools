@@ -63,7 +63,7 @@ QJsonObject Manage::collectLineStatistics(const QJsonArray &suffixes, const QJso
 
     QEventLoop eventLoop;
 
-    QtConcurrent::run( [ & ]()
+    auto future = QtConcurrent::run( [ & ]()
     {
         const QSet< QString > imageSuffixes
             {
@@ -113,6 +113,7 @@ QJsonObject Manage::collectLineStatistics(const QJsonArray &suffixes, const QJso
 
         QMetaObject::invokeMethod( &eventLoop, "quit" );
     } );
+    Q_UNUSED( future );
 
     eventLoop.exec();
 
