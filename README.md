@@ -2,7 +2,7 @@
 
 [中文](./README.md) | [English](./README.en.md)
 
-JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具集合，聚焦于开发过程中的高频小功能。
+JQTools 是一个基于 Qt/QML/C++ 的开源开发工具箱，集成文本处理、加密计算、图片优化、二维码与 Qt 辅助等常用功能，并提供桌面端与在线 WASM 版本，便于在开发过程中快速处理高频小任务。
 
 - GitHub: https://github.com/188080501/JQTools
 - 最新版下载: https://github.com/188080501/JQTools/releases/latest
@@ -40,6 +40,9 @@ JQTools（Jason Qt Tools）是一个基于 Qt & QML & C++ 开发的开源工具�
 
 - 字符串排序  
   按行对字符串内容进行排序，支持升序和降序。
+
+- 文本去重排序  
+  按字符维度去重并排序，支持去重后按升序或降序输出，便于快速整理文本内容。
 
 ### 计算类
 

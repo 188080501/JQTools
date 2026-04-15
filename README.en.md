@@ -2,7 +2,7 @@
 
 [中文](./README.md) | [English](./README.en.md)
 
-JQTools (Jason Qt Tools) is an open-source utility collection built with Qt, QML, and C++, focused on high-frequency tasks in daily development workflows.
+JQTools is an open-source development toolbox based on Qt/QML/C++, integrating common features such as text processing, cryptographic computing, image optimization, QR codes, and Qt utilities, with both desktop and online WASM builds for quickly handling high-frequency development tasks.
 
 - GitHub: https://github.com/188080501/JQTools
 - Latest release: https://github.com/188080501/JQTools/releases/latest
@@ -40,6 +40,9 @@ JQTools (Jason Qt Tools) is an open-source utility collection built with Qt, QML
 
 - String Sorter  
   Sort lines in text content in ascending or descending order.
+
+- Text Dedup Sorter  
+  Deduplicate and sort text at the character level, supporting ascending or descending output after deduplication for quick text cleanup.
 
 ### Calculation
 
