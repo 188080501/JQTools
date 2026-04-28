@@ -1,5 +1,11 @@
-cd  %~dp0
-cd "..\..\..\build\WebAssembly_Qt_6_8_*_single_threaded-Release\apps\JQToolsApp"
+cd /d "%~dp0" || (
+    echo [ERROR] Failed to enter script directory: %~dp0
+    exit /b 1
+)
+cd /d "..\..\..\build\WebAssembly_Qt_6_8_*_single_threaded-Release\apps\JQToolsApp" || (
+    echo [ERROR] Failed to enter wasm build directory.
+    exit /b 1
+)
 
 ping -n 1 10.0.1.225 >nul
 if %errorlevel%==0 (
@@ -9,8 +15,14 @@ if %errorlevel%==0 (
     scp qtlogo.svg jason@10.0.1.225:~/web/JQTools
 )
 
-cd  %~dp0
-cd "..\web"
+cd /d "%~dp0" || (
+    echo [ERROR] Failed to enter script directory: %~dp0
+    exit /b 1
+)
+cd /d "..\web" || (
+    echo [ERROR] Failed to enter web directory.
+    exit /b 1
+)
 
 ping -n 1 10.0.1.225 >nul
 if %errorlevel%==0 (
