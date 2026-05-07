@@ -1,3 +1,8 @@
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
 # Keep ambiguous headers counted as C++ in GitHub Linguist.
 *.h linguist-language=C++
 *.hpp linguist-language=C++
