@@ -13,15 +13,15 @@
 INCLUDEPATH *= \
     $$PWD/include/JQQRCodeWriter/
 
-# 定义JQQRCodeWriter的版本
+# 定义JQQRCodeWriter的版本 #
 JQQRCODEWRITER_VERSIONSTRING = 1.6
 
-# 判断Qt版本，小于等于5.6就报错
+# 判断Qt版本，小于等于5.6就报错 #
 !versionAtLeast( QT_VERSION, 5.7.0 ) {
     error( JQQRCodeWriter request minimum Qt version is 5.7.0 )
 }
 
-# 固定使用源码编译
+# 固定使用源码编译 #
 JQQRCODEWRITER_COMPILE_MODE = SRC
 
 equals(JQQRCODEWRITER_COMPILE_MODE,SRC) {

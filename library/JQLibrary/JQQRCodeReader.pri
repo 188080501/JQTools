@@ -13,15 +13,15 @@
 INCLUDEPATH *= \
     $$PWD/include/JQQRCodeReader/
 
-# 定义JQQRCodeReader的版本
+# 定义JQQRCodeReader的版本 #
 JQQRCODEREADER_VERSIONSTRING = 1.6
 
-# 判断Qt版本，小于等于5.6就报错
+# 判断Qt版本，小于等于5.6就报错 #
 !versionAtLeast( QT_VERSION, 5.7.0 ) {
     error( JQQRCodeReader request minimum Qt version is 5.7.0 )
 }
 
-# 固定使用源码编译
+# 固定使用源码编译 #
 JQQRCODEREADER_COMPILE_MODE = SRC
 
 equals(JQQRCODEREADER_COMPILE_MODE,SRC) {
@@ -152,7 +152,7 @@ equals(JQQRCODEREADER_COMPILE_MODE,SRC) {
     }
 }
 
-# 判断是否要引入JQQRCodeReader的qml扩展部分
+# 判断是否要引入JQQRCodeReader的qml扩展部分 #
 contains( QT, qml ) {
 
     contains(QT, concurrent) {
