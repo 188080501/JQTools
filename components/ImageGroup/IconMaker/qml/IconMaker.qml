@@ -19,6 +19,8 @@ Item {
     width: 620
     height: 540
     property bool loadingVisible: false
+    property int operationButtonWidth: 160
+    property int rightOperationButtonX: 456
 
     function makeReplyProcessor( reply )
     {
@@ -93,7 +95,7 @@ Item {
         JQButton {
             x: 279
             y: 208
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "选择原图"
 
             onClicked: {
@@ -114,7 +116,7 @@ Item {
         JQButton {
             x: 279
             y: 291
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "更改保存路径"
 
             onClicked: {
@@ -134,9 +136,9 @@ Item {
         }
 
         JQButton {
-            x: 476
+            x: iconMaker.rightOperationButtonX
             y: 65
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "全部生成"
 
             onClicked: {
@@ -151,9 +153,9 @@ Item {
         }
 
         JQButton {
-            x: 476
+            x: iconMaker.rightOperationButtonX
             y: 121
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "OS X(icns)"
 
             onClicked: {
@@ -168,9 +170,9 @@ Item {
         }
 
         JQButton {
-            x: 476
+            x: iconMaker.rightOperationButtonX
             y: 167
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "iOS(png)"
 
             onClicked: {
@@ -185,9 +187,9 @@ Item {
         }
 
         JQButton {
-            x: 476
+            x: iconMaker.rightOperationButtonX
             y: 223
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "Windows(ico)"
 
             onClicked: {
@@ -202,9 +204,9 @@ Item {
         }
 
         JQButton {
-            x: 476
+            x: iconMaker.rightOperationButtonX
             y: 269
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "Android(png)"
 
             onClicked: {
@@ -219,9 +221,9 @@ Item {
         }
 
         JQButton {
-            x: 476
+            x: iconMaker.rightOperationButtonX
             y: 325
-            width: 120
+            width: iconMaker.operationButtonWidth
             text: "PWA(png)"
 
             onClicked: {
