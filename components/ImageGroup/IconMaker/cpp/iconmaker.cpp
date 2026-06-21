@@ -404,6 +404,9 @@ void Manage::generateWindowsIconAsset()
     };
 
     QList< QByteArray > iconImageDataList;
+    const auto sourceIconImage = sourceIconImage_.convertToFormat(
+        QImage::Format_ARGB32_Premultiplied
+    );
 
     for ( const auto &iconSize: iconSizes )
     {
@@ -415,7 +418,7 @@ void Manage::generateWindowsIconAsset()
             throw false;
         }
 
-        const auto scaledIconImage = sourceIconImage_.scaled(
+        const auto scaledIconImage = sourceIconImage.scaled(
             iconSize,
             Qt::IgnoreAspectRatio,
             Qt::SmoothTransformation
