@@ -17,6 +17,7 @@
 
 // Qt lib import
 #include <QSet>
+#include <QPair>
 #include <QJsonArray>
 #include <QDir>
 
@@ -210,28 +211,27 @@ QJsonObject runBatchReplacement(
     QJsonArray failedPaths;
 
     const auto availableSuffixes = makeAvailableSuffixes( suffixes );
-    auto batchReplacement = [ & ](
+
+    // 同一大小写变体只处理一次：否则预览会重复统计，且目标值包含源关键字时会被二次替换
+    QList< QPair< QString, QString > > caseVariants;
+
+    auto addCaseVariant = [ &caseVariants ](
             const QString &currentSourceKey,
             const QString &currentTargetKey
         )
     {
-        collectReplacementBySingleCase(
-                    directoryPath,
-                    availableSuffixes,
-                    currentSourceKey,
-                    currentTargetKey,
-                    applyChanges,
-                    fileCount,
-                    replacementCount,
-                    failedOperationCount,
-                    failedPaths
-                );
+        for ( const auto &caseVariant: caseVariants )
+        {
+            if ( caseVariant.first == currentSourceKey ) { return; }
+        }
+
+        caseVariants.push_back( { currentSourceKey, currentTargetKey } );
     };
 
     if ( multiCase )
     {
-        batchReplacement( sourceKey.toLower(), targetKey.toLower() );
-        batchReplacement( sourceKey.toUpper(), targetKey.toUpper() );
+        addCaseVariant( sourceKey.toLower(), targetKey.toLower() );
+        addCaseVariant( sourceKey.toUpper(), targetKey.toUpper() );
 
         if ( ( sourceKey.size() > 1 ) && ( targetKey.size() > 1 ) )
         {
@@ -241,21 +241,36 @@ QJsonObject runBatchReplacement(
             sourceKey2[ 0 ] = sourceKey.toLower()[ 0 ];
             targetKey2[ 0 ] = targetKey.toLower()[ 0 ];
 
-            batchReplacement( sourceKey2, targetKey2 );
+            addCaseVariant( sourceKey2, targetKey2 );
 
             sourceKey2[ 0 ] = sourceKey.toUpper()[ 0 ];
             targetKey2[ 0 ] = targetKey.toUpper()[ 0 ];
 
-            batchReplacement( sourceKey2, targetKey2 );
+            addCaseVariant( sourceKey2, targetKey2 );
         }
         else
         {
-            batchReplacement( sourceKey, targetKey );
+            addCaseVariant( sourceKey, targetKey );
         }
     }
     else
     {
-        batchReplacement( sourceKey, targetKey );
+        addCaseVariant( sourceKey, targetKey );
+    }
+
+    for ( const auto &caseVariant: caseVariants )
+    {
+        collectReplacementBySingleCase(
+                    directoryPath,
+                    availableSuffixes,
+                    caseVariant.first,
+                    caseVariant.second,
+                    applyChanges,
+                    fileCount,
+                    replacementCount,
+                    failedOperationCount,
+                    failedPaths
+                );
     }
 
     return
