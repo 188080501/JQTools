@@ -42,6 +42,7 @@ public slots:
     QJsonObject previewBatchReplacement(
             const QJsonArray &suffixes,
             const QString &sourceKey,
+            const QString &targetKey,
             const bool multiCase
         );
 

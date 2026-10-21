@@ -14,7 +14,8 @@ INCLUDEPATH *= \
     $$PWD/cpp/
 
 HEADERS *= \
-    $$PWD/cpp/batchreplacement.h
+    $$PWD/cpp/batchreplacement.h \
+    $$PWD/cpp/batchreplacementutils.h
 
 SOURCES *= \
     $$PWD/cpp/batchreplacement.cpp

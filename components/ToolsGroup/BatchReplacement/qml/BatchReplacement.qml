@@ -209,6 +209,7 @@ Item {
                 var reply = batchReplacementManage.previewBatchReplacement(
                             suffixes,
                             textFieldForSourceKey.text,
+                            textFieldForTargetKey.text,
                             checkBoxForMultiCase.checked
                         );
                 batchReplacement.loadingVisible = false;
