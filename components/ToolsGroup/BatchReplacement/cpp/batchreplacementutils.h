@@ -7,6 +7,10 @@
 #ifndef GROUP_TOOLSGROUP_BATCHREPLACEMENT_CPP_BATCHREPLACEMENTUTILS_H_
 #define GROUP_TOOLSGROUP_BATCHREPLACEMENT_CPP_BATCHREPLACEMENTUTILS_H_
 
+// STL import
+#include <algorithm>
+
+// Qt lib import
 #include <QByteArray>
 #include <QList>
 #include <QPair>
@@ -100,7 +104,8 @@ StringType replaceCaseVariants(
             if ( currentSourceKey.isEmpty() ) { continue; }
 
             if ( matchedVariant && ( currentSourceKey.size() <= matchedVariant->first.size() ) ) { continue; }
-            if ( source.mid( position, currentSourceKey.size() ) != currentSourceKey ) { continue; }
+            if ( currentSourceKey.size() > ( source.size() - position ) ) { continue; }
+            if ( !std::equal( currentSourceKey.constBegin(), currentSourceKey.constEnd(), source.constBegin() + position ) ) { continue; }
 
             matchedVariant = &caseVariant;
         }
