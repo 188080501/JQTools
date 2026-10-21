@@ -11,6 +11,7 @@
 */
 
 #include "batchreplacement.h"
+#include "batchreplacementutils.h"
 
 // STL import
 #include <algorithm>
@@ -54,11 +55,10 @@ bool isMatchedSuffix(
     return availableSuffixes.contains( info.suffix().toLower() );
 }
 
-void collectReplacementBySingleCase(
+void collectReplacement(
         const QString &directoryPath,
         const QSet< QString > &availableSuffixes,
-        const QString &sourceKey,
-        const QString &targetKey,
+        const BatchReplacement::Detail::CaseVariants &caseVariants,
         const bool applyChanges,
         int &fileCount,
         int &replacementCount,
@@ -66,7 +66,7 @@ void collectReplacementBySingleCase(
         QJsonArray &failedPaths
     )
 {
-    if ( sourceKey.isEmpty() ) { return; }
+    if ( caseVariants.isEmpty() ) { return; }
 
     auto recordFailurePath = [ & ](const QString &path)
     {
@@ -77,8 +77,14 @@ void collectReplacementBySingleCase(
         failedPaths.push_back( path );
     };
 
-    const auto sourceKeyData = sourceKey.toUtf8();
-    const auto targetKeyData = targetKey.toUtf8();
+    QList< QPair< QByteArray, QByteArray > > byteCaseVariants;
+    for ( const auto &caseVariant: caseVariants )
+    {
+        byteCaseVariants.push_back( {
+            caseVariant.first.toUtf8(),
+            caseVariant.second.toUtf8()
+        } );
+    }
 
     AbstractTool::foreachFileFromDirectory( { directoryPath }, [ & ](const QFileInfo &info)
     {
@@ -95,7 +101,13 @@ void collectReplacementBySingleCase(
 
         if ( fileAllData.isEmpty() ) { return; }
 
-        const auto matchCount = fileAllData.count( sourceKeyData );
+        auto matchCount = 0;
+        const auto replacedData = BatchReplacement::Detail::replaceCaseVariants(
+                    fileAllData,
+                    byteCaseVariants,
+                    applyChanges,
+                    matchCount
+                );
         if ( !matchCount ) { return; }
 
         ++fileCount;
@@ -103,10 +115,7 @@ void collectReplacementBySingleCase(
 
         if ( !applyChanges ) { return; }
 
-        if ( !AbstractTool::writeFile(
-                    QFileInfo( info.filePath() ),
-                    fileAllData.replace( sourceKeyData, targetKeyData )
-                ) )
+        if ( !AbstractTool::writeFile( QFileInfo( info.filePath() ), replacedData ) )
         {
             recordFailurePath( info.filePath() );
         }
@@ -114,14 +123,20 @@ void collectReplacementBySingleCase(
 
     if ( !availableSuffixes.contains( "filenameanddirname" ) ) { return; }
 
-    QFileInfoList fileNameList;
-    QList< QDir > dirNameList;
+    QList< QPair< QFileInfo, QString > > fileNameList;
+    QList< QPair< QDir, QString > > dirNameList;
 
     AbstractTool::foreachFileFromDirectory( { directoryPath }, [ & ](const QFileInfo &info)
     {
         if ( !isMatchedSuffix( info, availableSuffixes ) ) { return; }
 
-        const auto matchCount = info.fileName().count( sourceKey );
+        auto matchCount = 0;
+        const auto replacedFileName = BatchReplacement::Detail::replaceCaseVariants(
+                    info.fileName(),
+                    caseVariants,
+                    applyChanges,
+                    matchCount
+                );
         if ( !matchCount ) { return; }
 
         ++fileCount;
@@ -129,13 +144,19 @@ void collectReplacementBySingleCase(
 
         if ( applyChanges )
         {
-            fileNameList.push_back( info );
+            fileNameList.push_back( { info, replacedFileName } );
         }
     }, true );
 
     AbstractTool::foreachDirectoryFromDirectory( { directoryPath }, [ & ](const QDir &dir)
     {
-        const auto matchCount = dir.dirName().count( sourceKey );
+        auto matchCount = 0;
+        const auto replacedDirName = BatchReplacement::Detail::replaceCaseVariants(
+                    dir.dirName(),
+                    caseVariants,
+                    applyChanges,
+                    matchCount
+                );
         if ( !matchCount ) { return; }
 
         ++fileCount;
@@ -143,17 +164,20 @@ void collectReplacementBySingleCase(
 
         if ( applyChanges )
         {
-            dirNameList.push_back( dir );
+            dirNameList.push_back( { dir, replacedDirName } );
         }
     }, true );
 
     if ( !applyChanges ) { return; }
 
     // 目录改名需要先子后父，避免父目录先改名导致子目录路径失效
-    std::sort( dirNameList.begin(), dirNameList.end(), [ ](const QDir &left, const QDir &right)
+    std::sort( dirNameList.begin(), dirNameList.end(), [ ](
+            const QPair< QDir, QString > &left,
+            const QPair< QDir, QString > &right
+        )
     {
-        const auto leftPath = QDir::cleanPath( left.path() );
-        const auto rightPath = QDir::cleanPath( right.path() );
+        const auto leftPath = QDir::cleanPath( left.first.path() );
+        const auto rightPath = QDir::cleanPath( right.first.path() );
         const auto leftDepth = leftPath.count( '/' );
         const auto rightDepth = rightPath.count( '/' );
 
@@ -165,33 +189,33 @@ void collectReplacementBySingleCase(
         return leftDepth > rightDepth;
     } );
 
-    for ( const auto &info: fileNameList )
+    for ( const auto &rename: fileNameList )
     {
         const auto targetFilePath = QString( "%1/%2" ).arg(
-                    info.path(),
-                    info.fileName().replace( sourceKey, targetKey )
+                    rename.first.path(),
+                    rename.second
                 );
 
-        if ( targetFilePath == info.filePath() ) { continue; }
+        if ( targetFilePath == rename.first.filePath() ) { continue; }
 
-        if ( !QFile::rename( info.filePath(), targetFilePath ) )
+        if ( !QFile::rename( rename.first.filePath(), targetFilePath ) )
         {
-            recordFailurePath( info.filePath() );
+            recordFailurePath( rename.first.filePath() );
         }
     }
 
-    for ( const auto &dir: dirNameList )
+    for ( const auto &rename: dirNameList )
     {
         const auto targetDir = QString( "%1/%2" ).arg(
-                    QFileInfo( dir.path() ).path(),
-                    dir.dirName().replace( sourceKey, targetKey )
+                    QFileInfo( rename.first.path() ).path(),
+                    rename.second
                 );
 
-        if ( targetDir == dir.path() ) { continue; }
+        if ( targetDir == rename.first.path() ) { continue; }
 
-        if ( !QDir().rename( dir.path(), targetDir ) )
+        if ( !QDir().rename( rename.first.path(), targetDir ) )
         {
-            recordFailurePath( dir.path() );
+            recordFailurePath( rename.first.path() );
         }
     }
 }
@@ -212,66 +236,22 @@ QJsonObject runBatchReplacement(
 
     const auto availableSuffixes = makeAvailableSuffixes( suffixes );
 
-    // 同一大小写变体只处理一次：否则预览会重复统计，且目标值包含源关键字时会被二次替换
-    QList< QPair< QString, QString > > caseVariants;
+    const auto caseVariants = BatchReplacement::Detail::makeCaseVariants(
+                sourceKey,
+                targetKey,
+                multiCase
+            );
 
-    auto addCaseVariant = [ &caseVariants ](
-            const QString &currentSourceKey,
-            const QString &currentTargetKey
-        )
-    {
-        for ( const auto &caseVariant: caseVariants )
-        {
-            if ( caseVariant.first == currentSourceKey ) { return; }
-        }
-
-        caseVariants.push_back( { currentSourceKey, currentTargetKey } );
-    };
-
-    if ( multiCase )
-    {
-        addCaseVariant( sourceKey.toLower(), targetKey.toLower() );
-        addCaseVariant( sourceKey.toUpper(), targetKey.toUpper() );
-
-        if ( ( sourceKey.size() > 1 ) && ( targetKey.size() > 1 ) )
-        {
-            auto sourceKey2 = sourceKey;
-            auto targetKey2 = targetKey;
-
-            sourceKey2[ 0 ] = sourceKey.toLower()[ 0 ];
-            targetKey2[ 0 ] = targetKey.toLower()[ 0 ];
-
-            addCaseVariant( sourceKey2, targetKey2 );
-
-            sourceKey2[ 0 ] = sourceKey.toUpper()[ 0 ];
-            targetKey2[ 0 ] = targetKey.toUpper()[ 0 ];
-
-            addCaseVariant( sourceKey2, targetKey2 );
-        }
-        else
-        {
-            addCaseVariant( sourceKey, targetKey );
-        }
-    }
-    else
-    {
-        addCaseVariant( sourceKey, targetKey );
-    }
-
-    for ( const auto &caseVariant: caseVariants )
-    {
-        collectReplacementBySingleCase(
-                    directoryPath,
-                    availableSuffixes,
-                    caseVariant.first,
-                    caseVariant.second,
-                    applyChanges,
-                    fileCount,
-                    replacementCount,
-                    failedOperationCount,
-                    failedPaths
-                );
-    }
+    collectReplacement(
+                directoryPath,
+                availableSuffixes,
+                caseVariants,
+                applyChanges,
+                fileCount,
+                replacementCount,
+                failedOperationCount,
+                failedPaths
+            );
 
     return
         { {
@@ -287,6 +267,7 @@ QJsonObject runBatchReplacement(
 QJsonObject Manage::previewBatchReplacement(
         const QJsonArray &suffixes,
         const QString &sourceKey,
+        const QString &targetKey,
         const bool multiCase
     )
 {
@@ -314,7 +295,7 @@ QJsonObject Manage::previewBatchReplacement(
                 directoryPath,
                 suffixes,
                 sourceKey,
-                QString(),
+                targetKey,
                 multiCase,
                 false
             );
